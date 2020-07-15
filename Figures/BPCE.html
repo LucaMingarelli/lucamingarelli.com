@@ -1,0 +1,832 @@
+
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js" type="text/javascript"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js" type="text/javascript"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.3.4.min.js" type="text/javascript"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-gl-1.3.4.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript">function HoloViewsWidget() {
+}
+
+HoloViewsWidget.prototype.init_slider = function(init_val){
+  if(this.load_json) {
+    this.from_json()
+  } else {
+    this.update_cache();
+  }
+}
+
+HoloViewsWidget.prototype.populate_cache = function(idx){
+  this.cache[idx].innerHTML = this.frames[idx];
+  if (this.embed) {
+    delete this.frames[idx];
+  }
+}
+
+HoloViewsWidget.prototype.process_error = function(msg){
+}
+
+HoloViewsWidget.prototype.from_json = function() {
+  var data_url = this.json_path + this.id + '.json';
+  $.getJSON(data_url, $.proxy(function(json_data) {
+    this.frames = json_data;
+    this.update_cache();
+    this.update(0);
+  }, this));
+}
+
+HoloViewsWidget.prototype.dynamic_update = function(current){
+  if (current === undefined) {
+    return
+  }
+  this.current = current;
+  if (this.comm) {
+    var msg = {comm_id: this.id+'_client', content: current}
+    this.comm.send(msg);
+  }
+}
+
+HoloViewsWidget.prototype.update_cache = function(force){
+  var frame_len = Object.keys(this.frames).length;
+  for (var i=0; i<frame_len; i++) {
+    if(!this.load_json || this.dynamic)  {
+      var frame = Object.keys(this.frames)[i];
+    } else {
+      var frame = i;
+    }
+    if(!(frame in this.cache) || force) {
+      if ((frame in this.cache) && force) { this.cache[frame].remove() }
+      var div = document.createElement("div");
+      var parent = document.getElementById("_anim_img"+this.id);
+      div.style.display = "none";
+      parent.appendChild(div)
+      this.cache[frame] = div;
+      var cache_id = "_anim_img"+this.id+"_"+frame;
+      this.populate_cache(frame);
+    }
+  }
+}
+
+HoloViewsWidget.prototype.update = function(current){
+  if(current in this.cache) {
+    for (var index in this.cache) {
+      this.cache[index].style.display = "none";
+    }
+    this.cache[current].style.display = "";
+    this.wait = false;
+  }
+}
+
+HoloViewsWidget.prototype.init_comms = function() {
+  var that = this
+  HoloViews.comm_manager.register_target(this.plot_id, this.id, function (msg) { that.msg_handler(msg) })
+  if (!this.cached || this.dynamic) {
+    function ack_callback(msg) {
+      var msg = msg.metadata;
+      var comm_id = msg.comm_id;
+      var comm_status = HoloViews.comm_status[comm_id];
+      if (that.queue.length > 0) {
+        that.time = Date.now();
+        that.dynamic_update(that.queue[that.queue.length-1]);
+        that.queue = [];
+      } else {
+        that.wait = false;
+      }
+      if ((msg.msg_type == "Ready") && msg.content) {
+        console.log("Python callback returned following output:", msg.content);
+      } else if (msg.msg_type == "Error") {
+        console.log("Python failed with the following traceback:", msg.traceback)
+      }
+    }
+    var comm = HoloViews.comm_manager.get_client_comm(this.plot_id, this.id+'_client', ack_callback);
+    return comm
+  }
+}
+
+HoloViewsWidget.prototype.msg_handler = function(msg) {
+  var metadata = msg.metadata;
+  if ((metadata.msg_type == "Ready")) {
+    if (metadata.content) {
+      console.log("Python callback returned following output:", metadata.content);
+    }
+	return;
+  } else if (metadata.msg_type == "Error") {
+    console.log("Python failed with the following traceback:", metadata.traceback)
+    return
+  }
+  this.process_msg(msg)
+}
+
+HoloViewsWidget.prototype.process_msg = function(msg) {
+}
+
+function SelectionWidget(frames, id, slider_ids, keyMap, dim_vals, notFound, load_json, mode, cached, json_path, dynamic, plot_id){
+  this.frames = frames;
+  this.id = id;
+  this.plot_id = plot_id;
+  this.slider_ids = slider_ids;
+  this.keyMap = keyMap
+  this.current_frame = 0;
+  this.current_vals = dim_vals;
+  this.load_json = load_json;
+  this.mode = mode;
+  this.notFound = notFound;
+  this.cached = cached;
+  this.dynamic = dynamic;
+  this.cache = {};
+  this.json_path = json_path;
+  this.init_slider(this.current_vals[0]);
+  this.queue = [];
+  this.wait = false;
+  if (!this.cached || this.dynamic) {
+    this.comm = this.init_comms();
+  }
+}
+
+SelectionWidget.prototype = new HoloViewsWidget;
+
+
+SelectionWidget.prototype.get_key = function(current_vals) {
+  var key = "(";
+  for (var i=0; i<this.slider_ids.length; i++)
+  {
+    var val = this.current_vals[i];
+    if (!(typeof val === 'string')) {
+      if (val % 1 === 0) { val = val.toFixed(1); }
+      else { val = val.toFixed(10); val = val.slice(0, val.length-1);}
+    }
+    key += "'" + val + "'";
+    if(i != this.slider_ids.length-1) { key += ', ';}
+    else if(this.slider_ids.length == 1) { key += ',';}
+  }
+  key += ")";
+  return this.keyMap[key];
+}
+
+SelectionWidget.prototype.set_frame = function(dim_val, dim_idx){
+  this.current_vals[dim_idx] = dim_val;
+  var key = this.current_vals;
+  if (!this.dynamic) {
+    key = this.get_key(key)
+  }
+  if (this.dynamic || !this.cached) {
+    if ((this.time !== undefined) && ((this.wait) && ((this.time + 10000) > Date.now()))) {
+      this.queue.push(key);
+      return
+    }
+    this.queue = [];
+    this.time = Date.now();
+    this.current_frame = key;
+    this.wait = true;
+    this.dynamic_update(key)
+  } else if (key !== undefined) {
+    this.update(key)
+  }
+}
+
+
+/* Define the ScrubberWidget class */
+function ScrubberWidget(frames, num_frames, id, interval, load_json, mode, cached, json_path, dynamic, plot_id){
+  this.slider_id = "_anim_slider" + id;
+  this.loop_select_id = "_anim_loop_select" + id;
+  this.id = id;
+  this.plot_id = plot_id;
+  this.interval = interval;
+  this.current_frame = 0;
+  this.direction = 0;
+  this.dynamic = dynamic;
+  this.timer = null;
+  this.load_json = load_json;
+  this.mode = mode;
+  this.cached = cached;
+  this.frames = frames;
+  this.cache = {};
+  this.length = num_frames;
+  this.json_path = json_path;
+  document.getElementById(this.slider_id).max = this.length - 1;
+  this.init_slider(0);
+  this.wait = false;
+  this.queue = [];
+  if (!this.cached || this.dynamic) {
+    this.comm = this.init_comms()
+  }
+}
+
+ScrubberWidget.prototype = new HoloViewsWidget;
+
+ScrubberWidget.prototype.set_frame = function(frame){
+  this.current_frame = frame;
+  var widget = document.getElementById(this.slider_id);
+  if (widget === null) {
+    this.pause_animation();
+    return
+  }
+  widget.value = this.current_frame;
+  if (this.dynamic || !this.cached) {
+    if ((this.time !== undefined) && ((this.wait) && ((this.time + 10000) > Date.now()))) {
+      this.queue.push(frame);
+      return
+    }
+    this.queue = [];
+    this.time = Date.now();
+    this.wait = true;
+    this.dynamic_update(frame)
+  } else {
+    this.update(frame)
+  }
+}
+
+ScrubberWidget.prototype.get_loop_state = function(){
+  var button_group = document[this.loop_select_id].state;
+  for (var i = 0; i < button_group.length; i++) {
+    var button = button_group[i];
+    if (button.checked) {
+      return button.value;
+    }
+  }
+  return undefined;
+}
+
+
+ScrubberWidget.prototype.next_frame = function() {
+  this.set_frame(Math.min(this.length - 1, this.current_frame + 1));
+}
+
+ScrubberWidget.prototype.previous_frame = function() {
+  this.set_frame(Math.max(0, this.current_frame - 1));
+}
+
+ScrubberWidget.prototype.first_frame = function() {
+  this.set_frame(0);
+}
+
+ScrubberWidget.prototype.last_frame = function() {
+  this.set_frame(this.length - 1);
+}
+
+ScrubberWidget.prototype.slower = function() {
+  this.interval /= 0.7;
+  if(this.direction > 0){this.play_animation();}
+  else if(this.direction < 0){this.reverse_animation();}
+}
+
+ScrubberWidget.prototype.faster = function() {
+  this.interval *= 0.7;
+  if(this.direction > 0){this.play_animation();}
+  else if(this.direction < 0){this.reverse_animation();}
+}
+
+ScrubberWidget.prototype.anim_step_forward = function() {
+  if(this.current_frame < this.length - 1){
+    this.next_frame();
+  }else{
+    var loop_state = this.get_loop_state();
+    if(loop_state == "loop"){
+      this.first_frame();
+    }else if(loop_state == "reflect"){
+      this.last_frame();
+      this.reverse_animation();
+    }else{
+      this.pause_animation();
+      this.last_frame();
+    }
+  }
+}
+
+ScrubberWidget.prototype.anim_step_reverse = function() {
+  if(this.current_frame > 0){
+    this.previous_frame();
+  } else {
+    var loop_state = this.get_loop_state();
+    if(loop_state == "loop"){
+      this.last_frame();
+    }else if(loop_state == "reflect"){
+      this.first_frame();
+      this.play_animation();
+    }else{
+      this.pause_animation();
+      this.first_frame();
+    }
+  }
+}
+
+ScrubberWidget.prototype.pause_animation = function() {
+  this.direction = 0;
+  if (this.timer){
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+}
+
+ScrubberWidget.prototype.play_animation = function() {
+  this.pause_animation();
+  this.direction = 1;
+  var t = this;
+  if (!this.timer) this.timer = setInterval(function(){t.anim_step_forward();}, this.interval);
+}
+
+ScrubberWidget.prototype.reverse_animation = function() {
+  this.pause_animation();
+  this.direction = -1;
+  var t = this;
+  if (!this.timer) this.timer = setInterval(function(){t.anim_step_reverse();}, this.interval);
+}
+
+function extend(destination, source) {
+  for (var k in source) {
+    if (source.hasOwnProperty(k)) {
+      destination[k] = source[k];
+    }
+  }
+  return destination;
+}
+
+function update_widget(widget, values) {
+  if (widget.hasClass("ui-slider")) {
+    widget.slider('option', {
+      min: 0,
+      max: values.length-1,
+      dim_vals: values,
+      value: 0,
+      dim_labels: values
+    })
+    widget.slider('option', 'slide').call(widget, event, {value: 0})
+  } else {
+    widget.empty();
+    for (var i=0; i<values.length; i++){
+      widget.append($("<option>", {
+        value: i,
+        text: values[i]
+      }))
+    };
+    widget.data('values', values);
+    widget.data('value', 0);
+    widget.trigger("change");
+  };
+}
+
+function init_slider(id, plot_id, dim, values, next_vals, labels, dynamic, step, value, next_dim,
+                     dim_idx, delay, jQueryUI_CDN, UNDERSCORE_CDN) {
+  // Slider JS Block START
+  function loadcssfile(filename){
+    var fileref=document.createElement("link")
+    fileref.setAttribute("rel", "stylesheet")
+    fileref.setAttribute("type", "text/css")
+    fileref.setAttribute("href", filename)
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+  }
+  loadcssfile("https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
+  /* Check if jQuery and jQueryUI have been loaded
+     otherwise load with require.js */
+  var jQuery = window.jQuery,
+    // check for old versions of jQuery
+    oldjQuery = jQuery && !!jQuery.fn.jquery.match(/^1\.[0-4](\.|$)/),
+    jquery_path = '',
+    paths = {},
+    noConflict;
+  var jQueryUI = jQuery.ui;
+  // check for jQuery
+  if (!jQuery || oldjQuery) {
+    // load if it's not available or doesn't meet min standards
+    paths.jQuery = jQuery;
+    noConflict = !!oldjQuery;
+  } else {
+    // register the current jQuery
+    define('jquery', [], function() { return jQuery; });
+  }
+  if (!jQueryUI) {
+    paths.jQueryUI = jQueryUI_CDN.slice(null, -3);
+  } else {
+    define('jQueryUI', [], function() { return jQuery.ui; });
+  }
+  paths.underscore = UNDERSCORE_CDN.slice(null, -3);
+  var jquery_require = {
+    paths: paths,
+    shim: {
+      "jQueryUI": {
+        exports:"$",
+        deps: ['jquery']
+      },
+      "underscore": {
+        exports: '_'
+      }
+    }
+  }
+  require.config(jquery_require);
+  require(["jQueryUI", "underscore"], function(jUI, _){
+    if (noConflict) $.noConflict(true);
+    var vals = values;
+    if (dynamic && vals.constructor === Array) {
+      var default_value = parseFloat(value);
+      var min = parseFloat(vals[0]);
+      var max = parseFloat(vals[vals.length-1]);
+      var wstep = step;
+      var wlabels = [default_value];
+      var init_label = default_value;
+    } else {
+      var min = 0;
+      if (dynamic) {
+        var max = Object.keys(vals).length - 1;
+        var init_label = labels[value];
+        var default_value = values[value];
+      } else {
+        var max = vals.length - 1;
+        var init_label = labels[value];
+        var default_value = value;
+      }
+      var wstep = 1;
+      var wlabels = labels;
+    }
+    function adjustFontSize(text) {
+      var width_ratio = (text.parent().width()/8)/text.val().length;
+      var size = Math.min(0.9, Math.max(0.6, width_ratio))+'em';
+      text.css('font-size', size);
+    }
+    var slider = $('#_anim_widget'+id+'_'+dim);
+    slider.slider({
+      animate: "fast",
+      min: min,
+      max: max,
+      step: wstep,
+      value: default_value,
+      dim_vals: vals,
+      dim_labels: wlabels,
+      next_vals: next_vals,
+      slide: function(event, ui) {
+        var vals = slider.slider("option", "dim_vals");
+        var next_vals = slider.slider("option", "next_vals");
+        var dlabels = slider.slider("option", "dim_labels");
+        if (dynamic) {
+          var dim_val = ui.value;
+          if (vals.constructor === Array) {
+            var label = ui.value;
+          } else {
+            var label = dlabels[ui.value];
+          }
+        } else {
+          var dim_val = vals[ui.value];
+          var label = dlabels[ui.value];
+        }
+        var text = $('#textInput'+id+'_'+dim);
+        text.val(label);
+        adjustFontSize(text);
+        HoloViews.index[plot_id].set_frame(dim_val, dim_idx);
+        if (Object.keys(next_vals).length > 0) {
+          var new_vals = next_vals[dim_val];
+          var next_widget = $('#_anim_widget'+id+'_'+next_dim);
+          update_widget(next_widget, new_vals);
+        }
+      }
+    });
+    slider.keypress(function(event) {
+      if (event.which == 80 || event.which == 112) {
+        var start = slider.slider("option", "value");
+        var stop =  slider.slider("option", "max");
+        for (var i=start; i<=stop; i++) {
+          var delay = i*delay;
+          $.proxy(function doSetTimeout(i) { setTimeout($.proxy(function() {
+            var val = {value:i};
+            slider.slider('value',i);
+            slider.slider("option", "slide")(null, val);
+          }, slider), delay);}, slider)(i);
+        }
+      }
+      if (event.which == 82 || event.which == 114) {
+        var start = slider.slider("option", "value");
+        var stop =  slider.slider("option", "min");
+        var count = 0;
+        for (var i=start; i>=stop; i--) {
+          var delay = count*delay;
+          count = count + 1;
+          $.proxy(function doSetTimeout(i) { setTimeout($.proxy(function() {
+            var val = {value:i};
+            slider.slider('value',i);
+            slider.slider("option", "slide")(null, val);
+          }, slider), delay);}, slider)(i);
+        }
+      }
+    });
+    var textInput = $('#textInput'+id+'_'+dim)
+    textInput.val(init_label);
+    adjustFontSize(textInput);
+  });
+}
+
+function init_dropdown(id, plot_id, dim, vals, value, next_vals, labels, next_dim, dim_idx, dynamic) {
+  var widget = $("#_anim_widget"+id+'_'+dim);
+  widget.data('values', vals)
+  for (var i=0; i<vals.length; i++){
+    if (dynamic) {
+      var val = vals[i];
+    } else {
+      var val = i;
+    }
+    widget.append($("<option>", {
+      value: val,
+      text: labels[i]
+    }));
+  };
+  widget.data("next_vals", next_vals);
+  widget.val(value);
+  widget.on('change', function(event, ui) {
+    if (dynamic) {
+      var dim_val = parseInt(this.value);
+    } else {
+      var dim_val = $.data(this, 'values')[this.value];
+    }
+    var next_vals = $.data(this, "next_vals");
+    if (Object.keys(next_vals).length > 0) {
+      var new_vals = next_vals[dim_val];
+      var next_widget = $('#_anim_widget'+id+'_'+next_dim);
+      update_widget(next_widget, new_vals);
+    }
+    var widgets = HoloViews.index[plot_id]
+    if (widgets) {
+      widgets.set_frame(dim_val, dim_idx);
+    }
+  });
+}
+
+
+if (window.HoloViews === undefined) {
+  window.HoloViews = {}
+  window.PyViz = window.HoloViews
+} else if (window.PyViz === undefined) {
+  window.PyViz = window.HoloViews
+}
+
+
+var _namespace = {
+  init_slider: init_slider,
+  init_dropdown: init_dropdown,
+  comms: {},
+  comm_status: {},
+  index: {},
+  plot_index: {},
+  kernels: {},
+  receivers: {}
+}
+
+for (var k in _namespace) {
+  if (!(k in window.HoloViews)) {
+    window.HoloViews[k] = _namespace[k];
+  }
+}
+
+// Define Bokeh specific subclasses
+function BokehSelectionWidget() {
+  SelectionWidget.apply(this, arguments);
+}
+
+function BokehScrubberWidget() {
+  ScrubberWidget.apply(this, arguments);
+}
+
+// Let them inherit from the baseclasses
+BokehSelectionWidget.prototype = Object.create(SelectionWidget.prototype);
+BokehScrubberWidget.prototype = Object.create(ScrubberWidget.prototype);
+
+// Define methods to override on widgets
+var BokehMethods = {
+  update_cache : function(){
+    for (var index in this.frames) {
+      this.frames[index] = JSON.parse(this.frames[index]);
+    }
+  },
+  update : function(current){
+    if (current === undefined) {
+      return;
+    }
+    var data = this.frames[current];
+    if (data !== undefined) {
+      if (data.root in HoloViews.plot_index) {
+        var doc = HoloViews.plot_index[data.root].model.document;
+      } else {
+        var doc = Bokeh.index[data.root].model.document;
+      }
+      doc.apply_json_patch(data.content);
+    }
+  },
+  init_comms: function() {
+    if (Bokeh.protocol !== undefined) {
+      this.receiver = new Bokeh.protocol.Receiver()
+    } else {
+      this.receiver = null;
+    }
+    return HoloViewsWidget.prototype.init_comms.call(this);
+  },
+  process_msg : function(msg) {
+    if (this.plot_id in HoloViews.plot_index) {
+      var doc = HoloViews.plot_index[this.plot_id].model.document;
+    } else {
+      var doc = Bokeh.index[this.plot_id].model.document;
+    }
+    if (this.receiver === null) { return }
+    var receiver = this.receiver;
+    if (msg.buffers.length > 0) {
+      receiver.consume(msg.buffers[0].buffer)
+    } else {
+      receiver.consume(msg.content.data)
+    }
+    const comm_msg = receiver.message;
+    if ((comm_msg != null) && (doc != null)) {
+      doc.apply_json_patch(comm_msg.content, comm_msg.buffers)
+    }
+  }
+}
+
+// Extend Bokeh widgets with backend specific methods
+extend(BokehSelectionWidget.prototype, BokehMethods);
+extend(BokehScrubberWidget.prototype, BokehMethods);
+
+window.HoloViews.BokehSelectionWidget = BokehSelectionWidget
+window.HoloViews.BokehScrubberWidget = BokehScrubberWidget
+</script>
+<script type="text/javascript">
+    function JupyterCommManager() {
+    }
+
+    JupyterCommManager.prototype.register_target = function(plot_id, comm_id, msg_handler) {
+      if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        comm_manager.register_target(comm_id, function(comm) {
+          comm.on_msg(msg_handler);
+        });
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        window.PyViz.kernels[plot_id].registerCommTarget(comm_id, function(comm) {
+          comm.onMsg = msg_handler;
+        });
+      }
+    }
+
+    JupyterCommManager.prototype.get_client_comm = function(plot_id, comm_id, msg_handler) {
+      if (comm_id in window.PyViz.comms) {
+        return window.PyViz.comms[comm_id];
+      } else if (window.comm_manager || ((window.Jupyter !== undefined) && (Jupyter.notebook.kernel != null))) {
+        var comm_manager = window.comm_manager || Jupyter.notebook.kernel.comm_manager;
+        var comm = comm_manager.new_comm(comm_id, {}, {}, {}, comm_id);
+        if (msg_handler) {
+          comm.on_msg(msg_handler);
+        }
+      } else if ((plot_id in window.PyViz.kernels) && (window.PyViz.kernels[plot_id])) {
+        var comm = window.PyViz.kernels[plot_id].connectToComm(comm_id);
+        comm.open();
+        if (msg_handler) {
+          comm.onMsg = msg_handler;
+        }
+      }
+
+      window.PyViz.comms[comm_id] = comm;
+      return comm;
+    }
+
+    window.PyViz.comm_manager = new JupyterCommManager();
+    </script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<style>div.hololayout {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+div.holoframe {
+  width: 75%;
+}
+
+div.holowell {
+  display: flex;
+  align-items: center;
+}
+
+form.holoform {
+  background-color: #fafafa;
+  border-radius: 5px;
+  overflow: hidden;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  border: 1px solid #e3e3e3;
+}
+
+div.holowidgets {
+  padding-right: 0;
+  width: 25%;
+}
+
+div.holoslider {
+  min-height: 0 !important;
+  height: 0.8em;
+  width: 100%;
+}
+
+div.holoformgroup {
+  padding-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+div.hologroup {
+  padding-left: 0;
+  padding-right: 0.8em;
+  width: 100%;
+}
+
+.holoselect {
+  width: 92%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.holotext {
+  padding-left:  0.5em;
+  padding-right: 0;
+  width: 100%;
+}
+
+.holowidgets .ui-resizable-se {
+  visibility: hidden
+}
+
+.holoframe > .ui-resizable-se {
+  visibility: hidden
+}
+
+.holowidgets .ui-resizable-s {
+  visibility: hidden
+}
+
+
+/* CSS rules for noUISlider based slider used by JupyterLab extension  */
+
+.noUi-handle {
+  width: 20px !important;
+  height: 20px !important;
+  left: -5px !important;
+  top: -5px !important;
+}
+
+.noUi-handle:before, .noUi-handle:after {
+  visibility: hidden;
+  height: 0px;
+}
+
+.noUi-target {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+div.bk-hbox {
+    display: flex;
+    justify-content: center;
+}
+
+div.bk-hbox div.bk-plot {
+    padding: 8px;
+}
+
+div.bk-hbox div.bk-data-table {
+    padding: 20px;
+}
+</style><div style='display: table; margin: 0 auto;'>
+
+
+
+
+
+
+  <div class="bk-root" id="ba8b3362-a6bc-47a5-aa3f-bc6a7ca248bb" data-root-id="1280"></div>
+
+<script type="text/javascript">
+  (function(root) {
+  function embed_document(root) {
+    
+  var docs_json = {"92b1f2b0-b95f-41d9-9f71-7240619f74ae":{"roots":{"references":[{"attributes":{"align":null,"below":[{"id":"1289","type":"LinearAxis"}],"center":[{"id":"1293","type":"Grid"},{"id":"1298","type":"Grid"},{"id":"1367","type":"Legend"}],"left":[{"id":"1294","type":"LinearAxis"}],"margin":null,"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"outline_line_alpha":{"value":0},"plot_height":800,"plot_width":800,"renderers":[{"id":"1332","type":"GraphRenderer"},{"id":"1355","type":"GlyphRenderer"}],"sizing_mode":"fixed","title":{"id":"1281","type":"Title"},"toolbar":{"id":"1305","type":"Toolbar"},"x_range":{"id":"1276","type":"Range1d"},"x_scale":{"id":"1285","type":"LinearScale"},"y_range":{"id":"1277","type":"Range1d"},"y_scale":{"id":"1287","type":"LinearScale"}},"id":"1280","subtype":"Figure","type":"Plot"},{"attributes":{"callback":null,"data":{"CTY":["BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","IN","IN","IN","IN","IN","IN","IN","IN","IN","IN","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","PL","PL","PL","PL","PL","PL","PL","PL"],"Country":["BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","IN","IN","IN","IN","IN","IN","IN","IN","IN","IN","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","ZA","DE","ID","UA","SK","TW","ZA","IE","RO","IE","CI","HU","PE","CL","JE","TR","DE","HU","ID","SK","RU","KY","HK","KR","SE","PE","CL","CZ","PE","JP","CN","DZ","PT","DK","HK","IE","AU","ES","ES","CN","AR","HK","MQ","CH","DK","SE","AT","CN","DE","GR","MA","HU","CL","PT","CN","BF","SN","ML","GN","GA","CI","AU","HK","AU","MX","MY","IE","DK","DE","JP","IE","IE","SG","PT","RO","DE","DZ","AR","JP","AR","RO","CA","DE","HK","ES","MA","MX","SG","TW","KR","HK","SG","CL","MC","NO","SE","CH","SE","CZ","CO","DE","RU","JP","PL","PL","PL","PL","PL","PL","PL","PL"],"LEI":["5299008E2XN1KGSVT313","529900P0PPHFKY4V2S81","549300FEL83F8BOY2N67","52990067VGJRAUNMQ188","529900BRYPNBI4HGY560","529900ZF4JWB2VGUIU50","LIB53HNVE3JIHIGVGQ03","529900WPR59SSV2AOJ29","213800QDDF7M6OTZM407","529900TJ221L64THSF34","549300QM6V6MTI1RS734","529900EJP3ERZKU40T05","529900M8WUTIPFW68U79","529900MFMZ8T2YUSIB72","529900WNQ28ZNJHDEL84","529900PZ1U51N9A22F37","213800IKTULCYD43OC97","529900JSP4NGN6ISTE71","213800VBJGB9U3S5BK46","529900O2WWXTVSZJHL43","529900LB7AKFMWD9HW46","52990073XKFEC6AR0509","KGCEPHLVVKVRZYO1T647","213800YZQK7AQZ5R2E66","549300DFOXLW8ZHSK740","213800OE16GS2TEFPV16","213800N59S56SVBWZQ72","213800SZCYHRAOBSA248","213800SDRN26RE36W538","213800KUCBKS22HRKO17","213800B51X3BVRRFR696","213800WZTAYW6PLNH771","54930025ZV2QLQZFP959","213800FTZ3LK8L3WXD05","969500T8QYO52ACKT375","969500CD6Y58C1AZ8718","9695001QI3W78VQPRS42","9695009ITQ0V4Z6KEB87","969500C8UOO9IJNQKP63","969500TKFV51RUNNJK56","969500KV3LDX3EKF3J89","969500FON47C0GVLZ465","969500VRSFWX7S1P2M29","969500EY4406TLO7PS96","969500ZM1C4SMWGH3C32","969500TF0H1L60IJWO67","969500UB9FGX21996738","969500O7DJZNM0F0Z036","96950041TP8LZCKQQM50","969500CEFFQCCGGUJH41","969500QJY3CCZIUDO457","9695003HEW4EJ61CZP67","96950081J7NSDKPJ9E56","969500QG39OC6IF2IU85","969500NY06D5P0114120","969500PT0O69G85W7583","96950041TGL16PN4B495","969500DWSOUOAP1OYA45","96950015J69CVHEL3Z57","969500UHFOZ7CU50KG49","9695004CJDOZ8W5IUH57","969500SRMPHFYXH0XA74","969500G0F6571RKIRJ92","96950020FCS2UW7OXF94","9695005XT323C6A7GN39","969500FZIK0SBNRSC223","969500XZLBD2WVLAKR25","969500VHT1ZNPVWOYF63","969500S8PCX9IDOPNZ79","9695008XBRCWFEZ8B440","9695002IU3E7CNGZMA32","969500JP91RKQ1E2ZD73","969500IR43FY0SE5ZD51","969500M22JF85TPA6F83","969500VQ4UL8QZ64XI04","9695001UN53Z4S7LAY22","9695005TXH99QDA0IL96","969500FJ952X1Z2SYL06","969500P06NFBFI8ACF66","969500X5SDIOTP2B2892","96950063NPDUUF86YR20","969500FFSA9DO4WKVZ66","9695001F23ZXAEPPGR23","969500E4YN0UCWFLXN04","549300WCGB70D06XZS54","969500LIL7AYCL5GS171","9695000I2418PVK8HU75","969500AMOCYW9U22O881","969500ADMZW70INMD287","969500EVREQN6OCANV64","969500YX4BGTD5GEYT57","969500KATAK1INY7Q727","969500QEAKJO3V2JP567","969500DJMHCNT9HKR433","969500DEM67LRGQOTV19","969500UCL6ROAHVXQV60","969500U6BIFRC0G1AV88","529900JJNTINV5OPR895","549300APCUL05INVD144","969500CHTEPZVQX30A79","969500OQA7MQNWF7TO17","969500EZ0CK1CM9NOO20","969500D1YUUYJYGKK259","969500TYBF0U23OZEF55","969500NXL6SAZZPR8T33","969500UOXSF93ZVAGX63","96950046C6898GAG8P66","969500UXKW83DIADHZ45","969500L62K212ENQTT26","969500H71WJIAE4HUA55","969500ZZJHUU1V8VYF24","96950086A58BPMJM7H80","969500RLYVWEFJRC4Z07","9695007C2PSW4FRMIJ18","969500AQOQX6YT9KHC89","969500C0LIJFVESV7Z69","969500MKG4O3HR0SJR45","969500RWP163ILODG088","969500JB0G9CN6E50A57","969500Q5PC7OJDSDIF11","969500RHETYS1Z9GD796","9695001DOP94YLPEUY51","969500FBZHJAMPYPYW35","969500VVWQ5APZPIH033","969500U9PNA2BESM1Y72","969500AJCBTD2C024I81","969500QCHYLUSOSIT439","969500GQ1OKY002WJX24","969500B5LCYLVYT83G45","969500XWTQV35QM2SJ58","9695009AT9D8KJ5PN573","969500UBCGZU6HVBAA75","969500BYK1UBDKDFGI27","96950006SSJ5SQVQ8Q10","969500FRSF8VOIK2YG21","969500HUAESL378AI627","969500SPY4CMVOV1XG69","969500OA329Q67XHCX33","969500W57JU6DPCAW293","9695005979PSIRXHHJ33","9695004ZZY812AHURX46","969500T04FWDTHGUBA22","969500PSOWV2US4S6V37","969500Y0DVEBMJ54ZH92","9695005QW5Z3HOOXAY51","969500EIL0ECAHEJYH83","R0MUWSFPU8MPRO8K5P83","96950049RB3RE9B18Q25","969500INFCYYUH6CCJ57","969500XWFLDUC4LE4M30","W51AX6427FJZJFPF8H34","9695004AHFK84DP62U40","969500G544G7SX1R1Z44","969500NQ6OKHXKQNT714","969500ZJYXKVEZ4SGQ41","96950087LI4WHHX6M393","969500SCX5Z97020W513","6OHH7J69X0SCOB6CU893","213800QEHMQFMVRNIU12","213800X9EGSRKJ3K5654","213800A6V8D2XCTWN314","213800QN6ILIF5NM3346","213800R9JKU2OQND1M96","213800JSRNB1I8T9A861","213800EJ677W8HTX3X38","549300JJFNS6US0W6A95","549300XP89UQ17JRXP57","2138006RS8HBLWXTCE76","213800F8ES51H1DBBA23","213800QT8ZZPZCCA4136","21380087VGWFWAL4FJ75","213800PJLTLCT24YAQ62","213800TWLYSCA7RUKX96","2138008MESN43Z65ZN38","213800GE3LLRZZSXFV28","213800HDSLP5B1A2LV49","529900VJR3QFYSWUGQ82","5493008J1H7T08EQEU09","213800P9EX1UYP6PIA64","213800D2W2YHOK4MMF95","21380023YXZTOTBROZ67","213800Z7NWUJVWQXVK44","213800PN8LJ2D347QG75","213800EM5B8IG8GNSV55","529900TWF4TMWZ4JU335","2138006I5UDWHN1DBJ37","213800A63G3MCY16SF87","213800K9R7JLZ8V59J75","213800AZ961NLJQA4235","213800VEJZZUBKR24O07","213800HFMWV5ZRR8IK75","213800MA5GPVC98TY284","21380046USHIR65BKP68","549300Z82OQY6HY1HL76","213800KT15HFNQBALZ91","549300EM6UY4NQV6SQ59","335800GGQH2HEKBB3N82","3358006I9LI53YTDO333","335800YIE6ZAC5F6VU41","213800O39E86NL2VCJ85","335800UK479PR4ENV168","213800ICG8VFM5V8SY42","529900B5RLPE0A9T2D86","3358002OJRGX59X63I17","213800THY2EXG32PVK33","213800ZWFIGE3RN96S40","815600D376EA22493654","UI802FYJ52XDB7N4KN18","815600F7E2571DC1DC59","2138005GZ9NIUNAYIX89","815600ACC704A3B3AC61","815600957115B9CCE404","815600426373BB988054","8156001CB574B6939179","8156008AC7041FA5C394","81560012A6D1435EFD48","815600D629E515A0E730","549300DS0R4Q6JD50W67","5493005V7SZNIYQZHH41","549300EVAPUZ2HD6UJ68","549300J2UEC8CUFW6083","549300WHNT1TE4ZWSS53","5493004MWP0LJFJEPV34","549300VWT25UPOVS1K17","549300BYHHAY6U3U7X81","549300B3TBG5OMAK6P48","UAIAINAJ28P30E5GWE37","549300CLWTSWVT7LHD73","549300KP4D0FMZM2FE14","549300B1ZIH9S32RFL62","213800HMFPJY5SHZXV65","549300EU740QD4C8N264","549300JB3NPCMBKZ7E13","549300I5OEOMNSIE8G67","549300S2N74PIKY6DX72","5493007O03S0YK3IPU74","549300FBBNBXMC1LW607","5493008ZXDS65VROKA50","213800PMOOCUZYCAIA03","213800UF2ZJZTCW8PC71","724500LEX1MUXUMXSB57","724500QS9SI0NU4ILF91","72450040RR2DUIEO8X27","529900RG83X52AVNT524","724500BPEU3T7K9SVR41","724500022WH2RXKFOH60","724500SBI8H8TN1J5Y28","7245003CGYZW5GQCI892","213800D5V5J7IRIZ3A87","7245009UXRIGIRYOBR48","724500ADVM0V068LWW71","724500C1GU1NS1SRYL37","5299009ZVOIKBHK5T567","529900K5NLEYM8DISF60","529900G7GW1AIY3QOB37","2138006E24B8HM9WHH62","213800K4TC9CLBA2MT95","724500LZ9MUIPNH3ZM50","BUUNKIWFG6FONGKK1092","54930004HQKU3PG2XH61","213800DZQZAWUM3DK362","529900K52EZCP16WMK26","213800EM4GB3UD5XEE29","2138007RMZJ9ZLEO9N66","213800NPP9YG46DUL465","213800U1M6F4SETXEU72","213800Z5MFEBP2RX8L32","549300P9PTTMOC214844","213800CINXISXDLGRU84","549300KVBIYTB0H1EP66","213800AN74H6CW4MAP75","2138005LP2PVOB96PF08","213800WCQ9OV2O7RQI27","2138004X384LVEE5PO09","549300953UCBP6MRZX32","7890002IBLU4LR4IXO55","549300WKRSQZ50LYFN91","213800A58YTPJWO3JX39","5493005YXREMPPQK3G72","21380038PLFARSFOBD11","253400EB0TABTQ6M1U75","213800V3EY3231JUM249","213800AZ8TGLO2BU7B95","213800GLAMS28GFO6W89","21380015274GR4MKLT42","213800F6BBMXAOY55X82","213800QK584ELT735E58","31570057PU88ZC9EIH47","2138005TL7MX5OZQ2B71","549300KQ32SQU4AZLP35","5493006KYU0VX4EBIP66","2138009IVDK5K9E6X944","529900L00M74TYGF5Y08","529900UVC9XFHGHEQQ62","2138004E7NYLJJ69GM97","2138002Y7Q2J14MAI422","529900AFBMGX2OQ93504","213800IAPHNOI5H6W263","95980020140005020994","213800P3RNEQRJ3MP112","213800N1FE25TQZKPV69","21380056QHK3HEMM5Q93","969500PEV9ULDOND9384","21380069IBK9AAW6TH14","213800792FMQIZPC4Y65","213800NAOW8VACIWCU68","2138002OFYGOWJ5R9L40","213800R297CKPV171K97","529900Q0430MR01AZB29","213800DTTCU126KVME14","2138008RJ3W82D9RVU78","213800AC46Y16OHV2206","213800MXT7CAJD94OQ52","2138008B64Z8G7M5YU77","3003001TZC2SVSEOTJ27","213800YIJVX7WSX9MI62","2138004GV27BUAY7O765","213800WCDKGGIDUWKE14","2138002U29YTPPRF1O03","2138009RSHBBFY9NQA62","213800L92WR3SCVMHJ53","2138008KH1JK4EGY5H03","213800L3OPJMC9P81P53","213800SWHSYQIWUAZA02","213800UUBUZUXACZ2F82","5493003EF0J4NNIPQ907","549300BK4M07E3BL5565","213800EWK3MZ8ZP6E244","529900397SZWE7DR1C77","549300W1PKAHKJ86TC84","549300CE590IOSTGR728","549300RUVJ1HYI98NN30","213800SPQZHSFOZDT950","213800H2UOPJDGKRTY19","74780040F5C0DGGVRO62","529900P08XH2RAY92I74","213800XP5QIELFZU1B78","213800XDQQPFPU72MM13","353800OLHAQSS5CV6B71","2138001O9AT62143YU79","747800C0R8CR0GQJJL94","549300PM8TY6XRYCWW35","529900GC23X8JWY4B630","529900ZB0TQTXNNKYT53","95980020140005022740","213800KTEG6SZF8YWP60","213800S6IIS9NYRNWM60","213800JXZKQR28KD6872","2138003E7UBOEXP61F19","213800O95EHO85XS2U17","213800UHQLLR3F8NO843","213800TEMPHBTH8XQT25","213800WPDPTLVSJ7WU67","213800A8T8FF9MMM7875","5967007LIEEXZX6LGW98","529900C5PQGD9V3OBA43","QHSFEYI7HUOXXZ413E03","213800HD17UKYN8WOQ74","2138002BJWNWW7MFZ169","549300TYSBN1PJBJ5U41","549300TS3U4JKMR1B479","25340045EEL351X3W326","353800CZMMN0KZUO6U49","259400JSW9P934WTQN12","259400FBVIALPICV3467","259400GAEPXTQB5KNS42","259400RL1WKOJFOZV527","259400UOAILPTKOICH71","NMH2KF074RKAGTH4CM63","259400H69G9EDNRFDK72","259400NGQJTE1SNX5J40"],"color":["BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BE","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","BR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","GB","IN","IN","IN","IN","IN","IN","IN","IN","IN","IN","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","IT","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","LU","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","NL","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","Others","PL","PL","PL","PL","PL","PL","PL","PL"],"index":["BNP PARIBAS FORTIS FILM FINANCE","CREDISSIMO HAINAUT","Penne International NV","CREDISSIMO","BELGIAN MOBILE ID","BELGOLAISE","BNP PARIBAS ASSET MANAGEMENT BELGIUM","BNP Paribas Fortis Factor","BNP PARIBAS INVESTMENT PARTNERS BE HOLDING","IMMOBILIERE SAUVENIERE","GESTION INVESTISSEMENT ET DE PARTICIPATIONS SA","DEMETRIS","GENFINANCE INTERNATIONAL","LET'S DIDID","CREDIT POUR HABITATIONS SOCIALES - KREDIET VOOR SOCIALE WONINGEN","BNP PARIBAS FORTIS PRIVATE EQUITY BELGIUM","ARVAL BELGIUM","BNP PARIBAS FORTIS PRIVATE EQUITY EXPANSION","LOCADIF","BNP PARIBAS FORTIS PRIVATE EQUITY GROWTH","BNP PARIBAS FORTIS PRIVATE EQUITY MANAGEMENT","SOWO INVEST","BNPPB - Fortis","ARVAL BRASIL LTDA","BANCO BNP PARIBAS BRASIL SA","CARDIF DO BRASIL VIDA E PREVIDENCIA S/A","NCVP PARTICIPACOES SOCIETARIAS S/A","CETELEM AMERICA LTDA","LUIZASEG SEGUROS S.A.","CETELEM SERVIOS LTDA.","CARDIF DO BRASIL SEGUROS E GARANTIAS S/A","CARDIF CAPITALIZACAO S/A","BNP Paribas Proprietario Fundo de Investimento Multimercado Credito Privado - Investimento No Exterior","CARDIF LTDA","Cr\u00e9dit moderne Oc\u00e9an Indien","NEUILLY CONTENTIEUX","SAS HVP","Cr\u00e9dit moderne Antilles Guyane","SAS CRISTOLIENNE DE PARTICIPATIONS","BNP PARIBAS IRB PARTICIPATIONS","SCI 68 70 RUE DE LAGNY-MONTREUIL","SCI BNP PARIBAS PIERRE I","CARDIF SA","OPERA TRADING CAPITAL","SCI BNP PARIBAS PIERRE II","CARDIF SERVICES SAS","OFPF FORMATION","BNP PARIBAS HOME LOAN SFH","SCI BOBIGNY JEAN ROSTAND","SCI CITYLIGHT BOULOGNE","SCI DEFENSE ETOILE","SCI DEFENSE VENDOME","SCI ETOILE DU NORD","DOMOFINANCE","RUEIL ARIANE","CMV MEDIFORCE","REUMAL INVESTISSEMENTS","C MA LEASE","CNH Industrial Capital Europe","PANTIN LES MOULINS","PARIS COURS DE VINCENNES","COFIPARC","Natiocr\u00e9dibail","CARDIF ASSURANCES RISQUES DIVERS","BNP Paribas R\u00e9union","BNP Paribas Public Sector SCF","CARDIF COURTAGE","BNP Paribas Personal Finance","BNP Paribas Nouvelle-Cal\u00e9donie","BNP Paribas Lease Group","Cofiplan S.A.","PROJEO","COROSA","MFF","BNP Paribas Factor","PUBLIC LOCATION LONGUE DUREE","Parilease","QUOCUMQUE","Cafineo","Natiocredimurs, soci\u00e9t\u00e9 en nom collectif","OFFICE FRANCAIS DE PREVOYANCE FUNERAIRE","Claas financial services","Cofica bail","BNP PARIBAS SERVICES MONETIQUES","BNP PARIBAS SECURITIES SERVICES","PROTECTION 24","CARDIF IARD","SCI NANTERRE GUILLERAIES","Norrsken finance","CFH BOULOGNE","ARVAL TRADING","AUTOP OCEAN INDIEN","HIBERNIA (FRANCE)","UCB BAIL 2","B*CAPITAL","ARVAL SERVICE LEASE","BAII RECOUVREMENT","BANQUE DE WALLIS ET FUTUNA","CFH BERCY HOTEL","TOMIC SARL IMPEX FRANCRO","CFH BERCY","HANOVRE BAIL","Same Deutz-Fahr finance","CFH BERCY INTERMEDIAIRE","CFH CAP D'AIL","VALEUR PIERRE EPARGNE","JCB Finance","2008 MARIE FINANCE","AEW IMMOCOMMERCIAL","Loisirs finance","APROLIS FINANCE","ARIUS","ARTEGY","ARTEL","CHINA MARIE FINANCE 1","LOUVEO","VENDOME RECOUVREMENT","MYFUNDMATCH","LEVAL 20","ARVAL FLEET SERVICES","CFH MONTPARNASSE","CFH MONTMARTRE","GIE BNP PARIBAS CARDIF","SCI FONTENAY PLAISANCE","BIAO RECOUVREMENT","Financiere du Marche Saint-Honore","CETELEM RENTING","SCI SAINT DENIS MITTERRAND","SCI SAINT DENIS LANDY","SCI SAINT DENIS JADE","SCI RUE MOUSSORGSKI","SCI PARIS CHAMPIONNET","SCI PARIS BATIGNOLLES","CARMA GRAND HORIZON SARL","SCI ODYSSEE","CARDIMMO","BNP PARIBAS DEVELOPPEMENT","SCI NANTES CARNOT","CAPITAL FRANCE HOTEL","SCI LE MANS GARE","ESOMET","SCI VILLEURBANNE STALINGRAD","FINANCIERE DES PAIEMENTS ELECTRONIQUES","FIRE ROOSTER AIRCRAFT LEASING 1","SERVICES LOGICIELS D'INTEGRATION BOURSIERE - SLIB","BNP PAM PARTICIPATIONS","BNP PARIBAS","SOCIETE ORBAISIENNE DE PARTICIPATIONS","FUNDQUEST ADVISOR","SOCIETE CIVILE IMMOBILIERE RUEIL - CAUDRON","BNP PARIBAS ASSET MANAGEMENT FRANCE","Fortis lease","CARDIF ASSURANCE VIE","FRANCE TITRISATION","NATIO ENERGIE 2","FIRE ROOSTER AIRCRAFT LEASING 6","FIRE ROOSTER AIRCRAFT LEASING 4","BNP PARIBAS ASSET MANAGEMENT Holding","WARRANTY DIRECT LIMITED","CARDIF PINNACLE INSURANCE MANAGEMENT SERVICES PLC","CNH INDUSTRIAL CAPITAL EUROPE LIMITED","CARDIF PINNACLE LIMITED","CARDIF PINNACLE INSURANCE HOLDINGS PLC","MANITOU FINANCE LIMITED","PINNACLE INSURANCE PLC","WARF 2012 LIMITED","VAULT FUNDING LIMITED","LANDSPIRE LIMITED","JCB FINANCE HOLDINGS LIMITED","HAREWOOD HOLDINGS LIMITED","HAREWOOD HELENA 2 LIMITED","HAREWOOD HELENA 1 LIMITED","SYGMA FUNDING TWO LIMITED","FORTIS LEASE UK LTD","BNP PARIBAS CARDIF LIMITED","EVERYPAW LIMITED","BNP PARIBAS COMMERCIAL FINANCE LIMITED","BNP PARIBAS COMMODITY FUTURES LIMITED","COFINOGA FUNDING TWO L.P.","E-CARAT 8 PLC","CLAAS FINANCIAL SERVICES LIMITED","PINNACLE PARTNERSHIPS LIMITED","COMMERCIAL VEHICLE FINANCE LIMITED","PINNACLE PET HEALTHCARE LIMITED","CREATION FINANCIAL SERVICES LIMITED","BNP PUK HOLDING LIMITED","E-CARAT 7 PLC","BNP PARIBAS UK HOLDINGS LTD","BNP PARIBAS RENTAL SOLUTIONS LIMITED","BNP PARIBAS NET LIMITED","BNP PARIBAS LEASING SOLUTIONS LIMITED","BNP PARIBAS LEASE GROUP PLC","BNP PARIBAS LEASE GROUP (RENTALS) LIMITED","E-CARAT 4 PLC","BNP PARIBAS TRUST CORPORATION UK LIMITED","E-CARAT 5 PLC","HUMAN VALUE DEVELOPERS PRIVATE LIMITED","WEALTHTIGER INVESTMENT ADVISORS PRIVATE LIMITED","Sharekhan Limited","BNP PARIBAS INDIA SOLUTIONS PRIVATE LIMITED","SHAREKHAN COMMODITIES PRIVATE LIMITED","BNP PARIBAS INDIA HOLDING PRIVATE LIMITED","SUNDARAM BNP PARIBAS HOME FINANCE LIMITED","SHAREKHAN BNP PARIBAS FINANCIAL SERVICES PRIVATE LIMITED","BNP PARIBAS SECURITIES INDIA PRIVATE LIMITED","ARVAL INDIA PRIVATE LIMITED","BNP PARIBAS REAL ESTATE INVESTMENT MANAGEMENT ITALY SOCIETA' DI GESTIONE DEL RISPARMIO P.A.","BANCA NAZIONALE DEL LAVORO S.P.A. O IN FORMA CONTRATTA BNL S.P.A.","UBI ASSICURAZIONI S.P.A.","BNP PARIBAS CARDIF VITA COMPAGNIA DI ASSICURAZIONE E RIASSICURAZIONE S.P.A. O IN","SVILUPPO HQ TIBURTINA S.R.L.","VELA OBG S.R.L.","BNL FINANCE SPA","FINDOMESTIC BANCA SPA","ARTIGIANCASSA S.P.A.","BUSINESS PARTNER ITALIA SOCIETA' CONSORTILE PER AZIONI","BNL POSITIVITY SRL","EUROPAY LUXEMBOURG SC","FINANCIERE HIME SA","Marie Lease Sarl","BNP PARIBAS FORTIS FUNDING","GREENSTARS BNP PARIBAS S.A.","BNP PARIBAS LEASE GROUP LUXEMBOURG S.A.","GA BNPP","FS-B SARL","HIME HOLDING 1 SA","BGL BNP PARIBAS","HIME HOLDING 2 SA","HIME HOLDING 3 SA","IMMOPARIBAS ROYAL-NEUVE SA","ARVAL LUXEMBOURG SA","VCG JL SARL","LION INTERNATIONAL INVESTMENTS S.A.","VISALUX SC","COMPAGNIE FINANCIERE OTTO- MANE SA","Le Sphinx Assurances Luxembourg S.A.","COFHYLUX SA","PARIBAS TRUST LUXEMBOURG SA","BNP PARIBAS LEASING SOLUTIONS","BNP PARIBAS REAL ESTATE ADVISORY & PROPERTY MANAGEMENT LUXEMBOURG SA","CNH INDUSTRIAL N.V.","Agrilease B.V.","ARVAL BENELUX B.V.","ALPHA (MURCIA) HOLDING B.V.","GROEIVERMOGEN N.V.","HEFFIQ HEFTRUCK VERHUUR B.V.","BNP PARIBAS ASSET MANAGEMENT NEDERLAND N.V.","FORTIS VASTGOED LEASE B.V.","BNP Paribas Cardif Schadeverzekeringen N.V.","BNP PARIBAS ARBITRAGE ISSUANCE B.V","BNP Paribas Personal Finance B.V.","BNP PARIBAS LEASING SOLUTIONS N.V.","BNP PARIBAS FACTORING SUPPORT N.V.","BNP PARIBAS FACTOR DEUTSCHLAND B.V.","DIKODI B.V.","BNP PARIBAS CARDIF LEVENSVERZEKERINGEN N.V.","BNP PARIBAS CARDIF B.V.","BNP PARIBAS ASSET MANAGEMENT NL HOLDING N.V.","BNP PARIBAS ASSET MANAGEMENT NETHERLANDS N.V.","BOUG BV","RCS CARDS (PROPRIETARY) LIMITED","VON ESSEN Bank GmbH","PT BNP PARIBAS SECURITIES INDONESIA","PUBLIC JOINT STOCK COMPANY \"\"UKRSIBBANK\"\"","Poistovna Cardif Slovakia, a.s.","PARIS MANAGEMENT CONSULTANT CO., LTD.","RCS INVESTMENT HOLDINGS","UTEXAM LOGISTICS LIMITED","RD PORTOFOLIU SRL","UTEXAM SOLUTIONS LIMITED","NSIA BANQUE COTE D'IVOIRE (EX BI","UCB INGATLANHITEL ZARTKORUEN MUKODO RESZVENYTARSASAG","RENTAEQUIPOS LEASING PERU S.A.","RENTAEQUIPOS LEASING S A","SCALDIS CAPITAL LIMITED","TEB ARVAL Arac Filo Kiralama Anonim Sirketi","Opel Finance Germany Holdings GmbH","Magyar Cetelem Bank Z\u00e1rtk\u00f6r\u00fben M\u00fbk\u00f6d\u00f5 Rt.","PT Bank BNP Paribas Indonesia","*ARVAL SLOVAKIA, S.R.O.","LIMITED LIABILITY COMPANY ARVAL","BNP PARIBAS BANK & TRUST CAYMAN LIMITED","BNP PARIBAS CAPITAL (ASIA PACIFIC) LIMITED","BNP PARIBAS CARDIF LIFE INSURANCE CO., LTD.","BNP PARIBAS CARDIF NORDIC AB","BNP PARIBAS CARDIF S.A. COMPAIA DE SEGUROS Y REASEGUROS","BNP PARIBAS CARDIF SEGUROS GENERALES S.A.","BNP PARIBAS CARDIF SERVICES, S.R.O.","BNP PARIBAS CARDIF SERVICIOS S.A.C.","BNP PARIBAS ASSET MANAGEMENT Japan Limited","BNP PARIBAS CHINA LTD","BNP PARIBAS EL DJAZA\u00cfR","BNP PARIBAS FACTOR - INSTITUI\u00c7\u00c3O FINANCEIRA DE CR\u00c9DITO, SA","BNP PARIBAS FACTOR A/S","BNP PARIBAS FINANCE (HONG KONG) LIMITED","BNP PARIBAS FUND ADMINISTRATION SERVICES (IRELAND) LIMITED","BNP PARIBAS FUND SERVICES AUSTRALASIA PTY LTD","BNP PARIBAS FUND SERVICES ESPA\u00d1A SL","BNP PARIBAS GESTION DE INVERSIONES, SGIIC, S.A.","BNP PARIBAS COMMODITIES TRADING (SHANGHAI) CO., LTD.","BNP PARIBAS ARGENTINA INVESTMENT PARTNERS","BNP PARIBAS ARBITRAGE (HONG KONG) LIMITED","BNP PARIBAS ANTILLES GUYANE","ARVAL (SCHWEIZ) AG","ARVAL A/S","ARVAL AB","ARVAL AUSTRIA GMBH","ARVAL CHINA CO., LTD.","ARVAL Deutschland GmbH","ARVAL HELLAS SA","ARVAL MAROC SA","ARVAL PHH SERVICE LEASE HUNGARY FLEET MANAGEMENT LIMITED LIABILITY COMPANY ARVAL PHH SERVICE LEASE H","ARVAL RELSA SPA","ARVAL SERVICE LEASE - ALUGUER E GESTAO AUTOMOVEL, S.A.","Arval Jiutong Beijing Co., Ltd.","BANQUE INTERNATIONALE DU COMMERCE ET INDUSTRIE BURKINA FASO","BANQUE INTERNATIONALE POUR LE COMMERCE ET L' INDUSTRIE DU SENEGAL","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE AU MALI","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE DE LA GUINE. - SA","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE DU GABON","BICI-BOURSE","BNP PACIFIC (AUSTRALIA) LTD","MACSON INTERNATIONAL LIMITED","BNP PARIBAS INVESTMENT PARTNERS (AUSTRALIA) HOLDINGS PTY LIMITED","CETELEM SERVICIOS SA DE CV","BNP Paribas Malaysia Berhad","BNP Paribas Ireland Unlimited Company","FORTIS LEASE DANMARK A/S","BNP Paribas Real Estate Investment Management Germany GmbH","BNP Paribas Securities (Japan) Limited","Darnell Designated Activity Company","BNP Paribas Vartry Reinsurance dac","BPP HOLDINGS PTE LTD","Banco BNP Paribas Personal Finance, SA","CARDIF ASSURANCE VIE SA PARIS SUCURSALA BUCURESTI","Commerz Finanz GmbH","CARDIF EL DJAZAIR","CARDIF SEGUROS S.A.","Cardif Assurances Risques Divers Japan","CARDIF SERVICIOS S.A.","CARDIF-ASSURANCES RISQUES DIVERS SA PARIS SUCURSALA BUCURESTI","BNP Paribas IT Solutions Canada Inc.","BNP Paribas Factor GmbH","BNP Paribas Factor Asia Limited","BNP Paribas Espa\u00f1a, S.A.","BNP PARIBAS MEDITERRANEE BUSINESS PROCESS","BNP PARIBAS PERSONAL FINANCE SA DE CV SOFOM ENR","BNP PARIBAS SECURITIES (SINGAPORE) PTE. LTD.","BNP PARIBAS SECURITIES (TAIWAN) CO., LTD","BNP PARIBAS SECURITIES KOREA CO., LIMITED","BNP PARIBAS SJ LIMITED","BNP PARIBAS TRUST SERVICES SINGAPORE LIMITED","COMERCIALIZADORA DE VEHCULOS S.A.","BNP PARIBAS WEALTH MANAGEMENT MONACO","LANDKREDITT FINANS AS","Gerling NCM Factoring AB","BNP Paribas (Suisse) SA","BNP Paribas Cardif F\u00f6rs\u00e4kring AB","BNP Paribas Cardif Poji\u009atovna, a.s.","BNP Paribas Colombia Corporacion Financiera S.A.","BNP Paribas Emissions- und Handelsgesellschaft mbH","BNP PARIBAS ZAO","Cardif Assurance Vie Japan","BNP PARIBAS LEASING SERVICES SP. Z O.O.","TOWARZYSTWO FUNDUSZY INWESTYCYJNYCH BGZ BNP PARIBAS S.A.","BGZ BNP PARIBAS FAKTORING SP. Z O.O.","BNP PARIBAS LEASE GROUP SP. Z O.O.","RAIFFEISEN TOWARZYSTWO FUNDUSZY INWESTYCYJNYCH S.A.","BNP Paribas","CARDIF SERVICES SP. Z O.O.","BNP PARIBAS GROUP SERVICE CENTER S.A."],"x":{"__ndarray__":"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","dtype":"float64","shape":[371]},"y":{"__ndarray__":"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","dtype":"float64","shape":[371]}},"selected":{"id":"1348","type":"Selection"},"selection_policy":{"id":"1376","type":"UnionRenderers"}},"id":"1347","type":"ColumnDataSource"},{"attributes":{"callback":null,"renderers":[{"id":"1355","type":"GlyphRenderer"}],"tags":["hv_created"],"tooltips":[["index","@{index}"],["CTY","@{CTY}"],["Country","@{Country}"],["LEI","@{LEI}"]]},"id":"1279","type":"HoverTool"},{"attributes":{"fill_color":{"value":"indianred"},"line_color":{"value":"black"},"size":{"units":"screen","value":8},"x":{"field":"x"},"y":{"field":"y"}},"id":"1353","type":"Scatter"},{"attributes":{"overlay":{"id":"1362","type":"BoxAnnotation"}},"id":"1302","type":"BoxZoomTool"},{"attributes":{"data_source":{"id":"1347","type":"ColumnDataSource"},"glyph":{"id":"1350","type":"Scatter"},"hover_glyph":{"id":"1353","type":"Scatter"},"muted_glyph":{"id":"1354","type":"Scatter"},"nonselection_glyph":{"id":"1351","type":"Scatter"},"selection_glyph":{"id":"1352","type":"Scatter"},"view":{"id":"1356","type":"CDSView"}},"id":"1355","type":"GlyphRenderer"},{"attributes":{},"id":"1343","type":"NodesAndLinkedEdges"},{"attributes":{},"id":"1364","type":"UnionRenderers"},{"attributes":{"dimension":1,"grid_line_color":null,"ticker":{"id":"1295","type":"BasicTicker"}},"id":"1298","type":"Grid"},{"attributes":{},"id":"1314","type":"BasicTickFormatter"},{"attributes":{"source":{"id":"1347","type":"ColumnDataSource"}},"id":"1356","type":"CDSView"},{"attributes":{"callback":null},"id":"1304","type":"TapTool"},{"attributes":{"line_color":{"value":"#1f77b4"},"line_width":{"value":0.5}},"id":"1328","type":"MultiLine"},{"attributes":{},"id":"1295","type":"BasicTicker"},{"attributes":{"click_policy":"mute","items":[{"id":"1368","type":"LegendItem"}]},"id":"1367","type":"Legend"},{"attributes":{},"id":"1316","type":"BasicTickFormatter"},{"attributes":{},"id":"1363","type":"Selection"},{"attributes":{"grid_line_color":null,"ticker":{"id":"1290","type":"BasicTicker"}},"id":"1293","type":"Grid"},{"attributes":{},"id":"1301","type":"WheelZoomTool"},{"attributes":{},"id":"1376","type":"UnionRenderers"},{"attributes":{"axis_label":"y","bounds":"auto","formatter":{"id":"1316","type":"BasicTickFormatter"},"major_label_orientation":"horizontal","ticker":{"id":"1295","type":"BasicTicker"},"visible":false},"id":"1294","type":"LinearAxis"},{"attributes":{"fill_alpha":{"value":0.2},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0.2},"size":{"units":"screen","value":8}},"id":"1322","type":"Circle"},{"attributes":{"factors":["BE","BR","FR","GB","IN","IT","LU","NL","Others","PL"],"palette":["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"]},"id":"1346","type":"CategoricalColorMapper"},{"attributes":{"fill_color":{"field":"color","transform":{"id":"1346","type":"CategoricalColorMapper"}},"line_color":{"value":"black"},"size":{"units":"screen","value":8},"x":{"field":"x"},"y":{"field":"y"}},"id":"1354","type":"Scatter"},{"attributes":{},"id":"1287","type":"LinearScale"},{"attributes":{"source":{"id":"1318","type":"ColumnDataSource"}},"id":"1325","type":"CDSView"},{"attributes":{"axis_label":"x","bounds":"auto","formatter":{"id":"1314","type":"BasicTickFormatter"},"major_label_orientation":"horizontal","ticker":{"id":"1290","type":"BasicTicker"},"visible":false},"id":"1289","type":"LinearAxis"},{"attributes":{"callback":null,"end":1.0944133492006332,"reset_end":1.0944133492006332,"reset_start":-1.1904012135636939,"start":-1.1904012135636939,"tags":[[["x","x",null]]]},"id":"1276","type":"Range1d"},{"attributes":{},"id":"1285","type":"LinearScale"},{"attributes":{"line_alpha":{"value":0.2},"line_width":{"value":0.5}},"id":"1327","type":"MultiLine"},{"attributes":{"source":{"id":"1319","type":"ColumnDataSource"}},"id":"1331","type":"CDSView"},{"attributes":{"edge_renderer":{"id":"1330","type":"GlyphRenderer"},"inspection_policy":{"id":"1343","type":"NodesAndLinkedEdges"},"layout_provider":{"id":"1320","type":"StaticLayoutProvider"},"node_renderer":{"id":"1324","type":"GlyphRenderer"},"selection_policy":{"id":"1341","type":"NodesAndLinkedEdges"}},"id":"1332","type":"GraphRenderer"},{"attributes":{"callback":null,"data":{"CTY":["Others","FR","FR","NL","FR","FR","FR","FR","IT","Others","Others","Others","Others","BE","NL","BR","Others","Others","FR","Others","IN","LU","Others","Others","Others","FR","Others","FR","FR","NL","Others","FR","FR","IT","BR","FR","Others","Others","Others","Others","Others","BE","BE","LU","PL","FR","Others","IT","IT","Others","FR","FR","Others","Others","NL","Others","BE","FR","FR","Others","NL","NL","NL","Others","Others","NL","NL","Others","GB","Others","Others","Others","Others","Others","IT","Others","GB","Others","GB","FR","Others","Others","Others","NL","NL","Others","BE","LU","BE","BE","BE","BE","Others","Others","Others","Others","PL","FR","IN","IN","Others","BE","FR","GB","LU","GB","PL","PL","LU","GB","NL","Others","GB","Others","LU","IT","GB","Others","Others","IN","Others","FR","FR","Others","GB","Others","GB","Others","Others","GB","PL","Others","Others","Others","NL","Others","Others","Others","FR","Others","Others","BE","Others","Others","FR","Others","FR","FR","NL","BR","FR","Others","FR","Others","Others","BE","NL","Others","IT","Others","FR","FR","FR","Others","FR","BR","FR","BR","BR","Others","FR","BR","GB","GB","GB","FR","Others","FR","PL","Others","Others","FR","FR","BR","FR","Others","BR","FR","FR","FR","FR","FR","FR","FR","FR","GB","FR","GB","NL","FR","LU","GB","FR","Others","GB","LU","FR","GB","BE","BE","BE","FR","Others","Others","FR","FR","FR","Others","FR","FR","BE","NL","FR","Others","GB","GB","GB","GB","FR","LU","GB","FR","LU","IT","FR","FR","FR","Others","GB","NL","FR","LU","FR","FR","FR","LU","BE","BE","FR","LU","NL","Others","FR","GB","GB","GB","NL","FR","LU","LU","LU","IN","BE","LU","GB","FR","Others","GB","BE","FR","Others","LU","BE","FR","BR","LU","FR","Others","GB","FR","FR","Others","LU","FR","BR","FR","Others","FR","FR","FR","FR","FR","FR","Others","FR","LU","FR","Others","GB","GB","GB","FR","FR","Others","Others","Others","FR","FR","BE","Others","FR","PL","Others","Others","Others","Others","Others","FR","FR","FR","FR","Others","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","IN","IN","FR","FR","BE","IN","IT","GB","FR","IN","Others","FR","PL","IT","FR","Others","Others","Others","FR","GB","LU","IT","FR","LU","Others","GB","GB","IN"],"Country":["SK","FR","FR","NL","FR","FR","FR","FR","IT","CH","DK","SE","AT","BE","NL","BR","CN","DE","FR","GR","IN","LU","MA","HU","CL","FR","PT","FR","FR","NL","CN","FR","FR","IT","BR","FR","BF","SN","ML","GN","GA","BE","BE","LU","PL","FR","CI","IT","IT","AU","FR","FR","MQ","HK","NL","AR","BE","FR","FR","JP","NL","NL","NL","KY","HK","NL","NL","KR","GB","SE","PE","CL","CZ","PE","IT","CN","GB","CN","GB","FR","DZ","PT","DK","NL","NL","HK","BE","LU","BE","BE","BE","BE","IE","AU","ES","ES","PL","FR","IN","IN","AU","BE","FR","GB","LU","GB","PL","PL","LU","GB","NL","MA","GB","MX","LU","IT","GB","SG","TW","IN","KR","FR","FR","HK","GB","SG","GB","MC","RU","GB","PL","CH","SE","CZ","NL","CO","DE","ES","FR","HK","DE","BE","CA","IE","FR","MY","FR","FR","NL","BR","FR","DE","FR","JP","IE","BE","NL","SG","IT","PT","FR","FR","FR","RO","FR","BR","FR","BR","BR","DZ","FR","BR","GB","GB","GB","FR","AR","FR","PL","AR","RO","FR","FR","BR","FR","MX","BR","FR","FR","FR","FR","FR","FR","FR","FR","GB","FR","GB","NL","FR","LU","GB","FR","CL","GB","LU","FR","GB","BE","BE","BE","FR","JP","JP","FR","FR","FR","DE","FR","FR","BE","NL","FR","IE","GB","GB","GB","GB","FR","LU","GB","FR","LU","IT","FR","FR","FR","DK","GB","NL","FR","LU","FR","FR","FR","LU","BE","BE","FR","LU","NL","SE","FR","GB","GB","GB","NL","FR","LU","LU","LU","IN","BE","LU","GB","FR","NO","GB","BE","FR","RU","LU","BE","FR","BR","LU","FR","HK","GB","FR","FR","HU","LU","FR","BR","FR","CI","FR","FR","FR","FR","FR","FR","DE","FR","LU","FR","TW","GB","GB","GB","FR","FR","ID","ID","UA","FR","FR","BE","SK","FR","PL","ZA","ZA","RO","PE","CL","FR","FR","FR","FR","JE","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","FR","IN","IN","FR","FR","BE","IN","IT","GB","FR","IN","TR","FR","PL","IT","FR","HU","IE","IE","FR","GB","LU","IT","FR","LU","DE","GB","GB","IN"],"LEI":["21380038PLFARSFOBD11","969500UXKW83DIADHZ45","969500L62K212ENQTT26","529900RG83X52AVNT524","969500ZZJHUU1V8VYF24","96950086A58BPMJM7H80","969500RLYVWEFJRC4Z07","9695007C2PSW4FRMIJ18","8156008AC7041FA5C394","21380069IBK9AAW6TH14","213800792FMQIZPC4Y65","213800NAOW8VACIWCU68","2138002OFYGOWJ5R9L40","213800IKTULCYD43OC97","72450040RR2DUIEO8X27","213800YZQK7AQZ5R2E66","213800R297CKPV171K97","529900Q0430MR01AZB29","969500Q5PC7OJDSDIF11","213800DTTCU126KVME14","213800ZWFIGE3RN96S40","213800HMFPJY5SHZXV65","2138008RJ3W82D9RVU78","213800AC46Y16OHV2206","213800MXT7CAJD94OQ52","969500UCL6ROAHVXQV60","2138008B64Z8G7M5YU77","969500YX4BGTD5GEYT57","969500KATAK1INY7Q727","724500QS9SI0NU4ILF91","3003001TZC2SVSEOTJ27","969500DEM67LRGQOTV19","969500U6BIFRC0G1AV88","UI802FYJ52XDB7N4KN18","549300DFOXLW8ZHSK740","529900JJNTINV5OPR895","213800YIJVX7WSX9MI62","2138004GV27BUAY7O765","213800WCDKGGIDUWKE14","2138002U29YTPPRF1O03","2138009RSHBBFY9NQA62","529900BRYPNBI4HGY560","529900ZF4JWB2VGUIU50","UAIAINAJ28P30E5GWE37","259400GAEPXTQB5KNS42","969500U9PNA2BESM1Y72","213800L92WR3SCVMHJ53","815600426373BB988054","815600D629E515A0E730","2138008KH1JK4EGY5H03","969500EIL0ECAHEJYH83","R0MUWSFPU8MPRO8K5P83","969500PEV9ULDOND9384","21380056QHK3HEMM5Q93","7245009UXRIGIRYOBR48","213800N1FE25TQZKPV69","LIB53HNVE3JIHIGVGQ03","W51AX6427FJZJFPF8H34","6OHH7J69X0SCOB6CU893","549300KQ32SQU4AZLP35","724500SBI8H8TN1J5Y28","BUUNKIWFG6FONGKK1092","724500LZ9MUIPNH3ZM50","213800V3EY3231JUM249","213800AZ8TGLO2BU7B95","213800K4TC9CLBA2MT95","2138006E24B8HM9WHH62","213800GLAMS28GFO6W89","213800GE3LLRZZSXFV28","21380015274GR4MKLT42","213800F6BBMXAOY55X82","213800QK584ELT735E58","31570057PU88ZC9EIH47","2138005TL7MX5OZQ2B71","2138005GZ9NIUNAYIX89","5493006KYU0VX4EBIP66","529900VJR3QFYSWUGQ82","213800P3RNEQRJ3MP112","5493008J1H7T08EQEU09","969500SPY4CMVOV1XG69","2138009IVDK5K9E6X944","529900L00M74TYGF5Y08","529900UVC9XFHGHEQQ62","529900K5NLEYM8DISF60","5299009ZVOIKBHK5T567","2138004E7NYLJJ69GM97","5299008E2XN1KGSVT313","549300J2UEC8CUFW6083","529900PZ1U51N9A22F37","529900JSP4NGN6ISTE71","529900O2WWXTVSZJHL43","529900LB7AKFMWD9HW46","2138002Y7Q2J14MAI422","529900AFBMGX2OQ93504","213800IAPHNOI5H6W263","95980020140005020994","259400NGQJTE1SNX5J40","969500O7DJZNM0F0Z036","213800ICG8VFM5V8SY42","213800O39E86NL2VCJ85","213800SWHSYQIWUAZA02","213800QDDF7M6OTZM407","969500TKFV51RUNNJK56","21380046USHIR65BKP68","5493004MWP0LJFJEPV34","213800MA5GPVC98TY284","259400RL1WKOJFOZV527","259400JSW9P934WTQN12","213800PMOOCUZYCAIA03","213800HFMWV5ZRR8IK75","724500C1GU1NS1SRYL37","213800KTEG6SZF8YWP60","213800VEJZZUBKR24O07","213800S6IIS9NYRNWM60","213800UF2ZJZTCW8PC71","815600D376EA22493654","213800AZ961NLJQA4235","213800JXZKQR28KD6872","2138003E7UBOEXP61F19","213800THY2EXG32PVK33","213800O95EHO85XS2U17","549300WCGB70D06XZS54","969500E4YN0UCWFLXN04","213800UHQLLR3F8NO843","213800KT15HFNQBALZ91","213800TEMPHBTH8XQT25","213800K9R7JLZ8V59J75","213800A8T8FF9MMM7875","25340045EEL351X3W326","2138006I5UDWHN1DBJ37","NMH2KF074RKAGTH4CM63","QHSFEYI7HUOXXZ413E03","213800HD17UKYN8WOQ74","2138002BJWNWW7MFZ169","213800D5V5J7IRIZ3A87","549300TYSBN1PJBJ5U41","549300TS3U4JKMR1B479","95980020140005022740","969500VQ4UL8QZ64XI04","529900ZB0TQTXNNKYT53","529900GC23X8JWY4B630","529900WPR59SSV2AOJ29","549300PM8TY6XRYCWW35","549300BK4M07E3BL5565","9695008XBRCWFEZ8B440","5493003EF0J4NNIPQ907","969500S8PCX9IDOPNZ79","969500VHT1ZNPVWOYF63","724500ADVM0V068LWW71","54930025ZV2QLQZFP959","969500FZIK0SBNRSC223","529900397SZWE7DR1C77","9695005XT323C6A7GN39","549300W1PKAHKJ86TC84","549300RUVJ1HYI98NN30","KGCEPHLVVKVRZYO1T647","54930004HQKU3PG2XH61","213800SPQZHSFOZDT950","81560012A6D1435EFD48","213800H2UOPJDGKRTY19","969500DWSOUOAP1OYA45","969500W57JU6DPCAW293","969500G544G7SX1R1Z44","74780040F5C0DGGVRO62","96950020FCS2UW7OXF94","213800WZTAYW6PLNH771","969500XZLBD2WVLAKR25","213800B51X3BVRRFR696","213800OE16GS2TEFPV16","213800XP5QIELFZU1B78","9695000I2418PVK8HU75","213800FTZ3LK8L3WXD05","213800R9JKU2OQND1M96","213800X9EGSRKJ3K5654","213800QN6ILIF5NM3346","969500VRSFWX7S1P2M29","213800XDQQPFPU72MM13","969500TF0H1L60IJWO67","259400H69G9EDNRFDK72","2138001O9AT62143YU79","747800C0R8CR0GQJJL94","969500HUAESL378AI627","96950006SSJ5SQVQ8Q10","213800SZCYHRAOBSA248","969500QCHYLUSOSIT439","213800UUBUZUXACZ2F82","213800KUCBKS22HRKO17","969500OQA7MQNWF7TO17","549300APCUL05INVD144","969500TYBF0U23OZEF55","969500EVREQN6OCANV64","969500NXL6SAZZPR8T33","9695001DOP94YLPEUY51","969500RHETYS1Z9GD796","969500AQOQX6YT9KHC89","21380023YXZTOTBROZ67","969500PT0O69G85W7583","213800A6V8D2XCTWN314","724500LEX1MUXUMXSB57","96950015J69CVHEL3Z57","549300FBBNBXMC1LW607","213800P9EX1UYP6PIA64","969500SRMPHFYXH0XA74","213800WPDPTLVSJ7WU67","213800PN8LJ2D347QG75","549300S2N74PIKY6DX72","969500IR43FY0SE5ZD51","529900TWF4TMWZ4JU335","52990067VGJRAUNMQ188","529900P0PPHFKY4V2S81","529900WNQ28ZNJHDEL84","969500P06NFBFI8ACF66","353800CZMMN0KZUO6U49","353800OLHAQSS5CV6B71","969500FFSA9DO4WKVZ66","9695001F23ZXAEPPGR23","9695002IU3E7CNGZMA32","529900P08XH2RAY92I74","9695009ITQ0V4Z6KEB87","969500T8QYO52ACKT375","529900EJP3ERZKU40T05","529900G7GW1AIY3QOB37","969500QG39OC6IF2IU85","549300CE590IOSTGR728","549300Z82OQY6HY1HL76","549300EM6UY4NQV6SQ59","213800A63G3MCY16SF87","213800D2W2YHOK4MMF95","9695004ZZY812AHURX46","549300DS0R4Q6JD50W67","213800HDSLP5B1A2LV49","969500PSOWV2US4S6V37","5493005V7SZNIYQZHH41","8156001CB574B6939179","969500Y0DVEBMJ54ZH92","969500SCX5Z97020W513","96950087LI4WHHX6M393","213800EWK3MZ8ZP6E244","2138008MESN43Z65ZN38","7245003CGYZW5GQCI892","969500NQ6OKHXKQNT714","549300BYHHAY6U3U7X81","969500INFCYYUH6CCJ57","969500AJCBTD2C024I81","9695004AHFK84DP62U40","549300VWT25UPOVS1K17","529900M8WUTIPFW68U79","549300QM6V6MTI1RS734","969500FBZHJAMPYPYW35","549300WHNT1TE4ZWSS53","724500BPEU3T7K9SVR41","529900C5PQGD9V3OBA43","969500EZ0CK1CM9NOO20","213800PJLTLCT24YAQ62","21380087VGWFWAL4FJ75","213800QT8ZZPZCCA4136","724500022WH2RXKFOH60","969500QEAKJO3V2JP567","549300B3TBG5OMAK6P48","549300CLWTSWVT7LHD73","549300KP4D0FMZM2FE14","335800GGQH2HEKBB3N82","529900TJ221L64THSF34","549300B1ZIH9S32RFL62","213800F8ES51H1DBBA23","96950046C6898GAG8P66","5967007LIEEXZX6LGW98","2138006RS8HBLWXTCE76","529900MFMZ8T2YUSIB72","969500JB0G9CN6E50A57","253400EB0TABTQ6M1U75","549300JB3NPCMBKZ7E13","213800VBJGB9U3S5BK46","969500C0LIJFVESV7Z69","213800SDRN26RE36W538","5493007O03S0YK3IPU74","969500H71WJIAE4HUA55","213800L3OPJMC9P81P53","213800JSRNB1I8T9A861","969500M22JF85TPA6F83","969500RWP163ILODG088","213800A58YTPJWO3JX39","549300EVAPUZ2HD6UJ68","969500ZJYXKVEZ4SGQ41","213800N59S56SVBWZQ72","969500CD6Y58C1AZ8718","213800AN74H6CW4MAP75","969500X5SDIOTP2B2892","969500G0F6571RKIRJ92","969500ADMZW70INMD287","96950063NPDUUF86YR20","969500UB9FGX21996738","969500EY4406TLO7PS96","549300WKRSQZ50LYFN91","969500UHFOZ7CU50KG49","5493008ZXDS65VROKA50","9695004CJDOZ8W5IUH57","213800U1M6F4SETXEU72","213800EJ677W8HTX3X38","213800Z7NWUJVWQXVK44","213800EM5B8IG8GNSV55","969500JP91RKQ1E2ZD73","969500LIL7AYCL5GS171","213800EM4GB3UD5XEE29","5493005YXREMPPQK3G72","2138007RMZJ9ZLEO9N66","9695001UN53Z4S7LAY22","9695005TXH99QDA0IL96","549300FEL83F8BOY2N67","213800NPP9YG46DUL465","969500FJ952X1Z2SYL06","259400UOAILPTKOICH71","213800DZQZAWUM3DK362","213800Z5MFEBP2RX8L32","213800CINXISXDLGRU84","213800WCQ9OV2O7RQI27","2138004X384LVEE5PO09","96950041TGL16PN4B495","969500NY06D5P0114120","969500C8UOO9IJNQKP63","9695001QI3W78VQPRS42","549300953UCBP6MRZX32","969500KV3LDX3EKF3J89","969500FON47C0GVLZ465","969500ZM1C4SMWGH3C32","96950041TP8LZCKQQM50","969500CEFFQCCGGUJH41","969500QJY3CCZIUDO457","9695003HEW4EJ61CZP67","96950081J7NSDKPJ9E56","969500VVWQ5APZPIH033","9695005979PSIRXHHJ33","969500AMOCYW9U22O881","969500OA329Q67XHCX33","969500FRSF8VOIK2YG21","969500BYK1UBDKDFGI27","969500UBCGZU6HVBAA75","9695009AT9D8KJ5PN573","969500XWTQV35QM2SJ58","969500B5LCYLVYT83G45","969500GQ1OKY002WJX24","969500T04FWDTHGUBA22","9695005QW5Z3HOOXAY51","3358002OJRGX59X63I17","335800UK479PR4ENV168","969500XWFLDUC4LE4M30","96950049RB3RE9B18Q25","52990073XKFEC6AR0509","529900B5RLPE0A9T2D86","815600ACC704A3B3AC61","213800TWLYSCA7RUKX96","969500D1YUUYJYGKK259","335800YIE6ZAC5F6VU41","7890002IBLU4LR4IXO55","969500CHTEPZVQX30A79","259400FBVIALPICV3467","815600F7E2571DC1DC59","969500DJMHCNT9HKR433","2138005LP2PVOB96PF08","549300P9PTTMOC214844","549300KVBIYTB0H1EP66","969500UOXSF93ZVAGX63","549300XP89UQ17JRXP57","549300EU740QD4C8N264","815600957115B9CCE404","969500MKG4O3HR0SJR45","549300I5OEOMNSIE8G67","529900K52EZCP16WMK26","549300JJFNS6US0W6A95","213800QEHMQFMVRNIU12","3358006I9LI53YTDO333"],"index":{"__ndarray__":"AAAAAAEAAAACAAAAAwAAAAQAAAAFAAAABgAAAAcAAAAIAAAACQAAAAoAAAALAAAADAAAAA0AAAAOAAAADwAAABAAAAARAAAAEgAAABMAAAAUAAAAFQAAABYAAAAXAAAAGAAAABkAAAAaAAAAGwAAABwAAAAdAAAAHgAAAB8AAAAgAAAAIQAAACIAAAAjAAAAJAAAACUAAAAmAAAAJwAAACgAAAApAAAAKgAAACsAAAAsAAAALQAAAC4AAAAvAAAAMAAAADEAAAAyAAAAMwAAADQAAAA1AAAANgAAADcAAAA4AAAAOQAAADoAAAA7AAAAPAAAAD0AAAA+AAAAPwAAAEAAAABBAAAAQgAAAEMAAABEAAAARQAAAEYAAABHAAAASAAAAEkAAABKAAAASwAAAEwAAABNAAAATgAAAE8AAABQAAAAUQAAAFIAAABTAAAAVAAAAFUAAABWAAAAVwAAAFgAAABZAAAAWgAAAFsAAABcAAAAXQAAAF4AAABfAAAAYAAAAGEAAABiAAAAYwAAAGQAAABlAAAAZgAAAGcAAABoAAAAaQAAAGoAAABrAAAAbAAAAG0AAABuAAAAbwAAAHAAAABxAAAAcgAAAHMAAAB0AAAAdQAAAHYAAAB3AAAAeAAAAHkAAAB6AAAAewAAAHwAAAB9AAAAfgAAAH8AAACAAAAAgQAAAIIAAACDAAAAhAAAAIUAAACGAAAAhwAAAIgAAACJAAAAigAAAIsAAACMAAAAjQAAAI4AAACPAAAAkAAAAJEAAACSAAAAkwAAAJQAAACVAAAAlgAAAJcAAACYAAAAmQAAAJoAAACbAAAAnAAAAJ0AAACeAAAAnwAAAKAAAAChAAAAogAAAKMAAACkAAAApQAAAKYAAACnAAAAqAAAAKkAAACqAAAAqwAAAKwAAACtAAAArgAAAK8AAACwAAAAsQAAALIAAACzAAAAtAAAALUAAAC2AAAAtwAAALgAAAC5AAAAugAAALsAAAC8AAAAvQAAAL4AAAC/AAAAwAAAAMEAAADCAAAAwwAAAMQAAADFAAAAxgAAAMcAAADIAAAAyQAAAMoAAADLAAAAzAAAAM0AAADOAAAAzwAAANAAAADRAAAA0gAAANMAAADUAAAA1QAAANYAAADXAAAA2AAAANkAAADaAAAA2wAAANwAAADdAAAA3gAAAN8AAADgAAAA4QAAAOIAAADjAAAA5AAAAOUAAADmAAAA5wAAAOgAAADpAAAA6gAAAOsAAADsAAAA7QAAAO4AAADvAAAA8AAAAPEAAADyAAAA8wAAAPQAAAD1AAAA9gAAAPcAAAD4AAAA+QAAAPoAAAD7AAAA/AAAAP0AAAD+AAAA/wAAAAABAAABAQAAAgEAAAMBAAAEAQAABQEAAAYBAAAHAQAACAEAAAkBAAAKAQAACwEAAAwBAAANAQAADgEAAA8BAAAQAQAAEQEAABIBAAATAQAAFAEAABUBAAAWAQAAFwEAABgBAAAZAQAAGgEAABsBAAAcAQAAHQEAAB4BAAAfAQAAIAEAACEBAAAiAQAAIwEAACQBAAAlAQAAJgEAACcBAAAoAQAAKQEAACoBAAArAQAALAEAAC0BAAAuAQAALwEAADABAAAxAQAAMgEAADMBAAA0AQAANQEAADYBAAA3AQAAOAEAADkBAAA6AQAAOwEAADwBAAA9AQAAPgEAAD8BAABAAQAAQQEAAEIBAABDAQAARAEAAEUBAABGAQAARwEAAEgBAABJAQAASgEAAEsBAABMAQAATQEAAE4BAABPAQAAUAEAAFEBAABSAQAAUwEAAFQBAABVAQAAVgEAAFcBAABYAQAAWQEAAFoBAABbAQAAXAEAAF0BAABeAQAAXwEAAGABAABhAQAAYgEAAGMBAABkAQAAZQEAAGYBAABnAQAAaAEAAGkBAABqAQAAawEAAGwBAABtAQAAbgEAAG8BAABwAQAAcQEAAHIBAAA=","dtype":"int32","shape":[371]},"index_hover":["*ARVAL SLOVAKIA, S.R.O.","2008 MARIE FINANCE","AEW IMMOCOMMERCIAL","ALPHA (MURCIA) HOLDING B.V.","APROLIS FINANCE","ARIUS","ARTEGY","ARTEL","ARTIGIANCASSA S.P.A.","ARVAL (SCHWEIZ) AG","ARVAL A/S","ARVAL AB","ARVAL AUSTRIA GMBH","ARVAL BELGIUM","ARVAL BENELUX B.V.","ARVAL BRASIL LTDA","ARVAL CHINA CO., LTD.","ARVAL Deutschland GmbH","ARVAL FLEET SERVICES","ARVAL HELLAS SA","ARVAL INDIA PRIVATE LIMITED","ARVAL LUXEMBOURG SA","ARVAL MAROC SA","ARVAL PHH SERVICE LEASE HUNGARY FLEET MANAGEMENT LIMITED LIABILITY COMPANY ARVAL PHH SERVICE LEASE H","ARVAL RELSA SPA","ARVAL SERVICE LEASE","ARVAL SERVICE LEASE - ALUGUER E GESTAO AUTOMOVEL, S.A.","ARVAL TRADING","AUTOP OCEAN INDIEN","Agrilease B.V.","Arval Jiutong Beijing Co., Ltd.","B*CAPITAL","BAII RECOUVREMENT","BANCA NAZIONALE DEL LAVORO S.P.A. O IN FORMA CONTRATTA BNL S.P.A.","BANCO BNP PARIBAS BRASIL SA","BANQUE DE WALLIS ET FUTUNA","BANQUE INTERNATIONALE DU COMMERCE ET INDUSTRIE BURKINA FASO","BANQUE INTERNATIONALE POUR LE COMMERCE ET L' INDUSTRIE DU SENEGAL","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE AU MALI","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE DE LA GUINE. - SA","BANQUE INTERNATIONALE POUR LE COMMERCE ET L'INDUSTRIE DU GABON","BELGIAN MOBILE ID","BELGOLAISE","BGL BNP PARIBAS","BGZ BNP PARIBAS FAKTORING SP. Z O.O.","BIAO RECOUVREMENT","BICI-BOURSE","BNL FINANCE SPA","BNL POSITIVITY SRL","BNP PACIFIC (AUSTRALIA) LTD","BNP PAM PARTICIPATIONS","BNP PARIBAS","BNP PARIBAS ANTILLES GUYANE","BNP PARIBAS ARBITRAGE (HONG KONG) LIMITED","BNP PARIBAS ARBITRAGE ISSUANCE B.V","BNP PARIBAS ARGENTINA INVESTMENT PARTNERS","BNP PARIBAS ASSET MANAGEMENT BELGIUM","BNP PARIBAS ASSET MANAGEMENT FRANCE","BNP PARIBAS ASSET MANAGEMENT Holding","BNP PARIBAS ASSET MANAGEMENT Japan Limited","BNP PARIBAS ASSET MANAGEMENT NEDERLAND N.V.","BNP PARIBAS ASSET MANAGEMENT NETHERLANDS N.V.","BNP PARIBAS ASSET MANAGEMENT NL HOLDING N.V.","BNP PARIBAS BANK & TRUST CAYMAN LIMITED","BNP PARIBAS CAPITAL (ASIA PACIFIC) LIMITED","BNP PARIBAS CARDIF B.V.","BNP PARIBAS CARDIF LEVENSVERZEKERINGEN N.V.","BNP PARIBAS CARDIF LIFE INSURANCE CO., LTD.","BNP PARIBAS CARDIF LIMITED","BNP PARIBAS CARDIF NORDIC AB","BNP PARIBAS CARDIF S.A. COMPAIA DE SEGUROS Y REASEGUROS","BNP PARIBAS CARDIF SEGUROS GENERALES S.A.","BNP PARIBAS CARDIF SERVICES, S.R.O.","BNP PARIBAS CARDIF SERVICIOS S.A.C.","BNP PARIBAS CARDIF VITA COMPAGNIA DI ASSICURAZIONE E RIASSICURAZIONE S.P.A. O IN","BNP PARIBAS CHINA LTD","BNP PARIBAS COMMERCIAL FINANCE LIMITED","BNP PARIBAS COMMODITIES TRADING (SHANGHAI) CO., LTD.","BNP PARIBAS COMMODITY FUTURES LIMITED","BNP PARIBAS DEVELOPPEMENT","BNP PARIBAS EL DJAZA\u00cfR","BNP PARIBAS FACTOR - INSTITUI\u00c7\u00c3O FINANCEIRA DE CR\u00c9DITO, SA","BNP PARIBAS FACTOR A/S","BNP PARIBAS FACTOR DEUTSCHLAND B.V.","BNP PARIBAS FACTORING SUPPORT N.V.","BNP PARIBAS FINANCE (HONG KONG) LIMITED","BNP PARIBAS FORTIS FILM FINANCE","BNP PARIBAS FORTIS FUNDING","BNP PARIBAS FORTIS PRIVATE EQUITY BELGIUM","BNP PARIBAS FORTIS PRIVATE EQUITY EXPANSION","BNP PARIBAS FORTIS PRIVATE EQUITY GROWTH","BNP PARIBAS FORTIS PRIVATE EQUITY MANAGEMENT","BNP PARIBAS FUND ADMINISTRATION SERVICES (IRELAND) LIMITED","BNP PARIBAS FUND SERVICES AUSTRALASIA PTY LTD","BNP PARIBAS FUND SERVICES ESPA\u00d1A SL","BNP PARIBAS GESTION DE INVERSIONES, SGIIC, S.A.","BNP PARIBAS GROUP SERVICE CENTER S.A.","BNP PARIBAS HOME LOAN SFH","BNP PARIBAS INDIA HOLDING PRIVATE LIMITED","BNP PARIBAS INDIA SOLUTIONS PRIVATE LIMITED","BNP PARIBAS INVESTMENT PARTNERS (AUSTRALIA) HOLDINGS PTY LIMITED","BNP PARIBAS INVESTMENT PARTNERS BE HOLDING","BNP PARIBAS IRB PARTICIPATIONS","BNP PARIBAS LEASE GROUP (RENTALS) LIMITED","BNP PARIBAS LEASE GROUP LUXEMBOURG S.A.","BNP PARIBAS LEASE GROUP PLC","BNP PARIBAS LEASE GROUP SP. Z O.O.","BNP PARIBAS LEASING SERVICES SP. Z O.O.","BNP PARIBAS LEASING SOLUTIONS","BNP PARIBAS LEASING SOLUTIONS LIMITED","BNP PARIBAS LEASING SOLUTIONS N.V.","BNP PARIBAS MEDITERRANEE BUSINESS PROCESS","BNP PARIBAS NET LIMITED","BNP PARIBAS PERSONAL FINANCE SA DE CV SOFOM ENR","BNP PARIBAS REAL ESTATE ADVISORY & PROPERTY MANAGEMENT LUXEMBOURG SA","BNP PARIBAS REAL ESTATE INVESTMENT MANAGEMENT ITALY SOCIETA' DI GESTIONE DEL RISPARMIO P.A.","BNP PARIBAS RENTAL SOLUTIONS LIMITED","BNP PARIBAS SECURITIES (SINGAPORE) PTE. LTD.","BNP PARIBAS SECURITIES (TAIWAN) CO., LTD","BNP PARIBAS SECURITIES INDIA PRIVATE LIMITED","BNP PARIBAS SECURITIES KOREA CO., LIMITED","BNP PARIBAS SECURITIES SERVICES","BNP PARIBAS SERVICES MONETIQUES","BNP PARIBAS SJ LIMITED","BNP PARIBAS TRUST CORPORATION UK LIMITED","BNP PARIBAS TRUST SERVICES SINGAPORE LIMITED","BNP PARIBAS UK HOLDINGS LTD","BNP PARIBAS WEALTH MANAGEMENT MONACO","BNP PARIBAS ZAO","BNP PUK HOLDING LIMITED","BNP Paribas","BNP Paribas (Suisse) SA","BNP Paribas Cardif F\u00f6rs\u00e4kring AB","BNP Paribas Cardif Poji\u009atovna, a.s.","BNP Paribas Cardif Schadeverzekeringen N.V.","BNP Paribas Colombia Corporacion Financiera S.A.","BNP Paribas Emissions- und Handelsgesellschaft mbH","BNP Paribas Espa\u00f1a, S.A.","BNP Paribas Factor","BNP Paribas Factor Asia Limited","BNP Paribas Factor GmbH","BNP Paribas Fortis Factor","BNP Paribas IT Solutions Canada Inc.","BNP Paribas Ireland Unlimited Company","BNP Paribas Lease Group","BNP Paribas Malaysia Berhad","BNP Paribas Nouvelle-Cal\u00e9donie","BNP Paribas Personal Finance","BNP Paribas Personal Finance B.V.","BNP Paribas Proprietario Fundo de Investimento Multimercado Credito Privado - Investimento No Exterior","BNP Paribas Public Sector SCF","BNP Paribas Real Estate Investment Management Germany GmbH","BNP Paribas R\u00e9union","BNP Paribas Securities (Japan) Limited","BNP Paribas Vartry Reinsurance dac","BNPPB - Fortis","BOUG BV","BPP HOLDINGS PTE LTD","BUSINESS PARTNER ITALIA SOCIETA' CONSORTILE PER AZIONI","Banco BNP Paribas Personal Finance, SA","C MA LEASE","CAPITAL FRANCE HOTEL","CARDIF ASSURANCE VIE","CARDIF ASSURANCE VIE SA PARIS SUCURSALA BUCURESTI","CARDIF ASSURANCES RISQUES DIVERS","CARDIF CAPITALIZACAO S/A","CARDIF COURTAGE","CARDIF DO BRASIL SEGUROS E GARANTIAS S/A","CARDIF DO BRASIL VIDA E PREVIDENCIA S/A","CARDIF EL DJAZAIR","CARDIF IARD","CARDIF LTDA","CARDIF PINNACLE INSURANCE HOLDINGS PLC","CARDIF PINNACLE INSURANCE MANAGEMENT SERVICES PLC","CARDIF PINNACLE LIMITED","CARDIF SA","CARDIF SEGUROS S.A.","CARDIF SERVICES SAS","CARDIF SERVICES SP. Z O.O.","CARDIF SERVICIOS S.A.","CARDIF-ASSURANCES RISQUES DIVERS SA PARIS SUCURSALA BUCURESTI","CARDIMMO","CARMA GRAND HORIZON SARL","CETELEM AMERICA LTDA","CETELEM RENTING","CETELEM SERVICIOS SA DE CV","CETELEM SERVIOS LTDA.","CFH BERCY","CFH BERCY HOTEL","CFH BERCY INTERMEDIAIRE","CFH BOULOGNE","CFH CAP D'AIL","CFH MONTMARTRE","CFH MONTPARNASSE","CHINA MARIE FINANCE 1","CLAAS FINANCIAL SERVICES LIMITED","CMV MEDIFORCE","CNH INDUSTRIAL CAPITAL EUROPE LIMITED","CNH INDUSTRIAL N.V.","CNH Industrial Capital Europe","COFHYLUX SA","COFINOGA FUNDING TWO L.P.","COFIPARC","COMERCIALIZADORA DE VEHCULOS S.A.","COMMERCIAL VEHICLE FINANCE LIMITED","COMPAGNIE FINANCIERE OTTO- MANE SA","COROSA","CREATION FINANCIAL SERVICES LIMITED","CREDISSIMO","CREDISSIMO HAINAUT","CREDIT POUR HABITATIONS SOCIALES - KREDIET VOOR SOCIALE WONINGEN","Cafineo","Cardif Assurance Vie Japan","Cardif Assurances Risques Divers Japan","Claas financial services","Cofica bail","Cofiplan S.A.","Commerz Finanz GmbH","Cr\u00e9dit moderne Antilles Guyane","Cr\u00e9dit moderne Oc\u00e9an Indien","DEMETRIS","DIKODI B.V.","DOMOFINANCE","Darnell Designated Activity Company","E-CARAT 4 PLC","E-CARAT 5 PLC","E-CARAT 7 PLC","E-CARAT 8 PLC","ESOMET","EUROPAY LUXEMBOURG SC","EVERYPAW LIMITED","FINANCIERE DES PAIEMENTS ELECTRONIQUES","FINANCIERE HIME SA","FINDOMESTIC BANCA SPA","FIRE ROOSTER AIRCRAFT LEASING 1","FIRE ROOSTER AIRCRAFT LEASING 4","FIRE ROOSTER AIRCRAFT LEASING 6","FORTIS LEASE DANMARK A/S","FORTIS LEASE UK LTD","FORTIS VASTGOED LEASE B.V.","FRANCE TITRISATION","FS-B SARL","FUNDQUEST ADVISOR","Financiere du Marche Saint-Honore","Fortis lease","GA BNPP","GENFINANCE INTERNATIONAL","GESTION INVESTISSEMENT ET DE PARTICIPATIONS SA","GIE BNP PARIBAS CARDIF","GREENSTARS BNP PARIBAS S.A.","GROEIVERMOGEN N.V.","Gerling NCM Factoring AB","HANOVRE BAIL","HAREWOOD HELENA 1 LIMITED","HAREWOOD HELENA 2 LIMITED","HAREWOOD HOLDINGS LIMITED","HEFFIQ HEFTRUCK VERHUUR B.V.","HIBERNIA (FRANCE)","HIME HOLDING 1 SA","HIME HOLDING 2 SA","HIME HOLDING 3 SA","HUMAN VALUE DEVELOPERS PRIVATE LIMITED","IMMOBILIERE SAUVENIERE","IMMOPARIBAS ROYAL-NEUVE SA","JCB FINANCE HOLDINGS LIMITED","JCB Finance","LANDKREDITT FINANS AS","LANDSPIRE LIMITED","LET'S DIDID","LEVAL 20","LIMITED LIABILITY COMPANY ARVAL","LION INTERNATIONAL INVESTMENTS S.A.","LOCADIF","LOUVEO","LUIZASEG SEGUROS S.A.","Le Sphinx Assurances Luxembourg S.A.","Loisirs finance","MACSON INTERNATIONAL LIMITED","MANITOU FINANCE LIMITED","MFF","MYFUNDMATCH","Magyar Cetelem Bank Z\u00e1rtk\u00f6r\u00fben M\u00fbk\u00f6d\u00f5 Rt.","Marie Lease Sarl","NATIO ENERGIE 2","NCVP PARTICIPACOES SOCIETARIAS S/A","NEUILLY CONTENTIEUX","NSIA BANQUE COTE D'IVOIRE (EX BI","Natiocredimurs, soci\u00e9t\u00e9 en nom collectif","Natiocr\u00e9dibail","Norrsken finance","OFFICE FRANCAIS DE PREVOYANCE FUNERAIRE","OFPF FORMATION","OPERA TRADING CAPITAL","Opel Finance Germany Holdings GmbH","PANTIN LES MOULINS","PARIBAS TRUST LUXEMBOURG SA","PARIS COURS DE VINCENNES","PARIS MANAGEMENT CONSULTANT CO., LTD.","PINNACLE INSURANCE PLC","PINNACLE PARTNERSHIPS LIMITED","PINNACLE PET HEALTHCARE LIMITED","PROJEO","PROTECTION 24","PT BNP PARIBAS SECURITIES INDONESIA","PT Bank BNP Paribas Indonesia","PUBLIC JOINT STOCK COMPANY \"\"UKRSIBBANK\"\"","PUBLIC LOCATION LONGUE DUREE","Parilease","Penne International NV","Poistovna Cardif Slovakia, a.s.","QUOCUMQUE","RAIFFEISEN TOWARZYSTWO FUNDUSZY INWESTYCYJNYCH S.A.","RCS CARDS (PROPRIETARY) LIMITED","RCS INVESTMENT HOLDINGS","RD PORTOFOLIU SRL","RENTAEQUIPOS LEASING PERU S.A.","RENTAEQUIPOS LEASING S A","REUMAL INVESTISSEMENTS","RUEIL ARIANE","SAS CRISTOLIENNE DE PARTICIPATIONS","SAS HVP","SCALDIS CAPITAL LIMITED","SCI 68 70 RUE DE LAGNY-MONTREUIL","SCI BNP PARIBAS PIERRE I","SCI BNP PARIBAS PIERRE II","SCI BOBIGNY JEAN ROSTAND","SCI CITYLIGHT BOULOGNE","SCI DEFENSE ETOILE","SCI DEFENSE VENDOME","SCI ETOILE DU NORD","SCI FONTENAY PLAISANCE","SCI LE MANS GARE","SCI NANTERRE GUILLERAIES","SCI NANTES CARNOT","SCI ODYSSEE","SCI PARIS BATIGNOLLES","SCI PARIS CHAMPIONNET","SCI RUE MOUSSORGSKI","SCI SAINT DENIS JADE","SCI SAINT DENIS LANDY","SCI SAINT DENIS MITTERRAND","SCI VILLEURBANNE STALINGRAD","SERVICES LOGICIELS D'INTEGRATION BOURSIERE - SLIB","SHAREKHAN BNP PARIBAS FINANCIAL SERVICES PRIVATE LIMITED","SHAREKHAN COMMODITIES PRIVATE LIMITED","SOCIETE CIVILE IMMOBILIERE RUEIL - CAUDRON","SOCIETE ORBAISIENNE DE PARTICIPATIONS","SOWO INVEST","SUNDARAM BNP PARIBAS HOME FINANCE LIMITED","SVILUPPO HQ TIBURTINA S.R.L.","SYGMA FUNDING TWO LIMITED","Same Deutz-Fahr finance","Sharekhan Limited","TEB ARVAL Arac Filo Kiralama Anonim Sirketi","TOMIC SARL IMPEX FRANCRO","TOWARZYSTWO FUNDUSZY INWESTYCYJNYCH BGZ BNP PARIBAS S.A.","UBI ASSICURAZIONI S.P.A.","UCB BAIL 2","UCB INGATLANHITEL ZARTKORUEN MUKODO RESZVENYTARSASAG","UTEXAM LOGISTICS LIMITED","UTEXAM SOLUTIONS LIMITED","VALEUR PIERRE EPARGNE","VAULT FUNDING LIMITED","VCG JL SARL","VELA OBG S.R.L.","VENDOME RECOUVREMENT","VISALUX SC","VON ESSEN Bank GmbH","WARF 2012 LIMITED","WARRANTY DIRECT LIMITED","WEALTHTIGER INVESTMENT ADVISORS PRIVATE LIMITED"]},"selected":{"id":"1363","type":"Selection"},"selection_policy":{"id":"1364","type":"UnionRenderers"}},"id":"1318","type":"ColumnDataSource"},{"attributes":{"callback":null,"end":0.6606411554043228,"reset_end":0.6606411554043228,"reset_start":-0.5682508795619038,"start":-0.5682508795619038,"tags":[[["y","y",null]]]},"id":"1277","type":"Range1d"},{"attributes":{},"id":"1299","type":"SaveTool"},{"attributes":{"line_alpha":{"value":0.6},"line_width":{"value":0.5}},"id":"1326","type":"MultiLine"},{"attributes":{},"id":"1290","type":"BasicTicker"},{"attributes":{"fill_color":{"field":"color","transform":{"id":"1346","type":"CategoricalColorMapper"}},"line_color":{"value":"red"},"size":{"units":"screen","value":8},"x":{"field":"x"},"y":{"field":"y"}},"id":"1352","type":"Scatter"},{"attributes":{"line_color":{"value":"limegreen"},"line_width":{"value":0.5}},"id":"1329","type":"MultiLine"},{"attributes":{"label":{"field":"color"},"renderers":[{"id":"1355","type":"GlyphRenderer"}]},"id":"1368","type":"LegendItem"},{"attributes":{"data_source":{"id":"1319","type":"ColumnDataSource"},"glyph":{"id":"1326","type":"MultiLine"},"hover_glyph":{"id":"1329","type":"MultiLine"},"muted_glyph":null,"nonselection_glyph":{"id":"1327","type":"MultiLine"},"selection_glyph":{"id":"1328","type":"MultiLine"},"view":{"id":"1331","type":"CDSView"}},"id":"1330","type":"GlyphRenderer"},{"attributes":{"callback":null,"renderers":[{"id":"1332","type":"GraphRenderer"}],"tags":["hv_created"],"tooltips":[["index","@{index_hover}"],["CTY","@{CTY}"],["Country","@{Country}"],["LEI","@{LEI}"]]},"id":"1278","type":"HoverTool"},{"attributes":{"fill_color":{"value":"limegreen"},"size":{"units":"screen","value":8}},"id":"1323","type":"Circle"},{"attributes":{},"id":"1366","type":"UnionRenderers"},{"attributes":{"data_source":{"id":"1318","type":"ColumnDataSource"},"glyph":{"id":"1321","type":"Circle"},"hover_glyph":{"id":"1323","type":"Circle"},"muted_glyph":null,"nonselection_glyph":{"id":"1322","type":"Circle"},"selection_glyph":null,"view":{"id":"1325","type":"CDSView"}},"id":"1324","type":"GlyphRenderer"},{"attributes":{"fill_color":{"field":"color","transform":{"id":"1346","type":"CategoricalColorMapper"}},"size":{"units":"screen","value":8},"x":{"field":"x"},"y":{"field":"y"}},"id":"1350","type":"Scatter"},{"attributes":{},"id":"1300","type":"PanTool"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1362","type":"BoxAnnotation"},{"attributes":{"text":"BPCE","text_color":{"value":"black"},"text_font_size":{"value":"12pt"}},"id":"1281","type":"Title"},{"attributes":{"fill_alpha":{"value":0},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0},"size":{"units":"screen","value":8}},"id":"1321","type":"Circle"},{"attributes":{"graph_layout":{"0":[0.4895548624292016,0.028213578693276613],"1":[0.014879383200746134,-0.0006876341716466449],"10":[0.4498282870725696,-0.012785839728253546],"100":[-0.2536343724051332,0.06769699836387559],"101":[-0.24604632662799455,0.09607597018568788],"102":[-0.03697638119834737,-0.13133955355218238],"103":[0.8046214796249416,-0.06451581055157363],"104":[0.8330936753899634,-0.06524041400346434],"105":[0.7914746093784608,-0.09825408051656653],"106":[-0.00044026017547621184,0.052101895747536084],"107":[0.12210971500725029,-0.07542067950302438],"108":[0.8416825455482599,-0.11853443696772649],"109":[0.7894138650302216,-0.053819900682715804],"11":[0.3989015396051809,0.023292791612495863],"110":[0.019328535483298975,0.17665561516755382],"111":[-0.09617722126201682,0.030320918579187027],"112":[-0.0004432556109252531,0.11100978046211588],"113":[-0.15425791051108664,0.45443686233795877],"114":[-0.09721755894676067,0.08578892873278027],"115":[0.017078303501393277,0.05022256524459317],"116":[0.7387821305068465,-0.128476104908101],"117":[-0.112236998734851,0.04560641571544118],"118":[-0.1109460524103738,0.031483348001254005],"119":[0.09218074565748233,0.13496567425845052],"12":[0.4259238580082249,-0.04218034141727354],"120":[-0.027119529319893858,0.11920313492667572],"121":[-0.18044934553838082,0.17234649224598456],"122":[-0.08636518860330278,-0.003246616639429751],"123":[-0.0030246831102716224,0.012010822078632896],"124":[-0.24212602251959905,0.20807407811962592],"125":[-0.24365457015753547,0.19161333340310588],"126":[0.026263401220100555,-0.04332094546340381],"127":[-0.07327084332062107,0.20174304263233103],"128":[-0.10291062398168617,0.07240879705882718],"129":[-0.013414871684634837,-0.003941217445362182],"13":[0.4330379291370665,-0.058521651144104674],"130":[0.07068365848004476,-0.04036675777468335],"131":[-0.057520987388941666,0.14102835509840322],"132":[-0.6087068519816916,-0.19383493588101366],"133":[-0.471486570976132,-0.248976527116567],"134":[-0.4966718175959379,-0.20558032963958223],"135":[-0.013839161026173878,0.11596164824298077],"136":[-0.07932704067110827,0.027987612512692606],"137":[-0.12357610858492468,0.08910196797191612],"138":[-0.09102823006929273,-0.03377196964527717],"139":[0.6144396987295236,0.0533855371188429],"14":[-0.041203075078979405,0.11872611781083542],"140":[0.6264420186415736,0.015954817708622223],"141":[0.45032219567581727,-0.05747401342698859],"142":[-0.017206164609723035,-0.019550816845952293],"143":[-0.02029059290279101,-0.06208230193428283],"144":[0.8322359540286046,-0.08951417839865713],"145":[-0.02056806306949986,0.010486953978348451],"146":[-0.10209862923701385,0.11790246000208261],"147":[-0.11437007809960077,0.38652529977837796],"148":[-0.17743632533481515,0.4216727761894274],"149":[-0.16277618638369956,-0.051982109244918105],"15":[0.46633255538759044,-0.023128140985340353],"150":[-0.06971024977769215,0.08289305652384185],"151":[-0.05017810790491235,-0.012681328683579792],"152":[-0.044408824791627693,-0.024080944496757337],"153":[-0.07525138470271905,0.008254974230506886],"154":[-0.016042631799088485,-0.12450893285306947],"155":[0.4257875525898942,0.005541164020694272],"156":[0.05609276434445974,-0.10022358002788012],"157":[0.018591674022765774,0.08519798362820308],"158":[0.12060793781518536,0.20832737019664052],"159":[-0.08201966712785574,0.4557788154873783],"16":[0.5026066026329216,-0.04145269989583133],"160":[-0.011592875259307104,0.06624676923455282],"161":[-0.7939225637347458,-0.3379860656418332],"162":[-0.6351156406188629,-0.270634430437728],"163":[-0.6960525741684459,-0.2767603905706157],"164":[-0.5069642568613922,-0.26599248849946383],"165":[-0.6029025373097461,-0.2307097792954587],"166":[-0.507776245833845,-0.16408831392980022],"167":[-0.4913903206061396,-0.14259868359978786],"168":[-0.5371829766251963,-0.21630816128522193],"169":[-0.4991953488103372,-0.1898685710172171],"17":[0.5876715951293182,0.17626483465664247],"170":[-0.40082615956259976,-0.2469727792742304],"171":[-0.4771632419022312,-0.17045526880782258],"172":[-0.5471765028459648,-0.3430667754489832],"173":[-0.6026414400494267,-0.3751977682772178],"174":[-0.5903731726537924,-0.3943078967346416],"175":[-0.43810062909721564,-0.1922102600994545],"176":[-0.44590410644549233,-0.15203952133021922],"177":[-0.45435862521312625,-0.21664009523355957],"178":[-0.3947513173665727,-0.19864387096413186],"179":[-0.5125657116945949,-0.19168719104441923],"18":[0.6143851658669668,0.14115390575795841],"180":[-0.5530101290196964,-0.31152289210785106],"181":[-0.429373214547028,-0.14519537049566364],"182":[-0.4946812522171932,-0.24187215640621576],"183":[-0.09571588376276406,0.46262198709292335],"184":[0.5958349539747179,0.16287103448265497],"185":[-0.13915045516113111,0.4603827147054383],"186":[-0.11753712060711753,0.44082337735242355],"187":[-0.8823403040788389,-0.3769675390682891],"188":[-1.0,-0.4294019668342595],"189":[-0.9514593512064725,-0.40770043034896014],"19":[0.44308034243538363,-0.04581424476072292],"190":[-0.8509755657156968,-0.3337376440960632],"191":[-0.8443440375088749,-0.3730672902245213],"192":[-0.8355343115599568,-0.36226691142037587],"193":[-0.8529080715698679,-0.35576204960577723],"194":[-0.08235032072174615,0.10092584828788113],"195":[0.7535913840284014,-0.13578883494375893],"196":[0.8964405174887157,-0.09852091210031613],"197":[0.7699461221625526,-0.11838109832292555],"198":[0.049445942732857726,0.2396671824445186],"199":[0.7769365153494641,-0.043986380790984665],"2":[-0.6939096438056981,-0.29093765831787555],"20":[0.46461710285444346,-0.0004763631964077897],"200":[0.7545622677373739,-0.1203230760550276],"201":[-0.1664464027473398,0.4457017134562699],"202":[0.6261294062554834,0.1307059189320318],"203":[0.40671774819523876,0.04582316430068601],"204":[0.8053820905568089,-0.077729817148661],"205":[-0.04601143815496113,0.10508734558191866],"206":[-0.4239741151322983,-0.2669578757779124],"207":[-0.1341281762284603,0.43550461452487477],"208":[0.45786865517089953,0.016944376412999968],"209":[0.4637528755957256,-0.049591339776232674],"21":[0.47419082945617824,-0.03879315910068044],"210":[0.48240332626342036,-0.026291163913498564],"211":[-0.13343451165458464,0.41893777641235064],"212":[-0.5377082155986768,-0.17002375926482546],"213":[-0.6043238889797319,-0.1574213659026363],"214":[0.7573015235862367,-0.04052782941096996],"215":[-0.14332043239188028,0.4467826322337467],"216":[-0.12351809274120837,0.46344388619923443],"217":[-0.07366046761095899,0.41706680876685176],"218":[-0.17533053241714425,0.4066597560083965],"219":[-0.1245993727711684,0.4902273828694109],"22":[0.4384240626951044,-0.02823587899202192],"220":[0.4339213663202161,0.048725573251936403],"221":[0.41991286608816,0.058680689356088576],"222":[-0.15050489675412607,0.42576648294957126],"223":[-0.0009670056925887903,-0.12250144982525897],"224":[-0.12771280831941792,0.45137093748409857],"225":[-0.09281310872305015,0.4485654761909671],"226":[-0.14980069155739353,0.406767258302865],"227":[-0.09122172435968316,0.4193501379845012],"228":[0.02320250857783281,0.010047405848608528],"229":[0.7687794118663932,-0.028490534956306424],"23":[0.4932460096705121,0.014947308362932482],"230":[-0.5751988392912311,-0.39073583743741863],"231":[-0.09751591455600586,0.005614348424971876],"232":[-0.11017455591286018,0.18983548532241956],"233":[-0.1083344173085931,0.4522007783015686],"234":[-0.021003034515457517,0.2666645953054845],"235":[-0.009559496820851261,0.2580417760864904],"236":[-0.028613514852395217,0.2549588100153574],"237":[0.9040121356369392,-0.13524931524682907],"238":[0.8051557018465096,-0.0921483354439398],"239":[0.05776930482457793,0.22588718574696767],"24":[0.49277735203841205,0.0008764309985969026],"240":[-0.23116143272869638,0.19615362526574776],"241":[0.7743892237124901,-0.09738302171341881],"242":[-0.058209741668988686,0.012820506616423349],"243":[-0.03209689671287366,0.19944538184628832],"244":[0.7567088244957207,-0.10162836881094173],"245":[-0.06670416502334901,-0.04484839669975297],"246":[0.4168392868580204,-0.024448763461318124],"247":[-0.06950304119835453,0.061194271855765585],"248":[-0.43826058176485766,-0.26937193682591914],"249":[-0.08666689947951346,-0.10607015627210603],"25":[0.5680622221672267,0.12163261402191049],"250":[-0.31506194392420306,0.15517888637520694],"251":[0.6310604040263422,0.03085922831552981],"252":[-0.03860612103803113,0.26511812477563734],"253":[0.011013386036788905,0.01738886256035697],"254":[-0.6868220315727672,-0.30337437544653634],"255":[-0.030904588453464745,-0.022433592816577096],"256":[0.04125212397904679,0.22947066985838607],"257":[-0.8433000287566477,-0.34535097723203095],"258":[-0.06234562676181476,0.03299948671570327],"259":[-0.09813931848324642,0.04497837034937354],"26":[0.445229564803244,0.031766994110633995],"260":[-0.08144357197533217,0.13315735708922408],"261":[-0.015374722525817038,0.031216730671139236],"262":[0.4738460188374559,0.026150307842337156],"263":[0.7845809275932233,-0.030353081507592763],"264":[0.7902006507626733,-0.08329009875249224],"265":[0.7959270658396763,-0.039067675198253465],"266":[0.7877891686678324,-0.06851825433057901],"267":[0.06784807487375513,-0.0908906547822165],"268":[0.39754194053577807,-0.022695452652178955],"269":[-0.10976045735629829,0.46496499316801926],"27":[0.4643684609877748,0.059708691563945704],"270":[0.6301762369255077,0.14541356656220256],"271":[0.002952299886986131,-0.0030209738139297263],"272":[0.41644977189468224,-0.05318867798801328],"273":[0.6034639249884084,0.17703205548379472],"274":[-0.584672768502406,-0.274296929303345],"275":[-0.0849601215936697,0.07214325809148125],"276":[-0.08291526744190471,0.4347026639024261],"277":[0.034934533768068515,-0.13269892955761547],"278":[0.7815134337642206,-0.12976576243276824],"279":[0.7706910101824668,-0.07923039440025503],"28":[-0.13254191474222277,0.5582334858238039],"280":[-0.2211454795657848,0.22943599687504676],"281":[-0.17134824358032175,0.4333016219353773],"282":[0.8977161593602249,-0.06092522685516532],"283":[-0.06256197087999474,-0.019118010857676008],"284":[-0.5263811392576554,-0.24244167912839967],"285":[-0.06743724461681173,0.4308483104961956],"286":[-0.02812794369313645,-0.22423083485846743],"287":[0.027955002645335774,0.022783705714937624],"288":[0.01406006103381117,0.06535508105106182],"289":[-0.15586788639801016,0.4382617278964181],"29":[0.031634439458754535,0.2402840551848973],"290":[-0.4113240995946127,-0.16463319344678523],"291":[-0.44716392096555124,-0.23500159426533937],"292":[0.005492533251901546,0.07779455502818174],"293":[0.03098419688807122,0.06282708544318999],"294":[-0.48420409570688244,-0.18736089791050473],"295":[0.8041508690404607,-0.05085200489625178],"296":[-0.40461539370217126,-0.182911675551576],"297":[-0.45580988845022735,-0.25118689551288476],"298":[-0.5595134760497562,-0.40306499974526083],"299":[-0.5911064879606848,-0.3810791634778952],"3":[0.43539373800289266,0.06517195343280431],"30":[0.5525804909447636,-0.07357572276815962],"300":[-0.5740790225704039,-0.4043158143767542],"301":[-0.07281130893865816,0.44503616996901163],"302":[-0.08897807744977929,0.015747986964889982],"303":[-0.015302415223631662,0.1009031943260679],"304":[-0.04078839378854406,0.08999481584784133],"305":[-0.0030300339226470856,-0.014858941013292059],"306":[0.6095123826602918,0.15572696925980814],"307":[-0.08095129507652443,0.04654556455620686],"308":[0.5224892764074636,-0.13027613765086915],"309":[-0.502150719224726,-0.15156771494792673],"31":[-0.057203613070808006,0.11424095766531799],"310":[-0.050677354578942686,0.25709078823577375],"311":[0.10660764212839668,-0.09335217731613706],"312":[-0.17451701767735142,0.5484228714351599],"313":[-0.15128642973861886,0.48397825405185335],"314":[0.8972466123488229,-0.14971375565679193],"315":[0.4833634874497086,0.04049002473181583],"316":[0.4777937652146097,-0.009599442576700564],"317":[-0.41160803969511495,-0.20737481904378652],"318":[-0.47503776243898216,-0.26226820199043643],"319":[-0.1093592357707211,0.05950094569747673],"32":[-0.06358608725243184,-0.0031325439389598302],"320":[-0.8294311598602653,-0.3802278591347159],"321":[0.41996801081299967,0.034402135992951034],"322":[-0.46429621297459794,-0.2361809456608023],"323":[-0.4956967991600194,-0.173980201500642],"324":[-0.4910021703025688,-0.22132760186737288],"325":[-0.462836623135103,-0.2646700120120407],"326":[-0.4788113151031515,-0.13631630396281674],"327":[-0.4642616452976192,-0.13362455524431827],"328":[-0.47325639387170304,-0.22162136478127917],"329":[-0.4269047391914528,-0.2547738617970415],"33":[0.0771975685345541,0.170669894139846],"330":[-0.4808579895061425,-0.20648083655967847],"331":[-0.43270124374903984,-0.2414474036839946],"332":[-0.5018432537236981,-0.230841104834654],"333":[-0.3926710656798679,-0.21648336656868325],"334":[-0.5107208815010456,-0.1774878323607635],"335":[-0.4277575541582218,-0.22335994616274887],"336":[-0.40847434349532596,-0.22728911231293294],"337":[-0.44287061100355457,-0.25623916444877143],"338":[-0.48530683728448704,-0.2519328049181679],"339":[-0.4781214309316773,-0.15213478731684962],"34":[-0.11457735289688464,-0.011791048713571763],"340":[-0.44797064971753825,-0.135965883062225],"341":[-0.4633271770609285,-0.14887206876998818],"342":[-0.008111877811584314,0.0859192313716766],"343":[0.13614092051496032,0.10922586765231941],"344":[0.14236512109804889,0.08129925477686949],"345":[-0.5071805718277894,-0.21860029666058914],"346":[-0.1058601222761318,0.018142859437021347],"347":[0.47520340761463414,0.05125348486123748],"348":[-0.23381709622818547,0.22105949079969606],"349":[0.10553376311125794,0.2327580962783291],"35":[-0.1426308501316483,0.16509010657773018],"350":[-0.10008824570392336,0.4358771543875986],"351":[0.7367013903469031,-0.1118676415394037],"352":[0.08167772276307868,0.07980853801911711],"353":[0.6161766845166708,0.17006195275372188],"354":[-0.038191313988072385,0.016911684216870594],"355":[0.11775553385301579,-0.08685178850049734],"356":[-0.42930776845728646,-0.16394881805734823],"357":[-0.0254786076471229,0.08155922224384846],"358":[-0.1636129859039519,0.4177623215404094],"359":[-0.06042764376381478,0.09594444338947791],"36":[-0.04258647116304702,-0.19985397858995244],"360":[0.03136647895461705,0.0369956981591361],"361":[-0.5109342761261637,-0.20557711998609637],"362":[-0.11336924720321405,0.42400385210816854],"363":[0.7931401964955075,-0.12096907119425926],"364":[0.13267699094874494,0.2137194974005421],"365":[-0.0294798163920017,0.10424031048572359],"366":[0.768221982387443,-0.13471036425904828],"367":[0.4567052456602863,-0.036146192527542684],"368":[-0.16388373155473696,0.39696842119316395],"369":[-0.6389416189738366,-0.4658432099813849],"37":[-0.02756474918812898,-0.19473013768533098],"370":[0.14169610905743016,0.09596546373618467],"38":[-0.014816034479468389,-0.19149749136098534],"39":[-0.042897834519152425,-0.18742880331890632],"4":[0.7682595619837552,-0.059315179020609884],"40":[-0.058548055288854164,-0.19121130609191841],"41":[0.45155465586338484,0.04982130985156897],"42":[0.4787983128153142,0.010069816789270495],"43":[0.736543463199224,-0.07424589752736913],"44":[-0.09357071727600544,0.05961642631750247],"45":[-0.029118770868603913,-0.007797209762076639],"46":[-0.021487600808144765,-0.2872372243673789],"47":[0.10929018325209897,0.22012431346480554],"48":[0.12202748632653342,0.2262511287279952],"49":[0.032785935577151856,0.0502644018865756],"5":[0.8012161406237952,-0.10810309608941766],"50":[-0.2437291696953797,0.07828453579429191],"51":[-0.03864960189685623,0.048157435268780455],"52":[0.002095619405806676,0.03282214050444733],"53":[0.0451807178423398,-0.15888464498384441],"54":[0.0011153092853767753,0.09790351090526873],"55":[0.11624760445319603,0.015039406899508332],"56":[-0.24330792349858738,0.059597390043860145],"57":[0.05506636089399161,0.02819348585484351],"58":[-0.18720637017332734,0.06314019587661289],"59":[-0.24539975724579016,0.04595509740283231],"6":[0.7831281073254541,-0.11173212992029835],"60":[-0.15742535484184805,0.08820351020861372],"61":[-0.3199136910993002,0.14092376133465048],"62":[-0.258656241066452,0.12370173644696278],"63":[-0.2253499011468177,0.20984448718121457],"64":[0.01728181974702829,0.03404085752952894],"65":[-0.4822354283468324,-0.23549447401478735],"66":[-0.415362550762166,-0.24232146756318618],"67":[-0.45178872126192643,-0.2695553753284454],"68":[-0.6021120242364675,-0.41647226674812415],"69":[-0.5405662067777341,-0.19318898177341687],"7":[0.6252941304663141,0.1587676088671122],"70":[-0.4110932347151254,-0.2579594808149415],"71":[-0.3939684537862595,-0.23310896944182824],"72":[-0.49090863430277104,-0.15984969458489867],"73":[-0.4588019354042315,-0.16804026470621797],"74":[-0.4665995294547983,-0.192869582627325],"75":[-0.0700756399457198,0.1073231752298923],"76":[0.6184615341203538,0.003968309533057347],"77":[0.06865854898851516,-0.21883084182225448],"78":[-0.0758545079400585,-0.011670962560114281],"79":[-0.04269170279479524,-0.0004972150659553459],"8":[0.13379480502483979,0.19791089892811473],"80":[0.02720662191175307,0.07520987098576142],"81":[-0.1246879093069823,-0.08840007236395792],"82":[0.6262535644792041,0.04579709927408334],"83":[0.6161428941688265,0.030837549738890017],"84":[0.569253239376101,0.0235311780832971],"85":[0.01026662633704401,-0.07305405456214081],"86":[0.4050338868722181,-0.04018615765946232],"87":[0.39655021551957814,-0.0015800197727727887],"88":[0.49182871457775895,-0.07825166251032722],"89":[0.4913451776950388,-0.013404312160963466],"9":[0.4644140541727554,0.039270606316663716],"90":[0.45043451943438656,0.06531680622710608],"91":[0.5351684329124121,-0.12020173314742674],"92":[-0.2125123673567744,0.2176506212242839],"93":[-0.20480285995609937,0.23034555000715823],"94":[-0.05202624702638946,0.07493942256344346],"95":[-0.17949372604525052,0.11739771057477043],"96":[0.12750814610368497,-0.06344173099772153],"97":[0.013642591931252035,0.09791050885292857],"98":[0.04014476624432387,0.10106210113326765],"99":[-0.08429785629754764,0.088383115708991]}},"id":"1320","type":"StaticLayoutProvider"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"field":"color","transform":{"id":"1346","type":"CategoricalColorMapper"}},"line_alpha":{"value":0.1},"line_color":{"value":"black"},"size":{"units":"screen","value":8},"x":{"field":"x"},"y":{"field":"y"}},"id":"1351","type":"Scatter"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","logo":null,"tools":[{"id":"1278","type":"HoverTool"},{"id":"1279","type":"HoverTool"},{"id":"1299","type":"SaveTool"},{"id":"1300","type":"PanTool"},{"id":"1301","type":"WheelZoomTool"},{"id":"1302","type":"BoxZoomTool"},{"id":"1303","type":"ResetTool"},{"id":"1304","type":"TapTool"}]},"id":"1305","type":"Toolbar"},{"attributes":{},"id":"1341","type":"NodesAndLinkedEdges"},{"attributes":{},"id":"1303","type":"ResetTool"},{"attributes":{},"id":"1365","type":"Selection"},{"attributes":{"callback":null,"data":{"end":{"__ndarray__":"ewAAAG8AAAAxAQAAUAAAAH4AAABOAAAAgQAAAHAAAAD/AAAA/QAAAGMAAAAxAAAAYgAAAHUAAAB2AAAAeAAAAEAAAABVAAAAnQAAAC8BAAByAAAAgAAAACwAAABqAAAAggAAAAUBAABgAQAAlwAAAPcAAACDAAAAJQEAAG4AAAAOAAAANgAAADwAAAAhAAAAcwAAAF4AAACJAAAAOgAAAPIAAAA5AAAAYQAAAJYAAADnAAAANAAAAE8AAACSAAAAmAAAAHoAAAAuAQAA8wAAADMBAAABAAAAwgAAAJMAAACKAAAAVgEAACABAAAfAQAAHwAAABsBAABlAQAAJAEAAD8BAADkAAAAZgAAAGIBAABaAQAArwAAAG0BAAAgAAAALQAAAKAAAABLAAAABAEAAI8AAAACAQAAIgAAAGgBAABnAQAAiAAAAIcAAAATAQAAMAEAAHkAAACbAAAAzQAAAAMBAACZAAAADwEAAJEAAACOAAAA9QAAAJwAAAALAQAAdwAAABUBAAA1AAAAawAAADcBAABjAQAAYAAAAFcBAAByAQAAWAEAAH8AAAAAAQAA7wAAAMYAAAAdAAAAPgAAAGUAAAD6AAAAPQAAAJ4AAAAvAAAACAAAADAAAABdAQAAbAEAAF8AAAA4AAAAZQAAAGQAAAA7AAAAMgAAADcAAAAjAAAA6gAAAOsAAADsAAAA/AAAADYBAAC3AAAAyQAAAF4BAADPAAAA4wAAAOIAAACfAAAAuQAAAHEAAAA5AQAAugAAABkBAABmAQAA2QAAAJQAAADpAAAA0wAAANcAAADYAAAA2gAAAN4AAAANAQAAFAEAACEBAAAtAQAA2wAAAB0BAABwAQAAagEAAOAAAADhAAAAUQAAACcAAAAmAAAAJQAAACgAAAAkAAAAHgEAAKcAAAAcAQAArAAAAEUAAACzAAAAQQAAAEcAAABJAAAAQwAAAKkAAACwAAAASgAAAKgAAAA1AQAARgAAAEIAAACFAAAAhgAAAKsAAAApAQAAsgAAAEgAAADUAAAAZAEAAKIAAACkAAAAqgAAAKYAAACxAAAAtQAAALYAAADOAAAA+AAAACIBAAAjAQAAJgEAACgBAAA9AQAAPgEAAFABAABNAQAATwEAAFQBAABVAQAAQgEAAEMBAABEAQAARQEAAEYBAABHAQAASAEAAEkBAABKAQAASwEAAEwBAABOAQAAUQEAAFkBAABSAQAAUwEAAGkBAADoAAAA3wAAAJoAAACVAAAAXAAAAD8AAAB8AAAAfQAAAF0AAABcAQAAGAEAAPAAAADLAAAAGAAAADwBAAA7AQAAEAAAABQAAAAJAAAACwAAABUAAAATAAAAGgAAABYAAAAAAAAADQAAAAoAAAAMAAAAFwAAABABAAAPAAAAKgAAANIAAADRAAAAWgAAAAwBAAD2AAAA3QAAAFYAAABbAQAA0AAAAG8BAACNAAAABgEAAAMAAABYAAAAWQAAANwAAAApAAAAVAAAABkAAAAbAAAAQQEAACsAAABXAAAA+QAAAE0AAAA4AQAAHAAAAC4AAAASAQAA5gAAAEQAAACuAAAArQAAACoBAAArAQAALAEAAIQAAAClAAAA1QAAAP4AAACjAAAAAgAAAKEAAAC0AAAAHgAAAFsAAAA0AQAAiwAAAFIAAAD7AAAAUwAAAEwAAACMAAAADgEAABEAAABhAQAAEgAAAMoAAAAyAQAAEQEAAAcAAAC4AAAAbAAAAO4AAABnAAAAdAAAAGkAAABtAAAAwwAAAMwAAADFAAAACAEAABYBAADHAAAA1gAAAPQAAAAJAQAAFwEAAF8BAACQAAAABAAAAAUAAAAGAAAABwEAAAoBAAAnAQAAaAAAAPEAAADIAAAA5QAAAGsBAABuAQAAcQEAAMAAAABAAQAAvgAAAL8AAAC7AAAAAQEAAMEAAAA6AQAA7QAAAMQAAAAaAQAAvQAAALwAAAA=","dtype":"int32","shape":[371]},"start":{"__ndarray__":"MwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAADMAAAAzAAAAMwAAAH4AAAB+AAAAYgAAAFUAAABVAAAAggAAAIIAAACCAAAAggAAAGABAABgAQAAYAEAAIMAAABuAAAAbgAAAG4AAABuAAAAPAAAAD4AAAA+AAAAPgAAACEAAAAhAAAAIQAAACEAAAAhAAAAIQAAAIkAAAA6AAAAOgAAADoAAAA6AAAAOgAAADkAAACSAAAA8wAAAPMAAADzAAAA8wAAAPMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAkwAAAJMAAACTAAAAigAAAGYAAABmAAAAZgAAAGYAAABmAAAAZgAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAACvAAAArwAAAK8AAAAEAQAAjwAAAI8AAAAiAAAAeQAAAHkAAAB5AAAAeQAAAHkAAAB5AAAAeQAAAHkAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAAmwAAAJsAAACbAAAA9QAAADUAAAA5AQAA2wAAAB4BAAAcAQAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAEUAAACoAAAA1AAAAKIAAACiAAAAogAAAKIAAACkAAAAEAAAAFgAAABYAAAAVAAAAFQAAABUAAAAVAAAAFQAAABUAAAAGQAAABkAAAAZAAAAGQAAABkAAAAZAAAAGQAAABkAAAAZAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAAKwAAACsAAAArAAAARAAAAKEAAAChAAAAoQAAAKEAAAChAAAAoQAAAKEAAABsAAAAbAAAAJAAAABoAAAAuwAAAL0AAAA=","dtype":"int32","shape":[371]}},"selected":{"id":"1365","type":"Selection"},"selection_policy":{"id":"1366","type":"UnionRenderers"}},"id":"1319","type":"ColumnDataSource"},{"attributes":{},"id":"1348","type":"Selection"}],"root_ids":["1280"]},"title":"Bokeh Application","version":"1.3.4"}};
+  var render_items = [{"docid":"92b1f2b0-b95f-41d9-9f71-7240619f74ae","roots":{"1280":"ba8b3362-a6bc-47a5-aa3f-bc6a7ca248bb"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+</script>
+</div>

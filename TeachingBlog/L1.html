@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luca Mingarelli</title>
+  <link rel="icon" href="../Icons/stork.png" type="image/png">
+<style>
+.collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
+  border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
+.active, .collapsible:hover {  background-color: #555;}
+.content {  padding: 0 0px;  display: none;  overflow: hidden;  background-color: #DCDCDC;}
+</style>
+</head>
+<!-- <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>  -->
+
+<script type="text/javascript" async 
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script><!-- For LaTex -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>                   <!-- For guessing browser and For video shading -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-browser/0.1.0/jquery.browser.min.js'></script>  <!-- as above -->
+
+<link rel="stylesheet" href="prism/prism.css"> <!-- For code highlight -->
+<script src="prism/prism.js"></script>         <!-- For code highlight -->
+<script src="../js/Adjust_video_color.js"></script>         <!-- To render video color equally across browsers -->
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/w3.css">
+<link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/responsiveiframe.css">
+<script src="../js/style_preamble.js"></script>
+
+
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+  <!-- NavigationBar -->
+   <script src="js/Navbar.js"></script>
+  <!-- _____________ -->
+  <!-- PRE_CONTENT -->
+  <script src="js/pre_content.js"></script>
+  <!-- _____________ -->
+
+
+
+
+    <div class="w3-content w3-justify" style="max-width:800px">
+
+      <h1><b>Spectral differentiation and applications</b></h1>
+      <h2>Differentiation</h2>
+
+
+<!-- <script>
+document.write("You are using " + $.browser.name +
+             " v" + $.browser.versionNumber +
+             " on " + $.browser.platform);
+</script></br></br>
+-->
+
+      Let's start differentiating a function. We pick
+      \[f(x)=e^{-x^4},\]
+      \[\frac{\text{d}f(x)}{\text{d}x}=-4x^3f(x).\]
+
+
+
+<pre><code class="lang-python">import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+N=2**8; L=10
+x=np.linspace(-L/2,L/2,N)
+L += x[1]-x[0]  #Now the period is actually L+dx !
+
+#####Three ways to write the frequencies:
+########## -1- ##########
+# M = [n for n in range(0,N//2)] + [0]+[n for n in range(-(N//2-1),0)]
+# k = 2*np.pi*np.array(M)/L;
+########## -2- ##########
+# k = np.linspace(-1,1,len(x))*np.pi*N/L
+# k = np.fft.fftshift(k)
+########## -3- ##########
+k = np.fft.fftfreq(N, L/(2*np.pi*N))
+
+
+### Make sure f is periodic!
+f=np.exp(-x**4)
+df=-4*x**3*f
+###Spectral derivative
+fdf=np.real(np.fft.ifft(1j*k*np.fft.fft(f)));
+
+print('Spectral error: ',sum(np.abs(df-fdf)/N))
+print('Finite Diff. error: ',sum(np.abs(df-np.append(np.diff(f)/(L/N),[0]))/N))
+</code></pre>
+<pre>
+Spectral error:  4.544425668940364e-15
+Finite Diff. error:  0.011923342038318064
+</pre>
+
+
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.plot(x,f,x,df)
+plt.plot(fdf,'--')
+</code></pre>
+</div>
+<img class="center" src="img/L1/output_1_1.svg"  width="55%" >
+
+
+Similarly, we can try to compute a second order derivative. Let's try on a gaussian:
+<pre><code class="lang-python">f=np.exp(-x**2)
+ddf=(4*x**2-2)*f
+fddf=np.real(np.fft.ifft((1j*k)**2*np.fft.fft(f)));
+</code></pre>
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.plot(x,f,x,ddf)
+plt.plot(fddf,'--');
+</code></pre>
+</div>
+<img class="center" src="img/L1/output_4_0.svg"  width="55%" >
+
+Moreover, we can also compute <i>fractional derivatives</i>:
+<pre><code class="lang-python">nid_f=np.fft.ifft((1j*k)**(0.5)*np.fft.fft(f))
+nid_f+=abs(nid_f[0]) ### up to a constant!!
+</code></pre>
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.plot(x,f)
+plt.plot(x,np.real(nid_f),'--');
+</code></pre>
+</div>
+<img class="center" src="img/L1/output_8_0.svg"  width="50%" >
+
+Or the range:
+<pre><code class="lang-python">for n in range(0,10,1):
+    nid_f=np.fft.ifft((1j*k)**(n/10)*np.fft.fft(f))
+    nid_f+=abs(nid_f[0])### up to a constant!!
+    plt.plot(x,np.real(nid_f),alpha=0.7)
+</code></pre>
+<img class="center" src="img/L1/output_9_0.svg"  width="50%" >
+
+<h2>Integration</h2>
+Notice that a negative order of differentiation corresponds to integrating the function.
+In this case, notice that the term \(\frac{1}{ik}\) creates issues at \(k=0\). This issue is easily resolved by
+considering the term \(\frac{1}{ik+\epsilon}\) instead, with \(\epsilon\) small.
+The function  <code>scipy.fftpack.diff()</code>  implements exactly the spectral differenciation described above,
+dealing with \(n<0 \) in the way we have just described.                     <!--  > -->
+
+<pre><code class="lang-python">from scipy import fftpack
+IIddf=fftpack.diff(ddf, order=-2,period=L)
+### up to a constant!!
+IIddf+=abs(IIddf[0])
+</code></pre>
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.plot(x,f)
+FDf=np.cumsum(np.cumsum(ddf))
+FDf=np.roll(FDf,1)/max(FDf)
+plt.plot(x,IIddf,'--');
+plt.legend(labels=("$f(x)$","$D^{-2}_{Fourier}D^2f(x)$"));
+print('Spectral error: ',sum(np.abs(IIddf-f))/N)
+print('FD error: ',sum(np.abs(FDf-f))/N)
+</code></pre>
+<pre>
+Spectral error:  2.0217229296817015e-10
+FD error:  5.44546545032625e-05
+</pre>
+</div>
+<img class="center" src="img/L1/output_6_0.svg"  width="50%" >
+
+<h2>Ordinary Differential Equations</h2>
+<h4>Example 1</h4>
+Consider now the following ODE:
+
+\[ \frac{du(t)}{dt} = -g u(t) +q(t),\]
+where
+\[q(t)=\frac{At}{\tau}e^{1-t/\tau}.\]
+The boundary conditions are periodic: \(u(t)=u(t+L)\).
+Thus, we can solve the ODE spectrally through <code>fft</code>s, which naturally incorporate this condition.
+
+The ODE above can be rewritten as:
+\[\Bigl(\frac{d}{dt}+g\Bigr)u(t)=q(t),\]
+so that
+\[u(t)=\Bigl(\frac{d}{dt}+g\Bigr)^{-1}q(t).\]
+
+The analytical solution can be found to be
+<div style="border:0px solid #ccc;overflow:auto;">
+\[u_{An}(t)=A e^{-g t -\frac{L}{\tau}-\frac{t}{\tau}+1}\frac{ \tau  e^{g L +\frac{L}{\tau}+\frac{t}{\tau}}+(-g \tau  t+t+\tau ) e^{g t+\frac{L}{\tau }}+(L (g \tau -1)-\tau ) e^{g L+\frac{t}{\tau }}+(t (g \tau -1)-\tau ) e^{g (L+t)+\frac{L}{\tau }}}{\left(e^{g L}-1\right) (g \tau -1)^2}.\]
+</div>
+Choosing parameters \((A,\tau,g)=(1,\frac{1}{2},2)\), this can be written as:
+\[u_{An}(t)=\frac{e^{1-2 t} \left(L^2+e^{2 L} t^2-t^2\right)}{e^{2 L}-1}.\]
+<pre><code class="lang-python">N = 2**8;L=10;
+t = np.linspace(0,L,N)
+A = 1; tau = 0.5; g = 2;
+q = lambda t: A * t * np.exp(1 - t / tau)/ tau
+
+k = np.fft.fftfreq(N, L/(2*pi*N))
+u = np.fft.ifft(1/(g + 1j*k) * np.fft.fft(q(t)))
+</code></pre>
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.figure(figsize=(15, 5));
+####plot1 of u
+plt.subplot('121'); plt.title('$u(t)$',fontsize=18)
+plt.plot(t, u);
+plt.plot(t, (np.exp(1-2*t)*(L**2+np.exp(2*L)*t**2-t**2))/(np.exp(2*L)-1) ,'-.');
+plt.legend(['$u_{fft}(t)$','$u_{An}(t)$'],fontsize=16)
+####plot2 of u'
+plt.subplot('122'); plt.title(r"$u'(t)$",fontsize=18)
+plt.plot(t, fftpack.diff(u,period=L));
+plt.plot(t, (-g*u + q(t)) ,'-.');
+plt.legend([r'$\frac{d u(t)}{dt}$',r'$-gu(t)+q(t)$'],fontsize=16);
+</code></pre>
+</div>
+
+<img class="center" src="img/L1/output_15_0.svg"  width="100%" >
+
+
+<h4>Example 2</h4>
+Consider now the ODE
+\[u''+c u=x^\nu\]
+with \(u(x+L)=u(x)\) and \(u'(x+L)=u'(x)\). The ODE can be rewritten as:
+\[(\partial_x^2+c)u(x)=x^\nu,\]
+so that the solution can formally be written as:
+\[u(x)=(\partial_x^2+c)^{-1}x^\nu\]
+
+<pre><code class="lang-python">N=2**11;L=100;
+c=2;nu=2;
+x=np.linspace(-L/2,L/2,N)
+
+k = np.fft.fftfreq(N, L/(2*pi*N))
+u = np.fft.ifft(1/((1j*k)**2+ c) * np.fft.fft(x**nu))
+</code></pre>
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">plt.figure(figsize=(15, 5));
+plt.subplot('131'); plt.title("$u(t)$",fontsize=18)
+plt.plot(x,u);
+plt.subplot('132'); plt.title("$u'(t)$",fontsize=18)
+plt.plot(x,fftpack.diff(u,period=L));
+plt.subplot('133'); plt.title("$u''(t)$",fontsize=18)
+plt.plot(x,fftpack.diff(u,order=2,period=L));
+plt.plot(x,x**nu-c*u,'-.');
+</code></pre>
+</div>
+<img class="center" src="img/L1/output_18_0.svg"  width="100%" >
+
+
+
+
+
+The general solution for arbitrary \(\nu\), \(c\), and \(L\), can be found to be:
+<div style="border:0px solid #ccc;overflow:auto;">
+\[u(x)= \frac{1}{4} c^{-\nu -\frac{3}{2}} \Biggl[c^{\nu +1} L \left(c L^2\right)^{-\nu } \left(\cos \left(\frac{1}{2} \sqrt{c} (L-2 x)\right) (-L)^{\nu }+L^{\nu } \cos \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)\right) \csc \left(\frac{\sqrt{c} L}{2}\right) \Gamma \left(\nu +1,\frac{1}{2} i \sqrt{c} L\right) \left(-i \sqrt{c} L\right)^{\nu -1}+2^{-\nu } c^{\nu +\frac{1}{2}} e^{-\frac{1}{2} i \sqrt{c} L} \left(1+e^{i \sqrt{c} L}\right) \left((-L)^{\nu }+L^{\nu }\right) \cos \left(\sqrt{c} x\right)+c^{\nu +1} L \left(i \sqrt{c} L\right)^{\nu -1} \left(c L^2\right)^{-\nu } \left(\cos \left(\frac{1}{2} \sqrt{c} (L-2 x)\right) (-L)^{\nu }+L^{\nu } \cos \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)\right) \csc \left(\frac{\sqrt{c} L}{2}\right) \Gamma \left(\nu +1,-\frac{1}{2} i \sqrt{c} L\right)-2 c^{\nu } x^{\nu -1} \left(i \sqrt{c} x\right)^{\nu +1} \left(c x^2\right)^{-\nu } \Gamma \left(\nu +1,-i \sqrt{c} x\right) \sin \left(\sqrt{c} x\right)+2 c^{\nu +\frac{1}{2}} i x^{\nu } \left(-i \sqrt{c} x\right)^{\nu } \left(c x^2\right)^{-\nu } \Gamma \left(\nu +1,i \sqrt{c} x\right) \sin \left(\sqrt{c} x\right)+\frac{2^{-\nu } e^{-\frac{1}{2} i \sqrt{c} L} \left(c L^2\right)^{-\nu } \left| L\right| ^{-2 \nu } \left(i+\cot \left(\frac{\sqrt{c} L}{2}\right)\right) \left(2^{\nu } \left(i \sqrt{c} L\right)^{2 \nu } \Gamma \left(\nu +1,-\frac{1}{2} i \sqrt{c} L\right) \left(2 \left((-L)^{\nu }+L^{\nu }\right) \nu  \cos \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)+2 \left((-L)^{\nu }+L^{\nu }\right) \nu  \cos \left(\frac{1}{2} \sqrt{c} (L-2 x)\right)-\sqrt{c} L \left(\sin \left(\frac{1}{2} \sqrt{c} (L-2 x)\right) (-L)^{\nu }+L^{\nu } \sin \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)\right)\right) \left(-i \sqrt{c} L\right)^{\nu }+2^{\nu } \left(i \sqrt{c} L\right)^{\nu } \Gamma \left(\nu +1,\frac{1}{2} i \sqrt{c} L\right) \left(2 \left((-L)^{\nu }+L^{\nu }\right) \nu  \cos \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)+2 \left((-L)^{\nu }+L^{\nu }\right) \nu  \cos \left(\frac{1}{2} \sqrt{c} (L-2 x)\right)-\sqrt{c} L \left(\sin \left(\frac{1}{2} \sqrt{c} (L-2 x)\right) (-L)^{\nu }+L^{\nu } \sin \left(\frac{1}{2} \sqrt{c} (L+2 x)\right)\right)\right) \left(-i \sqrt{c} L\right)^{2 \nu }+L \left(c L^2\right)^{2 \nu } \left((-L)^{\nu }+L^{\nu }\right) \cos \left(\sqrt{c} x\right) \sin \left(\sqrt{c} L\right) \left(-\sqrt{c}\right)\right)}{L}+2 x^{\nu } \left| x\right| ^{-2 \nu } \cos \left(\sqrt{c} x\right) \left(\Gamma \left(\nu +1,i \sqrt{c} x\right) \left(-i \sqrt{c} x\right)^{\nu }+\left(i \sqrt{c} x\right)^{\nu } \Gamma \left(\nu +1,-i \sqrt{c} x\right)\right) \sqrt{c}+4 \nu  \left| L\right| ^{-2 \nu -1} \cos \left(\sqrt{c} x\right) \cot \left(\frac{\sqrt{c} L}{2}\right) \left(\Gamma \left(\nu +1,\frac{1}{2} i \sqrt{c} L\right) \left(-i \sqrt{c} L\right)^{\nu }+\left(i \sqrt{c} L\right)^{\nu } \Gamma \left(\nu +1,-\frac{1}{2} i \sqrt{c} L\right)\right) \left((-L)^{\nu } \text{Abs}'\left(-\frac{L}{2}\right)-L^{\nu } \text{Abs}'\left(\frac{L}{2}\right)\right)\Biggr] .\]
+</div>
+In the particular case of \(\nu=2\) this reduces to:
+\[u(x)=\frac{\sqrt{c} L \csc \left(\frac{\sqrt{c} L}{2}\right) \cos \left(\sqrt{c} x\right)+c x^2-2}{c^2}.\]
+
+<h2>Partial Differential Equations</h2>
+Finally, we look at PDEs. In particular, consider the variable coefficient wave equation
+\[u_t+c(x)u_x=0,\]
+where
+\[c(x)=\frac{1}{5}+\sin^2(x-1).\]
+We will consider \(x \in [0,2\pi]\), \(t>0\), with periodic boundary conditions.
+
+Numerically we solve spectrally in space, and we treat time thorugh a leapfrog formula. This gives
+\[\frac{u^{(n+1)}_j-u^{(n-1)}_j}{2\Delta t}=-c(x_j)(\partial_x u^{(n)})_j,\quad j=1,\dots,N;\]
+
+i.e.
+
+\[u^{(n+1)}_j=u^{(n-1)}_j-2\Delta t c(x_j)(\partial_x u^{(n)})_j,\quad j=1,\dots,N.\]
+<pre><code class="lang-python">N=2**9;L=2*pi;
+x=np.linspace(0,L,N)
+y=np.ones(len(x))
+k = np.fft.fftfreq(N, L/(2*pi*N))
+dt=(x[1]-x[0])/4;t=dt
+#####Initial value for u
+c = 1/5+np.sin(x-1)**2
+u=np.exp(-100*(x-1)**2)
+u_old=np.exp(-100*(x-1-0.2*dt)**2)
+
+U=u
+for n in range(53): #when to plot
+    for m in range(50): #time
+        t += dt
+        du=np.fft.ifft((1j*k)*np.fft.fft(u))
+        u_new = u_old-2*dt*c*du
+        u_old = u; u = np.real(u_new)
+        if not n//1==0:  U = np.c_[U, u]
+</code></pre>
+
+
+<button class="collapsible">Animation code</button>
+<div class="content"><pre><code class="lang-python">from matplotlib import animation, rc
+from IPython.display import HTML
+
+# First set up the figure, the axis, and the plot element we want to animate
+fig, ax = plt.subplots();#figsize=(15, 8)
+
+plt.rcParams['axes.facecolor']='#DCDCDC'
+plt.rcParams['savefig.facecolor']='#DCDCDC'
+
+ax.set_xlim(( 0, 6.5))
+ax.set_ylim((-.1, 1.1))
+ax.set_xlabel('$x$',fontsize=10)
+ax.set_ylabel('$u$',fontsize=10)
+
+line, = ax.plot([], [], lw=2);
+
+# fig.set_size_inches(15, 5, True)
+
+# initialization function: plot the background of each frame
+def init():
+   line.set_data([], [])
+   return (line,)
+# animation function. This is called sequentially
+def animate(i):
+   line.set_data(x, U[:,2*i])
+   return (line,)
+# call the animator. blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                              frames=len(U[2,:])//2, interval=1, blit=True,repeat_delay=3000)
+# equivalent to rcParams['animation.html'] = 'html5'
+rc('animation', html='html5')
+anim
+anim.save('anim.mp4', fps=645, extra_args=['-vcodec', 'libx264'], dpi=300)</code></pre>
+</div>
+
+
+<div id="my-video-bg">
+<video class='center' width="80%" height="auto"
+id="my-video" onplay="setVideoColorDelayed(this,[220,220,220])" oncanplay="setVideoColorDelayed(this,[220,220,220])"
+autoplay loop muted playsinline webkit-playsinline>
+      <source src="img/L1/evol.mp4" type="video/mp4">
+<p>Web browser does not support video reproduction</p>
+</video>
+</div>
+
+
+
+
+
+</br>
+
+<button class="collapsible">Plot code</button>
+<div class="content"><pre><code class="lang-python">import plotly.plotly as py
+import plotly.graph_objs as go
+Z=U.T
+layout = go.Layout(
+    hovermode=False,
+    width=800,
+    height=700,
+    autosize=True,
+#     title='Variable coefficient wave equation',
+    scene=dict(
+        xaxis=dict(
+            title='x',
+            gridcolor='white',
+            zerolinecolor='white',
+            showbackground=True,
+            backgroundcolor='rgba(0, 0, 0, 0)',
+            showspikes=False,
+            range=[0.7, 5],
+        ),
+        yaxis=dict(
+            title='time',
+            gridcolor='white',
+            zerolinecolor='white',
+            showbackground=True,
+            backgroundcolor='rgba(0, 0, 0, 0)',
+            showspikes=False,
+        ),
+        zaxis=dict(
+            title='u(x)',
+            gridcolor='white',
+            zerolinecolor='white',
+            showbackground=True,
+            backgroundcolor='rgba(0,0,0,0)',
+            spikesides=True,showline=True,showgrid=True,
+            showspikes=False,
+        ),
+        camera=dict(
+            up=dict(
+                x=0,
+                y=0,
+                z=1
+            ),
+            eye=dict(
+                x=-0.25,
+                y=-1.5,
+                z=0.8100,
+            )
+        ),
+#         bgcolor="rgba(0, 0, 0, 0)",
+        aspectratio = dict( x=1, y=1, z=0.4 ),
+        aspectmode = 'manual',
+    )
+)
+
+n=5
+fig = go.Figure(data=[go.Surface(x=x,y=np.linspace(0,t*n,U.shape[1]),z=Z[1::n],colorscale="Viridis",showscale = False)], layout=layout,)
+fig["layout"].update({
+#                     "plot_bgcolor":"rgba(0, 0, 0, 0)",
+                    "paper_bgcolor":"rgba(0,0,0,0)"
+                     })
+py.iplot(fig, filename='var-coeff-wave-eq')
+</code></pre>
+</div>
+
+<!-- <iframe onload="this.width=this.contentWindow.document.body.scrollWidth;"
+ width="100%" height="750" frameborder="0"  scrolling="no" src="http://plot.ly/~LucaMingarelli/88.embed"></iframe> -->
+
+<div class="resp-container">.
+ <iframe  class="resp-iframe" modebar="false" scrolling="no" width="100%" src="https://plot.ly/~LucaMingarelli/88.embed"></iframe>
+</div>
+
+
+
+</br></br>
+
+
+      <!-- ________________________________________________________________________________________________ -->
+      <!-- ________________________________________________________________________________________________ -->
+      <!-- ________________________________________________________________________________________________ -->
+  <h7>
+       <!-- <span style="float:right;">
+      <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+      </span>
+      </h7>
+      </br> -->
+
+      <h5> <a href="../Teaching.html"><b><img src="../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
+
+
+      <hr class="w3-opacity">
+    </div>
+  </div>
+  <script type="text/javascript" src="../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../js/OpenCloseSidebar.js"></script>
+<script src="../js/ModalImageGallery.js"></script>
+<script src="../js/OpenCloseCollapsible.js"></script>
+
+</body>
+</html>
