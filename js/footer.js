@@ -8,7 +8,7 @@ document.write('<footer class="w3-container w3-padding-32 w3-dark-grey">\
       </div>\
       <div class="w3-third">\
         <h3>LOCATION</h3>\
-        <p>HS28.36, European Central Bank<br />  20 Sonnemannstrasse<br />  Frankfurt am Main<br />  60314</p>\
+        <p>HS33.20, European Central Bank<br />  20 Sonnemannstrasse<br />  Frankfurt am Main<br />  60314</p>\
       </div>\
       <div class="w3-third">\
         <h3>OTHER LINKS</h3>\
