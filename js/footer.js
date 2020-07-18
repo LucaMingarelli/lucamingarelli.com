@@ -12,9 +12,9 @@ document.write('<footer class="w3-container w3-padding-32 w3-dark-grey">\
       </div>\
       <div class="w3-third">\
         <h3>OTHER LINKS</h3>\
-        <p><a href="http://www.imperial.ac.uk/people/l.mingarelli13">My professional webpage</a></br>\
-     <a href="https://www.linkedin.com/in/lucamingarelli/">LinkedIn</a></br>\
-        <a href="https://scholar.google.co.uk/citations?user=NCAmtwMAAAAJ&hl=en">GoogleScholar</a></p>\
+        <p><a href="https://www.linkedin.com/in/lucamingarelli/">LinkedIn</a></br>\
+          <a href="https://scholar.google.co.uk/citations?user=NCAmtwMAAAAJ&hl=en">GoogleScholar</a></br>\
+          <a href="https://github.com/LucaMingarelli">GitHub</a></p>\
       </div>\
     </div>\
   </footer> ')
