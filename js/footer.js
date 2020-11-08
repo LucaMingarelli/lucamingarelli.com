@@ -1,4 +1,7 @@
-document.write('<footer class="w3-container w3-padding-32 w3-dark-grey">\
+document.write('<footer class="w3-container w3-padding-8 w3-dark-grey">\
+    <p style="font-size:80%;padding: 0px 0px 0px 15px">\
+    <i>This is my personal website and the views expressed here\
+    do not necessarily reflect those of the European Central Bank.</i></p>\
     <div class="w3-row-padding"id="contact">\
       <div class="w3-third">\
         <h3>CONTACT</h3>\
@@ -18,4 +21,3 @@ document.write('<footer class="w3-container w3-padding-32 w3-dark-grey">\
       </div>\
     </div>\
   </footer> ')
-
