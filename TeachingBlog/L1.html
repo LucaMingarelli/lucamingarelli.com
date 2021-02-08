@@ -328,6 +328,7 @@ document.write("You are using " + $.browser.name +
       </div> -->
 
       <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <!-- <script type="text/javascript" src="plotlyjs-bundle.js"></script> -->
       <script src="js/data.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>
       <div id="pde_sol" class="w3-content w2-justify" style="width:80%;max-width:800px; height:250px">
@@ -361,12 +362,6 @@ document.write("You are using " + $.browser.name +
                     zerolinecolor:'white',
                     title:'$u$',
                   },
-                    // annotations: [{xref: 'paper', yref: 'paper',
-                    //                x: -0.04, y: .51,
-                    //                xanchor: 'right', yanchor: 'center',
-                    //                text: '$u$', //font:{size: 15},
-                    //                showarrow: false
-                    //              },]
            },
           )
           function compute () {
@@ -389,20 +384,6 @@ document.write("You are using " + $.browser.name +
           requestAnimationFrame(update);
           </script>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -468,9 +449,100 @@ document.write("You are using " + $.browser.name +
 <!-- <iframe onload="this.width=this.contentWindow.document.body.scrollWidth;"
  width="100%" height="750" frameborder="0"  scrolling="no" src="http://plot.ly/~LucaMingarelli/88.embed"></iframe> -->
 
-<div class="resp-container">.
+<!-- <div class="resp-container">.
  <iframe  class="resp-iframe" modebar="false" scrolling="no" width="100%" src="https://plot.ly/~LucaMingarelli/88.embed"></iframe>
-</div>
+</div> -->
+
+
+<script type="text/javascript" src="js/surface.js"></script>
+<div id="surface_plot" style="width: 800px; height: 700px;" class="plotly-graph-div"></div>
+<script>
+    (function(){
+        window.PLOTLYENV={'BASE_URL': 'https://plotly.com'};
+        var figure = {
+            "data": [{//"uid": "7f302f64-a684-4619-b8d9-a967a70459a3",
+                      "meta": {"columnNames": {"x": "x", "y": "y", "z": " - y"}
+                     },
+                    "type": "surface",
+                    // "xsrc": "LucaMingarelli:89:2fde9d",
+                    "x": surface_x,
+                    // "ysrc": "LucaMingarelli:89:37962b",
+                    "y": surface_y,
+                    // "zsrc": "LucaMingarelli:89:-2fde9d,37962b",
+                    "z": surface_z,
+                    "showscale": false, "colorscale": "Viridis"
+                }
+            ],
+            layout: {
+              margin: {l:0, r:0, t:0, b:0},
+                scene: {
+                    xaxis: {// "type": "linear",
+                        range: [0.7, 5],
+                        title: "x",
+                        gridcolor: "white",
+                        showspikes: false,
+                        zerolinecolor: "white",
+                        // "showbackground": true,
+                        backgroundcolor: "rgba(0, 0, 0, 0)",
+                    },
+                    yaxis: {// "type": "linear",
+                        title: "time",
+                        gridcolor: "white",
+                        showspikes: false,
+                        zerolinecolor: "white",
+                        // "showbackground": true,
+                        backgroundcolor: "rgba(0, 0, 0, 0)"
+                    },
+                    zaxis: {//"type": "linear",
+                        title: "u(x)",
+                        showgrid: true,
+                        showline: true,
+                        gridcolor: "white",
+                        showspikes: false,
+                        spikesides: true,
+                        zerolinecolor: "white",
+                        // "showbackground": true,
+                        backgroundcolor: "rgba(0, 0, 0, 0)"
+                    },
+                    "camera": {
+                        "up": {"x": 0, "y": 0, "z": 1},
+                        "eye": {"x": -0.25/1.1, "y": -1.8/1.1, "z": 0.91/1.1}
+                      },
+                    "aspectmode": "manual",
+                    "aspectratio": {"x": 1, "y": 1, "z": 0.4}
+                },
+                "width": 800,
+                "height": 700,
+                "autosize": true,
+                "hovermode": false,
+                "paper_bgcolor": "rgba(0, 0, 0, 0)"
+            },
+            "frames": []
+        }
+
+        var gd = document.getElementById('surface_plot')
+        var resizeDebounce = null;
+        function resizePlot() {
+            var bb = gd.getBoundingClientRect();
+            Plotly.relayout(gd, {
+                width: bb.width,
+                height: bb.height
+            });
+        }
+        window.addEventListener('resize', function() {
+            if (resizeDebounce) {
+                window.clearTimeout(resizeDebounce);
+            }
+            resizeDebounce = window.setTimeout(resizePlot, 100);
+        });
+        Plotly.plot(gd,  {
+            data: figure.data,
+            layout: figure.layout,
+            frames: figure.frames,
+            // config: {"showLink": false, "linkText": "Export to plotly.com", "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"}
+        });
+   }());
+</script>
 
 
 
