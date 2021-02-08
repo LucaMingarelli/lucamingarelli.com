@@ -62,33 +62,32 @@ document.write("You are using " + $.browser.name +
 
 
       <pre><code class="lang-python">import numpy as np
-      import matplotlib.pyplot as plt
-      import seaborn as sns
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-      N, L = 2**8, 10
-      x = np.linspace(-L/2, L/2, N)
-      L += x[1]-x[0]  # Now the period is actually L + dx !
+N, L = 2**8, 10
+x = np.linspace(-L/2, L/2, N)
+L += x[1]-x[0]  # Now the period is actually L + dx !
 
-      # Three ways to write the frequencies:
-      # -------- 1 --------
-      # M = [n for n in range(0, N//2)] + [0] + [n for n in range(-(N//2-1), 0)]
-      # k = 2*np.pi*np.array(M) / L;
-      # -------- 2 --------
-      # k = np.linspace(-1, 1, len(x)) * np.pi * N/L
-      # k = np.fft.fftshift(k)
-      # -------- 3 --------
-      k = np.fft.fftfreq(N, L/(2*np.pi*N))
+# Three ways to write the frequencies:
+# -------- 1 --------
+# M = [n for n in range(0, N//2)] + [0] + [n for n in range(-(N//2-1), 0)]
+# k = 2*np.pi*np.array(M) / L;
+# -------- 2 --------
+# k = np.linspace(-1, 1, len(x)) * np.pi * N/L
+# k = np.fft.fftshift(k)
+# -------- 3 --------
+k = np.fft.fftfreq(N, L/(2*np.pi*N))
 
+# Make sure f is periodic!
+f = np.exp(-x**4)
+df = -4*x**3*f
+# Spectral derivative
+fdf = np.real(np.fft.ifft(1j*k*np.fft.fft(f)));
 
-      # Make sure f is periodic!
-      f = np.exp(-x**4)
-      df = -4*x**3*f
-      # Spectral derivative
-      fdf = np.real(np.fft.ifft(1j*k*np.fft.fft(f)));
-
-      print('Spectral error: ',sum(np.abs(df - fdf)/N))
-      print('Finite Diff. error: ',sum(np.abs(df - np.append(np.diff(f)/(L/N), [0])) / N))
-      </code></pre>
+print('Spectral error: ',sum(np.abs(df - fdf)/N))
+print('Finite Diff. error: ',sum(np.abs(df - np.append(np.diff(f)/(L/N), [0])) / N))
+</code></pre>
       <pre>
       Spectral error:  4.544425668940364e-15
       Finite Diff. error:  0.011923342038318064
@@ -97,41 +96,41 @@ document.write("You are using " + $.browser.name +
 
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.plot(x, f, x, df)
-      plt.plot(fdf, '--')
-      </code></pre>
+plt.plot(fdf, '--')
+</code></pre>
       </div>
       <img class="center" src="img/L1/output_1_1.svg"  width="55%" >
 
 
       Similarly, we can try to compute a second order derivative. Let's try on a gaussian:
       <pre><code class="lang-python">f = np.exp(-x**2)
-      ddf = (4*x**2-2)*f
-      fddf = np.real(np.fft.ifft((1j*k)**2*np.fft.fft(f)));
-      </code></pre>
+ddf = (4*x**2-2)*f
+fddf = np.real(np.fft.ifft((1j*k)**2*np.fft.fft(f)));
+</code></pre>
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.plot(x, f, x, ddf)
-      plt.plot(fddf, '--');
-      </code></pre>
+plt.plot(fddf, '--');
+</code></pre>
       </div>
       <img class="center" src="img/L1/output_4_0.svg"  width="55%" >
 
       Moreover, we can also compute <i>fractional derivatives</i>:
       <pre><code class="lang-python">nid_f = np.fft.ifft((1j*k)**(0.5)*np.fft.fft(f))
-      nid_f += abs(nid_f[0]) # Up to a constant!
-      </code></pre>
+nid_f += abs(nid_f[0]) # Up to a constant!
+</code></pre>
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.plot(x,f)
-      plt.plot(x, np.real(nid_f), '--');
-      </code></pre>
+plt.plot(x, np.real(nid_f), '--');
+</code></pre>
       </div>
       <img class="center" src="img/L1/output_8_0.svg"  width="50%" >
 
       Or the range:
       <pre><code class="lang-python">for n in range(0,10,1):
-          nid_f = np.fft.ifft((1j*k)**(n/10)*np.fft.fft(f))
-          nid_f += abs(nid_f[0])  # Up to a constant!
-          plt.plot(x, np.real(nid_f), alpha=0.7)
-      </code></pre>
+    nid_f = np.fft.ifft((1j*k)**(n/10)*np.fft.fft(f))
+    nid_f += abs(nid_f[0])  # Up to a constant!
+    plt.plot(x, np.real(nid_f), alpha=0.7)
+</code></pre>
       <img class="center" src="img/L1/output_9_0.svg"  width="50%" >
 
       <h2>Integration</h2>
@@ -142,19 +141,19 @@ document.write("You are using " + $.browser.name +
       dealing with \(n<0 \) in the way we have just described.                     <!--  > -->
 
       <pre><code class="lang-python">from scipy import fftpack
-      IIddf = fftpack.diff(ddf, order=-2, period=L)
-      # Up to a constant!!
-      IIddf += abs(IIddf[0])
-      </code></pre>
+IIddf = fftpack.diff(ddf, order=-2, period=L)
+# Up to a constant!!
+IIddf += abs(IIddf[0])
+</code></pre>
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.plot(x, f)
-      FDf = np.cumsum(np.cumsum(ddf))
-      FDf = np.roll(FDf, 1) / max(FDf)
-      plt.plot(x, IIddf,'--')
-      plt.legend(labels=("$f(x)$", "$D^{-2}_{Fourier}D^2f(x)$"))
-      print('Spectral error: ', sum(np.abs(IIddf - f)) / N)
-      print('FD error: ', sum(np.abs(FDf - f)) / N)
-      </code></pre>
+FDf = np.cumsum(np.cumsum(ddf))
+FDf = np.roll(FDf, 1) / max(FDf)
+plt.plot(x, IIddf,'--')
+plt.legend(labels=("$f(x)$", "$D^{-2}_{Fourier}D^2f(x)$"))
+print('Spectral error: ', sum(np.abs(IIddf - f)) / N)
+print('FD error: ', sum(np.abs(FDf - f)) / N)
+</code></pre>
       <pre>
       Spectral error:  2.0217229296817015e-10
       FD error:  5.44546545032625e-05
@@ -184,26 +183,26 @@ document.write("You are using " + $.browser.name +
       Choosing parameters \((A,\tau,g)=(1,\frac{1}{2},2)\), this can be written as:
       \[u_{An}(t)=\frac{e^{1-2 t} \left(L^2+e^{2 L} t^2-t^2\right)}{e^{2 L}-1}.\]
       <pre><code class="lang-python">N, L = 2**8, 10
-      t = np.linspace(0, L, N)
-      A, tau, g = 1, 0.5, 2
-      q = lambda t: A * t * np.exp(1 - t / tau)/ tau
+t = np.linspace(0, L, N)
+A, tau, g = 1, 0.5, 2
+q = lambda t: A * t * np.exp(1 - t / tau)/ tau
 
-      k = np.fft.fftfreq(N, L/(2*pi*N))
-      u = np.fft.ifft(1/(g + 1j*k) * np.fft.fft(q(t)))
-      </code></pre>
+k = np.fft.fftfreq(N, L/(2*pi*N))
+u = np.fft.ifft(1/(g + 1j*k) * np.fft.fft(q(t)))
+</code></pre>
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.figure(figsize=(15, 5))
-      # Plot1 of u
-      plt.subplot('121'); plt.title('$u(t)$', fontsize=18)
-      plt.plot(t, u);
-      plt.plot(t, (np.exp(1-2*t)*(L**2+np.exp(2*L)*t**2-t**2))/(np.exp(2*L)-1), '-.')
-      plt.legend(['$u_{fft}(t)$', '$u_{An}(t)$'], fontsize=16)
-      # Plot2 of u'
-      plt.subplot('122'); plt.title(r"$u'(t)$", fontsize=18)
-      plt.plot(t, fftpack.diff(u, period=L))
-      plt.plot(t, (-g*u + q(t)), '-.')
-      plt.legend([r'$\frac{d u(t)}{dt}$', r'$-gu(t)+q(t)$'], fontsize=16)
-      </code></pre>
+# Plot1 of u
+plt.subplot('121'); plt.title('$u(t)$', fontsize=18)
+plt.plot(t, u);
+plt.plot(t, (np.exp(1-2*t)*(L**2+np.exp(2*L)*t**2-t**2))/(np.exp(2*L)-1), '-.')
+plt.legend(['$u_{fft}(t)$', '$u_{An}(t)$'], fontsize=16)
+# Plot2 of u'
+plt.subplot('122'); plt.title(r"$u'(t)$", fontsize=18)
+plt.plot(t, fftpack.diff(u, period=L))
+plt.plot(t, (-g*u + q(t)), '-.')
+plt.legend([r'$\frac{d u(t)}{dt}$', r'$-gu(t)+q(t)$'], fontsize=16)
+</code></pre>
       </div>
 
       <img class="center" src="img/L1/output_15_0.svg"  width="100%" >
@@ -218,22 +217,22 @@ document.write("You are using " + $.browser.name +
       \[u(x)=(\partial_x^2+c)^{-1}x^\nu\]
 
       <pre><code class="lang-python">N, L = 2**11, 100
-      c, nu = 2, 2
-      x = np.linspace(-L/2, L/2, N)
+c, nu = 2, 2
+x = np.linspace(-L/2, L/2, N)
 
-      k = np.fft.fftfreq(N, L/(2*pi*N))
-      u = np.fft.ifft(1/((1j*k)**2+ c) * np.fft.fft(x**nu))
-      </code></pre>
+k = np.fft.fftfreq(N, L/(2*pi*N))
+u = np.fft.ifft(1/((1j*k)**2+ c) * np.fft.fft(x**nu))
+</code></pre>
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">plt.figure(figsize=(15, 5))
-      plt.subplot('131'); plt.title("$u(t)$", fontsize=18)
-      plt.plot(x,u)
-      plt.subplot('132'); plt.title("$u'(t)$", fontsize=18)
-      plt.plot(x,fftpack.diff(u,period=L))
-      plt.subplot('133'); plt.title("$u''(t)$", fontsize=18)
-      plt.plot(x, fftpack.diff(u,order=2, period=L))
-      plt.plot(x, x**nu-c*u, '-.')
-      </code></pre>
+plt.subplot('131'); plt.title("$u(t)$", fontsize=18)
+plt.plot(x,u)
+plt.subplot('132'); plt.title("$u'(t)$", fontsize=18)
+plt.plot(x,fftpack.diff(u,period=L))
+plt.subplot('133'); plt.title("$u''(t)$", fontsize=18)
+plt.plot(x, fftpack.diff(u,order=2, period=L))
+plt.plot(x, x**nu-c*u, '-.')
+</code></pre>
       </div>
       <img class="center" src="img/L1/output_18_0.svg"  width="100%" >
 
@@ -262,60 +261,60 @@ document.write("You are using " + $.browser.name +
 
       \[u^{(n+1)}_j=u^{(n-1)}_j-2\Delta t c(x_j)(\partial_x u^{(n)})_j,\quad j=1,\dots,N.\]
       <pre><code class="lang-python">N, L = 2**9, 2*pi
-      x = np.linspace(0, L, N)
-      y = np.ones(len(x))
-      k = np.fft.fftfreq(N, L/(2*pi*N))
-      t = dt = (x[1]-x[0])/4
-      # Initial value for u
-      c = 1/5 + np.sin(x - 1)**2
-      u = np.exp(-100 * (x - 1)**2)
-      u_old = np.exp(-100 * (x - 1 - 0.2*dt)**2)
+x = np.linspace(0, L, N)
+y = np.ones(len(x))
+k = np.fft.fftfreq(N, L/(2*pi*N))
+t = dt = (x[1]-x[0])/4
+# Initial value for u
+c = 1/5 + np.sin(x - 1)**2
+u = np.exp(-100 * (x - 1)**2)
+u_old = np.exp(-100 * (x - 1 - 0.2*dt)**2)
 
-      U = u
-      for n in range(2500):
-          t += dt
-          du = np.fft.ifft((1j*k) * np.fft.fft(u))
-          u_new = u_old - 2*dt*c*du
-          u_old, u = u, np.real(u_new)
-          if not n//1==0:  U = np.c_[U, u]
-      </code></pre>
+U = u
+for n in range(2500):
+    t += dt
+    du = np.fft.ifft((1j*k) * np.fft.fft(u))
+    u_new = u_old - 2*dt*c*du
+    u_old, u = u, np.real(u_new)
+    if not n//1==0:  U = np.c_[U, u]
+</code></pre>
 
 
       <button class="collapsible">Animation code</button>
       <div class="content"><pre><code class="lang-python">from matplotlib import animation, rc
-      from IPython.display import HTML
+from IPython.display import HTML
 
-      # First set up the figure, the axis, and the plot element we want to animate
-      fig, ax = plt.subplots(); # figsize=(15, 8)
+# First set up the figure, the axis, and the plot element we want to animate
+fig, ax = plt.subplots(); # figsize=(15, 8)
 
-      plt.rcParams['axes.facecolor']='#DCDCDC'
-      plt.rcParams['savefig.facecolor']='#DCDCDC'
+plt.rcParams['axes.facecolor']='#DCDCDC'
+plt.rcParams['savefig.facecolor']='#DCDCDC'
 
-      ax.set_xlim(( 0, 6.5))
-      ax.set_ylim((-.1, 1.1))
-      ax.set_xlabel('$x$', fontsize=10)
-      ax.set_ylabel('$u$', fontsize=10)
+ax.set_xlim(( 0, 6.5))
+ax.set_ylim((-.1, 1.1))
+ax.set_xlabel('$x$', fontsize=10)
+ax.set_ylabel('$u$', fontsize=10)
 
-      line, = ax.plot([], [], lw=2);
+line, = ax.plot([], [], lw=2);
 
-      # fig.set_size_inches(15, 5, True)
+# fig.set_size_inches(15, 5, True)
 
-      # initialization function: plot the background of each frame
-      def init():
-         line.set_data([], [])
-         return (line,)
-      # animation function. This is called sequentially
-      def animate(i):
-         line.set_data(x, U[:, 2*i])
-         return (line,)
-      # call the animator. blit=True means only re-draw the parts that have changed.
-      anim = animation.FuncAnimation(fig, animate, init_func=init,
-                                    frames=len(U[2,:])//2, interval=1, blit=True, repeat_delay=3000)
-      # equivalent to rcParams['animation.html'] = 'html5'
-      rc('animation', html='html5')
-      anim
-      anim.save('anim.mp4', fps=645, extra_args=['-vcodec', 'libx264'], dpi=300)</code></pre>
-      </div>
+# initialization function: plot the background of each frame
+def init():
+   line.set_data([], [])
+   return (line,)
+# animation function. This is called sequentially
+def animate(i):
+   line.set_data(x, U[:, 2*i])
+   return (line,)
+# call the animator. blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=len(U[2,:])//2, interval=1, blit=True, repeat_delay=3000)
+# equivalent to rcParams['animation.html'] = 'html5'
+rc('animation', html='html5')
+anim
+anim.save('anim.mp4', fps=645, extra_args=['-vcodec', 'libx264'], dpi=300)</code></pre>
+</div>
 
       <!--
       <div id="my-video-bg">
@@ -391,9 +390,9 @@ document.write("You are using " + $.browser.name +
 
       <button class="collapsible">Plot code</button>
       <div class="content"><pre><code class="lang-python">import plotly.plotly as py
-      import plotly.graph_objs as go
-      Z=U.T
-      layout = go.Layout(
+import plotly.graph_objs as go
+Z=U.T
+layout = go.Layout(
           hovermode=False,
           width=800, height=700,
           autosize=True,
@@ -435,15 +434,15 @@ document.write("You are using " + $.browser.name +
           )
       )
 
-      n=5
-      fig = go.Figure(data=[go.Surface(x=x,y=np.linspace(0,t*n,U.shape[1]),z=Z[1::n],colorscale="Viridis",showscale = False)], layout=layout,)
-      fig["layout"].update({
-      #                     "plot_bgcolor":"rgba(0, 0, 0, 0)",
-                          "paper_bgcolor":"rgba(0,0,0,0)"
+n=5
+fig = go.Figure(data=[go.Surface(x=x,y=np.linspace(0,t*n,U.shape[1]),z=Z[1::n],colorscale="Viridis",showscale = False)], layout=layout,)
+fig["layout"].update({
+#                     "plot_bgcolor":"rgba(0, 0, 0, 0)",
+                      "paper_bgcolor":"rgba(0,0,0,0)"
                            })
-      py.iplot(fig, filename='var-coeff-wave-eq')
-      </code></pre>
-      </div>
+py.iplot(fig, filename='var-coeff-wave-eq')
+</code></pre>
+</div>
 
 
 <!-- <iframe onload="this.width=this.contentWindow.document.body.scrollWidth;"
