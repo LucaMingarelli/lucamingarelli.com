@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<!-- Add all style settings from file style_preamble.js -->
+
+<head>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<title>Luca Mingarelli</title>
+  <link rel="icon" href="../Icons/stork.png" type="image/png">
+</head>
+<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/w3.css">
+<link rel="stylesheet" href="../css/font.css">
+<script type="text/javascript" src="../js/style_preamble.js"></script>
+<link rel="stylesheet" href="../css/progressive-image.min.css">
+<script src="../js/progressive-image.min.js"></script>
+<script src="../js/style_preamble.js"></script>
+
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+  <!-- NavigationBar -->
+   <script src="../js/Navbar.js"></script>
+  <!-- _____________ -->
+  <!-- PRE_CONTENT -->
+  <!-- <script src="js/pre_content.js"></script> -->
+	<div class="w3-main" style="margin-left:300px">
+	<div class="w3-hide-large" style="margin-top:83px"></div>
+	<img src="../Figures/BICG/net.gif" style="width:100%;height:auto;"/></object>
+	  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display=\'none\'">
+	    <span class="w3-button w3-black w3-xlarge w3-display-topright">X</span>
+	    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+	      <img id="img01" class="w3-image">
+	      <p id="caption"></p>
+	    </div>
+	  </div>
+	 <div class="w3-container w3-BackgroundColor  w3-center w3-text-black w3-padding-32 w3-animate-right" id="about" background-color="red">
+  <!-- _____________ -->
+  <!-- !PAGE CONTENT! -->
+
+
+
+    <div class="w3-content w3-justify" style="max-width:700px; justify-content: left;">
+      <!-- <h2>Research Blog</h2>
+      <h5>This page contains informal accounts of recent research projects aimed at a broad audience.</h5> -->
+
+      <h2 style="text-align:left"><b>The Banking Interconnectedness Coordination Group</b></h2>
+<h3 style="text-align:left"><b>An overview of my work at the ECB</b></h3>
+<p>
+The <i>Banking Interconnectedness Coordination Group</i> (BICG) is a data analytics group within
+the <i>Directorate General Financial Stability and Macroprudential Policy</i> at the ECB. The group consits of three
+main work streams:
+<ul>
+	<li>Data Mining</li>
+	<li>Analytical Modelling</li>
+	<li>Policy Assessment</li>
+</ul>
+The group constructs and mantains large granular datasets useful to study and monitor the European financial system,
+develops novel interconnectedness and contagion modelling tools, and investigates diverse questions relevant for
+ <i>macroprudential</i> and <i>financial stability</i> policy making.
+
+Most projects and activities the group works on depend to some extent on a core <i>data infrastructure</i>
+and <i>analytical modelling framework</i>.
+</p>
+
+
+<h3 ><object data="db.svg" type="image/svg+xml" >
+	<img src="../Figures/BICG/db.svg"/>
+</object><b>Data Infrastructure</b></h3>
+
+
+<blockquote style="background: #e1eaf2;border-left: 10px solid #5c748a;margin: .05em 10px;
+  padding: 0em 10px; quotes: "\201C""\201D""\2018""\2019";">
+	<p style="font-size: 0.8em !important;">
+Monitoring an <b>interconnected</b> financial system requires the availability of detailed
+and <b>granular</b> data.
+</br>
+- Mario Draghi, <i>Welcome remarks ESRB annual conference 27 september 2018</i></p>
+</blockquote>
+<p>
+<b>Modern central banking requires high-quality financial data at a granular level</b>
+to perform several of its functions, including conducting monetary policy, assessing systemic risks,
+maintaining financial stability, supervising banks, performing market surveillance,
+and enforcing and conducting resolution activities.
+In particular, it is the interconnectedness of financial markets that makes manifest the obvious need
+for a coherent and global view of the broad financial system.
+This is a prerequisite necessary to monitor emerging vulnerabilities and to ensure these are dealt with
+promptly and effectively.
+</br></br>
+<b>Good and high-quality data is therefore essential for global systemic risk assessment and for global
+	financial stability.</b>
+	However, granular datasets often suffer from two major shortcomings: data quality is often poor,
+	and merging information across different datasets - a crucial requirement for an effective analysis
+	of the financial system - can prove very challenging.
+	<img src="../Figures/BICG/MEGAPLOT.png" align="right"
+								style="width:220px;height:auto;float:right;"/>
+</br></br>
+<b>The BICG works towards the cleaning, enhancement, and integration of multiple and diverse granular d
+	ata sources</b> needed for macroprudential and financial stability policy making.
+	The data infrastructure the group maintains is constantly expanding in an attempt to provide
+	a full and holistic view on the broad financial system, its institutions, and their interconnections.
+	<!-- The table below presents a summary of databases the group is currently working on, and useful
+	for the development of granular models of contagion of euro area financial system. -->
+</p>
+
+<h3 ><object data="db.svg" type="image/svg+xml" >
+	<img src="../Figures/BICG/analytics.svg"/>
+</object><img src="../Figures/BICG/animat-linechart.gif"
+              style="width:35px;height:auto;"/>
+<b>Analytical Modelling</b></h3>
+<p>
+The modelling of the financial system at a granular entity-by-entity level relies
+on a multi-layer network structure constructed from regulatory reporting data,
+and provides the basis for all other projects and applications.
+At its core, the model attempts to provide an holistic view of the whole system's dynamics
+by capturing both first as well as second round effects, arising from direct as well as indirect exposures,
+and their interactions. This is done by relying on three main mechanisms of contagion,
+each accounting for a different class of risk: credit, liquidity, and market risk.
+</p><p>
+This micro-structural model exploits <i>Monte Carlo</i> simulation techniques to estimates distributions
+of losses generated in the real economy and amplified through further mechanisms of contagion.
+The distributional dimension extracted permits the evaluation of novel metrics of systemic risk,
+while at the same time providing granular insights into the contribution of individual agents.
+</p>
+<!-- <p>
+Similar charts can be found here for
+</p> -->
+
+<hr class="w3-opacity">
+
+<h2><b>Projects and activities</b></h2>
+
+
+
+
+<h3 ><img src="../Figures/BICG/monitor.png" style="width:80px;height:auto;"/>
+<b>Monitoring of Systemic Risk</b></h3>
+With the realisation of the paramount importance of interconnectedness that came after the 2007-2009
+financial crisis, it became evident the inadequacy of microprudential supervision alone,
+and the insufficiency of monitoring balance sheets of individual institutions without a system-wide perspective.
+In order to provide a holistic oversight of the system able to empower decision makers to develop
+financial stability strengthening policies, the BICG works at the construction and development of
+different forward-looking indicators for monitoring the developments of systemic risks in the financial system.
+Such indicators are closely monitored, giving insights into the quarterly dynamics of the European
+banking system, while at the same time providing early workings in times of distress.
+The group is moreover constantly working on the improvement of existing indicators,
+as well as on the development of novel ones. This requires on one hand grounding the monitoring activity
+in more and more granular data, and on the other hand to understand existing mechanisms of contagion
+and consequently to develop adequate models able to mimic the amplification of distress throughout the system.
+
+<h3 ><object data="bank.svg" type="image/svg+xml" ><img src="../Figures/BICG/bank.svg"/></object>
+<b>Institution specific analysis</b></h3>
+
+Shocks to individual institutions, even when idiosyncratic, might pose a significant threat to the wider system.
+Through an accurate mapping of exposures, both direct and indirect, it is possible to uncover systemic vulnerabilities, mapping the most exposed and counterparties, and thus assess risks and monitor their development.
+Leveraging on this, in conjunction with a model for financial contagion, one can therefore further
+determine indices of contribution to systemic risk, as well as as indices of vulnerability at institution,
+country, or sector level. Such tools are of paramount importance in informing the macroprudential policy making,
+providing granular insights on the resilience of euro area financial stability. For more information,
+please see here [page in construction].
+
+<h3 ><img src="../Figures/BICG/swst.png" style="width:80px;height:auto;"/>
+<b>System Wide Stress Testing</b></h3>
+
+An SRF-STM joint project – The BICG works in close collaboration with colleagues in the
+System Wide Stress Test Group (SWST) towards the development of contagion modelling for the stress
+testing of the EA-wide financial system. While within the BICG modelling focuses mostly on banks dynamics,
+the SWST group extends the analysis by including further sectors, such as investment and pension funds,
+insurances, MMFs, and other financial institutions, all of which have seen their relevance for financial
+stability increasing in the past years. For more information, please see here.
+
+<h3 ><object data="interwind.svg" type="image/svg+xml" ><img src="../Figures/BICG/Interwind.svg"
+	style="width:80px;height:auto;"/></object>
+<b>Correlated Defaults Generator</b></h3>
+
+Implementing a Merton-like model of default probability we can generate joint default events for a
+large set of listed institutions. Crucially, our methodology is able to capture correlations between the
+default processes, which is a feature with well known relevance, especially in times of distress.
+In addition, Bayesian Model Averaging techniques are used to link macro exogenous regressors to the parameters
+defining the underlying generating process. The system's parameters can thus be stressed according to predefined
+scenarios, with direct effects both on the marginal probability of defaults, as well as on the correlation
+among different events.
+
+<h3 ><img src="../Figures/BICG/candlestick2.png" style="width:80px;height:auto;"/>
+<b>Price Impact</b></h3>
+
+The availability of portfolios information at ISIN level provides an intriguing opportunity
+to explore the relevance of overlapping portfolios as indirect sources of contagion in times of distress. In order to implement a model of asset deleveraging it is however necessary to be able to assess the impact on price on each individual security which would stem from a sudden sale of the latter in large volumes.
+Obtaining daily prices and aggregate (unsigned) traded volumes is sufficient to produce accurate estimates of the impact on price of a trade of a given amount of (signed) volume.
+This work has contributed to the ESRB General Board report Top-down assessment of a mass bond downgrade scenario.
+
+
+<h3 ><img src="../Figures/BICG/realecon.png" style="width:80px;height:auto;"/>
+<b>Real Economy Analysis</b></h3>
+
+The real economy sector is one of the most relevant sources of risk for the financial system,
+being the first to be impacted by exogenous shocks. For this reason, it is of paramount importance to monitor developments in corporate credit risk and exposures from the financial system.
+In particular, it is beneficial to be able to assess the degree of systemic importance of individual non-financial corporations in the Euro area, as well as groups of firms which under substantial strain would have the potential to put at risk the whole system.
+Our approach allows for the ranking of such institutions and groups based on their systemic relevance, crucially demonstrating more appropriate metrics of systemic risk can be developed than the standard LGD based measures.
+
+<h3 ><img src="../Figures/BICG/europe_net.png" style="width:80px;height:auto;"/></object>
+<b>Country-Sector Contagion analysis</b></h3>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+<h3 ><img src="../Figures/BICG/dispersed.png" style="width:80px;height:auto;"/>
+<b>Optimised resolution strategies</b></h3>
+
+A ECB-SRB joint project
+In 2018, the Single Resolution Board (SRB) asked DG-MF for expert support in estimating financial contagion effects and impacts on the real economy stemming from the possible default or bail-in of a credit institution (bottom-up approach).
+By exclusion of liabilities or creditors from the bail-in during resolution, the bail-in strategy can be optimised, limiting adverse contagion effects and repercussions onto the real economy. This approach provides useful input to resolution planning to help determine which bail-in strategy might be socially `optimal', i.e. minimising system wide cost and systemic risk. The model enables to measure the effectiveness of resolution techniques in terms of losses to the financial system, following the default of a signicantly large bank. Benchmarked to the simple bank insolvency case, this analysis aims to measure reductions in losses and systemic risk when applying bail-in techniques to the bank instead of winding it down.
+Working paper forthcoming.
+
+<h3 ><img src="../Figures/BICG/climate-change.png" style="width:80px;height:auto;"/>
+<b>Climate and sustainable finance</b></h3>
+
+In the last years, the world has seen an alarming increase in natural catastrophes due to climate change, which ultimately is caused by the increase of CO2 emissions in the atmosphere. Regulators are trying to limit firms’ emissions by proposing new climate policies (e.g. carbon tax, cap and trade schemes for emissions, etc.), or incentivising new low-carbon technologies, that might boost firms’ migrations to less polluting sources of energy. However, not all firms might be able to catch up, and some sectors might face more difficulties in reconverting their activities. Eventually some non-financial corporations might see a significant increase in their risk of default.
+Such transition risks clearly have the potential to threaten the stability of the financial system. Banks that are highly exposed to sectors and corporations facing high transition risk, could suffer important losses, that if spread to the whole system could trigger systemic events. Monitoring exposures to climate transition risk is therefore crucial to understand whether banks are doing their parts in financing more low-carbon activities and whether the financial system might face sizable losses should high-polluting firms default in light of new climate regulations.
+FSR output here.
+
+<h3 ><object data="protect.svg" type="image/svg+xml" >
+	<img src="../Figures/BICG/protect.svg" style="width:80px;height:auto;"/></object>
+<b>Joint capital buffers calibration</b></h3>
+
+The standard approach employed to calibrate capital buffers of individual banks in based on a bank-by-bank analysis, wich does not take into account the possible interactions between such banks and their respective capital requirements. However, given interconnectedness and contagion risk in the banking system, increasing the capital in one bank affects the stability of the entire system, including the contribution of the remaining banks to systemic risk and their optimised capital requirement.
+This motivates the development of a novel approach for the calibration of capital buffers grounded in granular interbank data with the objective of minimising systemic risk and real economy spillovers. The optimisation procedure consists in a grid search method over the space of G-SIB rates, with a systemic risk measure as objective function.
+Internal note here.
+
+<h3 ><object data="zombie.svg" type="image/svg+xml" >
+	<img src="../Figures/BICG/zombie.svg" style="width:80px;height:auto;"/></object>
+<b>Zombie lending and credit misallocation</b></h3>
+
+Distressed institutions have an incentive to roll over their lending to distressed or insolvent borrowers, a behaviour known as gambling for resurrection. This allows such institutions to avoid, albeit temporarily, the realisation of losses on one hand, while at the same time avoiding the potential increase in loan defaults which would stem from a credit reduction towards such zombie firms. While it is clear that the widespread presence of such firms puts the system into a precarious state, a more difficult task is to predict which macroeconomic scenarios might be capable to pull the trigger, such as an increase in interest rates which would suddenly make loan forbearance unsustainable. This stream has three main objectives:
+1.      Identification of zombie firms
+2.      Identification of forbearing banks
+3.      Assessment of implications for systemic risk
+To get access to the repository please do get in touch.
+A first note on "Estimates of euro area corporate zombification" can be found here here.
+
+<h3 ><object data="covid19.svg" type="image/svg+xml" >
+	<img src="../Figures/BICG/covid19.svg" style="width:80px;height:auto;"/></object>
+<b>Impact of the Covid-19 pandemic</b></h3>
+
+
+
+Since the beginning of the 2020 pandemic outbreak in the first quarter of the year, corporate credit risk has been rising sharply. The BICG has been contributing to the assessment of COVID-19 impact with its granular approach, providing firm-by-firm analysis and systemic risk projections based on stressed credit risk scenarios. In-depth analysis has revealed strong heterogeneities across different sectors, with some industries having up to around one quarter of the firms benefiting from the pandemic. Such granular insight is particularly important when translated onto the banking sector, demonstrating once again the relevance of considering individual exposures information which might be averaged out in aggregated data.
+
+
+<h3>Current and past outlets</h3>
+<ul>
+	<li>Internal monitors</li>
+	<li>Financial Stability Review</li>
+	<li>FSC-WGST</li>
+	<li>Macro-Prudential Analytical Group (MPAG)</li>
+	<li>Quarterly Systemic Banking Report</li>
+	<li>Surveillance Note</li>
+	<li>Systemic Footprint Assessment</li>
+	<li>ESRB work stream 3 - Top-down assessment of a mass bond downgrade scenario</li>
+</ul>
+
+</br></br>
+<!-- ________________________________________________________________________________________________ -->
+<!-- ________________________________________________________________________________________________ -->
+<!-- ________________________________________________________________________________________________ -->
+	<h7> <a href="./Paper2.html"><b><img src="../Icons/prev.png" width="20px">Previous</b></a></h7>
+
+        <!-- <h7>
+        <span style="float:right;">
+        <a href="./Paper4.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+        </span>
+        </h7>
+        </br> -->
+
+      <h5> <a href="../ResearchBlog.html"><b><img src="../Icons/back.png" width="20px"> Back to Research Blog</b></a></h5>
+
+
+
+      <hr class="w3-opacity">
+    </div>
+  </div>
+<script type="text/javascript" src="../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../js/OpenCloseSidebar.js"></script>
+<script src="../js/ModalImageGallery.js"></script>
+
+</body>
+</html>
