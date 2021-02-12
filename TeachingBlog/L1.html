@@ -500,7 +500,7 @@ py.iplot(fig, filename='var-coeff-wave-eq')
                     },
                     "camera": {
                         "up": {"x": 0, "y": 0, "z": 1},
-                        "eye": {"x": -0.25/1.1, "y": -1.8/1.1, "z": 0.91/1.1}
+                        "eye": {"x": -0.25/0.99, "y": -1.8/0.99, "z": 0.91/0.99}
                       },
                     "aspectmode": "manual",
                     "aspectratio": {"x": 1, "y": 1, "z": 0.4}
@@ -528,18 +528,17 @@ py.iplot(fig, filename='var-coeff-wave-eq')
             }
             resizeDebounce = window.setTimeout(resizePlot, 100);
         });
+        var config = {responsive: true};
         Plotly.plot(gd,  {
             data: figure.data,
             layout: figure.layout,
             frames: figure.frames,
             // config: {"showLink": false, "linkText": "Export to plotly.com", "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"}
-        });
+      }, config);
    }());
 </script>
 
 </div>
-
-
 
 
 </br></br>
