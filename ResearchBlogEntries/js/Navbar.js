@@ -9,6 +9,8 @@ document.write('\
  <a href="../index.html" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a>\
  <a href="../RESEARCH.html" class="w3-bar-item w3-button">RESEARCH</a>\
  <a href="../ResearchBlog.html"  class="w3-bar-item w3-button">Research Blog</a>\
+ <a href="../Conferences.html"  class="w3-bar-item w3-button">Conferences</a>\
+ <a href="../Software.html"  class="w3-bar-item w3-button">Software</a>\
  <a href="../Teaching.html"  class="w3-bar-item w3-button">Teaching</a>\
  <!--<a href="MISC.html" class="w3-bar-item w3-button">MISCELLANEOUS</a>-->\
  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>\
