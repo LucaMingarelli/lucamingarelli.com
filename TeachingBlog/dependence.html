@@ -255,7 +255,7 @@
             \end{cases}  \) .</li>
     </ol>
 </i></blockquote>
-    See <a href="#EX16"><i>Exercise 16</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that
+    See <a href="#EX8"><i>Exercise 8</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that
     \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off
     other properties. In particular, it can be shown
     that one can have \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\),
@@ -394,7 +394,7 @@
         <p align="right"> ◻</p>
     </div>
 
-    <h6 id="EX16">Exercise 8</h6>
+    <h6 id="EX8">Exercise 8</h6>
     Prove <i>Proposition 3</i>.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 8</button>
@@ -458,6 +458,19 @@
     \end{equation}
 </i></blockquote>
 
+Figure 1 below presents the coefficient of tail dependence
+    for the Student-t copula \(C_{\nu,\rho}^t\) for which one can find \(\lambda_\ell=\lambda_u\).
+The tail dependence grows with the correlation coefficient \(\rho\) and quickly decreases
+    with increasing degrees of freedom \(\nu\). Therefore, recalling the limit \(\nu\rightarrow\infty\)
+    leads to normality,  one can easily see the gaussian copula is
+    asymptotically independent for all \(\rho\) except \(\rho=1\)).
+    <figure>
+        <img class="center" alt="tail_dependence"
+             src="img/Dependence/tail_dependence.svg"
+             width="90%" >
+        <figcaption><i><b>Fig.1:</b> Coefficient of tail dependence for the Student-t copula \(C_{\nu,\rho}^t\).</i></figcaption>
+    </figure>
+
     <hr class="w3-opacity">
 
     <h6>Exercise 9</h6>
@@ -515,13 +528,35 @@
 
     <hr class="w3-opacity">
 
-
+One major issue with gaussian copulae is their asymptotic independence for any \(|\rho|<1\).
+    The great financial crisis of 2007-2008 is often partly attributed to the misuse of the gaussian
+    copula model <a href="#ref2">[2]</a> <a href="#ref3">[3]</a>.
+    The inadequacy of gaussian copula is evident:
+    attempting to model defaults in a portfolio of corporate bonds
+    leads to crucial underestimation of the likelihood of joint defaults
+    (because of the gaussian copula asymptotic independence).
+    This is especially important in times of financial distress when defaults
+    are clustered and conditional on observing one company defaulting
+    one has a high likelihood of observing more defaults.
+    Consequently some have argued one cause of the crisis was to be attributed to
+    a "misplaced reliance on sophisticated mathematics" <a href="#ref4">[4]</a>.
+    However this could not be further from the truth. Quite to the contrary in fact,
+    models based on the gaussian copula were enthusiastically embraced by the financial industry
+    exactly because of their simplicity. In particular, had the industry employed more 'sophisticated'
+    mathematics, which in this specific case means asymptotically dependent copulae,
+    the banks' risk management would have been arguably more sound, and capable to cope with
+    the materialisation of large clusters of defaults.
     <br>
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1]<a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
-
+    [1] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
+    <br>
+    [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
+    <br>
+    [3] <a href="http://www.macs.hw.ac.uk/~cd134/2010/donemb.pdf" id="ref3"> "The devil is in the tails: actuarial mathematics and the subprime mortgage crisis", Catherine Donnelly and Paul Embrechts, 2010,  ASTIN Bulletin: The Journal of the IAA, 40(1), 1-33</a>
+    <br>
+    [4] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref4"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a>
     <br><br>
 
 
