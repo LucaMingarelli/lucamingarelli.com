@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Luca Mingarelli</title>
+    <link rel="icon" href="../Icons/stork.png" type="image/png">
+    <style>
+        .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
+            border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
+        /*.active,*/
+        .collapsible:hover {  background-color: #555;}
+        .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+    </style>
+</head>
+
+<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+<script>window.MathJax = {tex: {tags: 'ams'}};</script>
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
+
+<link rel="stylesheet" href="prism/prism.css"> <!-- For code highlight -->
+<script src="prism/prism.js"></script>         <!-- For code highlight -->
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/w3.css">
+<link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/responsiveiframe.css">
+<script src="../js/style_preamble.js"></script>
+
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<!-- NavigationBar -->
+<script src="js/Navbar.js"></script>
+<!-- _____________ -->
+<!-- PRE_CONTENT -->
+<script src="js/pre_content.js"></script>
+<!-- _____________ -->
+
+
+
+
+<div class="w3-content w3-justify" style="max-width:800px">
+
+    <h1><b>Measures of dependence</b></h1>
+
+    For convenience, one often desires to summarise
+    the dependency structure of a multivariate distribution
+    with a single scalar metric. The most common measures is
+    linear correlation. However this metric is known to have its
+    severe pitfalls in many general cases, and better measures should be considered.
+
+    <h2>Linear correlation</h2>
+    The first measure of dependency we encounter is Pearson's coefficient of
+    linear correlation:
+    \begin{equation}
+    \begin{split}
+    \rho(X_1, X_2) &= \frac{\text{cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} \\
+    &= \frac{\mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2))}{\sqrt{\mathbb{E}((X_1-\mathbb{E}X_1)^2)}\sqrt{\mathbb{E}((X_2-\mathbb{E}X_2)^2)}}
+    \end{split}.
+    \label{eq:lin_corr}
+    \end{equation}
+    While very useful in many linear or approximately linear scenarios, this metric however fails
+    to capture fundamental properties of more complex and realistic distributions.
+    In addition, thinking in terms of linear correlation can easily make us prey of insidious
+    pitfalls and fallacies.
+    <br>
+    First of all we notice that \eqref{eq:lin_corr} depends on the marginals
+    and in particular, that it is well defined if and only if the second moments exist,
+    \(\mathbb{E}(X_j)^2<\infty,\ \forall j\). Therefore this metric is not well defined
+    for a number of marginals such as many power-law distributions where the second moment does not exist.
+    <br>
+    Moreover, the linear correlation \eqref{eq:lin_corr} is also unable to capture
+    strong non-linear functional dependencies such as \(X_2=X_1^2\) or \(X_2 = \sin(X_1)\).
+    Indeed in general one has \(|\rho|\le 1\) and \(|\rho|=1\iff X_2 = aX_1+b\)
+    for some \(a\in\mathbb{R}\backslash \{0\},\ b\in\mathbb{R} \).
+    <br>
+    The linear correlation \(\rho\) is also invariant under strictly increasing
+    <u>linear</u> transformation, but not under more general stricly increasing transformations.
+
+    <br>
+    One further source of confusion arise from us being used to reason in terms of
+    normal distributions. Indeed a number of seemingly intuitive statements on
+    correlations which are true in the case of normal distributions do not generalise outside of this distribution.
+    <br>
+    As an example, for normal distributions one finds zero correlation and independence equivalent, which
+    is no longer true already for e.g. student-t distributed random variables.
+    <br>
+    Another fallacy is to think that the marginals and the correlations matrix
+    (\(F_1\), \(F_2\), and \(\rho\) in the bivariate case) are sufficient to determine
+    the joint distribution \(F\). This is true for elliptical distributions, but wrong in general.
+    Indeed the only mathematical object encoding all information concerning the dependency structure
+    is the copula itself.
+    <br>
+    Yet another fallacy is to think two marginals \(F_1\), \(F_2\),
+    any value of \(\rho\in[-1,1]\) is attainable. Again, this is true for elliptically
+    distributed \((X_1, X_2)\) with finite second moment, but wrong in general.
+    The attainable range can be computed via <i>Hoeffding's formula</i>
+    \begin{equation}
+    \text{cov}(X_1, X_2) = \int_{-\infty}^\infty\int_{-\infty}^\infty C(F_1(x_1), F_2(x_2))-F_1(x_1)F_2(x_2)\text{d} x \text{d} y,
+    \label{eq:Hoeffding_formula}
+    \end{equation}
+    where \(\rho_{\text{min}}\) is attained for \(C=W_{\text{counter}}\) and \(\rho_{\text{max}}\) for \(C=C_{\text{co}}\).
+    This can be arbitrarily small for appropriate choices of the marginals \(F_1\) and \(F_2\).
+    <hr class="w3-opacity">
+
+    <h6>Exercise 1</h6>
+    Consider two independent random variables \(Z, W \sim \mathcal{N}(0,1)\).
+    The random variables \(X=Z\) and \(Y = ZW\) are clearly not independent.
+    What's \(\rho(X, Y)\)?
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        The linear correlation coefficient is
+        \begin{align*}
+        \rho(X, Y) &= \text{cov}(X, Y) \newline
+        &= \mathbb{E}(XY)\newline
+        &= \mathbb{E}(V)\mathbb{E}(Z^2) = 0
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+
+    <h6>Exercise 2</h6>
+    Prove \eqref{eq:Hoeffding_formula}.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Start by considering an \(X_j, Y_j \sim F_j\),
+        with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).
+        One has:
+        \begin{align*}
+        2\text{cov}(X_1, X_2) &= \mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2)) + \mathbb{E}((Y_1-\mathbb{E}Y_1)(Y_2-\mathbb{E}Y_2)) \newline
+        &=\mathbb{E}\left(((X_1 - \mathbb{E}X_1)-(Y_1 - \mathbb{E}Y_1))((X_2 - \mathbb{E}X_2)-(Y_2 - \mathbb{E}Y_2))\right) \newline
+        &= \mathbb{E}((X_1-Y_1)(X_2-Y_2)).
+        \end{align*}
+        Now recall that for any \(a,b\in\mathbb{R}\) one has
+        \[
+        b-a = \int_{-\infty}^\infty \Theta(x-a) - \Theta(x-b)\text{d}x,
+        \]
+        with \(\Theta(x)\) indicating Heaviside's theta function
+        (with the convention \(\Theta(0)=1\)). Therefore:
+        \begin{align*}
+        2\text{cov}(X_1, X_2) &=
+        \mathbb{E}\int_{-\infty}^\infty\int_{-\infty}^\infty
+        (\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))
+        \text{d}x_1\text{d}x_2 \newline
+        \xrightarrow[]{\text{Fubini}}&=\int_{-\infty}^\infty\int_{-\infty}^\infty
+        \mathbb{E}\left((\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))\right)
+        \text{d}x_1\text{d}x_2\newline
+        &=2\int_{-\infty}^\infty\int_{-\infty}^\infty F(x_1, x_2) - F_1(x_1)F_2(x_2)\text{d}x_1\text{d}x_2.
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+
+    <hr class="w3-opacity">
+
+    <h2>Rank correlation</h2>
+    Many of the drawbacks and pitfalls encountered with linear correlation
+    are resolved when considering rank correlations instead.
+    As we shall see, rank correlation coefficients are always defined
+    and are invariant under any strictly increasing transformation, implying
+    they depend exclusively on the copula.
+    In the following we
+    shall present to of the most prominent, namely <i>Kendall's tau</i> and
+    <i>Spearman's rho</i>.
+    <br>
+
+
+
+    <br><br>
+    <b>Definition 1 — Kendall's tau</b><blockquote><i>
+    Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
+    Kendall's tau is defined as
+    \begin{equation}
+    \begin{split}
+    \rho_\tau &= \mathbb{E}(\text{sign}((X_1-Y_1)(X_2-Y_2))) \newline
+    &= \mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - \mathbb{P}((X_1-Y_1)(X_2-Y_2)<0).
+    \end{split}
+    \label{eq:kendall_tau}
+    \end{equation}
+    That is, the probability of concordance minus the probability of discordance
+    (i.e. the probability of two points from \(F\) to have positive or negative slope respectively).
+</i></blockquote>
+
+    <b>Proposition 1.1 — Formula for Kendall's tau</b><blockquote><i>
+    Consider two random variables \(X_1\) and \(X_2\)
+    with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
+    \begin{equation}
+    \begin{split}
+    \rho_\tau &= 4\int_{[0,1]^2}C(u_1, u_2)\text{d}C(u_1, u_2) - 1\newline
+    &=4\mathbb{E}(C(U_1, U_2)) - 1,
+    \end{split}
+    \label{eq:formula_kendall}
+    \end{equation}
+    with \((U_1, U_2)\sim C\).
+
+</i></blockquote>
+
+
+    <br>
+    <b>Definition 2 — Spearman's rho</b><blockquote><i>
+    Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
+    Spearman's rho is defined as
+    \begin{equation}
+    \rho_S = \rho(F_1(X_1), F_2(X_2)).
+    \label{eq:spearman_rho}
+    \end{equation}
+</i></blockquote>
+
+
+    <b>Proposition 2.1 — Formula for Spearman's rho</b><blockquote><i>
+    Consider two random variables \(X_1\) and \(X_2\)
+    with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
+    \begin{equation}
+    \begin{split}
+    \rho_S &=12 \int_0^1\int_0^1 C(u_1, u_2)\text{d}u_1\text{d}u_2 - 3 \newline
+    &= 12\mathbb{E}(C(U_1, U_2)) - 3,
+    \end{split}
+    \label{eq:formula_spearman}
+    \end{equation}
+    with \(U_1 \perp\!\!\!\perp U_2\).
+</i></blockquote>
+
+
+    Rank correlations are useful to characterise the dependence, providing comparable measures,
+    and can also serve as a tool for calibration and estimation of a copula's parameter(s).
+    As we have mentioned, a number of fallacies are avoided, but not all.
+    <h5>Resolved fallacies</h5>
+    For \(\kappa=\rho_\tau\) as well as for  \(\kappa=\rho_S\) one has:
+    <ul>
+        <li>\(\kappa\) is always well defined</li>
+        <li>\(\kappa\) is invariant under any strictly increasing transformation of the random variables</li>
+        <li>\(\kappa=\pm 1\) if and only if \(X_1\) and \(X_2\) are co-/counter- monotonic.</li>
+        <li>Any \(\kappa \in [-1,1]\) is attainable</li>
+    </ul>
+    <h5>Unresolved fallacies</h5>
+    However, in general for \(\kappa=\rho_\tau\) as well as for  \(\kappa=\rho_S\) one has:
+    <ul>
+        <li>The marginals \(F_1, F_2\) and the rank correlation \(\kappa\) are still not sufficient
+            to uniquely determine \(F\).</li>
+        <li> While \(X_1 \perp\!\!\!\perp X_2 \implies \kappa=0\), the converse is still not true: \(\kappa=0\) does not imply independence </li>
+    </ul>
+
+    The last point is something that might still be desirable.
+    However one can show that this requirement would be be in contraddiction with the
+    fundamental property of invariance under strictly increasing transformations.
+
+    <br><br>
+    <b>Proposition 3</b><blockquote><i>
+    There exist no dependency measure \(\kappa\) such that:
+    <ol>
+        <li>\(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\), and</li>
+        <li>\(\kappa(T(X_1), X_2) = \begin{cases}
+            \kappa(X, Y) & \text{if $T$ strictly increasing}\\
+            -\kappa(X, Y) & \text{if $T$ strictly decreasing}
+            \end{cases}  \) .</li>
+    </ol>
+</i></blockquote>
+    See <a href="#EX16"><i>Exercise 16</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that
+    \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off
+    other properties. In particular, it can be shown
+    that one can have \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\),
+    with \(0\le \kappa(X_1, X_2)\le 1\), and
+    \(\kappa(X_1, X_2)=1 \iff X_1,X_2\) co-/counter- monotonic,
+    and \(\kappa(T(X_1), X_2)=\kappa(X_1, X_2)\) for \(T\) strictly increasing.
+    See <a href="#REFERENCES">[1]</a> for more details.
+    <hr class="w3-opacity">
+
+    <h6>Exercise 3</h6>
+    Prove \eqref{eq:formula_kendall}.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 3</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Consider \(X_j, Y_j \sim F_j\),
+        with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).
+        One has:
+        \begin{align*}
+        \rho_\tau &= \mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - \mathbb{P}((X_1-Y_1)(X_2-Y_2)<0) \newline
+        &= 2\mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - 1 \newline
+        &= 2(2\mathbb{P}(X_1< Y_1,\ X_2< Y_2)) -1 \newline
+        &= 4\mathbb{P}(U_{X,1}< U_{Y,1},\ U_{X,2}< U_{Y,2}) -1 \newline
+        &=4\int_0^1\int_0^1\mathbb{P}(U_1\le u_1, U_2\le u_2)\text{d}C(u_1, u_2) - 1.
+        \end{align*}
+        <p align="right"> ◻</p>
+
+
+    </div>
+    <h6>Exercise 4</h6>
+    Prove \eqref{eq:formula_spearman}.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 4</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        From definition \eqref{eq:spearman_rho} one has:
+        \begin{align*}
+        \rho_S &= \rho(F_1(X_1), F_2(X_2)) \newline
+        \text{Hoeffding's formula}\rightarrow &= 12\int_0^1\int_0^1C(u_1, u_2)-u_1u_2\ \text{d}u_1\text{d}u_2 \newline
+        &=12\int_0^1\int_0^1C(u_1, u_2) \text{d}u_1\text{d}u_2 -3.
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+    <h6>Exercise 5</h6>
+    Show that the comonotonic copula \(C_{\text{co}}\) implies \(\kappa=1\)
+    for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Notice that
+        \[
+        \mathbb{P}(\text{min}(U_1, U_2) < t) = 1-\mathbb{P}(\text{min}(U_1, U_2) \ge t) = 1- (1-t)^2,
+        \]
+        so that
+        \(
+        f_{T=\text{min}(U_1, U_2)}(t) = 2(1-t).
+        \)
+        Therefore one has
+        \begin{align*}
+        \mathbb{E}(\text{min}(U_1, U_2)) &= \int_0^1 tf_{T=\text{min}(U_1, U_2)}(t) \text{d}t \newline
+        &= 2\int_0^1 t(1-t) \text{d}t =\frac{1}{3}.
+        \end{align*}
+        Hence:
+        \begin{align*}
+        <!--                \rho_\tau &= 4\mathbb{E}(\text{min}(U_1, U_2)) - 1 = 4\frac{}{},\newline-->
+        \rho_S &= 12\mathbb{E}(\text{min}(U_1, U_2)) - 3 = \frac{12}{3} - 3 = 1.
+        \end{align*}
+        Let's consider Kendall's tau now. First, the copula viewed as a random variable
+        has a distribution function called "Kendall distribution function", which is equal to
+        \[
+        K_C(t) = t -\frac{\psi(t)}{\psi'(t)},
+        \]
+        with \(\psi(t)\) the copula's generator and \(\psi'(t)\) its first derivative.
+        One can then write the expected value of the copula as
+        \begin{align*}
+        \mathbb{E}[C(U_1, U_2)] &= \int_0^1t\text{d}K_C \newline
+        \xrightarrow[]{\text{by parts}}  &= tK_C(t)\Big|_0^1 - \int_0^1K_C(t)\text{d}t.
+        \end{align*}
+
+
+        Recalling the limiting results for the Clayton copula
+        (see <a href="copulas.html#EX8"> <i>Exercise 8</i> here </a>),
+        let's consider the generator of
+        the Clayton copula and its derivative:
+        \begin{align*}
+        \psi(t) &= \theta^{-1}(t^{-\theta}-1), \newline
+        \psi'(t) &= -t^{-(1+\theta)},
+        \end{align*}
+        which gives
+        \[
+        K_C(t) = t(1+\theta^{-1}(1-t^\theta)).
+        \]
+        Then
+        \begin{align*}
+        \mathbb{E}[C(U_1, U_2)] &= tK_C(t)\Big|_0^1 - \int_0^1K_C(t)\text{d}t\newline
+        &= 1-\frac{\theta+3}{2\theta+4}.
+        \end{align*}
+
+        Finally, taking the limits \(\theta\rightarrow\infty\) for \(C_{\text{co}}\) and
+        \(\theta\rightarrow -1\) for \(W_{\text{counter}}\) one finds:
+
+        \begin{align*}
+        \mathbb{E}[C_{\text{co}}(U_1, U_2)] &= \frac{1}{2},\newline
+        \mathbb{E}[W_{\text{counter}}(U_1, U_2)] &= 0.\newline
+        \end{align*}
+        Therefore,
+        \begin{align*}
+        \rho_\tau &= 4\mathbb{E}[C_{\text{co}}(U_1, U_2)]-1 = 1.
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+
+    <h6>Exercise 6</h6>
+    Show that the countermonotonic copula \(W_{\text{counter}}\) implies \(\kappa=-1\)
+    for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 6</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        As in the solution of <i>Exercise 5</i> and with the results therein.
+        <p align="right"> ◻</p>
+    </div>
+
+    <h6>Exercise 7</h6>
+    Write a bivariate joint distribution parametrised by a single parameter \(\lambda\in [0,1]\)
+    and show that this can attain any \(\kappa \in [-1,1]\) for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 7</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Consider the following:
+        \begin{equation*}
+        F(x_1, x_2) = \lambda C_{\text{co}}(F_1(x_1), F_2(x_2)) + (1-\lambda)W_{\text{counter}}(F_1(x_1), F_2(x_2)).
+        \end{equation*}
+        Therefore one has
+        \[
+        \kappa = \lambda - (1-\lambda) = 2\lambda -1.
+        \]
+        That is, in general one has \(\rho_\tau=\rho_S=2\lambda-1\).
+        <p align="right"> ◻</p>
+    </div>
+
+    <h6 id="EX16">Exercise 8</h6>
+    Prove <i>Proposition 3</i>.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 8</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Consider \((X_1, X_2)\) uniformely distributed on the unit circle in \(\mathbb{R}^2\),
+        so that the vector can be parametrised by \(\phi\sim \mathcal{U}[0,2\pi]\)
+        as \((X_1, X_2)=(\cos\phi, \sin\phi)\).
+        Because \((X_1, X_2) \stackrel{\text{d}}{=} (-X_1, X_2)\) one has
+        \begin{equation*}
+        \kappa(-X_1, X_2) = \kappa(X_1, X_2) = -\kappa(X_1, X_2).
+        \end{equation*}
+        This implies \(\kappa(X_1, X_2)=0\) although \(X_1\) and  \(X_2\) are not independent,
+        which is a contraddiction.
+        See also <a href="#REFERENCES">[1]</a>.
+        <p align="right"> ◻</p>
+    </div>
+
+    <hr class="w3-opacity">
+
+    <h2>Coefficients of tail dependence</h2>
+
+    If one wants to study extreme values, asymptotic measures of tail dependence
+    can be defined as a function of the copula. In what follows we shall
+    distinguish between <i>upper</i> tail dependence and <i>lower</i> tail dependence.
+
+    <br><br>
+    <b>Definition 4 — Coefficient of tail dependence</b><blockquote><i>
+    Consider two random variables \(X_j\sim F_j\).
+    The associated coefficients of upper and lower tail dependence are:
+    \begin{equation}
+    \begin{split}
+    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(X_2> F_2^{-1}(\alpha)|X_2 > F_1^{-1}(\alpha)),\newline
+    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(X_2\le F_2^{-1}(\alpha)|X_2\le F_1^{-1}(\alpha)).
+    \end{split}
+    \end{equation}
+    If \(\lambda_{u}\in]0,1]\) (\(\lambda_{\ell}\in]0,1]\)), then \((X_1, X_2)\)
+    is said to be upper (lower) tail dependent, or more generally, asymptotically dependent. Similarly,
+    if \(\lambda_{u}=0\) (\(\lambda_{\ell}=0\)), then \((X_1, X_2)\)
+    is said to be upper (lower) tail independent, or more generally,  asymptotically independent.
+</i></blockquote>
+    <b>Proposition 4.1</b><blockquote><i>
+    The coefficients of upper and lower tail dependence can be written as a function
+    of the copula as:
+    \begin{equation}
+    \begin{split}
+    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}2-\frac{1-C(\alpha, \alpha)}{1-\alpha},\newline
+    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\frac{C(\alpha,\alpha)}{\alpha}.
+    \end{split}
+    \end{equation}
+</i></blockquote>
+    <b>Proposition 4.2</b><blockquote><i>
+    For radially symmetric copulae one has \(\lambda_{u}=\lambda_{\ell}\).
+</i></blockquote>
+    <b>Proposition 4.3</b><blockquote><i>
+    For Archimedean copulae with strict generator \(\psi\) one has
+    \begin{equation}
+    \begin{split}
+    \lambda_{u} &= 2-2\lim_{\alpha\rightarrow 0^+}\frac{\psi'(2\alpha)}{\psi'(\alpha)},\newline
+    \lambda_{\ell} &= 2\lim_{\alpha\rightarrow\infty}\frac{\psi'(2\alpha)}{\psi'(\alpha)}.
+    \end{split}
+    \end{equation}
+</i></blockquote>
+
+    <hr class="w3-opacity">
+
+    <h6>Exercise 9</h6>
+    Prove <i>Proposition 4.1</i>.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 17</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        One has:
+        \begin{align*}
+        \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(U_2> \alpha |U_1 > \alpha) \newline
+        &=\lim_{\alpha\rightarrow 1^-}\frac{1- \mathbb{P}(U_2\le \alpha\ \text{or}\ U_1\le \alpha)}{\mathbb{P}(U_1> \alpha)} \newline
+        &=\lim_{\alpha\rightarrow 1^-}\frac{1- \mathbb{P}(U_2\le \alpha)-\mathbb{P}(U_1\le \alpha) + \mathbb{P}(U_2\le \alpha, U_1\le \alpha)}{1- \alpha}\newline
+        &=\lim_{\alpha\rightarrow 1^-}2-\frac{1-C(\alpha, \alpha)}{1-\alpha}.
+        \end{align*}
+        Similarly,
+        \begin{align*}
+        \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(U_2\le \alpha |U_1 \le \alpha) \newline
+        &=\lim_{\alpha\rightarrow 0^+}\frac{\mathbb{P}(U_2\le \alpha, U_1\le \alpha)}{\mathbb{P}(U_1\le \alpha)} \newline
+        &=\lim_{\alpha\rightarrow 0^+}\frac{C(\alpha,\alpha)}{\alpha}.
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+
+    <h6>Exercise 10</h6>
+    Prove <i>Proposition 4.3</i>. Moreover, compute the upper and lower coefficients
+    for Clayton's and Gumbel's copulae.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 18</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Consider the upper coefficient first. One has:
+        \begin{align*}
+        \lambda_u &= 2-\lim_{\alpha\rightarrow 1^-}\frac{1-\psi(2\psi^{-1}(\alpha))}{1-\alpha} \newline
+        \xrightarrow[]{\beta=\psi(\alpha)}&= 2-\lim_{\beta\rightarrow 0^+}\frac{1-\psi(2\beta)}{1-\psi(\beta)}\newline
+        \xrightarrow[]{\text{de l'Hôspital}}&=2-2\lim_{\beta\rightarrow 0^+}\frac{\psi'(2\beta)}{\psi'(\beta)}.
+        \end{align*}
+        Now the lower coefficient:
+        \begin{align*}
+        \lambda_\ell &= \lim_{\alpha\rightarrow 0^+}\frac{\psi(2\psi^{-1}(\alpha))}{\alpha} \newline
+        \xrightarrow[]{\beta=\psi(\alpha)}&= \lim_{\beta\rightarrow\infty}\frac{\psi(2\beta)}{\psi(\beta)}\newline
+        \xrightarrow[]{\text{de l'Hôspital}}&=2\lim_{\beta\rightarrow\infty}\frac{\psi'(2\beta)}{\psi'(\beta)}.
+        \end{align*}
+
+        Finally, for the Clayton copula one finds:
+        \begin{align*}
+        \lambda_u &= 0,\newline
+        \lambda_\ell &= 2^{-1/\theta},
+        \end{align*}
+        while for the Gumbel copula one has:
+        \begin{align*}
+        \lambda_u &= 2-2^{1/\theta},\newline
+        \lambda_\ell &= 0.
+        \end{align*}
+        <p align="right"> ◻</p>
+    </div>
+
+    <hr class="w3-opacity">
+
+
+    <br>
+
+    <h4 id="REFERENCES"><i>References</i></h4>
+
+    [1]<a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
+
+    <br><br>
+
+
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!--    <h7>-->
+    <!-- <span style="float:right;">
+   <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+   </span>
+   </h7>
+   <br> -->
+
+    <h5> <a href="../Teaching.html"><b><img src="../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
+
+
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../js/OpenCloseSidebar.js"></script>
+<!--<script src="../js/ModalImageGallery.js"></script>-->
+<script src="../js/OpenCloseCollapsible.js"></script>
+
+</body>
+</html>
