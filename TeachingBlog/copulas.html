@@ -850,7 +850,7 @@ provides a fast implementation of copulas. As an example, one can perform sampli
     from the Clayton copula we have considered so far simply as it follows:
 <pre><code class="lang-python">import openturns as ot, numpy as np
 
-N= 1_000_000
+N = 1_000_000
 
 X = ot.ComposedDistribution([ot.Uniform(0, 1),
                              ot.Uniform(0, 1)],
