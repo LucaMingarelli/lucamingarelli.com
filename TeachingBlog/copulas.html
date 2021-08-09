@@ -49,7 +49,7 @@
 
     <h2>Definitions and basic properties</h2>
 
-<b>Definition 1 — Copula</b><blockquote><i> A \(d\)-dimensional copula is a multivariate cumulative density function
+<b>Definition 1 — Copula</b><blockquote><i> A \(d\)-dimensional copula is a multivariate cumulative distribution function
     \(C:[0,1]^d\rightarrow[0,1]\) with marginals which are uniformly distributed on the unit interval:
     \begin{equation}
     C(u_1, ..., u_d)=\mathbb{P}(U_1\le u_1, ..., U_d\le u_d),
@@ -73,7 +73,7 @@
     Finally, notice that (under mild regularity conditions) one has the following proposition.
 <br><br>
     <b>Proposition 3</b><blockquote><i> Given a \(d\)-dimensional copula \(C\) one obtains
-    the conditional cumulative density function
+    the conditional cumulative distribution function
     \(F(\mathbf{u}|U_j=u_j)=\mathbb{P}(U_1\le u_1, ..., U_d\le u_d\ |\ U_j=u_j) \) as
     \begin{equation}
     F(\mathbf{u}|U_j=u_j)=\frac{\partial}{\partial u_j} C(u_1, ..., u_d).
@@ -159,16 +159,16 @@ Because \(F_j(X_j)\in [0, 1]\) one can see that \(F_{U_j}(u_j) = u_j\) is the CD
     <br>
 Equation \eqref{eq1} can be formalised into the following theorem.
     <br><br>
-    <b>Theorem 4 — Sklar</b><blockquote><i> Given a \(d\)-dimensional cumulative density function \(F\), with marginals \(F_j\),
+    <b>Theorem 4 — Sklar</b><blockquote><i> Given a \(d\)-dimensional cumulative distribution function \(F\), with marginals \(F_j\),
     there exists a copula \(C\) such that
     \begin{equation}
     F(x_1, ..., x_d) = C(F_1(x_1), ..., F_d(x_d)),
     \label{eq:sklar}
     \end{equation}
     for all \(x_j\in\mathbb{R}\). Similarly, given a copula \(C\)
-    and a set of \(d\) univariate cumulative density functions labelled \(F_1, ..., F_d\),
+    and a set of \(d\) univariate cumulative distribution functions labelled \(F_1, ..., F_d\),
     equation \eqref{eq:sklar} uniquely defines a joint multivariate
-    cumulative density function \(F\) with marginals \(F_1, ..., F_d\).
+    cumulative distribution function \(F\) with marginals \(F_1, ..., F_d\).
 </i></blockquote>
 
     <br>
@@ -176,7 +176,7 @@ Equation \eqref{eq1} can be formalised into the following theorem.
 
     <br><br>
     <b>Corollary 4.1</b><blockquote><i> From Sklar's theorem it follows that given a joint
-    cumulative density function \(F\) and its marginals, the copula is defined by
+    cumulative distribution function \(F\) and its marginals, the copula is defined by
     \begin{equation}
     C(u_1, .., u_d) = F\left(F^{-1}_1(u_1), ..., F^{-1}_d(u_d)\right),
     \end{equation}
@@ -184,11 +184,12 @@ Equation \eqref{eq1} can be formalised into the following theorem.
 </i></blockquote>
     <br>
     <b>Corollary 4.2</b><blockquote><i> From Sklar's theorem it follows that given the
-    marginal cumulative density functions \(F_i\) and the associated
+    marginal cumulative distribution functions \(F_i\) and the associated
     marginal probability density functions \(f_i\),
     the joint probability density function \(f\) can be written as
     \begin{equation}
     f(x_1, .., x_d) = c\left(F_1(x_1), ..., F_d(x_d)\right)\prod_{i=1}^df_i(x_i),
+    \label{eq:density_from_sklar}
     \end{equation}
     where \(c\) is the copula density defined in \eqref{eq:copula_density}.
 </i></blockquote>
@@ -212,7 +213,7 @@ Equation \eqref{eq1} can be formalised into the following theorem.
 </i></blockquote>
 When all the random variables considered are deterministically related \(X_j = T_{ji}(X_i)\)
     for some set of strictly increasing transformations \(T_{ji}=T_{ij}^{-1}\), one can derive a relation between each pair
-    of cumulative density functions as
+    of cumulative distribution functions as
     \[F_i(x) = \mathbb{P}(X_i\le x)
              = \mathbb{P}(T_{ji}(X_i)\le T_{ji}(x))
              = \mathbb{P}(X_j\le T_{ji}(x))
@@ -261,12 +262,12 @@ When all the random variables considered are deterministically related \(X_j = T
     <hr class="w3-opacity">
     <h6>Exercise 4</h6>
     Show that given two independent random variables \(X_1\) and \(X_2\)
-    the associated joint multivariate cumulative density function takes
+    the associated joint multivariate cumulative distribution function takes
     indeed the form \eqref{eq:independence_copula} from <i>Definition 3</i>.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 4</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        The joint multivariate cumulative density funtion is \(F(x_1, x_2) = C(F_1(x_1), F_2(x_2))\). The independence of the two random variables \(X_1\perp\!\!\!\perp X_2\)
+        The joint multivariate cumulative distribution funtion is \(F(x_1, x_2) = C(F_1(x_1), F_2(x_2))\). The independence of the two random variables \(X_1\perp\!\!\!\perp X_2\)
         also implies the associated uniform random variables \(U_j=F_j(X_j)\) are also independent:
         \(U_1 \perp\!\!\!\perp U_2\).
         Therefore, one has:
@@ -565,500 +566,390 @@ Hence
 
     <hr class="w3-opacity">
 
-<!--    <h2>Dependence measures</h2>-->
-<!--    For convenience, one often desires to summarise-->
-<!--    the dependency structure of a multivariate distribution-->
-<!--    with a single scalar metric. The most common measures is-->
-<!--    linear correlation. However this metric is known to have its-->
-<!--    severe pitfalls in many general cases, and better measures should be considered.-->
 
-<!--    <h3>Linear correlation</h3>-->
-<!--The first measure of dependency we encounter is Pearson's coefficient of-->
-<!--    linear correlation:-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \rho(X_1, X_2) &= \frac{\text{cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} \\-->
-<!--     &= \frac{\mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2))}{\sqrt{\mathbb{E}((X_1-\mathbb{E}X_1)^2)}\sqrt{\mathbb{E}((X_2-\mathbb{E}X_2)^2)}}-->
-<!--    \end{split}.-->
-<!--    \label{eq:lin_corr}-->
-<!--    \end{equation}-->
-<!--While very useful in many linear or approximately linear scenarios, this metric however fails-->
-<!--    to capture fundamental properties of more complex and realistic distributions.-->
-<!--    In addition, thinking in terms of linear correlation can easily make us prey of insidious-->
-<!--    pitfalls and fallacies.-->
-<!--    <br>-->
-<!--First of all we notice that \eqref{eq:lin_corr} depends on the marginals-->
-<!--    and in particular, that it is well defined if and only if the second moments exist,-->
-<!--    \(\mathbb{E}(X_j)^2<\infty,\ \forall j\). Therefore this metric is not well defined-->
-<!--    for a number of marginals such as many power-law distributions where the second moment does not exist.-->
-<!--    <br>-->
-<!--    Moreover, the linear correlation \eqref{eq:lin_corr} is also unable to capture-->
-<!--    strong non-linear functional dependencies such as \(X_2=X_1^2\) or \(X_2 = \sin(X_1)\).-->
-<!--    Indeed in general one has \(|\rho|\le 1\) and \(|\rho|=1\iff X_2 = aX_1+b\)-->
-<!--    for some \(a\in\mathbb{R}\backslash \{0\},\ b\in\mathbb{R} \).-->
-<!--    <br>-->
-<!--    The linear correlation \(\rho\) is also invariant under strictly increasing-->
-<!--    <u>linear</u> transformation, but not under more general stricly increasing transformations.-->
+<h2>Simulating from Copulae</h2>
 
-<!--<br>-->
-<!--    One further source of confusion arise from us being used to reason in terms of-->
-<!--    normal distributions. Indeed a number of seemingly intuitive statements on-->
-<!--    correlations which are true in the case of normal distributions do not generalise outside of this distribution.-->
-<!--<br>-->
-<!--    As an example, for normal distributions one finds zero correlation and independence equivalent, which-->
-<!--    is no longer true already for e.g. student-t distributed random variables.-->
-<!--<br>-->
-<!--    Another fallacy is to think that the marginals and the correlations matrix-->
-<!--    (\(F_1\), \(F_2\), and \(\rho\) in the bivariate case) are sufficient to determine-->
-<!--    the joint distribution \(F\). This is true for elliptical distributions, but wrong in general.-->
-<!--    Indeed the only mathematical object encoding all information concerning the dependency structure-->
-<!--    is the copula itself.-->
-<!--<br>-->
-<!--    Yet another fallacy is to think two marginals \(F_1\), \(F_2\),-->
-<!--    any value of \(\rho\in[-1,1]\) is attainable. Again, this is true for elliptically-->
-<!--    distributed \((X_1, X_2)\) with finite second moment, but wrong in general.-->
-<!--    The attainable range can be computed via <i>Hoeffding's formula</i>-->
-<!--    \begin{equation}-->
-<!--\text{cov}(X_1, X_2) = \int_{-\infty}^\infty\int_{-\infty}^\infty C(F_1(x_1), F_2(x_2))-F_1(x_1)F_2(x_2)\text{d} x \text{d} y,-->
-<!--\label{eq:Hoeffding_formula}-->
-<!--    \end{equation}-->
-<!--where \(\rho_{\text{min}}\) is attained for \(C=W_{\text{counter}}\) and \(\rho_{\text{max}}\) for \(C=C_{\text{co}}\).-->
-<!--    This can be arbitrarily small for appropriate choices of the marginals \(F_1\) and \(F_2\).-->
-<!--    <hr class="w3-opacity">-->
+    Let us now consider the essential recipes for drawing
+    uniform random vectors \((U_1, ..., U_d)\) with a desired copula and uniform marginals,
+    which can be useful e.g. to perform Monte Carlo simulations. Clearly,
+    arbitrary marginals can be obtained via the quantile transformation as dictated
+    by the probability integral transform discussed earlier.
 
-<!--    <h6>Exercise 9</h6>-->
-<!--    Consider two independent random variables \(Z, W \sim \mathcal{N}(0,1)\).-->
-<!--    The random variables \(X=Z\) and \(Y = ZW\) are clearly not independent.-->
-<!--    What's \(\rho(X, Y)\)?-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        The linear correlation coefficient is-->
-<!--        \begin{align*}-->
-<!--        \rho(X, Y) &= \text{cov}(X, Y) \newline-->
-<!--        &= \mathbb{E}(XY)\newline-->
-<!--        &= \mathbb{E}(V)\mathbb{E}(Z^2) = 0-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+<h4>Implicit copulae</h4>
+    For implicit copulae derived from a multivariate distribution such as
+    the Gaussian and Student-t the procedure is quite straightforward.
+    <br><br>
+    <b>Algorithm 10 — Gaussian Copula</b><blockquote><i>
+<ol>
+    <li>Given a correlation matrix \(\Pi\) perform a Cholesky decomposition, that is,
+        find \(\Lambda\) such that \(\ \Pi = \Lambda^T\Lambda\); </li>
+    <li>Generate iid standard normals \(\mathbf{G}= (G_1, ..., G_d)^T\);</li>
+    <li>Compute \(\ \mathbf{X} = \Lambda\mathbf{G}\);</li>
+    <li>Return the desired vector of \(\ U_i = \Phi(X_i)\),
+        with \(\Phi\) the standard normal cumulative distribution function.</li>
+</ol>
+</i></blockquote>
+    <b>Algorithm 11 — Student-t Copula</b><blockquote><i>
+    <ol>
+        <li>Given a correlation matrix \(\ \Pi\), generate a normal vector \(\mathbf{X}\)
+            performing steps (1) to (4) from Algorithm 10; </li>
+        <li>Generate \(\xi=\sum_{i=1}^\nu Y_i^2\),
+            with \(Y_i \stackrel{\text{iid}}{\sim} \mathcal{N}(0,1)\),
+            so that \(\xi\stackrel{\text{iid}}{\sim}\chi_\nu^2\);</li>
+        <li>Return the desired vector \(\ U_i = t_\nu(X_i/\sqrt{\xi/\nu})\),
+            with \(t_\nu\) the univariate Student-t cumulative distribution function.</li>
+    </ol>
+</i></blockquote>
 
-<!--    <h6>Exercise 10</h6>-->
-<!--    Prove \eqref{eq:Hoeffding_formula}.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 10</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Start by considering an \(X_j, Y_j \sim F_j\),-->
-<!--        with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).-->
-<!--        One has:-->
-<!--        \begin{align*}-->
-<!--        2\text{cov}(X_1, X_2) &= \mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2)) + \mathbb{E}((Y_1-\mathbb{E}Y_1)(Y_2-\mathbb{E}Y_2)) \newline-->
-<!--        &=\mathbb{E}\left(((X_1 - \mathbb{E}X_1)-(Y_1 - \mathbb{E}Y_1))((X_2 - \mathbb{E}X_2)-(Y_2 - \mathbb{E}Y_2))\right) \newline-->
-<!--        &= \mathbb{E}((X_1-Y_1)(X_2-Y_2)).-->
-<!--        \end{align*}-->
-<!--        Now recall that for any \(a,b\in\mathbb{R}\) one has-->
-<!--        \[-->
-<!--        b-a = \int_{-\infty}^\infty \Theta(x-a) - \Theta(x-b)\text{d}x,-->
-<!--        \]-->
-<!--        with \(\Theta(x)\) indicating Heaviside's theta function-->
-<!--        (with the convention \(\Theta(0)=1\)). Therefore:-->
-<!--        \begin{align*}-->
-<!--        2\text{cov}(X_1, X_2) &=-->
-<!--        \mathbb{E}\int_{-\infty}^\infty\int_{-\infty}^\infty-->
-<!--(\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))-->
-<!--        \text{d}x_1\text{d}x_2 \newline-->
-<!--\xrightarrow[]{\text{Fubini}}&=\int_{-\infty}^\infty\int_{-\infty}^\infty-->
-<!--        \mathbb{E}\left((\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))\right)-->
-<!--        \text{d}x_1\text{d}x_2\newline-->
-<!--        &=2\int_{-\infty}^\infty\int_{-\infty}^\infty F(x_1, x_2) - F_1(x_1)F_2(x_2)\text{d}x_1\text{d}x_2.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+    <h4>Explicit copulae</h4>
 
-<!--    <hr class="w3-opacity">-->
+    The Archimedean copulae we have considered are actually part of a class of
+    copulae known as <i>Laplace Transform Archimedean Copulae</i> (LT-Archimedean for short)
+    where the inverse of the generator \(\phi^{[-1]}\) can be represented as a Laplace
+    transform of some function \(G\):
+    \begin{equation}
+    \phi^{[-1]}(x) = \int_0^\infty e^{-tx}\text{d}G(t).
+    \label{eq:LT-A}
+    \end{equation}
+    More specifically, one can show <a href="#ref4">[4]</a> that all completely monotone
+    Archimedean generators are Laplace-Stieltjes transforms
+    of distribution functions on \(\mathbb{R}^+\).
+With this in mind, we are now ready to consider an algorithm to sample from such
+    copulae.
+    <br><br>
+    </i></blockquote>
+    <b>Algorithm 12 — LT-Archimedean Copulae</b><blockquote><i>
+    Given an LT-Archimedean copula with generator \(\phi\),
+    <ol>
+        <li>Find a CDF \(G\) which satisfies \eqref{eq:LT-A}; </li>
+        <li>Generate a variate \(V\sim G\);</li>
+        <li>Generate uniform iid \(X_1, ..., X_d\);</li>
+        <li>Return the vector with elements
+            \(U_i = \phi^{[-1]}\left(-\frac{\log X_i}{V}\right)\).</li>
+    </ol>
+    See <a href="#ref1">[1]</a> and <a href="#ref5">[5]</a> for more details.
+</i></blockquote>
 
-<!--    <h3>Rank correlation</h3>-->
-<!--Many of the drawbacks and pitfalls encountered with linear correlation-->
-<!--    are resolved when considering rank correlations instead.-->
-<!--    As we shall see, rank correlation coefficients are always defined-->
-<!--    and are invariant under any strictly increasing transformation, implying-->
-<!--    they depend exclusively on the copula.-->
-<!--    In the following we-->
-<!--    shall present to of the most prominent, namely <i>Kendall's tau</i> and-->
-<!--    <i>Spearman's rho</i>.-->
-<!--    <br>-->
+For the special case of \(d=2\) one has however a simpler approach.
+    <br><br>
+    </i></blockquote>
+    <b>Algorithm 13 — 2D Explicit Copulae</b><blockquote><i>
+    Consider the conditional distribution
+    \(F_{1}=\mathbb{P}(U_1\le u_1 | U_2=u_2)\).
+    Recalling \eqref{eq:conditional_copula} from Proposition 3,
+    this is equivalent to
+    \begin{equation*}
+    F_{1} = c_{1}(u_1, u_2) = \frac{\partial}{\partial u_2} C(u_1, u_2).
+    \end{equation*}
+    Therefore one obtains the desired
+    \((U_1,\ U_2)\) via the following algorithm:
+    <ol>
+        <li>Sample \(u_1, t \overset{\text{iid}}{\sim} \mathcal{U}[0,1]\); </li>
+        <li>Compute \(u_2 = c_{1}^{[-1]}(u_1, t)\);</li>
+    </ol>
+</i></blockquote>
+    <br><br>
+
+    <h4>Example 1: gaussian copula and gaussian marginals</h4>
+    The simplest example is that in which we sample
+    from a gaussian joint distribution, since in most programming
+    languages this is often well implemented in libraries.
+    Fig.3 below presents an example where the marginals follow standard
+    normal distributions and the gaussian copula has linear correlation
+    \(\rho=0.75\).
+
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/joint_G.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.3:</b> Joint distribution with gaussian copula
+            and standard normal marginals.</i></figcaption>
+    </figure>
+    <button class="collapsible">Plot code</button>
+    <div class="content"><pre><code class="lang-python">
+import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
+import scipy.stats as st
+N = 1_000_000
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = pd.DataFrame(mvnorm.rvs(N), columns=['X1', 'X2'])
+
+jnt_kw = dict(height=5, ratio=5, space=0,
+              color="tab:blue", alpha=0)
+
+h = (sns.jointplot(data=X, x='X1', y='X2', marginal_kws=dict(bins=30),
+                   xlim=(-3,3), ylim=(-3,3), kind='hex', gridsize=2, **jnt_kw)
+        .plot_joint(sns.kdeplot, shade=False, cmap='viridis'))
+plt.show()</code></pre>
+    </div>
 
 
+    <h4>Example 2: gaussian copula and non-gaussian marginals</h4>
+    In order to produce samples from a joint with gaussian copula
+    but non-gaussian marginals we first need to obtaint the copula's
+    uniform marginals \(U_i = \Phi(X_i)\).
 
-<!--    <br><br>-->
-<!--    <b>Definition 10 — Kendall's tau</b><blockquote><i>-->
-<!--    Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).-->
-<!--    Kendall's tau is defined as-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \rho_\tau &= \mathbb{E}(\text{sign}((X_1-Y_1)(X_2-Y_2))) \newline-->
-<!--    &= \mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - \mathbb{P}((X_1-Y_1)(X_2-Y_2)<0).-->
-<!--    \end{split}-->
-<!--    \label{eq:kendall_tau}-->
-<!--    \end{equation}-->
-<!--    That is, the probability of concordance minus the probability of discordance-->
-<!--    (i.e. the probability of two points from \(F\) to have positive or negative slope respectively).-->
-<!--</i></blockquote>-->
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/hex_copula.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.4:</b> Gaussian copula
+            with its uniform marginals.</i></figcaption>
+    </figure>
+    <button class="collapsible">Plot code</button>
+    <div class="content"><pre><code class="lang-python">
+import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
+import scipy.stats as st
+N = 1_000_000
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = pd.DataFrame(mvnorm.rvs(N), columns=['X1', 'X2'])
 
-<!--    <b>Proposition 10.1 — Formula for Kendall's tau</b><blockquote><i>-->
-<!--    Consider two random variables \(X_1\) and \(X_2\)-->
-<!--    with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \rho_\tau &= 4\int_{[0,1]^2}C(u_1, u_2)\text{d}C(u_1, u_2) - 1\newline-->
-<!--    &=4\mathbb{E}(C(U_1, U_2)) - 1,-->
-<!--    \end{split}-->
-<!--    \label{eq:formula_kendall}-->
-<!--    \end{equation}-->
-<!--    with \((U_1, U_2)\sim C\).-->
+jnt_kw = dict(height=5, ratio=5, space=0,
+              color="tab:blue", alpha=0)
 
-<!--</i></blockquote>-->
+U = pd.DataFrame(st.norm().cdf(X), columns=['U2', 'U1'])
 
+h = (sns.jointplot(data=U, x='U1', y='U2', marginal_kws=dict(bins=30),
+                   xlim=(0,1), ylim=(0,1),kind='hex', gridsize=2, **jnt_kw)
+        .plot_joint(plt.hexbin, gridsize=30, cmap='Blues'))
+plt.show()</code></pre>
+    </div>
+    <br><br>
+Finally, the copula's uniforms can be transformed to the desired marginals.
+    Take as an example \(\widetilde{X}_1\sim \text{Beta}(\alpha=3, \beta=10)\),
+    and \(\widetilde{X}_2\sim \text{Gumbel}(\mu=0, \beta=1)\): Figure 5 below
+    plots the joint density with these marginals
+    and gaussian copula with \(\rho=0.75\),
+    while Figure 6, plots these two marginals on the independence copula.
 
-<!--    <br>-->
-<!--    <b>Definition 11 — Spearman's rho</b><blockquote><i>-->
-<!--    Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).-->
-<!--    Spearman's rho is defined as-->
-<!--    \begin{equation}-->
-<!--    \rho_S = \rho(F_1(X_1), F_2(X_2)).-->
-<!--    \label{eq:spearman_rho}-->
-<!--    \end{equation}-->
-<!--</i></blockquote>-->
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/Gcop_gumbBeta_marginals.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.5:</b> Gaussian copula
+            with \(\text{Beta}(\alpha=3, \beta=10)\) and
+            \(\text{Gumbel}(\mu=0,\beta=1)\)
+            marginals.</i></figcaption>
+    </figure>
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/IndCop_gumbBeta_marginals.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.6:</b> Independence copula
+            with \(\text{Beta}(\alpha=3, \beta=10)\) and
+            \(\text{Gumbel}(\mu=0,\beta=1)\)
+            marginals.</i></figcaption>
+    </figure>
+    <button class="collapsible">Plot code</button>
+    <div class="content"><pre><code class="lang-python">
+import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
+import scipy.stats as st
+N = 1_000_000
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = pd.DataFrame(mvnorm.rvs(N), columns=['X1', 'X2'])
 
+jnt_kw = dict(height=5, ratio=5, space=0,
+              color="tab:blue", alpha=0)
 
-<!--    <b>Proposition 11.1 — Formula for Spearman's rho</b><blockquote><i>-->
-<!--    Consider two random variables \(X_1\) and \(X_2\)-->
-<!--    with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \rho_S &=12 \int_0^1\int_0^1 C(u_1, u_2)\text{d}u_1\text{d}u_2 - 3 \newline-->
-<!--    &= 12\mathbb{E}(C(U_1, U_2)) - 3,-->
-<!--    \end{split}-->
-<!--    \label{eq:formula_spearman}-->
-<!--    \end{equation}-->
-<!--    with \(U_1 \perp\!\!\!\perp U_2\).-->
-<!--</i></blockquote>-->
+U = pd.DataFrame(st.norm().cdf(X), columns=['U2', 'U1'])
 
+# With Gaussian Copula
+x1_t = st.beta(a=3, b=10).ppf(U.U1)
+x2_t = st.gumbel_l().ppf(U.U2)
+X_trans = pd.DataFrame([x1_t, x2_t], index=['XT1', 'XT2']).T
 
-<!--    Rank correlations are useful to characterise the dependence, providing comparable measures,-->
-<!--    and can also serve as a tool for calibration and estimation of a copula's parameter(s).-->
-<!--    As we have mentioned, a number of fallacies are avoided, but not all.-->
-<!--    <h5>Resolved fallacies</h5>-->
-<!--    For \(\kappa=\rho_\tau\) as well as for  \(\kappa=\rho_S\) one has:-->
-<!--    <ul>-->
-<!--        <li>\(\kappa\) is always well defined</li>-->
-<!--        <li>\(\kappa\) is invariant under any strictly increasing transformation of the random variables</li>-->
-<!--        <li>\(\kappa=\pm 1\) if and only if \(X_1\) and \(X_2\) are co-/counter- monotonic.</li>-->
-<!--        <li>Any \(\kappa \in [-1,1]\) is attainable</li>-->
-<!--    </ul>-->
-<!--    <h5>Unresolved fallacies</h5>-->
-<!--    However, in general for \(\kappa=\rho_\tau\) as well as for  \(\kappa=\rho_S\) one has:-->
-<!--    <ul>-->
-<!--        <li>The marginals \(F_1, F_2\) and the rank correlation \(\kappa\) are still not sufficient-->
-<!--        to uniquely determine \(F\).</li>-->
-<!--        <li> While \(X_1 \perp\!\!\!\perp X_2 \implies \kappa=0\), the converse is still not true: \(\kappa=0\) does not imply independence </li>-->
-<!--    </ul>-->
+h = (sns.jointplot(data=X_trans, x='XT1', y='XT2', kind='hex', gridsize=2,
+                   marginal_kws=dict(bins=30),
+                   xlim=(0, 0.6), ylim=(-5, 2.0),
+                   **jnt_kw)
+        .plot_joint(sns.kdeplot, cmap='viridis'))
+plt.show()
 
-<!--The last point is something that might still be desirable.-->
-<!--    However one can show that this requirement would be be in contraddiction with the-->
-<!--    fundamental property of invariance under strictly increasing transformations.-->
-
-<!--    <br><br>-->
-<!--    <b>Proposition 12</b><blockquote><i>-->
-<!--    There exist no dependency measure \(\kappa\) such that:-->
-<!--    <ol>-->
-<!--        <li>\(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\), and</li>-->
-<!--        <li>\(\kappa(T(X_1), X_2) = \begin{cases}-->
-<!--            \kappa(X, Y) & \text{if $T$ strictly increasing}\\-->
-<!--            -\kappa(X, Y) & \text{if $T$ strictly decreasing}-->
-<!--            \end{cases}  \) .</li>-->
-<!--    </ol>-->
-<!--</i></blockquote>-->
-<!--    See <a href="#EX16"><i>Exercise 16</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that-->
-<!--    \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off-->
-<!--    other properties. In particular, it can be shown-->
-<!--    that one can have \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\),-->
-<!--    with \(0\le \kappa(X_1, X_2)\le 1\), and-->
-<!--    \(\kappa(X_1, X_2)=1 \iff X_1,X_2\) co-/counter- monotonic,-->
-<!--    and \(\kappa(T(X_1), X_2)=\kappa(X_1, X_2)\) for \(T\) strictly increasing.-->
-<!--    See <a href="#REFERENCES">[3]</a> for more details.-->
-<!--    <hr class="w3-opacity">-->
-
-<!--    <h6>Exercise 11</h6>-->
-<!--    Prove \eqref{eq:formula_kendall}.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 11</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Consider \(X_j, Y_j \sim F_j\),-->
-<!--        with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).-->
-<!--        One has:-->
-<!--        \begin{align*}-->
-<!--        \rho_\tau &= \mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - \mathbb{P}((X_1-Y_1)(X_2-Y_2)<0) \newline-->
-<!--        &= 2\mathbb{P}((X_1-Y_1)(X_2-Y_2)>0) - 1 \newline-->
-<!--        &= 2(2\mathbb{P}(X_1< Y_1,\ X_2< Y_2)) -1 \newline-->
-<!--        &= 4\mathbb{P}(U_{X,1}< U_{Y,1},\ U_{X,2}< U_{Y,2}) -1 \newline-->
-<!--        &=4\int_0^1\int_0^1\mathbb{P}(U_1\le u_1, U_2\le u_2)\text{d}C(u_1, u_2) - 1.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
+# With Independence Copula
+x1, x2 = st.beta(a=3, b=10).rvs(N), st.gumbel_l().rvs(N)
+h = (sns.jointplot(x=x1, y=x2, kind='hex', marginal_kws=dict(bins=30),
+                   xlim=(0,0.6), ylim=(-5,2.0),
+                   **jnt_kw)
+        .plot_joint(sns.kdeplot, cmap='viridis'))
+plt.show()</code></pre>
+    </div>
 
 
-<!--    </div>-->
-<!--    <h6>Exercise 12</h6>-->
-<!--    Prove \eqref{eq:formula_spearman}.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 12</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--From definition \eqref{eq:spearman_rho} one has:-->
-<!--        \begin{align*}-->
-<!--        \rho_S &= \rho(F_1(X_1), F_2(X_2)) \newline-->
-<!--        \text{Hoeffding's formula}\rightarrow &= 12\int_0^1\int_0^1C(u_1, u_2)-u_1u_2\ \text{d}u_1\text{d}u_2 \newline-->
-<!--        &=12\int_0^1\int_0^1C(u_1, u_2) \text{d}u_1\text{d}u_2 -3.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
-<!--    <h6>Exercise 13</h6>-->
-<!--    Show that the comonotonic copula \(C_{\text{co}}\) implies \(\kappa=1\)-->
-<!--    for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 13</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Notice that-->
-<!--        \[-->
-<!--        \mathbb{P}(\text{min}(U_1, U_2) < t) = 1-\mathbb{P}(\text{min}(U_1, U_2) \ge t) = 1- (1-t)^2,-->
-<!--        \]-->
-<!--        so that-->
-<!--        \(-->
-<!--        f_{T=\text{min}(U_1, U_2)}(t) = 2(1-t).-->
-<!--        \)-->
-<!--        Therefore one has-->
-<!--        \begin{align*}-->
-<!--        \mathbb{E}(\text{min}(U_1, U_2)) &= \int_0^1 tf_{T=\text{min}(U_1, U_2)}(t) \text{d}t \newline-->
-<!--        &= 2\int_0^1 t(1-t) \text{d}t =\frac{1}{3}.-->
-<!--        \end{align*}-->
-<!--        Hence:-->
-<!--                \begin{align*}-->
-<!--&lt;!&ndash;                \rho_\tau &= 4\mathbb{E}(\text{min}(U_1, U_2)) - 1 = 4\frac{}{},\newline&ndash;&gt;-->
-<!--                \rho_S &= 12\mathbb{E}(\text{min}(U_1, U_2)) - 3 = \frac{12}{3} - 3 = 1.-->
-<!--                \end{align*}-->
-<!--        Let's consider Kendall's tau now. First, the copula viewed as a random variable-->
-<!--        has a distribution function called "Kendall distribution function", which is equal to-->
-<!--        \[-->
-<!--K_C(t) = t -\frac{\psi(t)}{\psi'(t)},-->
-<!--        \]-->
-<!--with \(\psi(t)\) the copula's generator and \(\psi'(t)\) its first derivative.-->
-<!--One can then write the expected value of the copula as-->
-<!--        \begin{align*}-->
-<!--\mathbb{E}[C(U_1, U_2)] &= \int_0^1t\text{d}K_C \newline-->
-<!--      \xrightarrow[]{\text{by parts}}  &= tK_C(t)\Big|_0^1 - \int_0^1K_C(t)\text{d}t.-->
-<!--        \end{align*}-->
+    <h4>Example 3: non-gaussian copula and non-gaussian marginals</h4>
+At last let's replicate the last exercise replacing the gaussian copula
+    with e.g. a Clayton copula.
+    One can find <a href="#ref5">[5]</a> the correct
+    cumulative distribution function \(G\) to be considered in this case
+    is that of a Gamma distribution \(\Gamma(\theta^{-1},1)\).
+<!--    Recalling Algorithm 13, one can compute the conditional distribution-->
+<!--    \begin{align*}-->
+<!--c_{1}^{\text{Clayton}} &= \frac{\partial C^{\text{Clayton}}(u_1, u_2)}{\partial u_1} \newline-->
+<!--    &=\frac{\partial }{\partial u_1} \text{max}\Big\{u_1^{-\theta}+u_2^{-\theta}-1, 0\Big\}^{-1/\theta} \newline-->
+<!--    &= \frac{u_1^\theta(u_1^{-\theta}+u_2^{-\theta}-1)}{u_2(u_1^\theta u_2^\theta-u_1^\theta-u_2^\theta)} \mathbb{1}_{u_1^{-\theta}+u_2^{-\theta}-1>0}-->
+<!--    \end{align*}-->
+
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/hex_Claytoncopula.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.7:</b> Clayton copula
+            with \(\theta=2\).</i></figcaption>
+    </figure>
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/Claytoncop_gumbBeta_marginals.svg"
+             width="60%" >
+        <figcaption><i><b>Fig.8:</b> Clayton copula
+            with \(\text{Beta}(\alpha=3, \beta=10)\) and
+            \(\text{Gumbel}(\mu=0,\beta=1)\)
+            marginals.</i></figcaption>
+    </figure>
+    <button class="collapsible">Plot code</button>
+    <div class="content"><pre><code class="lang-python">
+import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
+import scipy.stats as st
+
+jnt_kw = dict(height=5, ratio=5, space=0,
+              color="tab:blue", alpha=0)
+
+N = 1_000_000
+θ = 2
+def clayton(θ, N, d=2):
+    Γ = st.gamma.rvs(a=1/θ, scale=1, size=N)
+    X = st.uniform.rvs(size=(d,N))
+    return (1 - np.log(X) / Γ) ** (-1/θ)
+
+U1, U2 = clayton(θ=θ, N=N, d=2)
+U = pd.DataFrame([U1, U2], index=['U1', 'U2']).T
+
+h = (sns.jointplot(data=U, x='U1', y='U2', marginal_kws=dict(bins=30),
+                   xlim=(0,1), ylim=(0,1),
+                   kind='hex', gridsize=2, **jnt_kw)
+        .plot_joint(plt.hexbin, gridsize=30, cmap=my_cmap))
+plt.show()
 
 
-<!--        With the results from  <i>Exercise 8</i> in mind, let's consider the generator of-->
-<!--        the Clayton copula and its derivative:-->
-<!--        \begin{align*}-->
-<!--\psi(t) &= \theta^{-1}(t^{-\theta}-1), \newline-->
-<!--        \psi'(t) &= -t^{-(1+\theta)},-->
-<!--        \end{align*}-->
-<!--which gives-->
-<!--        \[-->
-<!--K_C(t) = t(1+\theta^{-1}(1-t^\theta)).-->
-<!--        \]-->
-<!--        Then-->
-<!--        \begin{align*}-->
-<!--        \mathbb{E}[C(U_1, U_2)] &= tK_C(t)\Big|_0^1 - \int_0^1K_C(t)\text{d}t\newline-->
-<!--        &= 1-\frac{\theta+3}{2\theta+4}.-->
-<!--        \end{align*}-->
+x1_t = st.beta(a=3, b=10).ppf(U.U1)
+x2_t = st.gumbel_l().ppf(U.U2)
+X_trans = pd.DataFrame([x1_t, x2_t], index=['XT1', 'XT2']).T
 
-<!--Finally, taking the limits \(\theta\rightarrow\infty\) for \(C_{\text{co}}\) and-->
-<!--        \(\theta\rightarrow -1\) for \(W_{\text{counter}}\) one finds:-->
+h = (sns.jointplot(data=X_trans, x='XT1', y='XT2', kind='hex', gridsize=2,
+                   marginal_kws=dict(bins=30),
+                   xlim=(0, 0.6), ylim=(-6, 2.0),
+                   ** jnt_kw)
+        .plot_joint(sns.kdeplot, cmap='viridis'))
+plt.show()</code></pre>
+    </div>
 
-<!--        \begin{align*}-->
-<!--        \mathbb{E}[C_{\text{co}}(U_1, U_2)] &= \frac{1}{2},\newline-->
-<!--        \mathbb{E}[W_{\text{counter}}(U_1, U_2)] &= 0.\newline-->
-<!--        \end{align*}-->
-<!--Therefore,-->
-<!--        \begin{align*}-->
-<!--        \rho_\tau &= 4\mathbb{E}[C_{\text{co}}(U_1, U_2)]-1 = 1.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+    <br><br>
+In Python the package
+    <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>
+provides a fast implementation of copulas. As example, one can perform sampling
+    from the Clayton copula we have considered so far simply as it follows:
+<pre><code class="lang-python">import openturns as ot, numpy as np
 
-<!--    <h6>Exercise 14</h6>-->
-<!--    Show that the countermonotonic copula \(W_{\text{counter}}\) implies \(\kappa=-1\)-->
-<!--    for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 14</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        As in the solution of <i>Exercise 13</i> and with the results therein.-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+N= 1_000_000
 
-<!--    <h6>Exercise 15</h6>-->
-<!--    Write a bivariate joint distribution parametrised by a single parameter \(\lambda\in [0,1]\)-->
-<!--    and show that this can attain any \(\kappa \in [-1,1]\) for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 15</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Consider the following:-->
-<!--        \begin{equation*}-->
-<!--        F(x_1, x_2) = \lambda C_{\text{co}}(F_1(x_1), F_2(x_2)) + (1-\lambda)W_{\text{counter}}(F_1(x_1), F_2(x_2)).-->
-<!--        \end{equation*}-->
-<!--Therefore one has-->
-<!--        \[-->
-<!--\kappa = \lambda - (1-\lambda) = 2\lambda -1.-->
-<!--        \]-->
-<!--        That is, in general one has \(\rho_\tau=\rho_S=2\lambda-1\).-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+X = ot.ComposedDistribution([ot.Uniform(0, 1),
+                             ot.Uniform(0, 1)],
+                            ot.ClaytonCopula(2))
 
-<!--    <h6 id="EX16">Exercise 16</h6>-->
-<!--    Prove <i>Proposition 8</i>.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 16</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Consider \((X_1, X_2)\) uniformely distributed on the unit circle in \(\mathbb{R}^2\),-->
-<!--        so that the vector can be parametrised by \(\phi\sim \mathcal{U}[0,2\pi]\)-->
-<!--        as \((X_1, X_2)=(\cos\phi, \sin\phi)\).-->
-<!--        Because \((X_1, X_2) \stackrel{\text{d}}{=} (-X_1, X_2)\) one has-->
-<!--        \begin{equation*}-->
-<!--        \kappa(-X_1, X_2) = \kappa(X_1, X_2) = -\kappa(X_1, X_2).-->
-<!--        \end{equation*}-->
-<!--        This implies \(\kappa(X_1, X_2)=0\) although \(X_1\) and  \(X_2\) are not independent,-->
-<!--        which is a contraddiction.-->
-<!--        See also <a href="#REFERENCES">[3]</a>.-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
+U1, U2 = np.array(X.getSample(N)).T</code></pre>
 
-<!--    <hr class="w3-opacity">-->
-
-<!--    <h3>Coefficients of tail dependence</h3>-->
-
-<!--    If one wants to study extreme values, asymptotic measures of tail dependence-->
-<!--    can be defined as a function of the copula. In what follows we shall-->
-<!--    distinguish between <i>upper</i> tail dependence and <i>lower</i> tail dependence.-->
-
-<!--    <br><br>-->
-<!--    <b>Definition 13 — Coefficient of tail dependence</b><blockquote><i>-->
-<!--    Consider two random variables \(X_j\sim F_j\).-->
-<!--    The associated coefficients of upper and lower tail dependence are:-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(X_2> F_2^{-1}(\alpha)|X_2 > F_1^{-1}(\alpha)),\newline-->
-<!--    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(X_2\le F_2^{-1}(\alpha)|X_2\le F_1^{-1}(\alpha)).-->
-<!--    \end{split}-->
-<!--    \end{equation}-->
-<!--If \(\lambda_{u}\in]0,1]\) (\(\lambda_{\ell}\in]0,1]\)), then \((X_1, X_2)\)-->
-<!--    is said to be upper (lower) tail dependent, or more generally, asymptotically dependent. Similarly,-->
-<!--    if \(\lambda_{u}=0\) (\(\lambda_{\ell}=0\)), then \((X_1, X_2)\)-->
-<!--    is said to be upper (lower) tail independent, or more generally,  asymptotically independent.-->
-<!--</i></blockquote>-->
-<!--    <b>Proposition 13.1</b><blockquote><i>-->
-<!--    The coefficients of upper and lower tail dependence can be written as a function-->
-<!--    of the copula as:-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}2-\frac{1-C(\alpha, \alpha)}{1-\alpha},\newline-->
-<!--    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\frac{C(\alpha,\alpha)}{\alpha}.-->
-<!--    \end{split}-->
-<!--    \end{equation}-->
-<!--</i></blockquote>-->
-<!--    <b>Proposition 13.2</b><blockquote><i>-->
-<!--    For radially symmetric copulae one has \(\lambda_{u}=\lambda_{\ell}\).-->
-<!--</i></blockquote>-->
-<!--    <b>Proposition 13.3</b><blockquote><i>-->
-<!--For Archimedean copulae with strict generator \(\psi\) one has-->
-<!--    \begin{equation}-->
-<!--    \begin{split}-->
-<!--    \lambda_{u} &= 2-2\lim_{\alpha\rightarrow 0^+}\frac{\psi'(2\alpha)}{\psi'(\alpha)},\newline-->
-<!--    \lambda_{\ell} &= 2\lim_{\alpha\rightarrow\infty}\frac{\psi'(2\alpha)}{\psi'(\alpha)}.-->
-<!--    \end{split}-->
-<!--    \end{equation}-->
-<!--</i></blockquote>-->
-
-<!--    <hr class="w3-opacity">-->
-
-<!--    <h6>Exercise 17</h6>-->
-<!--    Prove <i>Proposition 13.1</i>.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 17</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        One has:-->
-<!--        \begin{align*}-->
-<!--        \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(U_2> \alpha |U_1 > \alpha) \newline-->
-<!--        &=\lim_{\alpha\rightarrow 1^-}\frac{1- \mathbb{P}(U_2\le \alpha\ \text{or}\ U_1\le \alpha)}{\mathbb{P}(U_1> \alpha)} \newline-->
-<!--        &=\lim_{\alpha\rightarrow 1^-}\frac{1- \mathbb{P}(U_2\le \alpha)-\mathbb{P}(U_1\le \alpha) + \mathbb{P}(U_2\le \alpha, U_1\le \alpha)}{1- \alpha}\newline-->
-<!--        &=\lim_{\alpha\rightarrow 1^-}2-\frac{1-C(\alpha, \alpha)}{1-\alpha}.-->
-<!--        \end{align*}-->
-<!--        Similarly,-->
-<!--        \begin{align*}-->
-<!--        \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(U_2\le \alpha |U_1 \le \alpha) \newline-->
-<!--        &=\lim_{\alpha\rightarrow 0^+}\frac{\mathbb{P}(U_2\le \alpha, U_1\le \alpha)}{\mathbb{P}(U_1\le \alpha)} \newline-->
-<!--        &=\lim_{\alpha\rightarrow 0^+}\frac{C(\alpha,\alpha)}{\alpha}.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
-
-<!--    <h6>Exercise 18</h6>-->
-<!--    Prove <i>Proposition 13.3</i>. Moreover, compute the upper and lower coefficients-->
-<!--    for Clayton's and Gumbel's copulae.-->
-<!--    <br>-->
-<!--    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 18</button>-->
-<!--    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">-->
-<!--        Consider the upper coefficient first. One has:-->
-<!--        \begin{align*}-->
-<!--        \lambda_u &= 2-\lim_{\alpha\rightarrow 1^-}\frac{1-\psi(2\psi^{-1}(\alpha))}{1-\alpha} \newline-->
-<!--        \xrightarrow[]{\beta=\psi(\alpha)}&= 2-\lim_{\beta\rightarrow 0^+}\frac{1-\psi(2\beta)}{1-\psi(\beta)}\newline-->
-<!--        \xrightarrow[]{\text{de l'Hôspital}}&=2-2\lim_{\beta\rightarrow 0^+}\frac{\psi'(2\beta)}{\psi'(\beta)}.-->
-<!--        \end{align*}-->
-<!--        Now the lower coefficient:-->
-<!--        \begin{align*}-->
-<!--\lambda_\ell &= \lim_{\alpha\rightarrow 0^+}\frac{\psi(2\psi^{-1}(\alpha))}{\alpha} \newline-->
-<!--        \xrightarrow[]{\beta=\psi(\alpha)}&= \lim_{\beta\rightarrow\infty}\frac{\psi(2\beta)}{\psi(\beta)}\newline-->
-<!--        \xrightarrow[]{\text{de l'Hôspital}}&=2\lim_{\beta\rightarrow\infty}\frac{\psi'(2\beta)}{\psi'(\beta)}.-->
-<!--        \end{align*}-->
-
-<!--        Finally, for the Clayton copula one finds:-->
-<!--        \begin{align*}-->
-<!--        \lambda_u &= 0,\newline-->
-<!--        \lambda_\ell &= 2^{-1/\theta},-->
-<!--        \end{align*}-->
-<!--        while for the Gumbel copula one has:-->
-<!--        \begin{align*}-->
-<!--        \lambda_u &= 2-2^{1/\theta},\newline-->
-<!--        \lambda_\ell &= 0.-->
-<!--        \end{align*}-->
-<!--        <p align="right"> ◻</p>-->
-<!--    </div>-->
-
-<!--    <hr class="w3-opacity">-->
+As usual the two uniform marginals can now be transformed into
+    whichever marginals one might desire.
 
 
 
 
 
-<!--    As a digression, the 2007–2008 financial crisis is partially caused by the misuse of the Gaussian copula model. See Salmon (2009) and Donnelly and Embrechts (2010) for details. One of the main disadvantages of the model is that it does not adequately model the occurrence of defaults in the underlying portfolio of corporate bonds. In times of crisis, corporate defaults occur in clusters, so that if one company defaults then it is likely that other companies also default within a short period. However, under the Gaussian copula model, company defaults become independent as their size of default increases, which leads to model inadequacy.-->
 
 
 
+    <h2>Estimation: Fitting Copulae to Data</h2>
 
+    The task of fitting a copula to data is a rather challenging one.
+Generally speaking, one approach could follow a Maximum Likelihood Estimation principle.
+    For example, given the random vector  \(\mathbf{X}=(X_1, ..., X_d)\), and assuming
+    parametric models for the copula density \(c_{\mathbf{X}}(\cdot|\mathbf{\theta}_C)\)
+    and for the marginal cumulative distribution functions
+    \(F_1(\cdot|\mathbf{\theta}_1), ..., F_d(\cdot|\mathbf{\theta}_d)\), one can write
+    an expression for the density of \(\mathbf{X}\) as in \eqref{eq:density_from_sklar}:
+    \[
+    f_\mathbf{X}(\mathbf{x})=c_{\mathbf{X}}(F_{X_1}(x_1), ..., F_{X_d}(x_d))\prod_{i=1}^d f_{X_i}(x_i).
+    \]
+Given a vector of \(n\) observations \(\mathbf{D}_{1:n}=(\mathbf{D}_1, ..., \mathbf{D}_n)\)
+    one can then attempt
+    to maximise the log-likelihood
+\begin{align*}
+    \log L(\mathbf{\theta}_1, ..., \mathbf{\theta}_d, \mathbf{\theta}_C)
+    &= \prod_{i=1}^n f_{\mathbf{X}}(\mathbf{D}_i) \newline
+    &= \sum_{i=1}^n\Big(
+    \sum_{j=1}^d\log f_\mathbf{X_j}(D_{i,j}|\mathbf{\theta}_j) \newline
+    &\phantom{=\sum_{i=1}^n\Big(l}
+    +\log c_{\mathbf{X}}\Big(F_{X_1}(D_{i,1}|\mathbf{\theta}_1),...,
+    F_{X_d}(D_{i,d}|\mathbf{\theta}_d)\Big|\mathbf{\theta}_C\Big)
 
+    \Big),
+    \end{align*}
+    so as to obtain the ML estimators
+    \(\hat{\mathbf{\theta}}_1, ..., \hat{\mathbf{\theta}}_d, \hat{\mathbf{\theta}}_C\).
+    The problem with this approach is found in the very large number of parameters
+    to be estimated, which complicates optimisation. Moreover, the mispecification of
+    one single univariate distributions \(F_{X_i}(\cdot|\mathbf{\theta}_i)\) can introduce
+    biases for all other marginals as well as for the copula.
+    <br>
+    One alternative is provided by pseudo-MLE whereby one splitts the estimation
+    into a two-step procedure, estimating the marginals first,
+    and the copula in a second stage.
+    In particular, one starts by estimating the marginal cumulative distribution functions
+    \(F_{X_i}(\cdot|\mathbf{\theta}_i)\) yielding the estimator \(\hat{F}_{X_i}\), either using a parametric model to obtain
+    a univariate ML-estimator for \(\hat{\mathbf{\theta}}_i\), or even considering the
+    empirical cumulative distribution function. Then, one estimates the copula as a second
+    step, again maximising the log-likelihood
+    \[
+\prod_{i=1}^nf_\mathbf{X}(\mathbf{D}_i) = \sum_{i=1}^n \log\left(c_\mathbf{X}(\hat{F}_{X_1}(D_{i,1}), ..., \hat{F}_{X_d}(D_{i,d})|
+    \mathbf{\theta}_C)\right).
+    \]
+    <br>
+    Yet another alternative is moment-matching.
+    <br><br>
+    </i></blockquote>
+    <b>Proposition 14</b><blockquote><i>
+For Gaussian and Student-t distributed \(\mathbf{X}=(X_1, ..., X_d)\),
+    and Gaussian or Student-t copulae with covariance matrix \(\Omega\),
+    the following holds:
+    \begin{equation}
+\rho_\tau(X_i, X_j) = \frac{2}{\pi}\arcsin(\Omega_{ij}).
+    \end{equation}
+</i></blockquote>
+<br>
+    Practically, python has a number of packages (although still in their infancy)
+    which implement similar methods.  Popular ones are
+    <a href="https://sdv.dev/Copulas/index.html"><i><b>Copulas</b></i></a>,
+    <a href="https://copulae.readthedocs.io/en/latest/index.html"><i><b>Copulae</b></i></a>
+    and
+    <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>.
 
 
     <br>
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1] <a href="https://press.princeton.edu/books/hardcover/9780691166278/quantitative-risk-management">"Quantitative Risk Management: Concepts, Techniques and Tools", Alexander J. McNeil, Paul Embrechts, and Rüdiger Frey (2005)</a>
+    [1] <a href="https://press.princeton.edu/books/hardcover/9780691166278/quantitative-risk-management" id="ref1">"Quantitative Risk Management: Concepts, Techniques and Tools", Alexander J. McNeil, Paul Embrechts, and Rüdiger Frey, 2005</a>
     <br>
     [2] <a href="https://www.springer.com/gp/book/9780387286594">  "An Introduction to Copulas", Roger B. Nelsen, 2006</a>
     <br>
     [3] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
     <!--    [2]<a href="https://www.routledge.com/Dependence-Modeling-with-Copulas/Joe/p/book/9781466583221"> "Dependence Modeling with Copulas", Harry Joe (2015) </a>-->
-
+    <br>
+    [4] <a href="https://www.amazon.co.uk/Intro-Probability-Vol-2e-Statistics/dp/0471257095/ref=sr_1_6?dchild=1&keywords=An+Introduction+to+Probability+Theory+and+Its+Applications%2C+Volume+2&qid=1628511222&s=books&sr=1-6" id="ref4"> "An Introduction to Probability Theory and Its Applications", W. Feller, 1971, volume 2, 2nd edition; John Wiley & Sons; p. 439</a>
+    <br>
+    [5] <a href="" id="ref5"> “Families of Multivariate Distributions.”,
+    A.W. Marshall, I. Olkin, 1988,
+    Journal of the American Statistical Association, 83, 834–841</a>
     <br><br>
 
 

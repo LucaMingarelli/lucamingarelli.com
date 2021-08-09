@@ -101,6 +101,19 @@
     \end{equation}
     where \(\rho_{\text{min}}\) is attained for \(C=W_{\text{counter}}\) and \(\rho_{\text{max}}\) for \(C=C_{\text{co}}\).
     This can be arbitrarily small for appropriate choices of the marginals \(F_1\) and \(F_2\).
+
+    <figure>
+        <img class="center" alt="tail_dependence"
+             src="img/Dependence/attainable_corr.svg"
+             width="80%" >
+        <figcaption><i><b>Fig.1:</b> Attainable range \([\rho_{\text{min}}, \rho_{\text{max}}]\)
+            of the linear correlation coefficient for two random variables
+            \(\log X_1 \sim \mathcal{N}(0,1)\) and \(\log X_2 \sim \mathcal{N}(0,\sigma^2)\).
+        See <a href="#ref1">[1]</a> for more details.
+        </i></figcaption>
+    </figure>
+
+
     <hr class="w3-opacity">
 
     <h6>Exercise 1</h6>
@@ -426,8 +439,8 @@
     The associated coefficients of upper and lower tail dependence are:
     \begin{equation}
     \begin{split}
-    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(X_2> F_2^{-1}(\alpha)|X_2 > F_1^{-1}(\alpha)),\newline
-    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(X_2\le F_2^{-1}(\alpha)|X_2\le F_1^{-1}(\alpha)).
+    \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(X_2> F_2^{-1}(\alpha)|X_1 > F_1^{-1}(\alpha)),\newline
+    \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\mathbb{P}(X_2\le F_2^{-1}(\alpha)|X_1\le F_1^{-1}(\alpha)).
     \end{split}
     \end{equation}
     If \(\lambda_{u}\in]0,1]\) (\(\lambda_{\ell}\in]0,1]\)), then \((X_1, X_2)\)
@@ -468,7 +481,7 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
         <img class="center" alt="tail_dependence"
              src="img/Dependence/tail_dependence.svg"
              width="90%" >
-        <figcaption><i><b>Fig.1:</b> Coefficient of tail dependence for the Student-t copula \(C_{\nu,\rho}^t\).</i></figcaption>
+        <figcaption><i><b>Fig.2:</b> Coefficient of tail dependence for the Student-t copula \(C_{\nu,\rho}^t\).</i></figcaption>
     </figure>
 
     <hr class="w3-opacity">
@@ -476,7 +489,7 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
     <h6>Exercise 9</h6>
     Prove <i>Proposition 4.1</i>.
     <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 17</button>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
         One has:
         \begin{align*}
@@ -498,7 +511,7 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
     Prove <i>Proposition 4.3</i>. Moreover, compute the upper and lower coefficients
     for Clayton's and Gumbel's copulae.
     <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 18</button>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 10</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
         Consider the upper coefficient first. One has:
         \begin{align*}
@@ -526,11 +539,14 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
         <p align="right"> ◻</p>
     </div>
 
+
     <hr class="w3-opacity">
 
 One major issue with gaussian copulae is their asymptotic independence for any \(|\rho|<1\).
     The great financial crisis of 2007-2008 is often partly attributed to the misuse of the gaussian
-    copula model <a href="#ref2">[2]</a> <a href="#ref3">[3]</a>.
+    copula model <a href="#ref2">[2]</a> <a href="#ref3">[3]</a>,
+    and in particular to the infamous Li model of credit default
+    <a href="#ref4">[4]</a>.
     The inadequacy of gaussian copula is evident:
     attempting to model defaults in a portfolio of corporate bonds
     leads to crucial underestimation of the likelihood of joint defaults
@@ -539,7 +555,7 @@ One major issue with gaussian copulae is their asymptotic independence for any \
     are clustered and conditional on observing one company defaulting
     one has a high likelihood of observing more defaults.
     Consequently some have argued one cause of the crisis was to be attributed to
-    a "misplaced reliance on sophisticated mathematics" <a href="#ref4">[4]</a>.
+    a "misplaced reliance on sophisticated mathematics" <a href="#ref5">[5]</a>.
     However this could not be further from the truth. Quite to the contrary in fact,
     models based on the gaussian copula were enthusiastically embraced by the financial industry
     exactly because of their simplicity. In particular, had the industry employed more 'sophisticated'
@@ -550,14 +566,20 @@ One major issue with gaussian copulae is their asymptotic independence for any \
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
+    [1] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf" id="ref1"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
     <br>
     [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
     <br>
     [3] <a href="http://www.macs.hw.ac.uk/~cd134/2010/donemb.pdf" id="ref3"> "The devil is in the tails: actuarial mathematics and the subprime mortgage crisis", Catherine Donnelly and Paul Embrechts, 2010,  ASTIN Bulletin: The Journal of the IAA, 40(1), 1-33</a>
     <br>
-    [4] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref4"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a>
+    [4] <a href="http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/9c8e3fd4d8874d60c1257052003eced6/34e84cb615c8b4eac12575fe006a9759/$FILE/li.defaultcorrelation.pdf" id="ref4">  "On Default Correlation: A Copula Function Approach", David X. Li, April 2000, The RiskMetrics Group Working Paper Number 99-07</a>
+    <br>
+    [5] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref5"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a>
     <br><br>
+
+
+<!--MORE INTERESTING LINKS-->
+<!--    http://samueldwatts.com/wp-content/uploads/2016/08/Watts-Gaussian-Copula_Financial_Crisis.pdf-->
 
 
     <!-- ________________________________________________________________________________________________ -->
