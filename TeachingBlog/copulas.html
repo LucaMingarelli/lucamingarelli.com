@@ -1039,12 +1039,17 @@ mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
                                                   [0.75, 1.]])
 X = mvnorm.rvs(N)</code></pre>
 
-Now, one can extract a <i>Bernstein</i> non-parametric estimate simply as
+Now, one can extract a
+    <a href="https://openturns.github.io/openturns/latest/user_manual/_generated/openturns.EmpiricalBernsteinCopula.html">
+        <i>Bernstein</i></a> non-parametric estimate simply as
 
     <pre><code class="lang-python">Bs_Est = ot.EmpiricalBernsteinCopula(X, 20, False)</code></pre>
 
-where the second argument ...
-    Similarly can be done to obtain a <i>Kernel Smoothing</i> estimation:
+where the second argument is the number of bins which each dimension of the unit cube
+    \([0,1]^d\) is divided to estimate the empirical copula.
+    Similarly can be done to obtain a
+    <a href="https://openturns.github.io/openturns/latest/theory/data_analysis/kernel_smoothing.html"><i>Kernel Smoothing</i></a>
+    estimation:
 
     <pre><code class="lang-python">KS_Est = ot.KernelSmoothing().build(X).getCopula()</code></pre>
 
