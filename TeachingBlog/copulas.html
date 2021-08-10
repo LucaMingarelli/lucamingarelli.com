@@ -650,7 +650,7 @@ For the special case of \(d=2\) one has however a simpler approach.
 </i></blockquote>
     <br><br>
 
-    <h4>Example 1: gaussian copula and gaussian marginals</h4>
+    <h5>Example 1: gaussian copula and gaussian marginals</h5>
     The simplest example is that in which we sample
     from a gaussian joint distribution, since in most programming
     languages this is often well implemented in libraries.
@@ -684,7 +684,7 @@ plt.show()</code></pre>
     </div>
 
 
-    <h4>Example 2: gaussian copula and non-gaussian marginals</h4>
+    <h5>Example 2: gaussian copula and non-gaussian marginals</h5>
     In order to produce samples from a joint with gaussian copula
     but non-gaussian marginals we first need to obtaint the copula's
     uniform marginals \(U_i = \Phi(X_i)\).
@@ -777,7 +777,7 @@ plt.show()</code></pre>
     </div>
 
 
-    <h4>Example 3: non-gaussian copula and non-gaussian marginals</h4>
+    <h5>Example 3: non-gaussian copula and non-gaussian marginals</h5>
 At last let's replicate the last exercise replacing the gaussian copula
     with e.g. a Clayton copula.
     One can find <a href="#ref5">[5]</a> the correct
@@ -844,19 +844,17 @@ plt.show()</code></pre>
     </div>
 
     <br><br>
-In Python the package
+In Python, the package
     <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>
 provides a fast implementation of copulas. As an example, one can perform sampling
     from the Clayton copula we have considered so far simply as it follows:
 <pre><code class="lang-python">import openturns as ot, numpy as np
 
-N = 1_000_000
-
 X = ot.ComposedDistribution([ot.Uniform(0, 1),
                              ot.Uniform(0, 1)],
                             ot.ClaytonCopula(2))
 
-U1, U2 = np.array(X.getSample(N)).T</code></pre>
+U1, U2 = np.array(X.getSample(1_000_000)).T</code></pre>
 
 As usual the two uniform marginals can now be transformed into
     whichever marginals one might desire.
@@ -922,16 +920,155 @@ For Gaussian and Student-t distributed \(\mathbf{X}=(X_1, ..., X_d)\),
     and Gaussian or Student-t copulae with covariance matrix \(\Omega\),
     the following holds:
     \begin{equation}
-\rho_\tau(X_i, X_j) = \frac{2}{\pi}\arcsin(\Omega_{ij}).
+\rho_\tau(X_i, X_j) = \frac{2}{\pi}\arcsin(\Omega_{ij}),
     \end{equation}
+    where \(\rho_\tau\) denotes Kendall's tau.
 </i></blockquote>
 <br>
+
+
+A number of non-parametric methods exist as well, such as the
+    empirical Bernstein copula <a href="#ref6">[6]</a>
+    as well as kernel smoothing estimators.
+The Python package
+    <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>
+    provides
+    <a href="https://openturns.github.io/openturns/latest/auto_data_analysis/estimate_dependency_and_copulas/plot_estimate_non_parametric_copula.html#sphx-glr-auto-data-analysis-estimate-dependency-and-copulas-plot-estimate-non-parametric-copula-py">
+        <u>utilities</u>
+    </a>
+    to fit these non-parametric copula models.
+
+
+
+    <h4>Estimation in practice: parametric estimates</h4>
+
     Practically, python has a number of packages (although still in their infancy)
     which implement similar methods.  Popular ones are
     <a href="https://sdv.dev/Copulas/index.html"><i><b>Copulas</b></i></a>,
     <a href="https://copulae.readthedocs.io/en/latest/index.html"><i><b>Copulae</b></i></a>
     and
     <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>.
+
+    Let's consider a few example with
+    <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>.
+
+    The simplest case is that of estimating the gaussian copula associated with
+    a multivariate normal distribution, which effectively boils down
+    to estimating the correlation matrix.
+    The code
+    <pre><code class="lang-python">import openturns as ot, numpy as np, scipy.stats as st
+
+np.random.seed(seed=0)
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = mvnorm.rvs(10_000)
+
+dist = ot.NormalCopulaFactory().build(X)
+print(dist)</code></pre>
+    returns
+    <pre>
+      NormalCopula(R = [[ 1        0.754492 ]
+                        [ 0.754492 1        ]])</pre>
+The parameters can then be extracted as
+    <pre><code class="lang-python">print(dist.getParameter())</code></pre>
+    which returns
+    <pre>
+      [0.754492]</pre>
+Similarly, for data with gaussian copula but non-gaussian marginals:
+<pre><code class="lang-python">import openturns as ot, numpy as np, scipy.stats as st
+
+np.random.seed(seed=0)
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = mvnorm.rvs(10_000)
+U = st.norm().cdf(X)
+X_trans = np.array([st.beta(a=3, b=10).ppf(U[:,0]),
+                    st.gumbel_l().ppf(U[:,1])]).T
+
+dist = ot.NormalCopulaFactory().build(X_trans)
+print(dist)</code></pre>
+    one obtains
+    <pre>
+      NormalCopula(R = [[ 1        0.754492 ]
+                        [ 0.754492 1        ]])</pre>
+
+Notice that having different non-gaussian marginals
+    does not affect the estimates of the parameters.
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/Gcop_estimate_convergence.svg"
+             width="70%" >
+        <figcaption><i><b>Fig.9:</b> Convergence of the estimate
+            of the linear correlation parameter \(\rho\) as
+            the sample size \(N\) increases. The shaded area represents
+         the one standard deviation error around the mean estimate. </i></figcaption>
+    </figure>
+Finally, consider the following example
+    for the non-gaussian Clayton copula with \(\theta=2\)
+    and \(\text{Beta}(\alpha=3, \beta=10)\) and
+    \(\text{Gumbel}(\mu=0,\beta=1)\)
+    marginals:
+    the code
+    <pre><code class="lang-python">import openturns as ot, numpy as np, scipy.stats as st
+
+J = ot.ComposedDistribution([ot.Uniform(0, 1),
+                             ot.Uniform(0, 1)],
+                            ot.ClaytonCopula(2))
+U1, U2 = np.array(J.getSample(10_000)).T
+
+X_trans = np.array([st.beta(a=3, b=10).ppf(U1),
+                    st.gumbel_l().ppf(U2)]).T
+
+dist = ot.ClaytonCopulaFactory().build(X_trans)
+print(dist)</code></pre>
+    returns
+    <pre>
+      ClaytonCopula(theta = 1.98901)
+    </pre>
+
+    <h4>Estimation in practice: non-parametric estimates</h4>
+As briefly mentioned
+    <a href="https://openturns.github.io/openturns/latest/index.html"><i><b>OpenTURNS</b></i></a>
+    also allows us to estimate copulae non-parametrically.
+    Let us start by sampling from a bivariate normal distribution with
+    linear correlation coefficient \(\rho=0.75\):
+    <pre><code class="lang-python">import openturns as ot, numpy as np, scipy.stats as st
+
+N = 1_000
+mvnorm = st.multivariate_normal(mean=[0, 0], cov=[[1., 0.75],
+                                                  [0.75, 1.]])
+X = mvnorm.rvs(N)</code></pre>
+
+Now, one can extract a <i>Bernstein</i> non-parametric estimate simply as
+
+    <pre><code class="lang-python">Bs_Est = ot.EmpiricalBernsteinCopula(X, 20, False)</code></pre>
+
+where the second argument ...
+    Similarly can be done to obtain a <i>Kernel Smoothing</i> estimation:
+
+    <pre><code class="lang-python">KS_Est = ot.KernelSmoothing().build(X).getCopula()</code></pre>
+
+It is then possible to obtain a new sample of <code>N</code> points
+    from the estimated copulae
+    <code>Bs_Est</code> and
+    <code>KS_Est</code>
+    as <code>Bs_Est.getSample(N)</code> and
+    <code>KS_Est.getSample(N)</code> respectively.
+
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Copulae/NonParametric_estimates.svg"
+             width="100%" >
+        <figcaption><i><b>Fig.10:</b> Left: the gaussian copula
+            with \(\rho=0.75\).
+            Center: Bernstein non-parametric copula estimate for a \(N=1000\) sample
+            from a multivariate normal distribution with \(\rho=0.75\).
+            Right: Kernel Smoothing non-parametric copula estimate for a \(N=1000\) sample
+            from a multivariate normal distribution with \(\rho=0.75\).</i></figcaption>
+    </figure>
+
+
+
 
 
     <br>
@@ -947,11 +1084,14 @@ For Gaussian and Student-t distributed \(\mathbf{X}=(X_1, ..., X_d)\),
     <br>
     [4] <a href="https://www.amazon.co.uk/Intro-Probability-Vol-2e-Statistics/dp/0471257095/ref=sr_1_6?dchild=1&keywords=An+Introduction+to+Probability+Theory+and+Its+Applications%2C+Volume+2&qid=1628511222&s=books&sr=1-6" id="ref4"> "An Introduction to Probability Theory and Its Applications", W. Feller, 1971, volume 2, 2nd edition; John Wiley & Sons; p. 439</a>
     <br>
-    [5] <a href="" id="ref5"> “Families of Multivariate Distributions.”,
+    [5] <a href="https://www.jstor.org/stable/2289314" id="ref5"> “Families of Multivariate Distributions.”,
     A.W. Marshall, I. Olkin, 1988,
     Journal of the American Statistical Association, 83, 834–841</a>
+    <br>
+    [6] <a href="https://www.jstor.org/stable/3533531" id="ref6"> “The Bernstein copula and its applications to modeling and approximations of multivariate distributions.”,
+    Sancetta, A. and S. Satchell, 2004,
+    Econometric Theory 20(3), 535–562</a>
     <br><br>
-
 
     <!-- ________________________________________________________________________________________________ -->
     <!-- ________________________________________________________________________________________________ -->
