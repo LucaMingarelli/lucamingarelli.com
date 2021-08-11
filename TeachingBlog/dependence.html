@@ -52,6 +52,7 @@
     <h2>Linear correlation</h2>
     The first measure of dependency we encounter is Pearson's coefficient of
     linear correlation:
+    <div style="overflow-x: scroll;">
     \begin{equation}
     \begin{split}
     \rho(X_1, X_2) &= \frac{\text{cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} \\
@@ -59,6 +60,7 @@
     \end{split}.
     \label{eq:lin_corr}
     \end{equation}
+        </div>
     While very useful in many linear or approximately linear scenarios, this metric however fails
     to capture fundamental properties of more complex and realistic distributions.
     In addition, thinking in terms of linear correlation can easily make us prey of insidious
@@ -95,10 +97,12 @@
     any value of \(\rho\in[-1,1]\) is attainable. Again, this is true for elliptically
     distributed \((X_1, X_2)\) with finite second moment, but wrong in general.
     The attainable range can be computed via <i>Hoeffding's formula</i>
+    <div style="overflow-x: scroll;">
     \begin{equation}
     \text{cov}(X_1, X_2) = \int_{-\infty}^\infty\int_{-\infty}^\infty C(F_1(x_1), F_2(x_2))-F_1(x_1)F_2(x_2)\text{d} x \text{d} y,
     \label{eq:Hoeffding_formula}
     \end{equation}
+        </div>
     where \(\rho_{\text{min}}\) is attained for \(C=W_{\text{counter}}\) and \(\rho_{\text{max}}\) for \(C=C_{\text{co}}\).
     This can be arbitrarily small for appropriate choices of the marginals \(F_1\) and \(F_2\).
 
@@ -136,7 +140,8 @@
     Prove \eqref{eq:Hoeffding_formula}.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         Start by considering an \(X_j, Y_j \sim F_j\),
         with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).
         One has:
@@ -180,6 +185,7 @@
 
 
     <br><br>
+    <div style="overflow-x: scroll;">
     <b>Definition 1 — Kendall's tau</b><blockquote><i>
     Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
     Kendall's tau is defined as
@@ -192,8 +198,9 @@
     \end{equation}
     That is, the probability of concordance minus the probability of discordance
     (i.e. the probability of two points from \(F\) to have positive or negative slope respectively).
-</i></blockquote>
+</i></blockquote></div>
 
+    <div style="overflow-x: scroll;">
     <b>Proposition 1.1 — Formula for Kendall's tau</b><blockquote><i>
     Consider two random variables \(X_1\) and \(X_2\)
     with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
@@ -205,11 +212,11 @@
     \label{eq:formula_kendall}
     \end{equation}
     with \((U_1, U_2)\sim C\).
-
-</i></blockquote>
+</i></blockquote></div>
 
 
     <br>
+    <div style="overflow-x: scroll;">
     <b>Definition 2 — Spearman's rho</b><blockquote><i>
     Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
     Spearman's rho is defined as
@@ -217,9 +224,9 @@
     \rho_S = \rho(F_1(X_1), F_2(X_2)).
     \label{eq:spearman_rho}
     \end{equation}
-</i></blockquote>
+</i></blockquote></div>
 
-
+    <div style="overflow-x: scroll;">
     <b>Proposition 2.1 — Formula for Spearman's rho</b><blockquote><i>
     Consider two random variables \(X_1\) and \(X_2\)
     with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
@@ -231,7 +238,7 @@
     \label{eq:formula_spearman}
     \end{equation}
     with \(U_1 \perp\!\!\!\perp U_2\).
-</i></blockquote>
+</i></blockquote></div>
 
 
     Rank correlations are useful to characterise the dependence, providing comparable measures,
@@ -258,6 +265,7 @@
     fundamental property of invariance under strictly increasing transformations.
 
     <br><br>
+    <div style="overflow-x: scroll;">
     <b>Proposition 3</b><blockquote><i>
     There exist no dependency measure \(\kappa\) such that:
     <ol>
@@ -267,7 +275,7 @@
             -\kappa(X, Y) & \text{if $T$ strictly decreasing}
             \end{cases}  \) .</li>
     </ol>
-</i></blockquote>
+</i></blockquote></div>
     See <a href="#EX8"><i>Exercise 8</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that
     \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off
     other properties. In particular, it can be shown
@@ -282,7 +290,8 @@
     Prove \eqref{eq:formula_kendall}.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 3</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         Consider \(X_j, Y_j \sim F_j\),
         with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).
         One has:
@@ -301,7 +310,8 @@
     Prove \eqref{eq:formula_spearman}.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 4</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         From definition \eqref{eq:spearman_rho} one has:
         \begin{align*}
         \rho_S &= \rho(F_1(X_1), F_2(X_2)) \newline
@@ -315,7 +325,8 @@
     for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         Notice that
         \[
         \mathbb{P}(\text{min}(U_1, U_2) < t) = 1-\mathbb{P}(\text{min}(U_1, U_2) \ge t) = 1- (1-t)^2,
@@ -394,7 +405,8 @@
     and show that this can attain any \(\kappa \in [-1,1]\) for both \(\kappa=\rho_\tau\) and \(\kappa=\rho_S\).
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 7</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         Consider the following:
         \begin{equation*}
         F(x_1, x_2) = \lambda C_{\text{co}}(F_1(x_1), F_2(x_2)) + (1-\lambda)W_{\text{counter}}(F_1(x_1), F_2(x_2)).
@@ -434,6 +446,7 @@
     distinguish between <i>upper</i> tail dependence and <i>lower</i> tail dependence.
 
     <br><br>
+    <div style="overflow-x: scroll;">
     <b>Definition 4 — Coefficient of tail dependence</b><blockquote><i>
     Consider two random variables \(X_j\sim F_j\).
     The associated coefficients of upper and lower tail dependence are:
@@ -447,7 +460,8 @@
     is said to be upper (lower) tail dependent, or more generally, asymptotically dependent. Similarly,
     if \(\lambda_{u}=0\) (\(\lambda_{\ell}=0\)), then \((X_1, X_2)\)
     is said to be upper (lower) tail independent, or more generally,  asymptotically independent.
-</i></blockquote>
+</i></blockquote></div>
+    <div style="overflow-x: scroll;">
     <b>Proposition 4.1</b><blockquote><i>
     The coefficients of upper and lower tail dependence can be written as a function
     of the copula as:
@@ -457,7 +471,7 @@
     \lambda_{\ell} &= \lim_{\alpha\rightarrow 0^+}\frac{C(\alpha,\alpha)}{\alpha}.
     \end{split}
     \end{equation}
-</i></blockquote>
+</i></blockquote></div>
     <b>Proposition 4.2</b><blockquote><i>
     For radially symmetric copulae one has \(\lambda_{u}=\lambda_{\ell}\).
 </i></blockquote>
@@ -490,7 +504,8 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
     Prove <i>Proposition 4.1</i>.
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
+    padding: 20px; border: 2px solid #9cc5ff;overflow-x: scroll;">
         One has:
         \begin{align*}
         \lambda_{u} &= \lim_{\alpha\rightarrow 1^-}\mathbb{P}(U_2> \alpha |U_1 > \alpha) \newline
