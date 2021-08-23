@@ -452,11 +452,11 @@ with derivatives
 def f(x):
     return (x**2 - x - 2) / (3 - x) ** 3
   </code></pre>
-we can <i>automatically</i> obtain the first four derivatives in a given interval
+we can <i>automatically</i> obtain the first three derivatives in a given interval
   <code>x</code> as
   <pre><code class="lang-python">
 x = np.linspace(0, 2, 100)
-f_Dual = f(Dual(x, 1, 1, 1, 1))
+f_Dual = f(Dual(x, 1, 1, 1))
   </code></pre>
 
 A comparison with the analytically derived first derivative
