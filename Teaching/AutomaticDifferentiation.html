@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8"/>
+    <title>Luca Mingarelli</title>
+  <link rel="icon" href="../Icons/stork.png" type="image/png">
+  <style>
+    .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
+      border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
+    /*.active,*/
+    .collapsible:hover {  background-color: #555;}
+    .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+  </style>
+</head>
+
+<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+<script>window.MathJax = {tex: {tags: 'ams'}};</script>
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
+
+<link rel="stylesheet" href="../PRISM/prism.css"> <!-- For code highlight -->
+<script src="../PRISM/prism.js"></script>         <!-- For code highlight -->
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/w3.css">
+<link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/responsiveiframe.css">
+<script src="../js/style_preamble.js"></script>
+
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<!-- NavigationBar -->
+<script src="js/Navbar.js"></script>
+<!-- _____________ -->
+<!-- PRE_CONTENT -->
+<script src="js/pre_content.js"></script>
+<!-- _____________ -->
+
+
+
+
+<div class="w3-content w3-justify" style="max-width:800px">
+
+  <h1 style="text-align: left;"><b>Automatic Differentiation</b></h1>
+
+  Consider the Taylor expansion of a function \(f\):
+    <div style="overflow-x: scroll;">
+
+  \[
+f(x+\epsilon) = f(x) + f'(x)\epsilon
+  + \frac{1}{2!}f''(x)\epsilon^2 + O(\epsilon^3).
+  \]
+        </div>
+Assuming we can find a nilpotent object \( \epsilon\ne 0 \) such that \(\epsilon^2=0\),
+  one could then reduce the above expression exactly to
+    <div style="overflow-x: scroll;">
+    \[
+  f(x+\epsilon) = f(x) + f'(x)\epsilon.
+  \]
+</div>
+  How is this useful?
+  Consider as an example the quadratic function \(f(x)=x^2\),
+  and assume we are interested in knowing the value
+  of its derivative \(f'(p)\) in \(p\).
+  In this case we have:
+    <div style="overflow-x: scroll;">
+    \begin{align*}
+f(p+\epsilon) &= (p+\epsilon)^2\newline
+  &= p^2 + 2p\epsilon + \epsilon^2\newline
+  &= p^2 + 2p\epsilon \newline
+  &= f(p) + f'(p)\epsilon.
+  \end{align*}
+</div>
+  Thus \(f'(p) = 2p\).
+<br>
+  Numbers of the form \(a+b\epsilon\) are known as
+  <a href="http://en.wikipedia.org/wiki/Dual_number">dual numbers</a>
+  and accept a representation in the space of \(2\times 2\) matrices.
+  In particular any dual number \(a+b\epsilon\) has representation
+    <div style="overflow-x: scroll;">
+
+    \[
+a\mathbb{1} +
+  b\begin{pmatrix}
+  0 & 1 \\
+  0 & 0
+  \end{pmatrix},
+  \]
+  where
+  \[
+\epsilon = \begin{pmatrix}
+  0 & 1 \\
+  0 & 0
+  \end{pmatrix}
+  \]
+</div>
+  satisfies the desire property \(\epsilon\ne 0\) and \(\epsilon^2=0\).
+  <br>
+  More generally, higher \(n\)-th order derivatives can be computed as well.
+  One needs however to consider a more general class of hyper-numbers
+  of the form \(a_0 + a_1\epsilon + .. + a_{n}\epsilon^{n}\) with
+  \(\epsilon^{k}\ne 0\) for any \(k \le n\) and \(\epsilon^{n+1}=0\).
+  Once again, these numbers accept a representation in the space of
+  \((n+1)\times (n+1)\) matrices \(\mathbb{R}^{(n+1)\times (n+1)}\).
+  In particular the elements of matrix \(\epsilon\) are given by
+    <div style="overflow-x: scroll;">
+  \begin{equation}
+  \epsilon_{i,j}=\begin{cases}
+  1, & \text{if $j=i+1$}\\
+  0, & \text{otherwise}
+  \end{cases}
+  \end{equation}
+        </div>
+so that for example, for \(n=2\) one has
+    <div style="overflow-x: scroll;">
+    \[
+  \epsilon = \begin{pmatrix}
+  0 & 1 & 0 \\
+  0 & 0 & 1  \\
+  0 & 0 & 0
+  \end{pmatrix},\
+  \epsilon^2 = \begin{pmatrix}
+  0 & 0 & 1 \\
+  0 & 0 & 0  \\
+  0 & 0 & 0
+  \end{pmatrix},\
+  \epsilon^3 = 0,
+  \]
+</div>
+  for \(n=3\)
+    <div style="overflow-x: scroll;">
+
+  \[
+  \epsilon = \begin{pmatrix}
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 0 & 0
+  \end{pmatrix},\
+  \epsilon^2 = \begin{pmatrix}
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0
+  \end{pmatrix},\
+  \epsilon^3 = \begin{pmatrix}
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0
+  \end{pmatrix},\
+\epsilon^4= 0,
+  \]
+        </div>
+and so forth at higher orders.
+
+  <h3 style="text-align: left;"><b>A Python implementation</b></h3>
+
+  In light of this, it should become apparent the appeal of automatic differentiation
+  for exact numerical computation of a function's derivative, without the
+  need for symbolic manipulation of algebraic expressions.
+  <br>
+  Let us therefore write a Python class <code>Dual</code> implementing
+  the algebras we have introduced above. One can represent the number
+  \(a_0 + a_1\epsilon +...+a_{n-1}\epsilon^{n-1}\) as the collection of \(n\)
+  parameters \(a_i\). In the following we shall refer to a hyper-number
+  such that \(\epsilon^n=0\) as a number of order \(n\).
+First of all, let us start by writing a function <code>_generate_epsilon</code>
+  to generate the matrix representations of each \(\epsilon^i\):
+  <pre><code class="lang-python">
+import numpy as np
+import scipy.sparse as sp
+from functools import lru_cache
+
+@lru_cache()
+def _generate_epsilon(n=None, diff_order=1):
+    row = np.arange(n - diff_order)
+    col = row + diff_order
+    data = np.ones(n - diff_order)
+    return sp.coo_matrix((data, (row, col)), shape=(n, n)).toarray()
+  </code></pre>
+
+  We can therefore start writing our <code>Dual</code> class
+  which will store the number's parameters \(a_i\)
+  in the attribute <code>_params</code>, and the associated matrices
+  \(\epsilon^i\) in <code>eps_all</code>:
+
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args):
+        if not args:
+            args = [0]
+        self._params = args
+        self.n = len(args)
+        self.eps_all = [_generate_epsilon(self.n, k) for k in range(1, self.n)]
+  </code></pre>
+
+We will therefore be able to generate an instance of our number
+  by passing the corresponding parameters as arguments.
+  As an example, the number \(1+2\epsilon+3\epsilon^2\) will be instantiated as
+  <code>Dual(1,2,3)</code>.
+  In order to return a formatted representation of this object we can also
+  override the magic method <code>__repr__</code>
+  as
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+
+    def __repr__(self):
+        SUPERSCRIPTS = ["⁰", "¹", "²", "³", "⁴",
+                        "⁵", "⁶", "⁷", "⁸", "⁹"]
+        repr = f'{self._params[0]}'
+        for k, p in enumerate(self._params[1:]):
+            repr += f" + {p}ε{''.join([SUPERSCRIPTS[int(q)]
+                                       for q in list(str(k + 1))])
+                              if k > 0 else ''}"
+        return repr
+  </code></pre>
+so that, as an example, the code <code>Dual(1, 2, 3)</code> will return
+  <code>1 + 2ε + 3ε²</code>. More importantly however,
+  we would like to access the full matrix representation of the number,
+  as well as to be able to create a new instance from a matrix representation.
+  This can be achieved by implementing the methods <code>matrix_repr</code>
+  and <code>from_matrix</code>:
+
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+    def __repr__(self): ...
+
+    def matrix_repr(self):
+        return sum(p*ε for p, ε in zip(self._params[1:], self.eps_all)) + self._params[0]*np.eye(self.n)
+
+    def from_matrix(self, M):
+        self._params, self.n = M[0], len(M[0])
+        self.eps_all = [_generate_epsilon(self.n, k) for k in range(1, self.n)]
+        return self
+  </code></pre>
+Now <code>Dual(1,2,3).matrix_repr()</code> will return
+<pre>
+array([[1., 2., 3.],
+       [0., 1., 2.],
+       [0., 0., 1.]])
+</pre>
+  and an instance can also be created from a <code>numpy.array</code>
+  or <code>numpy.matrix</code> (say <code>M</code>) as <code>Dual().from_matrix(M)</code>.
+  <br>
+  Let us now turn to implementing the algebra.
+  Addition and subtraction operations are trivial:
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+    def __repr__(self): ...
+    def matrix_repr(self): ...
+    def from_matrix(self, M): ...
+
+    def __add__(self, other):
+        if isinstance(other, Dual):
+            return Dual(*[p1 + p2 for p1, p2 in zip(self._params, other._params)])
+        else:
+            return Dual(*([self._params[0] + other] + list(self._params[1:])))
+
+
+    def __radd__(self, other):
+        return self + other
+
+    def __neg__(self):
+        return Dual(*[-p for p in self._params])
+
+    def __sub__(self, other):
+        return self.__add__(other.__neg__())
+
+    def __rsub__(self, other):
+        return -self + other
+
+  </code></pre>
+
+Multiplication and division are instead slightly more involved.
+  One straightforward option of course could be to let a matrix algebra package
+  handle the operations, for example by defining multiplications as
+  <pre><code class="lang-python">
+def slow_multiplication(D1, D2):
+    prod = D1.matrix_repr() @ D2.matrix_repr()
+    return Dual().from_matrix(prod)
+  </code></pre>
+
+and similarly for division. However this is slow, and we can do better.
+  In particular recalling the nilpotence of all \(\epsilon^i\) we might
+  realise that multiplying a number by \(\epsilon\) simply amounts to
+  shifting the vector parameter to the right.
+  As an example, the order-\(3\) number \((1+2\epsilon+3\epsilon^2)\epsilon=1\epsilon+2\epsilon^2\)
+  so that the associated parameters vector transforms as \((1,2,3)\rightarrow(0,1,2)\).
+  Similarly, multiplying by \(\epsilon^2\) would entail the transformation of the
+  parameters vector \((1,2,3)\rightarrow(0,0,1)\), and so forth.
+Consequently, multiplication is easily and efficiently implemented as
+
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+    def __repr__(self): ...
+    def matrix_repr(self): ...
+    def from_matrix(self, M): ...
+    def __add__(self, other): ...
+    def __radd__(self, other): ...
+    def __neg__(self): ...
+    def __sub__(self, other): ...
+    def __rsub__(self, other):...
+
+    def _mul_epsilon(self, k=1):
+        if k==0: return self
+        return Dual(*([0]*k + [p for p in self._params[:-k]]))
+
+    def __mul__(self, other):
+        if isinstance(other, Dual):
+            return sum(self._mul_epsilon(k)*p2 for k, p2 in enumerate(other._params))
+        else:
+            return Dual(*[p * other for p in self._params])
+
+    def __rmul__(self, other):
+        return self * other
+
+  </code></pre>
+without the need for matrix algebra.
+  Division instead reduces to computing the inverse of an object of the class
+  <code>Dual</code>. Once again, one could think of making use of
+  matrix algebra, which would remind us that the inverse of a matrix might not
+  exist in the general case. However, the reader might realise we are dealing
+  with square upper triangular matrices, which makes our task much easier.
+  In any case, once again for the sake of efficiency,
+  we shall try to avoid using matrix algebra.
+Here the crucial point, is to notice that our numbers accept matrix representation
+  of the form \(a_0\mathbb{1} + D\), where the matrix \(D = \sum_i^{n-1} a_i\epsilon^i\)
+  is nilpotent, that is \(D^n=0\).
+  The inverse can therefore be written as the truncated geometric sum
+    <div style="overflow-x: scroll;">
+    \[
+  (a_0\mathbb{1} + D)^{-1} = \frac{1}{a_0}\left(\mathbb{1}-\frac{D}{a}+\left(-\frac{D}{a}\right)^2 +\ ...\ + \left(-\frac{D}{a}\right)^{n-1}\right).
+  \]
+        </div>
+  Thus, introducing the power method <code>__pow__</code>,
+  one can efficiently compute an inverse and implement
+  the division operation between two numbers \(d_1,\ d_2\) as \(d_1  d_2^{-1}\):
+
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+    def __repr__(self): ...
+    def matrix_repr(self): ...
+    def from_matrix(self, M): ...
+    def __add__(self, other): ...
+    def __radd__(self, other): ...
+    def __neg__(self): ...
+    def __sub__(self, other): ...
+    def __rsub__(self, other):...
+    def _mul_epsilon(self, k=1): ...
+    def __mul__(self, other): ...
+    def __rmul__(self, other): ...
+
+    def __pow__(self, power):
+        if power<0:
+            return self.__pow__(-power).inverse()
+        elif power==0:
+            return Dual(*([1]+[0]*(self.n-1)))
+        elif power%2==0:
+            return (self*self).__pow__(power/2)
+        else:
+            return self * (self).__pow__(power-1)
+
+    def inverse(self):
+        a = self._params[0]
+        D = Dual(*([0]+list(self._params[1:])))
+        return sum((-D / a)**k for k in range(self.n)) / a
+
+    def __truediv__(self, other):
+        if isinstance(other, Dual):
+            return self * other.inverse()
+        else:
+            return Dual(*[p / other for p in self._params])
+
+    def __rtruediv__(self, other):
+        return self.inverse() * other
+  </code></pre>
+Finally, noticing that a number
+    \(
+    a_0+a_1\epsilon+\ ...\ +a_n\epsilon^n
+    \)
+    transforms under any function \(f\) as
+    <div style="overflow-x: scroll;">
+
+    \[
+    f(a_0+a_1\epsilon+\ ...\ +a_n\epsilon^n)=f(a_0)+f'(a_0)a_1\epsilon+\ ...\ +f^{(n)}(a_0)a_n\epsilon^n
+    \]
+</div>
+
+    other more complex functions such as <code>sin</code>,
+  <code>cos</code>, and <code>exp</code>, can be easily implemented as:
+  <pre><code class="lang-python">
+class Dual:
+    def __init__(self, *args): ...
+    def __repr__(self): ...
+    def matrix_repr(self): ...
+    def from_matrix(self, M): ...
+    def __add__(self, other): ...
+    def __radd__(self, other): ...
+    def __neg__(self): ...
+    def __sub__(self, other): ...
+    def __rsub__(self, other):...
+    def _mul_epsilon(self, k=1): ...
+    def __mul__(self, other): ...
+    def __rmul__(self, other): ...
+    def __pow__(self, power): ...
+    def inverse(self): ...
+    def __truediv__(self, other): ...
+    def __rtruediv__(self, other): ...
+
+    def exp(self):
+        return Dual(*([np.exp(self._params[0])] +
+                      [np.exp(self._params[0]) * p / np.math.factorial(n + 1)
+                       for n, p in enumerate(self._params[1:])]))
+
+    def sin(self):
+        f_list = [np.cos, lambda k: -np.sin(k), lambda k: -np.cos(k), np.sin]
+        return Dual(*([np.sin(self._params[0])] +
+                      [f(self._params[0])*p / np.math.factorial(n+1)
+                       for n, (p,f) in enumerate(zip(self._params[1:],
+                                                     f_list*self.n))]))
+
+    def cos(self):
+        return (np.pi/2 - self).sin()
+  </code></pre>
+We have now all we need to attempt to auto-differentiate a function.
+  Let us take as an example the function
+  \[
+  f(x) = \frac{\sin(x)^2}{(x^2-x+1)},
+  \]
+with derivatives
+    <div style="overflow-x: scroll;">
+  \begin{align*}
+  f'(x) &= \frac{\sin^2(x)(1-2x)}{(x^2-x+1)^2}+\frac{2\sin(x)\cos(x)}{(x^2-x+1)}, \newline
+  f''(x) &=  \frac{(6x^2-6x)\sin^2(x)}{(x^2-x+1)^3}+\frac{(4x-2)\sin(2x)}{(x^2-x+1)^2}+\frac{2\cos(2x)}{(x^2-x+1)}, \newline
+  f'''(x) &= \frac{-6(2x-1)^3\sin^2(x)}{(x^2-x+1)^4}+\frac{12(2x-1)^2\sin(x)\cos(x)+(24x-12)\sin^2(x)}{(x^2-x+1)^3}+\frac{(6-12x)(\cos^2(x)-\sin^2(x))-2\sin(x)\cos(x)}{(x^2-x+1)^2}+\frac{8\sin(x)\cos(x)}{(x^2-x+1)},\newline
+        &\phantom{..}\vdots
+  \end{align*}
+</div>
+  Therefore, defining the function
+  <pre><code class="lang-python">
+def f(x):
+    return (x**2 - x - 2) / (3 - x) ** 3
+  </code></pre>
+we can <i>automatically</i> obtain the first four derivatives in a given interval
+  <code>x</code> as
+  <pre><code class="lang-python">
+x = np.linspace(0, 2, 100)
+f_Dual = f(Dual(x, 1, 1, 1, 1))
+  </code></pre>
+
+A comparison with the analytically derived first derivative
+    reveals an error in the order of the machine error:
+    <pre><code class="lang-python">
+df = (np.sin(x) *(2 *(x**2 - x + 1)* np.cos(x) + (1 - 2* x)* np.sin(x)))/(x**2 - x + 1)**2
+print('AD error: ', np.abs(df - Dual_f._params[1]).max())
+print('FD error: ', np.abs(df - np.diff(f(x), append=f(2+(x[1]-x[0])))/(x[1]-x[0])).max())
+  </code></pre>
+<pre>
+AD error:  2.220446049250313e-16
+FD error:  0.02848352190423803
+</pre>
+
+
+    <figure>
+        <img class="center" alt="copulae_grid"
+             src="img/Autodiff/autodiff.svg"
+             width="80%" >
+        <br>
+        <figcaption><i><b>Fig.1:</b> Plots of the function \(f(x)\) and its first three derivatives
+            computed with automatic differentiation.
+        </i></figcaption>
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
+for k in range(4):
+    plt.plot(x, Dual_f._params[k]*np.math.factorial(k))
+plt.show()
+</code></pre>
+        </div>
+    </figure>
+
+In Python one finds a number of pre-packaged libraries for automatic differentiation
+    such as <a href="https://github.com/google/jax"><u>JAX</u></a>, or broader ML
+    libraries such as <a href="https://github.com/aesara-devs/aesara"><u>Aesara</u></a> (ex-Theano), <a href="https://www.tensorflow.org"><u>TensorFlow</u></a>, and <a href="https://pytorch.org"><u>PyTorch</u></a>.
+
+
+  <!--REFERENCE AT THIS BLOG POST-->
+  <!--  http://blog.jliszka.org/2013/10/24/exact-numeric-nth-derivatives.html-->
+
+
+
+
+
+
+
+
+
+  <br>
+
+  <h4 id="REFERENCES"><i>References</i></h4>
+
+  [1] <a href="http://blog.sigfpe.com/2005/07/automatic-differentiation.html">"Automatic Differentiation", Dan Pipponi, A NEIGHBORHOOD OF INFINITY Blog, 2005 </a>
+  <br>
+  [2] <a href="https://www.oxinabox.net/2021/02/08/AD-truncation-error.html" id="ref2">"Automatic Differentiation Does Incur Truncation Errors (kinda)", Lyndon White  </a>
+
+  <br><br>
+
+
+  <h5> <a href="../Teaching.html"><b><img src="../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
+
+
+  <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../js/OpenCloseSidebar.js"></script>
+<!--<script src="../js/ModalImageGallery.js"></script>-->
+<script src="../js/OpenCloseCollapsible.js"></script>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -453,10 +453,8 @@ The explicit nature of Archimedean copulae makes them particularly suitable for
              src="img/Copulae/grid_copulae.svg"
               width="80%" >
         <figcaption><i><b>Fig.2:</b> Bivariate probability density functions with normal marginals and selected copulae.</i></figcaption>
-    </figure>
-
-    <button class="collapsible">Plot code</button>
-    <div class="content"><pre><code class="lang-python">
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
 import numpy as np, matplotlib.pyplot as plt, seaborn as sns
 import scipy.stats as st
 sns.set()
@@ -513,7 +511,10 @@ dJ = (np.diff(np.diff(J).T).T).clip(min=1e-10)
 plt.contour(x1[1:], x2[1:], dJ, 10)
 plt.show()
 </code></pre>
-</div>
+        </div>
+    </figure>
+
+
 
 
 
@@ -681,9 +682,8 @@ For the special case of \(d=2\) one has however a simpler approach.
              width="60%" >
         <figcaption><i><b>Fig.3:</b> Joint distribution with gaussian copula
             and standard normal marginals.</i></figcaption>
-    </figure>
-    <button class="collapsible">Plot code</button>
-    <div class="content"><pre><code class="lang-python">
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
 import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
 import scipy.stats as st
 N = 1_000_000
@@ -698,7 +698,9 @@ h = (sns.jointplot(data=X, x='X1', y='X2', marginal_kws=dict(bins=30),
                    xlim=(-3,3), ylim=(-3,3), kind='hex', gridsize=2, **jnt_kw)
         .plot_joint(sns.kdeplot, shade=False, cmap='viridis'))
 plt.show()</code></pre>
-    </div>
+        </div>
+    </figure>
+
 
 
     <h5>Example 2: gaussian copula and non-gaussian marginals</h5>
@@ -712,9 +714,8 @@ plt.show()</code></pre>
              width="60%" >
         <figcaption><i><b>Fig.4:</b> Gaussian copula
             with its uniform marginals.</i></figcaption>
-    </figure>
-    <button class="collapsible">Plot code</button>
-    <div class="content"><pre><code class="lang-python">
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
 import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
 import scipy.stats as st
 N = 1_000_000
@@ -731,7 +732,9 @@ h = (sns.jointplot(data=U, x='U1', y='U2', marginal_kws=dict(bins=30),
                    xlim=(0,1), ylim=(0,1),kind='hex', gridsize=2, **jnt_kw)
         .plot_joint(plt.hexbin, gridsize=30, cmap='Blues'))
 plt.show()</code></pre>
-    </div>
+        </div>
+    </figure>
+
     <br><br>
 Finally, the copula's uniforms can be transformed to the desired marginals.
     Take as an example \(\widetilde{X}_1\sim \text{Beta}(\alpha=3, \beta=10)\),
@@ -757,9 +760,8 @@ Finally, the copula's uniforms can be transformed to the desired marginals.
             with \(\text{Beta}(\alpha=3, \beta=10)\) and
             \(\text{Gumbel}(\mu=0,\beta=1)\)
             marginals.</i></figcaption>
-    </figure>
-    <button class="collapsible">Plot code</button>
-    <div class="content"><pre><code class="lang-python">
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
 import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
 import scipy.stats as st
 N = 1_000_000
@@ -791,7 +793,9 @@ h = (sns.jointplot(x=x1, y=x2, kind='hex', marginal_kws=dict(bins=30),
                    **jnt_kw)
         .plot_joint(sns.kdeplot, cmap='viridis'))
 plt.show()</code></pre>
-    </div>
+        </div>
+    </figure>
+
 
 
     <h5>Example 3: non-gaussian copula and non-gaussian marginals</h5>
@@ -822,9 +826,8 @@ At last let's replicate the last exercise replacing the gaussian copula
             with \(\text{Beta}(\alpha=3, \beta=10)\) and
             \(\text{Gumbel}(\mu=0,\beta=1)\)
             marginals.</i></figcaption>
-    </figure>
-    <button class="collapsible">Plot code</button>
-    <div class="content"><pre><code class="lang-python">
+        <button class="collapsible">Plot code</button>
+        <div class="content"><pre><code class="lang-python">
 import pandas as pd, matplotlib.pyplot as plt, seaborn as sns
 import scipy.stats as st
 
@@ -858,7 +861,9 @@ h = (sns.jointplot(data=X_trans, x='XT1', y='XT2', kind='hex', gridsize=2,
                    ** jnt_kw)
         .plot_joint(sns.kdeplot, cmap='viridis'))
 plt.show()</code></pre>
-    </div>
+        </div>
+    </figure>
+
 
     <br><br>
 In Python, the package
