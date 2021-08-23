@@ -453,7 +453,7 @@ def f(x):
     return (x**2 - x - 2) / (3 - x) ** 3
   </code></pre>
 we can <i>automatically</i> obtain the first three derivatives in a given interval
-  <code>x</code> as
+  <code>x</code>, recalling that the coefficient of \(\epsilon^k\) is \(f^{(k)}(x)/k!\). Thus:
   <pre><code class="lang-python">
 x = np.linspace(0, 2, 100)
 f_Dual = f(Dual(x, 1, 1, 1))
