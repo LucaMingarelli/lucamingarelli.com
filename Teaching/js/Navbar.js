@@ -6,7 +6,7 @@ document.write('\
  <nav class="w3-sidebar w3-bar-block w3-white w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>\
  <h3 class="w3-padding-64 w3-center"><b>LUCA<br>MINGARELLI</b></h3>\
  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large">CLOSE</a>\
- <a href="../Asymptotic_Analysis/index.html" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a>\
+ <a href="../index.html" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a>\
  <a href="../RESEARCH.html" class="w3-bar-item w3-button">RESEARCH</a>\
  <a href="../ResearchBlog.html"  class="w3-bar-item w3-button">Research Blog</a>\
  <a href="../Conferences.html"  class="w3-bar-item w3-button">Conferences</a>\
