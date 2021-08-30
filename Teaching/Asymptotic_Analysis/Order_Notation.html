@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8"/>
+    <title>Luca Mingarelli</title>
+  <link rel="icon" href="../../Icons/stork.png" type="image/png">
+  <style>
+    .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
+      border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
+    /*.active,*/
+    .collapsible:hover {  background-color: #555;}
+    .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+  </style>
+</head>
+
+<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+<script>window.MathJax = {tex: {tags: 'ams'}};</script>
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
+
+<link rel="stylesheet" href="../../PRISM/prism.css"> <!-- For code highlight -->
+<script src="../../PRISM/prism.js"></script>         <!-- For code highlight -->
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../css/w3.css">
+<link rel="stylesheet" href="../../css/font.css">
+<link rel="stylesheet" href="../../css/responsiveiframe.css">
+<script src="../../js/style_preamble.js"></script>
+
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<!-- NavigationBar -->
+<script src="../js/Navbar.js"></script>
+<!-- _____________ -->
+<!-- PRE_CONTENT -->
+<script src="../js/pre_content.js"></script>
+<!-- _____________ -->
+
+
+
+
+<div class="w3-content w3-justify" style="max-width:800px">
+
+  <h1 style="text-align: left;"><b>Asymptotic Analysis: Order Notation</b></h1>
+
+  Consider two functions \(f, g: \mathbb{C}\rightarrow\mathcal{D}\subset \mathbb{C}\)
+  such that the limit for \(z\rightarrow z_0\) exists in some complex domain \(\mathcal{D}\).
+
+  <br><br>
+  <div style="overflow-x: scroll;">
+    <b>Definition 1 — Asymptotic boundedness</b><blockquote><i>
+    If there exists constants \(K\ge 0\) and \(\delta>0\) such that
+    \(|f(z)|\le K|g(z)|\)
+for \(0<|z-z_0|<\delta\), then we say \(f(z)\) is
+   </i> <b>asymptotically bounded </b>
+    <i> by \(g(z)\) as \(z\rightarrow z_0\), and we write
+
+    \begin{equation}
+f(z) = \mathcal{O}(g(z))\quad \text{as}\quad z\rightarrow z_0.
+    \end{equation}
+
+      This implies:
+      \[
+\left|\frac{f(z)}{g(z)}\right|<\infty.
+      \]
+  </i>
+  </blockquote>
+  </div>
+
+  <br><br>
+
+  <div style="overflow-x: scroll;">
+    <b>Definition 2 — Asymptotic smallness</b><blockquote><i>
+If for all \(\epsilon>0\) there exist some constant \(\delta>0\) such that
+    \(|f(z)|\le \epsilon|g(z)|\) for \(0<|z-z_0|<\delta\),
+    then we say \(f(z)\) is
+
+
+
+  </i> <b>asymptotically smaller </b>
+    <i> than \(g(z)\) as \(z\rightarrow z_0\), and we write
+
+      \begin{equation}
+      f(z) = \mathcal{o}(g(z))\quad \text{as}\quad z\rightarrow z_0,
+      \end{equation}
+or equivalently \(f(z) \ll g(z)\ \text{as}\ z\rightarrow z_0\).
+      This implies:
+      \[
+      \frac{f(z)}{g(z)}\xrightarrow[]{z\rightarrow z_0}0.
+      \]
+    </i>
+  </blockquote>
+  </div>
+
+  <br><br>
+
+  <div style="overflow-x: scroll;">
+    <b>Definition 3 — Asymptotic Equality</b><blockquote><i>
+    If in the limit \(z\rightarrow z_0\) one has \(f(z)=g(z)+\mathcal{o}(g(z))\)
+    then we say \(f(z)\) is
+
+
+
+  </i> <b>asymptotically equivalent </b>
+    <i> to \(g(z)\) as \(z\rightarrow z_0\), and we write
+
+      \begin{equation}
+      f(z) \sim g(z)\quad \text{as}\quad z\rightarrow z_0.
+      \end{equation}
+
+      This implies:
+      \[
+      \frac{f(z)}{g(z)}\xrightarrow[]{z\rightarrow z_0}1.
+      \]
+
+    </i>
+  </blockquote>
+  </div>
+
+
+<!--  http://www.macs.hw.ac.uk/~simonm/ae.pdf-->
+
+
+
+
+
+
+
+
+
+  <br>
+
+  <h4 id="REFERENCES"><i>References</i></h4>
+
+  [1] <a href="" id="ref1"></a>
+  <br>
+  [2] <a href="" id="ref2"> </a>
+
+  <br><br>
+
+
+  <!--    http://www.macs.hw.ac.uk/~simonm/ae.pdf-->
+
+
+  <!-- ________________________________________________________________________________________________ -->
+  <!-- ________________________________________________________________________________________________ -->
+  <!-- ________________________________________________________________________________________________ -->
+  <!--    <h7>-->
+  <!-- <span style="float:right;">
+ <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+ </span>
+ </h7>
+ <br> -->
+
+  <h5> <a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
+
+
+  <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../../js/OpenCloseSidebar.js"></script>
+<!--<script src="../js/ModalImageGallery.js"></script>-->
+<script src="../../js/OpenCloseCollapsible.js"></script>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>
