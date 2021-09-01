@@ -108,7 +108,7 @@
 One of the simplest versions of Schelling's segregation model
     consists in a stylised representation of a residential area
     where individuals repeatedly make relocation decisions
-    based on the characteristics of their immediate neighborhood.
+    based on the characteristics of their immediate neighbourhood.
 <br>
     The model considers two types of agents,
     say <i style="color:blue;"><b>blue</b></i>
@@ -258,7 +258,7 @@ def evolve(M, boundary='wrap'):
         M (numpy.array): the matrix to be evolved
         boundary (str): Either wrap, fill, or symm
     If the similarity ratio of neighbours
-    to the entire neighborhood population
+    to the entire neighbourhood population
     is lower than the SIM_T,
     then the individual moves to an empty house.
     """
@@ -319,7 +319,7 @@ Put differently, and this is one of the main insights of Schelling,
     The self-reinforcing mechanism driving the emergence is found
     in increased likelihood of individuals in a neighbourhood to relocate
     conditional on one individual relocating. When a minority individual
-    leaves a neighborhood, that type of agent becomes
+    leaves a neighbourhood, that type of agent becomes
     rarer in that neighbourhood, therefore providing an incentive
     for others to move as well.
 
@@ -361,7 +361,7 @@ Put differently, and this is one of the main insights of Schelling,
     discreteness of the neighbourhood of each individual (Fig. 7).
     Neglecting vacant locations each individual can have at most
     \(8\) neighbours which might or might not be of the same type.
-    Consequently, quantisised jumps in \(\langle S\rangle\) can be expected
+    Consequently, quantised jumps in \(\langle S\rangle\) can be expected
     to occur at any \(\frac{n}{8}\)  for \(n∈ℕ:n<8\).
 
 
