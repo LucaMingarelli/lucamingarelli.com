@@ -469,11 +469,11 @@ A comparison with the analytically derived first derivative
     <pre><code class="lang-python">
 df = (np.sin(x) *(2 *(x**2 - x + 1)* np.cos(x) + (1 - 2* x)* np.sin(x)))/(x**2 - x + 1)**2
 print('AD error: ', np.abs(df - Dual_f._params[1]).max())
-print('FD error: ', np.abs(df - np.diff(f(x), append=f(2+(x[1]-x[0])))/(x[1]-x[0])).max())
+print('FD error: ', np.abs(df - np.gradient(f(x),x)).max())
   </code></pre>
 <pre>
 AD error:  2.220446049250313e-16
-FD error:  0.02848352190423803
+FD error:  0.020607168256352445
 </pre>
 
 
