@@ -285,17 +285,17 @@
     <b>Proposition 3</b><blockquote><i>
     There exist no dependency measure \(\kappa\) such that:
     <ol>
-        <li>\(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\), and</li>
+        <li>\(\kappa(X_1, X_2)=0 \iff X_1 \perp\!\!\!\perp X_2\), and</li>
         <li>\(\kappa(T(X_1), X_2) = \begin{cases}
             \kappa(X, Y) & \text{if $T$ strictly increasing}\\
             -\kappa(X, Y) & \text{if $T$ strictly decreasing}
             \end{cases}  \) .</li>
     </ol>
 </i></blockquote></div>
-    See <a href="#EX8"><i>Exercise 8</i></a> for a proof. Nonetheless it is still possible to define a dependency measure \(\kappa\) such that
-    \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off
+    See <a href="#EX8"><i>Exercise 8</i></a> for a proof. Nonetheless, it is still possible to define a dependency measure \(\kappa\) such that
+    \(\kappa(X_1, X_2)=0 \iff X_1 \perp\!\!\!\perp X_2\) as long as one is willing to trade off
     other properties. In particular, it can be shown
-    that one can have \(\kappa(X_1, X_2) \iff X_1 \perp\!\!\!\perp X_2\),
+    that one can have \(\kappa(X_1, X_2)=0 \iff X_1 \perp\!\!\!\perp X_2\),
     with \(0\le \kappa(X_1, X_2)\le 1\), and
     \(\kappa(X_1, X_2)=1 \iff X_1,X_2\) co-/counter- monotonic,
     and \(\kappa(T(X_1), X_2)=\kappa(X_1, X_2)\) for \(T\) strictly increasing.
@@ -547,13 +547,13 @@ The tail dependence grows with the correlation coefficient \(\rho\) and quickly 
         Consider the upper coefficient first. One has:
         \begin{align*}
         \lambda_u &= 2-\lim_{\alpha\rightarrow 1^-}\frac{1-\psi(2\psi^{-1}(\alpha))}{1-\alpha} \newline
-        \xrightarrow[]{\beta=\psi(\alpha)}&= 2-\lim_{\beta\rightarrow 0^+}\frac{1-\psi(2\beta)}{1-\psi(\beta)}\newline
+        \xrightarrow[]{\beta=\psi^{-1}(\alpha)}&= 2-\lim_{\beta\rightarrow 0^+}\frac{1-\psi(2\beta)}{1-\psi(\beta)}\newline
         \xrightarrow[]{\text{de l'Hôspital}}&=2-2\lim_{\beta\rightarrow 0^+}\frac{\psi'(2\beta)}{\psi'(\beta)}.
         \end{align*}
         Now the lower coefficient:
         \begin{align*}
         \lambda_\ell &= \lim_{\alpha\rightarrow 0^+}\frac{\psi(2\psi^{-1}(\alpha))}{\alpha} \newline
-        \xrightarrow[]{\beta=\psi(\alpha)}&= \lim_{\beta\rightarrow\infty}\frac{\psi(2\beta)}{\psi(\beta)}\newline
+        \xrightarrow[]{\beta=\psi^{-1}(\alpha)}&= \lim_{\beta\rightarrow\infty}\frac{\psi(2\beta)}{\psi(\beta)}\newline
         \xrightarrow[]{\text{de l'Hôspital}}&=2\lim_{\beta\rightarrow\infty}\frac{\psi'(2\beta)}{\psi'(\beta)}.
         \end{align*}
 
