@@ -14,4 +14,5 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}\
 .w3-third img:hover{opacity: 1}\
 .left {float: left;padding: 10px;}\
 .right {float: right;padding: 10px;}\
-</style>')
+</style>\
+<link rel="stylesheet" href="css/scrollbar.css">')
