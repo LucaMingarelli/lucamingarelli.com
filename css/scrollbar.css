@@ -55,6 +55,7 @@ div::-webkit-scrollbar-track
 div::-webkit-scrollbar
 {
   width: 6px;
+  height: 6px;
 }
 
 div::-webkit-scrollbar-thumb
@@ -62,3 +63,6 @@ div::-webkit-scrollbar-thumb
   background-color: var(--grey);
 }
 
+::-webkit-scrollbar-corner {
+  background: rgba(0,0,0,0);
+}
