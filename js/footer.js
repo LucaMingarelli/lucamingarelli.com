@@ -17,7 +17,8 @@ document.write('<footer class="w3-container w3-padding-8 w3-dark-grey">\
         <h3>OTHER LINKS</h3>\
         <p><a href="https://www.linkedin.com/in/lucamingarelli/">LinkedIn</a></br>\
           <a href="https://scholar.google.co.uk/citations?user=NCAmtwMAAAAJ&hl=en">GoogleScholar</a></br>\
-          <a href="https://github.com/LucaMingarelli">GitHub</a></p>\
+          <a href="https://github.com/LucaMingarelli">GitHub</a></br>\
+          <a href="https://www.codewars.com/users/LucaMingarelli"><img src="https://www.codewars.com/users/LucaMingarelli/badges/micro" alt="CodeWars"></a></p>\
       </div>\
     </div>\
   </footer> ')
