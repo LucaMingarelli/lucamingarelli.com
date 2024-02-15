@@ -65,10 +65,12 @@
 <h2 style="text-align: left;"><b>Defining the Problem</b></h2>
   
 
-  <b>Definition 1 — Control function</b><blockquote><i> A control function  
+  <b>Definition 1 — Control function</b><blockquote><i> 
+    A <strong>control function</strong>
     \(\mathbf{\gamma}(t)\) is a map from time \(t\in [0, \infty)\) to the set of <i>admissable controls</i> \(\Gamma\).
-
-
+    <br>
+    The control is also called a <strong>policy</strong>.
+    
     </blockquote></i>
     <br>
 
@@ -78,7 +80,7 @@
       \dot{\mathbf{x}}(t)=\mathbb{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
       \end{equation}
       
-      is called a <i>\(\mathbf{\gamma}\)-Controlled Dynamical System</i>. 
+      is called a <strong>\(\mathbf{\gamma}\)-Controlled Dynamical System</strong>. 
       <br>
       A system which does not explicitely depent on time 
   
@@ -86,8 +88,9 @@
       \dot{\mathbf{x}}(t)=\mathbb{f}(\mathbf{x}(t), \mathbf{\gamma}(t)),
       \end{equation}
 
-      is called <i>Autonomous</i>.
-      
+      is called <strong>Autonomous</strong>.
+      <br>
+      The <strong>state</strong> of the system \(\mathbf{x}(t)\) is also called <strong>trajectory</strong>.
   
 
       </blockquote></i>
@@ -99,8 +102,8 @@
         \mathbf{P}[\mathbf{\gamma}] := \int_0^T r(\mathbf{x}(t), \mathbf{\gamma}(t)) dt + g(\mathbf{x}(T)),
         \end{equation}
        
-        is called a <i>Payoff Functional</i>, 
-        where the functions \(r\) and \(g\) are called <i>running payoff</i> and  <i>terminal payoff</i> respectively.
+        is called a <strong>Payoff Functional</strong>, 
+        where the functions \(r\) and \(g\) are called <strong>running payoff</strong> and  <strong>terminal payoff</strong> respectively.
         </blockquote></i>
         <br>
   
@@ -109,20 +112,73 @@
   <b>Definition 4 — Optimal Control Problem</b><blockquote><i> 
     Given an autonomous system with controls \(\mathbf{\gamma}\) 
     and payoff functional \(\mathbf{P}[\mathbf{\gamma}]\), 
-    the associated <i>Optimal Control Problem </i> amounts to finding 
-    an <i>optimal control</i> \(\mathbf{\gamma}^*\) maximising the payoff, 
+    the associated <strong>Optimal Control Problem </strong> amounts to finding 
+    an <strong>optimal control</strong> \(\mathbf{\gamma}^*\) maximising the payoff: 
+    
+    \begin{equation}
+    \mathbf{P}[\mathbf{\gamma}^*] = \max_{\mathbf{\gamma}\in\Gamma} \mathbf{P}[\mathbf{\gamma}],
+    \end{equation}
+
     that is
     \begin{equation}
     \mathbf{P}[\mathbf{\gamma}^*] \ge \mathbf{P}[\mathbf{\gamma}], \quad \forall \mathbf{\gamma}\in\Gamma.
     \end{equation}
+    </blockquote></i>
+    <br>
+
+    Real world applications are abundant. Examples include: xxx
+    
+    <br><br>
+
+
+    <b>Definition 5 — Bellman's Principle of Optimality</b><blockquote><i> 
+
+      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
+      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
+      for the corresponding problem initiated at \(\tau\).
+
+      <br><br>
+      Or, in Bellman's own words [1]: 
+      <br><br>
+      "An optimal policy has the property that whatever 
+      the initial state and initial decision are, 
+      the remaining decisions must constitute an optimal policy 
+      with regard to the state resulting from the first decision."
+    
+    
+    
+    </blockquote></i>
+    <br>
+
+
+
+
+    <h2 style="text-align: left;"><b>Solving the Problem</b></h2>
+
+
+    <b>Definition x — Hamiltonian</b><blockquote><i> 
+      Given a state the \(\mathbf{x}\) 
+      and the <strong>co-state</strong> (or generalised momentum) \(\mathbf{p}\)  defined by 
+      \begin{equation}
+      \mathbf{p}(t) := \nabla_v 
+      \end{equation}
+    
+    
+    </blockquote></i>
+    <br>
+  
+
+  <b>Theorem xx — Pontryagin Maximum Principle</b><blockquote><i> 
+    Assume the optimal control \(\mathbf{\gamma}^*\) is known, 
+    which generates the associated optimal trajectory \(\mathbf{x}^*\). 
+    Then, there exists a function \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
+    such that
 
     
-        
-    
-
-        </blockquote>
-        <br>
-    
+  
+  
+  </blockquote></i>
+  <br>
 
 
 
@@ -130,9 +186,9 @@
 
   <h4 id="REFERENCES"><i>References</i></h4>
 
-  [1] <a href="https://tcf.org/content/commentary/racial-segregation-is-still-a-problem/" id="ref1">"Racial Segregation Is Still a Problem", Michael Cassidy, The Century Foundation, July 2013 </a>
+  [1] <a href="https://gwern.net/doc/statistics/decision/1957-bellman-dynamicprogramming.pdf" id="ref1">"Dynamic Programming", Richard Bellman, 1957, Chap. III.3. </a>
   <br>
-  [2] <a href="https://demographics.coopercenter.org/racial-dot-map" id="ref2">"The Racial Dot Map", Demographics Research Group, Weldon Cooper Center for Public Service, University of Virginial, 2017 </a>
+  [2] <a href="" id="ref2"> </a>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
 <!--  https://bookdown.org/egarpor/NP-EAFIT/intro-nonpar.html-->
