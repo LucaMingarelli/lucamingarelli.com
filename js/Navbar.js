@@ -8,13 +8,12 @@ document.write('\
  <h3 class="w3-padding-64 w3-center">\
  <b>LUCA<br>MINGARELLI</b></h3>\
  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large">CLOSE</a>\
- <a href="/index.html" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a>\
- <a href="/RESEARCH.html" class="w3-bar-item w3-button">RESEARCH</a>\
- <a href="/ResearchBlog.html"  class="w3-bar-item w3-button">Research Blog</a>\
- <a href="/Conferences.html"  class="w3-bar-item w3-button">Conferences</a>\
- <a href="/Software.html"  class="w3-bar-item w3-button">Software</a>\
- <a href="/Teaching.html"  class="w3-bar-item w3-button">Teaching</a>\
- <!--<a href="MISC.html" class="w3-bar-item w3-button">MISCELLANEOUS</a>-->\
+ <a href="https://lucamingarelli.com/index.html" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT ME</a>\
+ <a href="https://lucamingarelli.com/RESEARCH.html" class="w3-bar-item w3-button">RESEARCH</a>\
+ <a href="https://lucamingarelli.com/ResearchBlog.html"  class="w3-bar-item w3-button">Research Blog</a>\
+ <a href="https://lucamingarelli.com/Conferences.html"  class="w3-bar-item w3-button">Conferences</a>\
+ <a href="https://lucamingarelli.com/Software.html"  class="w3-bar-item w3-button">Software</a>\
+ <a href="https://lucamingarelli.com/Teaching.html"  class="w3-bar-item w3-button">Teaching</a>\
  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>\
 </nav>\
 <header class="w3-container w3-top w3-hide-large w3-white w3-xlarge w3-padding-16">\
