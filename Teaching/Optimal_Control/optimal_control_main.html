@@ -173,7 +173,7 @@
       governed by the law of motion 
       \(\dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t)\)
       
-      the <strong>control Hamiltonian is
+      the <strong>control Hamiltonian</strong> is
       
       \begin{equation}
       H(\mathbf{x}(t), \mathbf{\gamma}(t), \lambda(t), t) := L(\mathbf{x}(t), \mathbf{\gamma}(t), t) +\lambda^T(t)  \mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
@@ -211,19 +211,6 @@
   <br>
 
   In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality.
-
-  <script type="module">
-
-    import {forceSimulation, forceCollide, forceX} from "https://cdn.jsdelivr.net/npm/d3-force@3/+esm";
-    
-    const nodes = [{}, {}];
-    const simulation = forceSimulation(nodes)
-        .force("x", forceX())
-        .force("collide", forceCollide(5))
-        .on("tick", () => console.log(nodes[0].x));
-    
-    </script>
-
 
   <br>
 
