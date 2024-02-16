@@ -56,10 +56,14 @@
 
 
 
-<meta charset="utf-8">
+
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v6.js"></script>
+
+<!-- Initialize a slider -->
+<input type="range" id="amplitudeSlider" min="1" max="10" value="5">
+
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
 
@@ -69,51 +73,60 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-// Append the svg object to the div
+// Set the ranges
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// Define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.x); })
+    .y(function(d) { return y(d.y); });
+
+// Adds the svg canvas
 var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
 
-// Add X axis
-var x = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ 0, width ]);
+// Get the value of the slider
+var amplitude = d3.select("#amplitudeSlider").node().value;
+
+// Generate data points
+var data = d3.range(0, 10, 0.1).map(function(i) {
+    return {"x": i, "y": amplitude * Math.sin(i)};
+});
+
+// Scale the range of the data
+x.domain(d3.extent(data, function(d) { return d.x; }));
+y.domain([-10, 10]);
+
+// Add the valueline path
+svg.append("path")
+    .data([data])
+    .attr("class", "line")
+    .attr("d", valueline);
+
+// Add the X Axis
 svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x));
+    .attr("transform", "translate(0," + height / 2 + ")")
+    .call(d3.axisBottom(x));
 
-// Add Y axis
-var y = d3.scaleLinear()
-  .domain([0, 10])
-  .range([ height, 0]);
+// Add the Y Axis
 svg.append("g")
-  .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y));
 
-// Add a line
-var line = svg.append("line")
-  .style("stroke", "black")
-  .style("stroke-width", 2);
-
-// Update the line to pass through the mouse position
-svg.on("mousemove", function(event) {
-  var mouse = d3.pointer(event);
-  var xMouse = x.invert(mouse[0]);
-  var yMouse = y.invert(mouse[1]);
-  var a = yMouse / xMouse;
-  line.attr("x1", x(0))
-      .attr("y1", y(a * 0))
-      .attr("x2", x(10))
-      .attr("y2", y(a * 10));
+// Update the line graph when the slider changes
+d3.select("#amplitudeSlider").on("input", function() {
+    amplitude = this.value;
+    data = d3.range(0, 10, 0.1).map(function(i) {
+        return {"x": i, "y": amplitude * Math.sin(i)};
+    });
+    svg.selectAll("path.line").data([data]).attr("d", valueline);
 });
 </script>
-
-
-
-
 
 
 
