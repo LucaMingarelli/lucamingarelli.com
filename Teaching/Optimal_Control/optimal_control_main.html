@@ -99,11 +99,12 @@
       <b>Definition 3 — Payoff Functional</b><blockquote><i> A functional of the form
       
         \begin{equation}
-        \mathbf{P}[\mathbf{\gamma}] := \int_0^T r(\mathbf{x}(t), \mathbf{\gamma}(t)) dt + g(\mathbf{x}(T)),
+        \mathbf{P}[\mathbf{\gamma}] := \int_0^T L(\mathbf{x}(t), \mathbf{\gamma}(t)) dt + \phi(\mathbf{x}(T)),
         \end{equation}
        
         is called a <strong>Payoff Functional</strong>, 
-        where the functions \(r\) and \(g\) are called <strong>running payoff</strong> and  <strong>terminal payoff</strong> respectively.
+        where the function \(L\) is called <strong>running payoff</strong> or <strong>Lagrangian</strong> 
+        and \(\phi\) is called <strong>terminal payoff</strong> or <strong>boundary cost</strong> (sometimes also referred to as Mayer's Term).
         </blockquote></i>
         <br>
   
@@ -178,11 +179,10 @@
     Then, there exists a function \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
     such that
 
-    
-  
-  
   </blockquote></i>
   <br>
+
+  In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality.
 
 
 
