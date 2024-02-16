@@ -23,7 +23,6 @@
     .collapsible:hover {  background-color: #555;}
     .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
   </style>
-  <link rel="stylesheet" href="./vis.css">
 
 </head>
 
@@ -57,11 +56,10 @@
 
 <!-- ADD D3 -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-
 <script src="./vis.js"></script>
 
 
-
+<div id="vis"></div>
 
 <div class="w3-content w3-justify" style="max-width:800px">
 
@@ -153,18 +151,20 @@
       For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
       the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
       for the corresponding problem initiated at \(\tau\).
-
-      <br><br>
-      Or, in Bellman's own words <a href="#ref2">[2]</a>: 
-      <br><br>
-      "An optimal policy has the property that whatever 
-      the initial state and initial decision are, 
-      the remaining decisions must constitute an optimal policy 
-      with regard to the state resulting from the first decision."
-    
-    
     
     </blockquote></i>
+
+    <br><br>
+
+
+    Or, in Bellman's own words <a href="#ref2">[2]</a>: 
+    <br><br>
+    "An optimal policy has the property that whatever 
+    the initial state and initial decision are, 
+    the remaining decisions must constitute an optimal policy 
+    with regard to the state resulting from the first decision."
+
+
     <br>
 
 
@@ -220,10 +220,6 @@
   In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality.
 
   <br>
-
-  <div id="vis"></div>
-
-
 
 
   <h4 id="REFERENCES"><i>References and notes</i></h4>
