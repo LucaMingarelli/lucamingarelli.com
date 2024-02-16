@@ -111,7 +111,7 @@
   
 
   <b>Definition 4 — Optimal Control Problem</b><blockquote><i> 
-    Given an autonomous system with controls \(\mathbf{\gamma}\) 
+    Given a system with controls \(\mathbf{\gamma}\) 
     and payoff functional \(\mathbf{P}[\mathbf{\gamma}]\), 
     the associated <strong>Optimal Control Problem </strong> amounts to finding 
     an <strong>optimal control</strong> \(\mathbf{\gamma}^*\) maximising the payoff: 
@@ -124,6 +124,11 @@
     \begin{equation}
     \mathbf{P}[\mathbf{\gamma}^*] \ge \mathbf{P}[\mathbf{\gamma}], \quad \forall \mathbf{\gamma}\in\Gamma.
     \end{equation}
+
+    <br>
+    The problem is called a Lagrange problem when \(\phi=0\), and a Mayer problem when \(L=0\).
+    When both \(L\ne0\) and \(\phi\ne0\) it is also called a Bolza Problem <a href="#ref1">[1]</a>.
+
     </blockquote></i>
     <br>
 
@@ -143,7 +148,7 @@
       for the corresponding problem initiated at \(\tau\).
 
       <br><br>
-      Or, in Bellman's own words [1]: 
+      Or, in Bellman's own words <a href="#ref2">[2]</a>: 
       <br><br>
       "An optimal policy has the property that whatever 
       the initial state and initial decision are, 
@@ -162,16 +167,30 @@
 
 
     <b>Definition x — Hamiltonian</b><blockquote><i> 
-      Given a state the \(\mathbf{x}\) 
-      and the <strong>co-state</strong> (or generalised momentum) \(\mathbf{p}\)  defined by 
+      Given a system with controls \(\mathbf{\gamma}\), 
+      payoff functional \(\mathbf{P}[\mathbf{\gamma}]\),
+      and dynamics of the state variable \(\mathbf{x}\) 
+      governed by the law of motion 
+      \(\dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t)\)
+      
+      the <strong>control Hamiltonian </strong><a href="#ref3">[3]</a> is
+      
       \begin{equation}
-      \mathbf{p}(t) := \nabla_v 
-      \end{equation}
-    
+      H(\mathbf{x}(t), \mathbf{\gamma}(t), \lambda(t), t) := L(\mathbf{x}(t), \mathbf{\gamma}(t), t) +\lambda^T(t)  \mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
+      \end{equation}     
+      where \(L\) is the Lagrangian term in \(\mathbf{P}\) (running payoff),
+      and \(\lambda\) is called the <strong>co-state</strong> variable.
+      
     
     </blockquote></i>
     <br>
-  
+  Notice that the multiplier (or co-state) \(\lambda(t)\), 
+  unlike the Lagrangian multiplier in static optimisation, depends on time.
+  <br>
+
+
+
+  <br><br>
 
   <b>Theorem xx — Pontryagin Maximum Principle</b><blockquote><i> 
     Assume the optimal control \(\mathbf{\gamma}^*\) is known, 
@@ -188,11 +207,17 @@
 
   <br>
 
-  <h4 id="REFERENCES"><i>References</i></h4>
+  <h4 id="REFERENCES"><i>References and notes</i></h4>
 
-  [1] <a href="https://gwern.net/doc/statistics/decision/1957-bellman-dynamicprogramming.pdf" id="ref1">"Dynamic Programming", Richard Bellman, 1957, Chap. III.3. </a>
+  [1] <a href="https://link.springer.com/article/10.1007/BF02419594" id="ref1">"Über zwei Euler’sche Aufgaben aus der Variationsrechnung", Oskar Bolza, 1913, Annali di Matematica Pura ed Applicata</a>
   <br>
-  [2] <a href="" id="ref2"> </a>
+  [2] <a href="https://gwern.net/doc/statistics/decision/1957-bellman-dynamicprogramming.pdf" id="ref2">"Dynamic Programming", Richard Bellman, 1957, Chap. III.3. </a>
+  <br>
+  [3] <normal id="ref3">Notice that while related, the Control Hamiltonian of optimal control theory is distinct from the Hamiltonian used in mechanics. 
+    In particular, the latter is used to derive the equation of motion of a dynamical system. 
+    The Hamiltonian of optimal control theory instead, is a concept developed by Lev Pontryagin, 
+    with the purpose to provide conditions for extrimising a functional with respect to a control variable. <normal>
+  <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
 <!--  https://bookdown.org/egarpor/NP-EAFIT/intro-nonpar.html-->
