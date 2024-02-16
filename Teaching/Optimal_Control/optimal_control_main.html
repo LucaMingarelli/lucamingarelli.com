@@ -193,10 +193,19 @@
   <br><br>
 
   <b>Theorem xx — Pontryagin Maximum Principle</b><blockquote><i> 
-    Assume the optimal control \(\mathbf{\gamma}^*\) is known, 
+    Assume the optimal control \(\mathbf{\gamma}^*\) is known and admissable (\(\mathbf{\gamma}^*\in\Gamma\)), 
     which generates the associated optimal trajectory \(\mathbf{x}^*\). 
-    Then, there exists a function \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
+    Then, there exists and adjoint trajectory \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
     such that
+
+    \begin{equation}
+    \begin{split}
+    \dot{\mathbf{x}}(t) &= \nabla_\lambda H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) \quad\quad\quad\quad \phantom{-} (\text{state equation})\\
+    \dot{\lambda}(t) &= -\nabla_\mathbf{x} H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) \quad\quad\quad\quad (\text{co-state equation})\\
+     H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &\ge H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda, t), \quad \forall \gamma \in \Gamma \quad \phantom{-.} (\text{Pontryagin Maximum Principle})
+    \end{split}
+    \end{equation}     
+
 
   </blockquote></i>
   <br>
