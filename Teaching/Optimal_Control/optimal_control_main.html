@@ -55,21 +55,8 @@
 <!-- _____________ -->
 
 
-
-
-
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
-
-<!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
-
-<script src="./vis.js"></script>
-
-
-
-
-
 
 
 
@@ -231,9 +218,54 @@
 
   In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality.
 
-  <br>
+  <br><br>
+
+<b>Example 1 — Minimal time for bringing a particle to rest at origin</b>
+<br><br>
+Consider the one-dimensional problem of bringing a particle to rest at \(x=0\) in minimal time.
+The initial position and velocity of the particle are \(x_0\) and \(v_0\) respectively.
+
+The control is the force \(f(t)\) applied to the particle, such that \(|f(t)|\le 1\).
+<br>
+Therefore, the problem is to minimise the total time 
+\begin{equation}
+\mathcal{T} = \int_0^T 1 dt,
+\end{equation}
+where \(T\) is the time when the particle reaches the origin, subject to the law of motion which,
+recalling that \(v=\dot{x}\) and \(f=\dot{v}\), reads
+\begin{equation}
+ \frac{d}{dt} \begin{bmatrix} x \\ v  \end{bmatrix} = 
+\left(\begin{matrix}
+     0 & 1 \\
+     0 & 0  
+   \end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
+   + \begin{bmatrix} 0 \\ 1 \end{bmatrix} f.
+\end{equation}
+<br>
+
+To start off, one finds the Hamiltonian to be
+\begin{equation}
+H = \lambda_1 v + \lambda_2 f - 1
+\end{equation}
 
 
+which is maximised by ...
+<br>
+The costate variables are given by
+\begin{equation}
+\dot{\lambda}_1 = \partial_x H, \quad \dot{\lambda}_2 = \partial_v H
+\end{equation}
+
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<script src="./vis.js"></script>
+
+
+
+
+<br><br>
   <h4 id="REFERENCES"><i>References and notes</i></h4>
 
   [1] <a href="https://link.springer.com/article/10.1007/BF02419594" id="ref1">"Über zwei Euler’sche Aufgaben aus der Variationsrechnung", Oskar Bolza, 1913, Annali di Matematica Pura ed Applicata</a>
