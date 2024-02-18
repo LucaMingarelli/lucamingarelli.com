@@ -250,25 +250,45 @@ H = \mathbf{\lambda}^T\left(\begin{matrix}
 0 & 0  
 \end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
 + \mathbf{\lambda}^T \begin{bmatrix} 0 \\ 1 \end{bmatrix} f - 1
-= \lambda_1 v + \lambda_2 f - 1
+= \lambda_1 v + \lambda_2 f - 1.
 \end{equation}
 
-
-which is maximised by ...
-<br>
-The costate variables are given by
+Because the term \(\lambda_2 f\) in the Hamiltonian is linear in \(f\), 
+the maximum with respect to the control is achieved at one of the endpoints of the interval \([-1, 1]\), depending on the sign of (\lambda_2).
+That is, the Hamiltonian is maximised by
 \begin{equation}
-\dot{\lambda}_1 = \partial_x H, \quad \dot{\lambda}_2 = \partial_v H
+f^*=\begin{cases}
+\text{sign}\left(\lambda_2\right) & \text{if $\lambda_2 \ne 0$}\\
+\text{any value} \in [-1,1] & \text{otherwise}
+\end{cases} 
+\end{equation}
+<br>
+
+The costate variables are given by
+
+\begin{equation}
+\begin{split}
+\dot{\lambda}_1 &= \partial_x H = 0, \\ 
+\dot{\lambda}_2 &= \partial_v H = -\lambda_1.
+\end{split}
+\end{equation}
+
+Denotining the values of the costate variables at termination by \(\bar{\lambda}_i = \lambda_i(t=T)\), 
+we can therefore solve for the costate variables:
+
+\begin{equation}
+\begin{split}
+\lambda_1 &= \bar{\lambda}_1 \\
+\lambda_2 &= \bar{\lambda}_1 t + \bar{\lambda}_2.
+\end{split}
 \end{equation}
 
 
-<!-- Create a div where the graph will take place -->
-
-<figure>
-  <div id="my_dataviz" style="text-align: center;justify-content: center;align-items: center;"></div>
+<figure style="text-align: center;justify-content: center;align-items: center;">
+  <!-- Create a div where the graph will take place -->
+  <div id="my_dataviz"></div>
   <figcaption><i><b>Fig.1:</b> Biri biri.</i></figcaption>
 </figure>
-
 
 <script src="./vis.js"></script>
 
