@@ -245,7 +245,12 @@ recalling that \(v=\dot{x}\) and \(f=\dot{v}\), reads
 
 To start off, one finds the Hamiltonian to be
 \begin{equation}
-H = \lambda_1 v + \lambda_2 f - 1
+H = \mathbf{\lambda}^T\left(\begin{matrix}
+0 & 1 \\
+0 & 0  
+\end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
++ \mathbf{\lambda}^T \begin{bmatrix} 0 \\ 1 \end{bmatrix} f - 1
+= \lambda_1 v + \lambda_2 f - 1
 \end{equation}
 
 
@@ -258,7 +263,12 @@ The costate variables are given by
 
 
 <!-- Create a div where the graph will take place -->
-<div id="my_dataviz" style="text-align: center;justify-content: center;align-items: center;"></div>
+
+<figure>
+  <div id="my_dataviz" style="text-align: center;justify-content: center;align-items: center;"></div>
+  <figcaption><i><b>Fig.1:</b> Biri biri.</i></figcaption>
+</figure>
+
 
 <script src="./vis.js"></script>
 
