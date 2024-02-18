@@ -271,9 +271,9 @@ the maximum with respect to the control is achieved at one of the endpoints of t
 That is, the Hamiltonian is maximised by
 \begin{equation}
 f^*=\begin{cases}
-\text{sign}\left(\lambda_2\right) & \text{if $\lambda_2 \ne 0$}\\
+\text{sgn}\left(\lambda_2\right) & \text{if $\lambda_2 \ne 0$}\\
 \text{any value} \in [-1,1] & \text{otherwise}
-\end{cases} 
+\end{cases} \quad.
 \end{equation}
 <br>
 
@@ -291,21 +291,59 @@ we can therefore solve for the costate variables:
 
 \begin{equation}
 \begin{split}
-\lambda_1 &= \bar{\lambda}_1 \\
+\lambda_1 &= \bar{\lambda}_1, \\
 \lambda_2 &= \bar{\lambda}_1 t + \bar{\lambda}_2.
 \end{split}
 \end{equation}
 
+Here we observe that \(\lambda_2\) will switch sign at most once before termination, if \(\text{sgn}\left(\lambda_1\right)\ne\text{sgn}\left(\lambda_2\right)\). 
+
+<br>
+Taking this result back to the equations of motion we find
+
+<!-- dx = v -->
+\begin{equation}
+\begin{split}
+\dot{v} &= f^* = \text{sgn}(\lambda_1 t+ \lambda_2) \\
+\dot{x} &= v
+\end{split}\quad,
+\end{equation}
+
+thus
+
+\begin{equation}
+\begin{split}
+v &= \text{sgn}(\lambda_1 t+ \lambda_2) t + v_0\\
+x &= \frac{t^2}{2}\text{sgn}(\lambda_1 t+ \lambda_2) + v_0t + x_0
+\end{split}\quad.
+\end{equation}
+
+<br><br>
 
 The terminal time \(T\) is free, therefore the transversality condition tells us \(H(t=T)=0\).
 Hence, we can conclude that \(|\lambda_2| = 1\).
-Taking this result back to the equations of motion
-we can find four distinct cases.
 <br>
-If \(\lambda_2=1\) and \(\lambda_1\ge 0\), then 
+We can then distinguish four distinct cases.
 
-
-
+<ul>
+<li> If \(\lambda_2=1\) and \(\lambda_1\ge 0\), then 
+  \begin{equation}
+  \begin{split}
+  x &= \frac{t^2}{2} + v_0t + x_0\\
+  v &= \text{sgn}(\lambda_1 t+ \lambda_2) t + v_0
+  \end{split}
+  \end{equation}
+</li>
+<li>
+  If \(\lambda_2=1\) and \(\lambda_1< 0\), then 
+  \begin{equation}
+  \begin{split}
+  x &= \\
+  v &= \frac{t^2}{2}\text{sgn}(\lambda_1 t+ \lambda_2) + v_0t + x_0
+  \end{split}
+  \end{equation}
+</li>
+</ul>
 
 
 </i>
