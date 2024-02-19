@@ -398,11 +398,35 @@ We can then distinguish four distinct cases.
     
     <h3 style="text-align: left;"><b>Dynamic Programming</b></h3>
 
+    Dynamic programming is a general approach: let consider first the discrete deterministic case. 
+    We shall then move on to conside the continuos and stochastic extensions.
+
+    <h4 style="text-align: left;"><b>Discrete Dynamic Programming</b></h4>
+
+
+    Consider a discrete system of the form 
+    \begin{equation}
+    x_{k+1} = f(x_k, \gamma_k), \quad k = 0, ..., T-1;
+    \end{equation}
+    here \(x_k\in X\subset\mathbb{N}\) and \(\gamma_k\in \Gamma \subset \mathbb{N}\).
+     Associated to this discrete equation of motion is a cost function determining 
+    
+
+    <br><br>
+    <b>Definition x — Bellman's Principle of Optimality</b><blockquote><i> 
+
+      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
+      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
+      for the corresponding problem initiated at \(\tau\).
+    
+    </blockquote></i>
+
 
     <br><br>
 
+    <br><br>
 
-    <b>Definition 5 — Bellman's Principle of Optimality</b><blockquote><i> 
+    <b>Definition x — Bellman's Principle of Optimality</b><blockquote><i> 
 
       For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
       the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
