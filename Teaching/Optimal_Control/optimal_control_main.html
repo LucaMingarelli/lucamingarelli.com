@@ -134,6 +134,52 @@
     When both \(L\ne0\) and \(\phi\ne0\) it is also called a Bolza Problem <a href="#ref1">[1]</a>.
 
     </blockquote></i>
+    
+    
+<hr class="w3-opacity">
+
+<h6>Exercise 1</h6>
+Show that a problem in the Lagrange form can be turned into a Mayer problem with some appropriate transformation.
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    Consider a Lagrange problem with running cost \(L(x, \gamma, t)\). Introduce an extra state variable \(\tilde{x}\) such that
+    \begin{equation}
+    \begin{split}
+    \dot{\tilde{x}}_0 &= L(x, \gamma, t),\\
+    \tilde{x}(t=0) &= 0.
+    \end{split}
+    \end{equation}
+    Clearly this is such that 
+    \begin{equation}
+    \tilde{x}(t=T) = \int_0^TL(x(t), \gamma(t), t) dt . 
+    \end{equation}
+    Therefore, the problem expressed in terms of \(\tilde{x}\) is a Mayer problem.
+
+
+    <p align="right"> ◻</p>
+</div>
+
+<h6>Exercise 2</h6>
+Show that a problem in the Mayer form can be turned into a Lagrange problem with some appropriate transformation.
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    Consider a Mayer problem with terminal cost \(\phi(x, \gamma, t)\). Notice that
+    \begin{equation}
+    \begin{split}
+    \phi(x(T), T) &= \phi(x(0), 0) + \int_0^T\frac{d}{dt}\phi(x(t), t) dt \\
+                  &= \phi(x(0), 0) + \int_0^T\left(\partial_t \phi(x(t), t)\right) + \left(\partial_x\phi(x(t), t)\cdot f(x(t), \gamma(t), t)\right) dt.
+    \end{split}
+    \end{equation}
+    Therefore, the problem expressed in these terms is a Lagrange problem.
+
+
+    <p align="right"> ◻</p>
+</div>
+
+<hr class="w3-opacity">
+
     <br>
 
     Real world applications are abundant, from minimising fuel consumption when designing space missions, to optimising the production of chemicals, 
