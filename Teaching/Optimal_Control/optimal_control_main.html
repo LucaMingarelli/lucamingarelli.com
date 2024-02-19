@@ -272,7 +272,7 @@ That is, the Hamiltonian is maximised by
 \begin{equation}
 f^*=\begin{cases}
 \text{sgn}\left(\lambda_2\right) & \text{if $\lambda_2 \ne 0$}\\
-\text{any value} \in [-1,1] & \text{otherwise}
+\text{any value} \in {-1,1} & \text{otherwise}
 \end{cases} \quad.
 \end{equation}
 <br>
@@ -296,7 +296,11 @@ we can therefore solve for the costate variables:
 \end{split}
 \end{equation}
 
-Here we observe that \(\lambda_2\) will switch sign at most once before termination, if \(\text{sgn}\left(\bar{\lambda}_1\right)\ne\text{sgn}\left(\bar{\lambda}_2\right)\). 
+Here we observe that on the optimal trajectory, \(\lambda_2\) will switch sign at most once 
+before termination at \(t_s=-\bar{\lambda}_2/\bar{\lambda}_1\), 
+if \(\text{sgn}\left(\bar{\lambda}_1\right)\ne\text{sgn}\left(\bar{\lambda}_2\right)\). 
+This means that the optimal control strategy consists of switching between maximal accelaration in one direction
+to maximal acceleration in the opposite direction. This is therefore a bang-bang control.
 
 <br>
 Taking this result back to the equations of motion we find
@@ -304,7 +308,7 @@ Taking this result back to the equations of motion we find
 <!-- dx = v -->
 \begin{equation}
 \begin{split}
-\dot{v} &= f^* = \text{sgn}(\lambda_1 t+ \lambda_2) \\
+\dot{v} &= f^* = \text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) \\
 \dot{x} &= v
 \end{split}\quad,
 \end{equation}
@@ -313,33 +317,43 @@ thus
 
 \begin{equation}
 \begin{split}
-v &= \text{sgn}(\lambda_1 t+ \lambda_2) t + v_0\\
-x &= \frac{t^2}{2}\text{sgn}(\lambda_1 t+ \lambda_2) + v_0t + x_0
+v &= \text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) t + v_0\\
+x &= \frac{t^2}{2}\text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) + v_0t + x_0
 \end{split}\quad.
 \end{equation}
 
 <br><br>
 
 The terminal time \(T\) is free, therefore the transversality condition tells us \(H(t=T)=0\).
-Hence, we can conclude that \(|\lambda_2| = 1\).
+Hence, we can conclude that \(|\bar{\lambda}_2| = 1\).
 <br>
 We can then distinguish four distinct cases.
 
 <ul>
-<li> If \(\lambda_2=1\) and \(\lambda_1\ge 0\), then 
+<li> If \(\bar{\lambda}_2=1\) and \(\bar{\lambda}_1\ge 0\), then 
   \begin{equation}
   \begin{split}
-  x &= \frac{t^2}{2} + v_0t + x_0\\
-  v &= \text{sgn}(\lambda_1 t+ \lambda_2) t + v_0
+  f^* &= 1 \\
+  x   &= \frac{t^2}{2} + v_0t + x_0\\
+  v   &= t + v_0
   \end{split}
   \end{equation}
 </li>
 <li>
-  If \(\lambda_2=1\) and \(\lambda_1< 0\), then 
+  If \(\bar{\lambda}_2=1\) and \(\bar{\lambda}_1< 0\), then \(f^*\) can be either \(1\) or \(-1\):
   \begin{equation}
   \begin{split}
-  x &= \\
-  v &= \frac{t^2}{2}\text{sgn}(\lambda_1 t+ \lambda_2) + v_0t + x_0
+  f^* &= 1 \\
+  x &= \frac{t^2}{2} + v_0t + x_0\\
+  v &= t + v_0
+  \end{split}
+  \end{equation}
+  or
+  \begin{equation}
+  \begin{split}
+  f^* &= -1 \\
+  x &= -\frac{t^2}{2} + v_0t + x_0\\
+  v &= -t + v_0
   \end{split}
   \end{equation}
 </li>
