@@ -47,7 +47,7 @@ var ARROW_SIZE = 2
 var PATH_WIDTH = 1.5
 
 // set the dimensions and margins of the graph
-var margin = {top: 30, right: 180, bottom: 30, left: 180},
+var margin = {top: 30, bottom: 30, right: document.getElementById("my_dataviz").offsetWidth/8, left: document.getElementById("my_dataviz").offsetWidth/8},
 width = document.getElementById("my_dataviz").offsetWidth*3/4 - document.getElementById("my_dataviz").offsetWidth/4,
 height = 350 - margin.top - margin.bottom;
 
