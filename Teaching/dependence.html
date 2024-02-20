@@ -68,7 +68,7 @@
     <h2 style="text-align: left;">Linear correlation</h2>
     The first measure of dependency we encounter is Pearson's coefficient of
     linear correlation:
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \begin{equation}
     \begin{split}
     \rho(X_1, X_2) &= \frac{\text{cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} \\
@@ -113,7 +113,7 @@
     any value of \(\rho\in[-1,1]\) is attainable. Again, this is true for elliptically
     distributed \((X_1, X_2)\) with finite second moment, but wrong in general.
     The attainable range can be computed via <i>Hoeffding's formula</i>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \begin{equation}
     \text{cov}(X_1, X_2) = \int_{-\infty}^\infty\int_{-\infty}^\infty C(F_1(x_1), F_2(x_2))-F_1(x_1)F_2(x_2)\text{d} x \text{d} y,
     \label{eq:Hoeffding_formula}
@@ -201,7 +201,7 @@
 
 
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Definition 1 — Kendall's tau</b><blockquote><i>
     Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
     Kendall's tau is defined as
@@ -216,7 +216,7 @@
     (i.e. the probability of two points from \(F\) to have positive or negative slope respectively).
 </i></blockquote></div>
 
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Proposition 1.1 — Formula for Kendall's tau</b><blockquote><i>
     Consider two random variables \(X_1\) and \(X_2\)
     with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
@@ -232,7 +232,7 @@
 
 
     <br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Definition 2 — Spearman's rho</b><blockquote><i>
     Consider \(X_j, Y_j \sim F_j\) for \(j \in \{1,2\}\).
     Spearman's rho is defined as
@@ -242,7 +242,7 @@
     \end{equation}
 </i></blockquote></div>
 
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Proposition 2.1 — Formula for Spearman's rho</b><blockquote><i>
     Consider two random variables \(X_1\) and \(X_2\)
     with marginals \(F_1\) and \(F_2\) and copula \(C\). One has:
@@ -281,7 +281,7 @@
     fundamental property of invariance under strictly increasing transformations.
 
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Proposition 3</b><blockquote><i>
     There exist no dependency measure \(\kappa\) such that:
     <ol>
@@ -462,7 +462,7 @@
     distinguish between <i>upper</i> tail dependence and <i>lower</i> tail dependence.
 
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Definition 4 — Coefficient of tail dependence</b><blockquote><i>
     Consider two random variables \(X_j\sim F_j\).
     The associated coefficients of upper and lower tail dependence are:
@@ -477,7 +477,7 @@
     if \(\lambda_{u}=0\) (\(\lambda_{\ell}=0\)), then \((X_1, X_2)\)
     is said to be upper (lower) tail independent, or more generally,  asymptotically independent.
 </i></blockquote></div>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Proposition 4.1</b><blockquote><i>
     The coefficients of upper and lower tail dependence can be written as a function
     of the copula as:

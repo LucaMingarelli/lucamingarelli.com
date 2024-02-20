@@ -65,7 +65,7 @@
 
     <h2 style="text-align: left;">Definitions and basic properties</h2>
 
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
 <b>Definition 1 — Copula</b><blockquote><i> A \(d\)-dimensional copula is a multivariate cumulative distribution function
     \(C:[0,1]^d\rightarrow[0,1]\) with marginals which are uniformly distributed on the unit interval:
 
@@ -92,7 +92,7 @@
     that is \(u_j\le v_j\ \forall j \implies C(u_1, ..., u_d)\le C(v_1, ..., v_d)\).
     Finally, notice that (under mild regularity conditions) one has the following proposition.
 <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Proposition 3</b><blockquote><i> Given a \(d\)-dimensional copula \(C\) one obtains
     the conditional cumulative distribution function
     \(F(\mathbf{u}|U_j=u_j)=\mathbb{P}(U_1\le u_1, ..., U_d\le u_d\ |\ U_j=u_j) \) as
@@ -181,7 +181,7 @@ Because \(F_j(X_j)\in [0, 1]\) one can see that \(F_{U_j}(u_j) = u_j\) is the CD
     <br>
 Equation \eqref{eq1} can be formalised into the following theorem.
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Theorem 4 — Sklar</b><blockquote><i> Given a \(d\)-dimensional cumulative distribution function \(F\), with marginals \(F_j\),
     there exists a copula \(C\) such that
     \begin{equation}
@@ -197,7 +197,7 @@ Equation \eqref{eq1} can be formalised into the following theorem.
     One has the following corollaries.
 
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Corollary 4.1</b><blockquote><i> From Sklar's theorem it follows that given a joint
     cumulative distribution function \(F\) and its marginals, the copula is defined by
     \begin{equation}
@@ -206,7 +206,7 @@ Equation \eqref{eq1} can be formalised into the following theorem.
     where \(F^{-1}_j(u_j) = \inf\{x: F_j(x)\ge u_j\}\).
 </i></blockquote></div>
     <br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Corollary 4.2</b><blockquote><i> From Sklar's theorem it follows that given the
     marginal cumulative distribution functions \(F_i\) and the associated
     marginal probability density functions \(f_i\),
@@ -238,7 +238,7 @@ Equation \eqref{eq1} can be formalised into the following theorem.
 When all the random variables considered are deterministically related \(X_j = T_{ji}(X_i)\)
     for some set of strictly increasing transformations \(T_{ji}=T_{ij}^{-1}\), one can derive a relation between each pair
     of cumulative distribution functions as
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \[F_i(x) = \mathbb{P}(X_i\le x)
              = \mathbb{P}(T_{ji}(X_i)\le T_{ji}(x))
              = \mathbb{P}(X_j\le T_{ji}(x))
@@ -249,18 +249,18 @@ When all the random variables considered are deterministically related \(X_j = T
 
     Similarly, consider two random variables such that
     \(X_2=D(X_1)\); for any strictly decreasing transformation \(D\) one has
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \[F_1(x) = \mathbb{P}(X_1 \leq x) = \mathbb{P}(D(X_1) \geq D(x))
     = \mathbb{P}(X_2 \geq D(x)) = 1 - F_2(D(x)),\]
     </div>
     which implies
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \[U_1 = F_1(X_1) = 1-F_2(D(X_1)) = 1-F_2(X_2) = 1-U_2.\]
     </div>
 
     This motivates the definition of the following <i>comonotonicity</i> and <i>counter-monotonicity</i> copulae.
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Definition 6 — Comonotonicity copula</b><blockquote><i>
     The copula associated with \(d\) equal uniformly distribute variables \(U_i=U_j,\ \forall\ i,j\),
     is called a comonotonicity copula and takes the form
@@ -269,7 +269,7 @@ When all the random variables considered are deterministically related \(X_j = T
     \label{eq:comonotonicity_copula}
     \end{equation}
 </i></blockquote></div>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <b>Definition 7 — Counter-monotonicity function</b><blockquote><i>
     The copula associated with \(d=2\) uniformly distributed random variables \(U_2=1-U_1\)
     is called a counter-monotonicity copula as takes the form
@@ -384,7 +384,7 @@ Finally, let us consider the following proposition.
     <h2 style="text-align: left;">Parametric families of copulae</h2>
 The following table provides some examples of notable parametric families.
     <br><br>
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <table class="w3-table-all w3-hoverable">
         <tr>
             <th>Family</th>
@@ -918,7 +918,7 @@ Generally speaking, one approach could follow a Maximum Likelihood Estimation pr
 Given a vector of \(n\) observations \(\mathbf{D}_{1:n}=(\mathbf{D}_1, ..., \mathbf{D}_n)\)
     one can then attempt
     to maximise the log-likelihood
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
 \begin{align*}
     \log L(\mathbf{\theta}_1, ..., \mathbf{\theta}_d, \mathbf{\theta}_C)
     &= \prod_{i=1}^n f_{\mathbf{X}}(\mathbf{D}_i) \newline
@@ -946,7 +946,7 @@ Given a vector of \(n\) observations \(\mathbf{D}_{1:n}=(\mathbf{D}_1, ..., \mat
     a univariate ML-estimator for \(\hat{\mathbf{\theta}}_i\), or even considering the
     empirical cumulative distribution function. Then, one estimates the copula as a second
     step, again maximising the log-likelihood
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \[
 \prod_{i=1}^nf_\mathbf{X}(\mathbf{D}_i) = \sum_{i=1}^n \log\left(c_\mathbf{X}(\hat{F}_{X_1}(D_{i,1}), ..., \hat{F}_{X_d}(D_{i,d})|
     \mathbf{\theta}_C)\right).
@@ -1007,7 +1007,7 @@ X = mvnorm.rvs(10_000)
 dist = ot.NormalCopulaFactory().build(X)
 print(dist)</code></pre>
     returns
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <pre>
       NormalCopula(R = [[ 1        0.754492 ]
                         [ 0.754492 1        ]])</pre>
@@ -1031,7 +1031,7 @@ X_trans = np.array([st.beta(a=3, b=10).ppf(U[:,0]),
 dist = ot.NormalCopulaFactory().build(X_trans)
 print(dist)</code></pre>
     one obtains
-    <div style="overflow-x: auto;">
+    <div style="overflow-x: auto; overflow-y: hidden;">
     <pre>
       NormalCopula(R = [[ 1        0.754492 ]
                         [ 0.754492 1        ]])</pre>

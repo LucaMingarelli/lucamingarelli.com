@@ -203,10 +203,11 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
       \(\dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t)\)
       
       the <strong>control Hamiltonian</strong> is
-      
+      <div style="overflow-x: auto; overflow-y: hidden;">
       \begin{equation}
       H(\mathbf{x}(t), \mathbf{\gamma}(t), \lambda(t), t) := L(\mathbf{x}(t), \mathbf{\gamma}(t), t) +\lambda^T(t)  \mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
       \end{equation}     
+      </div>
       where \(L\) is the Lagrangian term in \(\mathbf{P}\) (running payoff),
       and \(\lambda\) is called the <strong>co-state</strong> variable.
       
@@ -226,7 +227,7 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
     which generates the associated optimal trajectory \(\mathbf{x}^*\). 
     Then, there exists and adjoint trajectory \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
     such that
-
+    <div style="overflow-x: auto; overflow-y: hidden;">
     \begin{equation}
     \begin{split}
     \dot{\mathbf{x}}(t) &= \nabla_\lambda H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) \quad\quad\quad\quad \phantom{-} (\text{state equation})\\
@@ -234,7 +235,7 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
      H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &\ge H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda, t), \quad \forall \gamma \in \Gamma \quad \phantom{-.} (\text{Pontryagin Maximum Principle})
     \end{split}
     \end{equation}     
-
+    </div>
 
   </blockquote></i>
   <br>
@@ -280,6 +281,7 @@ recalling that \(v=\dot{x}\) and \(f=\dot{v}\), reads
 <br>
 
 To start off, one finds the Hamiltonian to be
+<div style="overflow-x: auto; overflow-y: hidden;">
 \begin{equation}
 H = \mathbf{\lambda}^T\left(\begin{matrix}
 0 & 1 \\
@@ -288,16 +290,19 @@ H = \mathbf{\lambda}^T\left(\begin{matrix}
 + \mathbf{\lambda}^T \begin{bmatrix} 0 \\ 1 \end{bmatrix} f - 1
 = \lambda_1 v + \lambda_2 f - 1.
 \end{equation}
+</div>
 
 Because the term \(\lambda_2 f\) in the Hamiltonian is linear in \(f\), 
 the maximum with respect to the control is achieved at one of the endpoints of the interval \([-1, 1]\), depending on the sign of \(\lambda_2\).
 That is, the Hamiltonian is maximised by
+<div style="overflow-x: auto; overflow-y: hidden;">
 \begin{equation}
 f^*=\begin{cases}
 \text{sgn}\left(\lambda_2\right) & \text{if $\lambda_2 \ne 0$}\\
 \text{any value} \in {-1,1} & \text{otherwise}
 \end{cases} \quad.
 \end{equation}
+</div>
 <br>
 
 The costate variables are given by
