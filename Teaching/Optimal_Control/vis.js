@@ -48,7 +48,7 @@ var PATH_WIDTH = 1.5
 
 // set the dimensions and margins of the graph
 var margin = {top: 30, right: 180, bottom: 30, left: 180},
-width = document.getElementById("my_dataviz").offsetWidth*2/3 - margin.left - margin.right,
+width = document.getElementById("my_dataviz").offsetWidth*2/3 - document.getElementById("my_dataviz").offsetWidth/3,
 height = 350 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
