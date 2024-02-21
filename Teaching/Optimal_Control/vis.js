@@ -135,21 +135,21 @@ svg.append("path")
 .attr("marker-start", "url(#arrowhead)")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
-// For x-axis label
-svg.append("text")             
-.attr("transform",
-    "translate(" + x(52) + " ," + 
-                   (y(0) + 20) + ")")
-.style("text-anchor", "middle")
-.text("x");
+// // For x-axis label
+// svg.append("text")             
+// .attr("transform",
+//     "translate(" + x(52) + " ," + 
+//                    (y(0) + 20) + ")")
+// .style("text-anchor", "middle")
+// .text("x");
 
-// For y-axis label
-svg.append("text")             
-.attr("transform",
-    "translate(" + (x(0) - 15) + " ," + 
-                   y(10) + ")")
-.style("text-anchor", "middle")
-.text("v");
+// // For y-axis label
+// svg.append("text")             
+// .attr("transform",
+//     "translate(" + (x(0) - 15) + " ," + 
+//                    y(10) + ")")
+// .style("text-anchor", "middle")
+// .text("v");
 
 
 // For f=1 label
