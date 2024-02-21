@@ -289,6 +289,7 @@ H = \mathbf{\lambda}^T\left(\begin{matrix}
 \end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
 + \mathbf{\lambda}^T \begin{bmatrix} 0 \\ 1 \end{bmatrix} f - 1
 = \lambda_1 v + \lambda_2 f - 1.
+\label{double_integrator_hamiltonian}
 \end{equation}
 </div>
 
@@ -356,36 +357,24 @@ The terminal time \(T\) is free, therefore the transversality condition tells us
 Hence, we can conclude that \(|\bar{\lambda}_2| = 1\).
 <br>This allows one to find explicit solutions for \(x\) and \(v\). 
 However, notice that one can also get rid of the parametrisation in \(t\) to find the associated orbits in the \(x\)-\(v\) phase plane. 
-For \(f=1\)
+For \(f=\pm 1\)
 
 
   \begin{equation}
   \begin{split}
-  x   &= \frac{t^2}{2} + v_0t + x_0,\\
-  v   &= t + v_0,
+  x   &= \pm \frac{t^2}{2} + v_0t + x_0,\\
+  v   &= \pm t + v_0,
   \end{split}
   \end{equation}
 
   or
 
   \begin{equation}
-  x   &= \frac{v^2}{2} +(x_0-\frac{v_0}{2}).
+  x   = \pm \frac{v^2}{2} +(x_0\mp\frac{v_0}{2}).
   \end{equation}
 
-  For \(f=-1\)
-
-  \begin{equation}
-  \begin{split}
-  x   &= -\frac{t^2}{2} + v_0t + x_0,\\
-  v   &= -t + v_0,
-  \end{split}
-  \end{equation}
-
-  or
-
-  \begin{equation}
-  x   &= -\frac{v^2}{2} +(x_0+\frac{v_0}{2}).
-  \end{equation}
+  This family of parabulae intersects the origin only for \(v_0=\pm\sqrt(x_0)\) 
+  which determines the switching curve \(x = \frac{1}{2}|v|v\) (red curve in Figure 1). Therefore, the optimal strategy is to apply \(f=1\) (\(f=-1\)) if 
 
 
 </i>
@@ -393,7 +382,7 @@ For \(f=1\)
 <figure style="text-align: center;justify-content: center;align-items: center;">
   <!-- Create a div where the graph will take place -->
   <div id="my_dataviz" style="width: 100%;"></div>
-  <figcaption><i><b>Fig.1:</b> Optimal trajectory of the system described by equation (xx), for different initial conditions (move your mouse to adjust them).
+  <figcaption><i><b>Fig.1:</b> Optimal trajectory of the system described by equation \eqref{double_integrator_hamiltonian}, for different initial conditions (move your mouse to adjust them).
   </i></figcaption>
 </figure>
 
