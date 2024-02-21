@@ -149,27 +149,27 @@ svg.append("text")
     "translate(" + (x(0) - 15) + " ," + 
                    y(10) + ")")
 .style("text-anchor", "middle")
-.text("$$v$$");
+.text("v");
 
 
 // For f=1 label
 svg.append("text")             
 .attr("transform",
-      "translate(" + (x(52) + 5) + " ," + 
+      "translate(" + (x(52) + 15) + " ," + 
                     (y(-10) + 5) + ")")
 .style("text-anchor", "middle")
 .style("fill", "blue")
-.text("(f=1)");
+.text("f=1");
 
 
 // For f=-1 label
 svg.append("text")             
 .attr("transform",
-      "translate(" + (x(-52) - 5) + " ," + 
+      "translate(" + (x(-52) - 15) + " ," + 
                     (y(10) + 5) + ")")
 .style("text-anchor", "middle")
 .style("fill", "blue")
-.text("(f=-1)");
+.text("f=-1");
 
 
 // Define the line
