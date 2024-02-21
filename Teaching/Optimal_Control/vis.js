@@ -364,4 +364,22 @@ path_m2.datum(sampleData(data, N_ARROWS)).attr("d", line);
 }
 
 
+var svg = d3.select("body").append("svg").attr("width",400).attr("height",400)
+var text = svg.append("foreignObject")
+              .attr("width",100)
+              .attr("height",100)
+              .attr("y", y(32) - 30)
+              .attr("x", x(41) - 50)
+text.text("$$ v $$")
+
+var text2 = svg.append("foreignObject")
+              .attr("width",100)
+              .attr("height",100)
+              .attr("y", y(22) - 20)
+              .attr("x", x(92) - 50)
+text2.text("$$ x $$")
+MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+
+
 
