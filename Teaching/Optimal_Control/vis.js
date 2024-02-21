@@ -152,13 +152,24 @@ svg.append("text")
 .text("\\(v\\)");
 
 
-// For f1 label
+// For f=1 label
 svg.append("text")             
 .attr("transform",
-    "translate(" + x(52) + " ," + 
-                   (y(0) + 20) + ")")
+      "translate(" + (x(52) + 5) + " ," + 
+                    (y(-10) + 5) + ")")
 .style("text-anchor", "middle")
-.text("f=1");
+.style("fill", "blue")
+.text("(f=1)");
+
+
+// For f=-1 label
+svg.append("text")             
+.attr("transform",
+      "translate(" + (x(-52) - 5) + " ," + 
+                    (y(10) + 5) + ")")
+.style("text-anchor", "middle")
+.style("fill", "blue")
+.text("(f=-1)");
 
 
 // Define the line
