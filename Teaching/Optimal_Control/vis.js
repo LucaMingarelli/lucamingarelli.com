@@ -149,7 +149,7 @@ svg.append("text")
     "translate(" + (x(0) - 15) + " ," + 
                    y(10) + ")")
 .style("text-anchor", "middle")
-.text("\\(v\\)");
+.text("$$v$$");
 
 
 // For f=1 label
