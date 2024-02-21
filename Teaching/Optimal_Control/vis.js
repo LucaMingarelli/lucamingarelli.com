@@ -149,8 +149,16 @@ svg.append("text")
     "translate(" + (x(0) - 15) + " ," + 
                    y(10) + ")")
 .style("text-anchor", "middle")
-.text("v");
+.text("\\(v\\)");
 
+
+// For f1 label
+svg.append("text")             
+.attr("transform",
+    "translate(" + x(52) + " ," + 
+                   (y(0) + 20) + ")")
+.style("text-anchor", "middle")
+.text("f=1");
 
 
 // Define the line
