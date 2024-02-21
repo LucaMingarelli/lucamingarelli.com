@@ -249,7 +249,7 @@ var path2 = svg.append("path")
 var traj_0 = svg.append("path")
 .datum(data_t0)
 .attr("fill", "none")
-.attr("stroke", "rgba(255, 0, 0, 0.25)")
+.attr("stroke", "rgba(0, 255, 0, 0.25)")
 .attr("stroke-width", 1)
 .attr("d", line);
 var traj_1 = svg.append("path")
