@@ -395,8 +395,14 @@ For \(f=\pm 1\)
     
     <h3 style="text-align: left;"><b>Dynamic Programming</b></h3>
 
+    A similar approach to the maximum principle developed during the cold war in the Soviet Union, 
+    was developed in the same period in the United States. 
+    However, while Pontryagin's maximum principle only yielded necessary conditions for optimality, 
+    the <i>dynamic programming</i> approach pioneered by Bellman at RAND would yield both necessary and sufficient conditions for optimality.
+
+    <br><br>
     Dynamic programming is a general approach: let consider first the discrete deterministic case. 
-    We shall then move on to conside the continuos and stochastic extensions.
+    We shall then move on to consider the continuos and stochastic extensions.
 
     <h4 style="text-align: left;"><b>Discrete Dynamic Programming</b></h4>
 
@@ -427,6 +433,7 @@ For \(f=\pm 1\)
 
     <br><br>
 
+    This notion can be formalised with the following theorem.
     <br><br>
 
     <b>Theorem x — Dynamic Programming</b><blockquote><i> 
@@ -439,14 +446,13 @@ For \(f=\pm 1\)
       \end{equation}
       Then, one has
       \begin{equation}
-      V(x, t) := \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
+      V(x, t) = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
       \end{equation}
 
       for any \(\tau\ge t\), and where \(x\) on the right hand side is he state trajectory corresponding to the control \(\gamma_{[t_0, T]}\).
     </blockquote></i>
 
     <br><br>
-
 
 
 
