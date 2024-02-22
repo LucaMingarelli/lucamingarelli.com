@@ -431,7 +431,18 @@ For \(f=\pm 1\)
 
     <b>Theorem x — Dynamic Programming</b><blockquote><i> 
 
-      For 
+      Given a Bolza problem over the time interval \([t_0, T]\), with payoff functional \(P[\gamma]\) 
+      and subject to the law of motion \(\dot{x}(t)=f(x(t), \gamma(t), t)\),
+      define the <b>Value Function</b>
+      \begin{equation}
+      V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
+      \end{equation}
+      Then, one has
+      \begin{equation}
+      V(x, t) := \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
+      \end{equation}
+
+      for any \(\tau\ge t\), and where \(x\) on the right hand side is he state trajectory corresponding to the control \gamma_{[t_0, T]}.
     </blockquote></i>
 
     <br><br>
