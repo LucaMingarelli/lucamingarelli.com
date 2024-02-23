@@ -384,12 +384,12 @@ For \(f=\pm 1\)
 
 <figure style="text-align: center;justify-content: center;align-items: center;">
   <!-- Create a div where the graph will take place -->
-  <div id="my_dataviz" style="width: 100%;"></div>
+  <div id="double_integrator_figure" style="width: 100%;"></div>
   <figcaption><i><b>Fig.1:</b> Optimal trajectory of the system described by equation \eqref{double_integrator_hamiltonian}, for different initial conditions (move your mouse to adjust them).
   </i></figcaption>
 </figure>
 
-<script src="./vis.js"></script>
+<script src="./double_integrator.js"></script>
 
     The interested reader may find more details on this problem, also referred to as <i>double-integrator problem</i>, in <a href="#ref2">[2]</a>.
     
@@ -402,7 +402,7 @@ For \(f=\pm 1\)
 
     <br><br>
     Dynamic programming is a general approach: let consider first the discrete deterministic case. 
-    We shall then move on to consider the continuos and stochastic extensions.
+    We shall then move on to consider the continuous and stochastic extensions.
 
     <h4 style="text-align: left;"><b>Discrete Dynamic Programming</b></h4>
 
@@ -414,6 +414,25 @@ For \(f=\pm 1\)
     here \(x_k\in X\subset\mathbb{N}\) and \(\gamma_k\in \Gamma \subset \mathbb{N}\).
      Associated to this discrete equation of motion is a cost function determining 
     
+
+
+
+
+     <figure style="text-align: center;justify-content: center;align-items: center;">
+      <!-- Create a div where the graph will take place -->
+      <div id="dp0_figure" style="width: 100%;"></div>
+      <figcaption><i><b>Fig.2:</b> xxxxx.
+      </i></figcaption>
+    </figure>
+    
+    <script src="./dp0.js"></script>
+    
+
+
+
+
+
+
 
     <br><br>
     <b>Definition x — Bellman's Principle of Optimality</b><blockquote><i> 

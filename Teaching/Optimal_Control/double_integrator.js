@@ -47,12 +47,12 @@ var ARROW_SIZE = 2
 var PATH_WIDTH = 1.5
 
 // set the dimensions and margins of the graph
-var margin = {top: 30, bottom: 30, right: document.getElementById("my_dataviz").offsetWidth/8, left: document.getElementById("my_dataviz").offsetWidth/8},
-width = document.getElementById("my_dataviz").offsetWidth*3/4 - document.getElementById("my_dataviz").offsetWidth/4,
+var margin = {top: 30, bottom: 30, right: document.getElementById("double_integrator_figure").offsetWidth/8, left: document.getElementById("double_integrator_figure").offsetWidth/8},
+width = document.getElementById("double_integrator_figure").offsetWidth*3/4 - document.getElementById("double_integrator_figure").offsetWidth/4,
 height = 350 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
+var svg = d3.select("#double_integrator_figure")
 .append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
