@@ -162,7 +162,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(-5,-10)")
+    .attr("transform", "translate(-20,-15)")
     .append("xhtml:div")
     .html("\\(v\\)");
 
@@ -187,9 +187,9 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 80)
     .attr("height", 20)
-    .attr("transform", "translate(-10,0)")
+    .attr("transform", "translate(-30,-10)")
     .append("xhtml:div")
-    .html("\\(f=-1\\)");
+    .html("\\(\color{blue}{f=-1}\\)");
 
 
 // Define the line
