@@ -15,4 +15,4 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}\
 .left {float: left;padding: 10px;}\
 .right {float: right;padding: 10px;}\
 </style>\
-<link rel="stylesheet" href="https://github.com/LucaMingarelli/lucamingarelli/blob/master/css/scrollbar.css">')
+<link rel="stylesheet" href="css/scrollbar.css">')
