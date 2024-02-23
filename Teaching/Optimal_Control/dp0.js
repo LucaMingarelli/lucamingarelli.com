@@ -90,9 +90,9 @@ svg_dp.selectAll(".line")
     .enter().append("path")
     .attr("class", "line")
     .attr("d", line_dp)
-    .style("stroke", "rgba(1,1,1,0.9)")
+    .style("stroke", "red")
     .style("stroke-width", 1)
-    .style("fill", "none");
+    .style("fill", "red");
 
 // svg_dp.append("defs").append("marker")
 //     .attr("id", "arrowhead_dp")
