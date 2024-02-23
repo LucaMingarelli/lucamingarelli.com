@@ -157,7 +157,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(20,5)")
+    .attr("transform", "translate(5,0)")
     .append("xhtml:div")
     .html("\\(v\\)");
 
