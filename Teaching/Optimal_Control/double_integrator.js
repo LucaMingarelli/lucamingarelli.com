@@ -168,9 +168,12 @@ svg.append("text")
 .attr("transform",
       "translate(" + (x(52) + 15) + " ," + 
                     (y(-10) + 5) + ")")
-.style("text-anchor", "middle")
-.style("fill", "blue")
-.text("f=1");
+.append("svg:foreignObject")
+.attr("width", 80)
+.attr("height", 20)
+.attr("transform", "translate(-30,-10)")
+.append("xhtml:div")
+.html("\\(f=+1\\)");
 
 
 // For f=-1 label
