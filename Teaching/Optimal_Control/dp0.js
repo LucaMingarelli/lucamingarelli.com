@@ -49,8 +49,6 @@ svg_dp.append("g")
 svg_dp.selectAll(".tick text").remove(); // Remove tick-labels
 
 
-
-
 // Generate data for grid points
 var data_grid = [];
 for (var x_ = 1; x_ < 4; x_++) {
@@ -92,7 +90,7 @@ svg_dp.selectAll(".line")
     .enter().append("path")
     .attr("class", "line")
     .attr("d", line_dp)
-    .style("stroke", "rgba(0,0,0,0.3)")
+    .style("stroke", "rgba(1,1,1,0.9)")
     .style("stroke-width", 1)
     .style("fill", "none");
 
