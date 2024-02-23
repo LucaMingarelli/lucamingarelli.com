@@ -1,3 +1,8 @@
+window.MathJax = {
+  loader: {load: ['[tex]/color']},
+  tex: {packages: {'[+]': ['color']}}
+};
+
 function get_val(y, t0, y0, cond){
   if (cond) {
     traj =  2*t0*(y+2*t0) - (y+2*t0)*(y+2*t0)/2 - t0*t0
@@ -157,7 +162,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(5,0)")
+    .attr("transform", "translate(-5,-10)")
     .append("xhtml:div")
     .html("\\(v\\)");
 
@@ -182,7 +187,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 80)
     .attr("height", 20)
-    .attr("transform", "translate(5,0)")
+    .attr("transform", "translate(-10,0)")
     .append("xhtml:div")
     .html("\\(f=-1\\)");
 
