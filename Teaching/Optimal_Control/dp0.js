@@ -96,14 +96,14 @@ svg.selectAll(".tick text").remove(); // Remove tick-labels
 //     .style("stroke-width", 1)
 //     .style("fill", "none");
 
-// svg.append("defs").append("marker")
-//     .attr("id", "arrowhead")
-//     .attr("refX", 6 + 3)
-//     .attr("refY", 2)
-//     .attr("markerWidth", 13)
-//     .attr("markerHeight", 9)
-//     .attr("orient", "right")
-//     .append("path_2")
-//     .attr("d", "M2,2 L2,13 L8,7 L2,2");
+svg.append("defs").append("marker")
+    .attr("id", "arrowhead")
+    .attr("refX", 6 + 3)
+    .attr("refY", 2)
+    .attr("markerWidth", 13)
+    .attr("markerHeight", 9)
+    .attr("orient", "right")
+    .append("path_2")
+    .attr("d", "M2,2 L2,13 L8,7 L2,2");
 
-// xa.select("path_2").attr("marker-end", "url(#arrowhead)");
+xa.select("path_2").attr("marker-end", "url(#arrowhead)");
