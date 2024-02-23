@@ -180,9 +180,9 @@ svg.append("g")
       "translate(" + (x(-52) - 15) + " ," + 
                     (y(10) + 5) + ")")
 .append("svg:foreignObject")
-    .attr("width", 40)
+    .attr("width", 80)
     .attr("height", 20)
-    .attr("transform", "translate(20,5)")
+    .attr("transform", "translate(5,0)")
     .append("xhtml:div")
     .html("\\(f=-1\\)");
 
