@@ -1,5 +1,3 @@
-MathJax.Hub.Config({ TeX: { extensions: ["color.js"] }});
-
 function get_val(y, t0, y0, cond){
   if (cond) {
     traj =  2*t0*(y+2*t0) - (y+2*t0)*(y+2*t0)/2 - t0*t0
@@ -186,7 +184,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-30,-10)")
     .append("xhtml:div")
-    .html("\\(\\definecolor{blue}{RGB}{0,0,255}{\\color{blue} f=-1}\\)");
+    .html("\\(f=-1\\)");
 
 
 // Define the line
