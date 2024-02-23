@@ -147,15 +147,18 @@ svg.append("text")
                    (y(0) + 20) + ")")
 .style("text-anchor", "middle")
 .text("x");
+svg.append("g")             
+.attr("transform",
+      "translate(" + x(52) + " ," + (y(0) + 20) + ")")
+.append("svg:foreignObject")
+    .attr("width", 40)
+    .attr("height", 20)
+    .attr("transform", "translate(-20,-15)")
+    .append("xhtml:div")
+    .html("\\(x\\)");
+
 
 // For y-axis label
-svg.append("text")             
-.attr("transform",
-    "translate(" + (x(0) - 15) + " ," + 
-                   y(10) + ")")
-.style("text-anchor", "middle")
-.text("v");
-
 svg.append("g")             
 .attr("transform",
       "translate(" + (x(0) - 15) + " ," +  y(10) + ")")
@@ -189,7 +192,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-30,-10)")
     .append("xhtml:div")
-    .html("\\(\color{blue}{f=-1}\\)");
+    .html("\\(\\color{blue}{f=-1}\\)");
 
 
 // Define the line
