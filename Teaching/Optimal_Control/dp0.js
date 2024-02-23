@@ -6,8 +6,8 @@ var svg = d3.select("#dp0_figure")
 ;
 
 // Define scales
-var xScale = d3.select("#dp0_figure").scaleLinear().domain([0, 4.5]).range([50, 250]);
-var yScale = d3.select("#dp0_figure").scaleLinear().domain([0.5, 3.5]).range([250, 50]);
+var xScale = d3.scaleLinear().domain([0, 4.5]).range([50, 250]);
+var yScale = d3.scaleLinear().domain([0.5, 3.5]).range([250, 50]);
 
 // Define axes
 var xAxis = d3.axisBottom(xScale).ticks(6);
