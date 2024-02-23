@@ -1,3 +1,4 @@
+// var dp_width = document.getElementById("double_integrator_figure").offsetWidth
 // Define SVG dimensions
 var svg_dp = d3.select("#dp0_figure")
     .append("svg")
