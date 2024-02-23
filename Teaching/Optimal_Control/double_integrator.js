@@ -164,7 +164,7 @@ svg.append("g")
 
 
 // For f=1 label
-svg.append("text")             
+svg.append("g")             
 .attr("transform",
       "translate(" + (x(52) + 15) + " ," + 
                     (y(-10) + 5) + ")")
