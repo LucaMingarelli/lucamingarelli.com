@@ -89,7 +89,7 @@ var line_dp = d3.line()
 // Draw lines
 svg_dp.selectAll(".line")
     .data(lines_dp)
-    .enter().append("path_2")
+    .enter().append("path")
     .attr("class", "line")
     .attr("d", line_dp)
     .style("stroke", "rgba(0,0,0,0.3)")
