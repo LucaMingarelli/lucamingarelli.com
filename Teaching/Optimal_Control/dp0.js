@@ -89,7 +89,7 @@ var line = d3.line()
 // Draw lines
 svg.selectAll(".line")
     .data(lines)
-    .enter().append("path")
+    .enter().append("path_2")
     .attr("class", "line")
     .attr("d", line)
     .style("stroke", "rgba(0,0,0,0.3)")
@@ -103,7 +103,7 @@ svg.append("defs").append("marker")
     .attr("markerWidth", 13)
     .attr("markerHeight", 9)
     .attr("orient", "right")
-    .append("path")
+    .append("path_2")
     .attr("d", "M2,2 L2,13 L8,7 L2,2");
 
-xa.select("path").attr("marker-end", "url(#arrowhead)");
+xa.select("path_2").attr("marker-end", "url(#arrowhead)");
