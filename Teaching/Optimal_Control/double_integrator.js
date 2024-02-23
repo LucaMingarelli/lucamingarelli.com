@@ -170,7 +170,12 @@ svg.append("text")
 .style("text-anchor", "middle")
 .style("fill", "blue")
 // .text("f=-1")
-.text("\\(f=-1\\)");
+.append("svg:foreignObject")
+    .attr("width", 20)
+    .attr("height", 20)
+    // .attr("transform", "translate(510,-5)")
+    .append("xhtml:div")
+    .html("\\(f=-1\\)");
 
 
 // Define the line
