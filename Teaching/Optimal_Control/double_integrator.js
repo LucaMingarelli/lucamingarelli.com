@@ -169,7 +169,8 @@ svg.append("text")
                     (y(10) + 5) + ")")
 .style("text-anchor", "middle")
 .style("fill", "blue")
-.text("f=-1");
+// .text("f=-1")
+.text("\\(f=-1\\)");
 
 
 // Define the line
