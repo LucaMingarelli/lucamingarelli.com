@@ -163,12 +163,12 @@ svg.append("text")
 
 
 // For f=-1 label
-svg.append("text")             
+svg.append("g")             
 .attr("transform",
       "translate(" + (x(-52) - 15) + " ," + 
                     (y(10) + 5) + ")")
-.style("text-anchor", "middle")
-.style("fill", "blue")
+// .style("text-anchor", "middle")
+// .style("fill", "blue")
 // .text("f=-1")
 .append("svg:foreignObject")
     .attr("width", 20)
