@@ -154,7 +154,7 @@ svg_dp.selectAll(".point")
 var lines_dp = [];
 for (var t_ = 0; t_ <= 4; t_++) {
     for (var x_ = 1; x_ <= 3; x_++) {
-      var point1 = data_grid.find(d => d.t === t_ && d.x === x);
+      var point1 = data_grid.find(d => d.t === t_ && d.x === x_);
       for (var x_nxt = 1; x_nxt <= 3; x_nxt++){
         for (var t_nxt = t_; t_nxt <= 4; t_nxt++){
             var point2 = data_grid.find(d => d.t === t_+1 && d.x === x_nxt);
