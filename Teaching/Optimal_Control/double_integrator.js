@@ -151,6 +151,18 @@ svg.append("text")
 .style("text-anchor", "middle")
 .text("v");
 
+svg.append("g")             
+.attr("transform",
+      "translate(" + (x(0) - 15) + " ," +  y(10) + ")")
+.append("svg:foreignObject")
+    .attr("width", 40)
+    .attr("height", 20)
+    .attr("transform", "translate(20,5)")
+    .append("xhtml:div")
+    .html("\\(v\\)");
+
+
+
 
 // For f=1 label
 svg.append("text")             
