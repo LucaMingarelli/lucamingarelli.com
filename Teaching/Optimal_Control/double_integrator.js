@@ -1,7 +1,4 @@
-window.MathJax = {
-  loader: {load: ['[tex]/xcolor']},
-  tex: {packages: {'[+]': ['xcolor']}}
-};
+MathJax.Hub.Config({ TeX: { extensions: ["color.js"] }});
 
 function get_val(y, t0, y0, cond){
   if (cond) {
@@ -186,7 +183,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-30,-10)")
     .append("xhtml:div")
-    .html("\\(\\textcolor{blue}{f=-1}\\)");
+    .html("\\(\\definecolor{blue}{RGB}{0,0,255}{\\color{blue} f=-1}\\)");
 
 
 // Define the line
