@@ -401,21 +401,32 @@ For \(f=\pm 1\)
     the <i>dynamic programming</i> approach pioneered by Bellman at RAND would yield both necessary and sufficient conditions for optimality.
 
     <br><br>
-    Dynamic programming is a general approach: let consider first the discrete deterministic case. 
+    Dynamic programming is a general approach: let us start by considering
+    a discrete deterministic example. 
     We shall then move on to consider the continuous and stochastic extensions.
 
     <h4 style="text-align: left;"><b>Discrete Dynamic Programming</b></h4>
-
 
     Consider a discrete system of the form 
     \begin{equation}
     x_{k+1} = f(x_k, \gamma_k), \quad k = 0, ..., T-1;
     \end{equation}
     here \(x_k\in X\subset\mathbb{N}\) and \(\gamma_k\in \Gamma \subset \mathbb{N}\).
-     Associated to this discrete equation of motion is a cost function determining 
-    
+     Furthermore, to each discrete step forward in time \(t\) is associated 
+     the running payoff \(\ell(x_t, x_{t+1})\). Starting from \(x_0=0\), the objetive is to maximise 
+     the total payoff.
+    <br>
+    The naive approach to solve this problem consists of enumerating each possible trajectory 
+    starting from the initial state 
 
+     
+     At each time \(t\) we then define the value function
+     \begin{equation*}
+     V(x_t) = \max\left(\sum_{s=t+1}^T \ell(x_s, x_s+1)\right).
+     \end{equation*}
+    Therefore, \(V(x_t)\) represents the largest payoff attainable starting from \(x_t\).
 
+  
 
 
      <figure style="text-align: center;justify-content: center;align-items: center;">

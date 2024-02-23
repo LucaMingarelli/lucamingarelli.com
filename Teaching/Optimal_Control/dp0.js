@@ -70,7 +70,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,145)")
     .append("xhtml:div")
-    .html("\\(x_0\\)"); 
+    .html("\\(0\\)"); 
 svg_dp.append("g")
     .attr("transform", "translate(400,0)")
     .call(yAxis2)
@@ -79,7 +79,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,145)")
     .append("xhtml:div")
-    .html("\\(x_0\\)"); 
+    .html("\\(0\\)"); 
 
 
 
@@ -91,7 +91,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,75)")
     .append("xhtml:div")
-    .html("\\(x_1\\)"); 
+    .html("\\(1\\)"); 
 svg_dp.append("g")
     .attr("transform", "translate(400,0)")
     .call(yAxis2)
@@ -100,7 +100,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,75)")
     .append("xhtml:div")
-    .html("\\(x_1\\)"); 
+    .html("\\(1\\)"); 
 
 
 svg_dp.append("g")
@@ -111,7 +111,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,210)")
     .append("xhtml:div")
-    .html("\\(x_{-1}\\)"); 
+    .html("\\(-1\\)"); 
 svg_dp.append("g")
     .attr("transform", "translate(400,0)")
     .call(yAxis2)
@@ -120,7 +120,7 @@ svg_dp.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-25,210)")
     .append("xhtml:div")
-    .html("\\(x_{-1}\\)"); 
+    .html("\\(-1\\)"); 
 
 
 
