@@ -1,6 +1,6 @@
 window.MathJax = {
-  loader: {load: ['[tex]/color']},
-  tex: {packages: {'[+]': ['color']}}
+  loader: {load: ['[tex]/xcolor']},
+  tex: {packages: {'[+]': ['xcolor']}}
 };
 
 function get_val(y, t0, y0, cond){
@@ -141,12 +141,6 @@ svg.append("path")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
 // For x-axis label
-svg.append("text")             
-.attr("transform",
-    "translate(" + x(52) + " ," + 
-                   (y(0) + 20) + ")")
-.style("text-anchor", "middle")
-.text("x");
 svg.append("g")             
 .attr("transform",
       "translate(" + x(52) + " ," + (y(0) + 20) + ")")
@@ -192,7 +186,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-30,-10)")
     .append("xhtml:div")
-    .html("\\(\\color{blue}{f=-1}\\)");
+    .html("\\(\\textcolor{blue}{f=-1}\\)");
 
 
 // Define the line
