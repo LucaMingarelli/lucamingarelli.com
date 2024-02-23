@@ -1,6 +1,6 @@
 // Define svg_dp dimensions
 var svg_dp = d3.select("#dp0_figure")
-    .append("svg_dp")
+    .append("svg")
     .attr("width", 300)
     .attr("height", 300)
 ;
