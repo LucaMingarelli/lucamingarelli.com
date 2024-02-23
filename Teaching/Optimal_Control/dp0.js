@@ -1,5 +1,5 @@
 // Define SVG dimensions
-var svg = d3.select("dp0_figure")
+var svg = d3.select("#dp0_figure")
     .append("svg")
     .attr("width", 300)
     .attr("height", 300)
