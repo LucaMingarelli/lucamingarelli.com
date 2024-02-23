@@ -173,7 +173,7 @@ svg.append("text")
 .append("svg:foreignObject")
     .attr("width", 20)
     .attr("height", 20)
-    // .attr("transform", "translate(510,-5)")
+    .attr("transform", "translate(-52,-5)")
     .append("xhtml:div")
     .html("\\(f=-1\\)");
 
