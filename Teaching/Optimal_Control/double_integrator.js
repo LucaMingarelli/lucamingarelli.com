@@ -167,13 +167,10 @@ svg.append("g")
 .attr("transform",
       "translate(" + (x(-52) - 15) + " ," + 
                     (y(10) + 5) + ")")
-// .style("text-anchor", "middle")
-// .style("fill", "blue")
-// .text("f=-1")
 .append("svg:foreignObject")
-    .attr("width", 20)
+    .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(50,15)")
+    .attr("transform", "translate(20,5)")
     .append("xhtml:div")
     .html("\\(f=-1\\)");
 
