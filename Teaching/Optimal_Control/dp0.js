@@ -168,7 +168,7 @@ for (var t_ = 0; t_ <= 4; t_++) {
 
 for (var t_ = DELTA_dp; t_ <= 4+DELTA_dp; t_++) {
     for (var x_ = 1; x_ <= 3; x_++) {
-      var point1 = data_grid.find(d => d.t === t && d.x === x);
+      var point1 = data_grid.find(d => d.t === t_ && d.x === x_);
       for (var x_nxt = 1; x_nxt <= 3; x_nxt++){
           var point2 = data_grid.find(d => d.t === t_+1 && d.x === x_nxt);
           if (point1 && point2 && (x_===2|t_>DELTA_dp)) {
