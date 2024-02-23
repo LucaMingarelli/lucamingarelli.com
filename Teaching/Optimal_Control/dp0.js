@@ -97,7 +97,7 @@ svg_dp.selectAll(".point")
 //     .style("fill", "none");
 
 svg_dp.append("defs").append("marker")
-    .attr("id", "arrowhead")
+    .attr("id", "arrowhead_dp")
     .attr("refX", 6 + 3)
     .attr("refY", 2)
     .attr("markerWidth", 13)
@@ -106,4 +106,4 @@ svg_dp.append("defs").append("marker")
     .append("path_2")
     .attr("d", "M2,2 L2,13 L8,7 L2,2");
 
-xa.select("path_2").attr("marker-end", "url(#arrowhead)");
+xa.select("path_2").attr("marker-end", "url(#arrowhead_dp)");
