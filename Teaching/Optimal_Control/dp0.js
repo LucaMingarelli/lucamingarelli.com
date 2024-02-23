@@ -51,22 +51,22 @@ svg.selectAll(".tick text").remove(); // Remove tick-labels
 
 
 
-// // Generate data for grid points
-// var data = [];
-// for (var x = 1; x < 4; x++) {
-//     for (var t = 1; t <= 5; t++) {
-//         data.push({x: x, t: t-1});
-//     }
-// }
+// Generate data for grid points
+var data_grid = [];
+for (var x = 1; x < 4; x++) {
+    for (var t = 1; t <= 5; t++) {
+        data_grid.push({x: x, t: t-1});
+    }
+}
 
-// // Draw grid points
-// svg.selectAll(".point")
-//     .data(data)
-//     .enter().append("circle")
-//     .attr("class", "point")
-//     .attr("r", 3)
-//     .attr("cx", function(d) { return xScale(d.t); })
-//     .attr("cy", function(d) { return yScale(d.x); });
+// Draw grid points
+svg.selectAll(".point")
+    .data(data_grid)
+    .enter().append("circle")
+    .attr("class", "point")
+    .attr("r", 3)
+    .attr("cx", function(d) { return xScale(d.t); })
+    .attr("cy", function(d) { return yScale(d.x); });
 
 
 // var lines = [];
