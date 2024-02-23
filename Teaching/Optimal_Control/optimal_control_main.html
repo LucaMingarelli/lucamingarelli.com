@@ -417,7 +417,10 @@ For \(f=\pm 1\)
      the total payoff.
     <br>
     The naive approach to solve this problem consists of enumerating each possible trajectory 
-    starting from the initial state 
+    starting from the initial state \(x_0\) up to time \(T\). 
+    It's straightforward to find this approach implies evaluating \(|X|^T\) trajectories. 
+    The evaluation of the payoff for each trajectory requires \(T\) operations, 
+    so we denote the by \(\mathcal{O}(|X|^TT)\) the computational complexity of this approach.
 
      
      At each time \(t\) we then define the value function
@@ -432,7 +435,9 @@ For \(f=\pm 1\)
      <figure style="text-align: center;justify-content: center;align-items: center;">
       <!-- Create a div where the graph will take place -->
       <div id="dp0_figure" style="width: 100%;"></div>
-      <figcaption><i><b>Fig.2:</b> Brute force search (left) versus dynmamics programming approach (right). Darker paths are traversed more often.
+      <figcaption><i><b>Fig.2:</b> Brute force search (left) versus dynmamics programming approach (right). 
+        Darker paths are traversed more often.
+        Here \(|X| = 3\) and \(T=5\).
       </i></figcaption>
     </figure>
     
