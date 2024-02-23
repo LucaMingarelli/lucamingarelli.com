@@ -53,9 +53,9 @@ svg_dp.selectAll(".tick text").remove(); // Remove tick-labels
 
 // Generate data for grid points
 var data_grid = [];
-for (var x = 1; x < 4; x++) {
-    for (var t = 1; t <= 5; t++) {
-        data_grid.push({x: x, t: t-1});
+for (var x_ = 1; x_ < 4; x_++) {
+    for (var t_ = 1; t_ <= 5; t_++) {
+        data_grid.push({x: x_, t: t_-1});
     }
 }
 
@@ -96,14 +96,14 @@ svg_dp.selectAll(".point")
 //     .style("stroke-width", 1)
 //     .style("fill", "none");
 
-svg_dp.append("defs").append("marker")
-    .attr("id", "arrowhead_dp")
-    .attr("refX", 6 + 3)
-    .attr("refY", 2)
-    .attr("markerWidth", 13)
-    .attr("markerHeight", 9)
-    .attr("orient", "right")
-    .append("path_2")
-    .attr("d", "M2,2 L2,13 L8,7 L2,2");
+// svg_dp.append("defs").append("marker")
+//     .attr("id", "arrowhead_dp")
+//     .attr("refX", 6 + 3)
+//     .attr("refY", 2)
+//     .attr("markerWidth", 13)
+//     .attr("markerHeight", 9)
+//     .attr("orient", "right")
+//     .append("path_2")
+//     .attr("d", "M2,2 L2,13 L8,7 L2,2");
 
-xa.select("path_2").attr("marker-end", "url(#arrowhead_dp)");
+// xa.select("path_2").attr("marker-end", "url(#arrowhead_dp)");
