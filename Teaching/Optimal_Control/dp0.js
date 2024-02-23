@@ -1,6 +1,6 @@
-// Define SVG dimensions
-var svg = d3.select("#dp0_figure")
-    .append("svg")
+// Define svg_dp dimensions
+var svg_dp = d3.select("#dp0_figure")
+    .append("svg_dp")
     .attr("width", 300)
     .attr("height", 300)
 ;
@@ -14,10 +14,10 @@ var xAxis = d3.axisBottom(xScale).ticks(6);
 var yAxis = d3.axisLeft(yScale).ticks(4);
 
 // Draw axes
-svg.append("g")
+svg_dp.append("g")
     .attr("transform", "translate(0,250)")
     .call(xAxis)
-    .append("svg:foreignObject")
+    .append("svg_dp:foreignObject")
     .attr("width", 20)
     .attr("height", 20)
     .attr("transform", "translate(260,-5)")
@@ -25,20 +25,20 @@ svg.append("g")
     .html("\\(t\\)");
 
 
-svg.append("g")
+svg_dp.append("g")
     .attr("transform", "translate(50,0)")
     .call(yAxis)
-    .append("svg:foreignObject")
+    .append("svg_dp:foreignObject")
     .attr("width", 20)
     .attr("height", 20)
     .attr("transform", "translate(0,30)")
     .append("xhtml:div")
     .html("\\(x\\)"); 
 
-svg.append("g")
+svg_dp.append("g")
     .attr("transform", "translate(50,0)")
     .call(yAxis)
-    .append("svg:foreignObject")
+    .append("svg_dp:foreignObject")
     .attr("width", 20)
     .attr("height", 20)
     .attr("transform", "translate(-20,145)")
@@ -46,7 +46,7 @@ svg.append("g")
     .html("\\(x_0\\)"); 
 
 
-svg.selectAll(".tick text").remove(); // Remove tick-labels
+svg_dp.selectAll(".tick text").remove(); // Remove tick-labels
 
 
 
@@ -60,7 +60,7 @@ for (var x = 1; x < 4; x++) {
 }
 
 // Draw grid points
-svg.selectAll(".point")
+svg_dp.selectAll(".point")
     .data(data_grid)
     .enter().append("circle")
     .attr("class", "point")
@@ -87,7 +87,7 @@ svg.selectAll(".point")
 //     .y(function(d) { return yScale(d.x); });
 
 // // Draw lines
-// svg.selectAll(".line")
+// svg_dp.selectAll(".line")
 //     .data(lines)
 //     .enter().append("path_2")
 //     .attr("class", "line")
@@ -96,7 +96,7 @@ svg.selectAll(".point")
 //     .style("stroke-width", 1)
 //     .style("fill", "none");
 
-svg.append("defs").append("marker")
+svg_dp.append("defs").append("marker")
     .attr("id", "arrowhead")
     .attr("refX", 6 + 3)
     .attr("refY", 2)
