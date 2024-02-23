@@ -69,32 +69,32 @@ svg_dp.selectAll(".point")
     .attr("cy", function(d) { return yScale(d.x); });
 
 
-// var lines = [];
-// for (var t = 0; t <= 3; t++) {
-//     for (var x = 1; x <= 3; x++) {
-//       var point1 = data.find(d => d.t === t && d.x === x);
-//       for (var x_nxt = 1; x_nxt <= 3; x_nxt++){
-//           var point2 = data.find(d => d.t === t+1 && d.x === x_nxt);
-//           if (point1 && point2 && (x===2|t>0)) {
-//             lines.push([point1, point2]);
-//           }
-//       }
-//     }
-// }
-// // Define line generator
-// var line = d3.line()
-//     .x(function(d) { return xScale(d.t); })
-//     .y(function(d) { return yScale(d.x); });
+var lines_dp = [];
+for (var t_ = 0; t_ <= 3; t_++) {
+    for (var x_ = 1; x_ <= 3; x_++) {
+      var point1 = data.find(d => d.t === t_ && d.x === x_);
+      for (var x_nxt = 1; x_nxt <= 3; x_nxt++){
+          var point2 = data.find(d => d.t === t_+1 && d.x === x_nxt);
+          if (point1 && point2 && (x===2|t>0)) {
+            lines_dp.push([point1, point2]);
+          }
+      }
+    }
+}
+// Define line generator
+var line_dp = d3.line()
+    .x(function(d) { return xScale(d.t); })
+    .y(function(d) { return yScale(d.x); });
 
-// // Draw lines
-// svg_dp.selectAll(".line")
-//     .data(lines)
-//     .enter().append("path_2")
-//     .attr("class", "line")
-//     .attr("d", line)
-//     .style("stroke", "rgba(0,0,0,0.3)")
-//     .style("stroke-width", 1)
-//     .style("fill", "none");
+// Draw lines
+svg_dp.selectAll(".line")
+    .data(lines_dp)
+    .enter().append("path_2")
+    .attr("class", "line")
+    .attr("d", line_dp)
+    .style("stroke", "rgba(0,0,0,0.3)")
+    .style("stroke-width", 1)
+    .style("fill", "none");
 
 // svg_dp.append("defs").append("marker")
 //     .attr("id", "arrowhead_dp")
