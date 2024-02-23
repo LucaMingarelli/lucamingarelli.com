@@ -16,4 +16,4 @@ document.write('\
 \
 \
  <div class="w3-container w3-BackgroundColor  w3-center w3-text-black w3-padding-32" id="about" background-color="red">\
- <link rel="stylesheet" href="../css/scrollbar.css">')
+ <link rel="stylesheet" href="https://github.com/LucaMingarelli/lucamingarelli/blob/master/css/scrollbar.css">')
