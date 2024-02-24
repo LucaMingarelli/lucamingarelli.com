@@ -460,7 +460,7 @@ For \(f=\pm 1\)
      <figure style="text-align: center;justify-content: center;align-items: center;">
       <!-- Create a div where the graph will take place -->
       <div id="dp0_figure" style="width: 100%;"></div>
-      <figcaption><i><b>Fig.2:</b> Brute force search (left) versus dynmamics programming approach (right). 
+      <figcaption><i><b>Fig.2:</b> Brute force forward scheme (left) versus dynmamics programming (backward scheme) approach (right). 
         Darker paths are traversed more often.
         Here \(|X| = 3\) and \(T=5\).
       </i></figcaption>
@@ -477,21 +477,15 @@ For \(f=\pm 1\)
     This dynamic programming<a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
     and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\), 
     and for each control. 
-    Hence, the computational complexity of the dynamic programming approach is \(\mathcal{O}(T|X||\Gamma|)\).
-
-    
-
-
-
-
-
+    Hence, the computational complexity of the dynamic programming approach is \(\mathcal{O}(T|X||\Gamma|)\). 
+    This is a major improvement compared to the naive forward scheme considered earlier!
 
     <br><br>
 
-    This notion can be formalised with the following theorem.
+    The notion of dynamic programming can be formalised with the following theorem.
     <br><br>
 
-    <b>Theorem x — Dynamic Programming</b><blockquote><i> 
+    <b>Theorem 9 — Dynamic Programming</b><blockquote><i> 
 
       Given a Bolza problem over the time interval \([t_0, T]\), with payoff functional \(P[\gamma]\) 
       and subject to the law of motion \(\dot{x}(t)=f(x(t), \gamma(t), t)\),
