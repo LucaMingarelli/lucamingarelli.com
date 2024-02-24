@@ -420,7 +420,7 @@ For \(f=\pm 1\)
     starting from the initial state \(x_0\) up to time \(T\). 
     It's straightforward to find this approach implies evaluating \(|X|^T\) trajectories. 
     The evaluation of the payoff for each trajectory requires \(T\) operations, 
-    so we denote by \(\mathcal{O}(|X|^TT)\) the computational complexity of this approach.
+    so we denote by \(\mathcal{O}(T|X|^T)\) the computational complexity of this approach.
     <br>
     This is brute force search is depicted in Fig 2 left, where paths explored multiple times appear darker.
     <br>
@@ -476,7 +476,8 @@ For \(f=\pm 1\)
     <br>
     This dynamic programming<a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
     and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\), 
-    and for each control.
+    and for each control. 
+    Hence, the computational complexity of the dynamic programming approach is \(\mathcal(T|X||\Gamma|)\).
 
     
 
