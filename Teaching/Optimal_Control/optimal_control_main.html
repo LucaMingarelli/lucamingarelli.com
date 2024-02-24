@@ -409,9 +409,9 @@ For \(f=\pm 1\)
 
     Consider a discrete system of the form 
     \begin{equation}
-    x_{k+1} = f(x_k, \gamma_k), \quad k = 0, ..., T-1;
+    x_{t+1} = f(x_t, \gamma_t), \quad t = 0, ..., T-1;
     \end{equation}
-    here \(x_k\in X\subset\mathbb{N}\) and \(\gamma_k\in \Gamma \subset \mathbb{N}\).
+    here \(x_t\in X\subset\mathbb{N}\) and \(\gamma_t\in \Gamma \subset \mathbb{N}\).
      Furthermore, to each discrete step forward in time \(t\) is associated 
      the running payoff \(\ell(x_t, x_{t+1})\). Starting from \(x_0=0\), the objetive is to maximise 
      the total payoff.
@@ -474,7 +474,9 @@ For \(f=\pm 1\)
     Second, starting from \(x_0\) and proceeding greedily with respect to the value function we are therefore guaranteed
     to find the optimal path.
     <br>
-    With this dynamic programming<a href="#ref4">[4]</a> approach 
+    This dynamic programming<a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
+    and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\), 
+    and for each control.
 
     
 
@@ -482,22 +484,6 @@ For \(f=\pm 1\)
 
 
 
-
-    <br><br>
-    <b>Definition x — Bellman's Principle of Optimality</b><blockquote><i> 
-
-      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
-      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
-      for the corresponding problem initiated at \(\tau\).
-    
-    </blockquote></i>
-
-    Or, in Bellman's own words <a href="#ref3">[3]</a>: 
-    <br>
-    "An optimal policy has the property that whatever 
-    the initial state and initial decision are, 
-    the remaining decisions must constitute an optimal policy 
-    with regard to the state resulting from the first decision."
 
     <br><br>
 
