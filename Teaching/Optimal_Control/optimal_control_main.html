@@ -405,7 +405,7 @@ For \(f=\pm 1\)
     a discrete deterministic example. 
     We shall then move on to consider the continuous and stochastic extensions.
 
-    <h4 style="text-align: left;"><b>Discrete Dynamic Programming</b></h4>
+    <br>
 
     Consider a discrete system of the form 
     \begin{equation}
@@ -420,20 +420,41 @@ For \(f=\pm 1\)
     starting from the initial state \(x_0\) up to time \(T\). 
     It's straightforward to find this approach implies evaluating \(|X|^T\) trajectories. 
     The evaluation of the payoff for each trajectory requires \(T\) operations, 
-    so we denote the by \(\mathcal{O}(|X|^TT)\) the computational complexity of this approach.
-    <br><br>
-    This is shown in Fig 2 left.
+    so we denote by \(\mathcal{O}(|X|^TT)\) the computational complexity of this approach.
+    <br>
+    This is brute force search is depicted in Fig 2 left, where paths explored multiple times appear darker.
+    <br>
+    However, a better approach is possible. Let us first introduce an observation which will be crucial in the following.
+    <br>
+    <b>Definition 8 — Bellman's Principle of Optimality</b><blockquote><i> 
 
-    However a better approach is possible...
-     
-     At each time \(t\) we then define the value function
+      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
+      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
+      for the corresponding problem initiated at \(\tau\).
+    
+    </blockquote></i>
+    <br>
+    Bellman's optimality principle therefore guarantees that from any point \(x_t\) on the optimal path,
+    one can discard paths going backwards in time being sure they are not portions of optimal trajectories. 
+    <br>
+    Let us therefore define 
+    at each time \(t\) the value function
      \begin{equation*}
      V(x_t) = \max\left(\sum_{s=t+1}^T \ell(x_s, x_s+1)\right).
      \end{equation*}
-    Therefore, \(V(x_t)\) represents the largest payoff attainable starting from \(x_t\).
-
-  
-
+    Clearly this represents the largest payoff attainable starting from \(x_t\). 
+    The introduction of \(V(x_t)\) is useful as it allows us to start at \(x_T\) and proceed backwards in time.
+    At \(t=T\) terminal costs are known for all possible choices of \(x_T \in X\). 
+    At\(t=T-1\), for each possible value \(x_{T-1} \in X\) we can compute the what is the optimal payoff 
+    as the sum of the one step running cost plus the terminal payoff, and record that.
+    Then, one can repeat this procedure for each \( t < T - 1 \) up to \(t=0\). 
+    Should one step involve two equivalent paths, either can be chosen at random.
+    This process is depicted in Fig2, right.
+    <br>
+    At this point, for every \(x_t\) we have an associated value function.
+    First, \(V(x_0)\)  represents the optimal payoff.
+    Second, starting from \(x_0\) and proceeding greedily with respect to the value function we are therefore guaranteed
+    to find the optimal path.
 
      <figure style="text-align: center;justify-content: center;align-items: center;">
       <!-- Create a div where the graph will take place -->
