@@ -425,7 +425,7 @@ For \(f=\pm 1\)
     This is brute force search is depicted in Fig 2 left, where paths explored multiple times appear darker.
     <br>
     However, a better approach is possible. Let us first introduce an observation which will be crucial in the following.
-    <br>
+    <br><br>
     <b>Definition 8 — Bellman's Principle of Optimality</b><blockquote><i> 
 
       For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
@@ -434,10 +434,16 @@ For \(f=\pm 1\)
     
     </blockquote></i>
     <br>
-    Bellman's optimality principle therefore guarantees that from any point \(x_t\) on the optimal path,
-    one can discard paths going backwards in time being sure they are not portions of optimal trajectories. 
+    Or, in Bellman's own words <a href="#ref3">[3]</a>: 
+    "An optimal policy has the property that whatever 
+    the initial state and initial decision are, 
+    the remaining decisions must constitute an optimal policy 
+    with regard to the state resulting from the first decision."
     <br>
-    Let us therefore define 
+    Bellman's optimality principle therefore guarantees that from any point \(x_t\) on the optimal path,
+    one can discard paths going backwards in time being certain that they are not portions of optimal trajectories. 
+    <br>
+    In order to leverage this intuition, let us thus define 
     at each time \(t\) the value function
      \begin{equation*}
      V(x_t) = \max\left(\sum_{s=t+1}^T \ell(x_s, x_s+1)\right).
@@ -445,7 +451,7 @@ For \(f=\pm 1\)
     Clearly this represents the largest payoff attainable starting from \(x_t\). 
     The introduction of \(V(x_t)\) is useful as it allows us to start at \(x_T\) and proceed backwards in time.
     At \(t=T\) terminal costs are known for all possible choices of \(x_T \in X\). 
-    At\(t=T-1\), for each possible value \(x_{T-1} \in X\) we can compute the what is the optimal payoff 
+    At \(t=T-1\), for each possible value \(x_{T-1} \in X\) we can compute the optimal payoff 
     as the sum of the one step running cost plus the terminal payoff, and record that.
     Then, one can repeat this procedure for each \( t < T - 1 \) up to \(t=0\). 
     Should one step involve two equivalent paths, either can be chosen at random.
@@ -467,7 +473,8 @@ For \(f=\pm 1\)
     
     <script src="./dp0.js"></script>
     
-
+    <br>
+    
 
 
 
