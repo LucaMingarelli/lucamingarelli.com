@@ -503,6 +503,36 @@ For \(f=\pm 1\)
 
     <br><br>
 
+    <h6>Exercise 3</h6>
+    Prove Theorem 9 on Dynamic Programming.
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+    Start by calling
+    \begin{equation}
+    P_\tau = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}
+    \end{equation}
+    For some \(\epsilon>0\), pick a policy \(\tilde{\gamma}\) such that
+    \begin{equation}
+      P[\tilde{\gamma}] \le V(x, t) + \epsilon.
+    \end{equation}
+    Under this control one has (by definition of the value function):
+    \begin{equation}
+      V(x(\tau), \tau) \le \int_\tau^T L(x(t), \gamma(t), t) dt + \phi(x(T)).
+    \end{equation}
+    Thus:
+    \begin{equation}
+      P_\tau
+    \end{equation}
+
+
+
+
+
+    <p align="right"> ◻</p>
+</div>
+
+
 
 
     <h4 style="text-align: left;"><b> The Hamilton-Jacobi-Bellman equation</b></h4>
