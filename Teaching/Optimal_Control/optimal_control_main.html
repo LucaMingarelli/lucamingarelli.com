@@ -122,7 +122,7 @@
     an <strong>optimal control</strong> \(\mathbf{\gamma}^*\) maximising the payoff: 
     
     \begin{equation}
-    \mathbf{P}[\mathbf{\gamma}^*] = \max_{\mathbf{\gamma}\in\Gamma} \mathbf{P}[\mathbf{\gamma}],
+    \mathbf{P}[\mathbf{\gamma}^*] = \sup_{\mathbf{\gamma}\in\Gamma} \mathbf{P}[\mathbf{\gamma}],
     \end{equation}
 
     that is
@@ -619,9 +619,9 @@ Then, use the following function to generate a triangle of length <code>L</code>
     <b>Theorem 10 — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
       Consider a value function defined by 
       
-      \begin{equation}
+      \begin{equation*}
       V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
-      \end{equation}
+      \end{equation*}
 
       Then, \(V\) is the unique viscosity solution [<a href="#ref6">6</a>, <a href="#ref7">7</a>] of the Hamilton-Jacobi-Bellman equation
 
@@ -688,8 +688,33 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
 <br>
 
-    <h4 style="text-align: left;"><b> Stochastic DP and HJB equation</b></h4>
+    <h4 style="text-align: left;"><b> Stochastic Control</b></h4>
 
+    While so far we have discussed deterministic control problems, 
+    many real world applications require the control of noisy processes, 
+    ranging from the execution of optimal trading strategy, resources allocation, 
+    or the control of spacecrafts and robots.
+<br>
+    Let us therefore introduce the stochastic extensions of the notions learnt above.
+
+    
+    <b>Theorem x — Stochastic Optimal Control Problem</b><blockquote><i> 
+
+      Given a stochastic process defined by the SDE
+      \begin{equation}
+      \label{eq:canonical_sde}
+      dX(t) = f(X(t), \gamma(t), t)dt+\sigma(X(t), \gamma(t), t)dW(t),
+      \end{equation} 
+      the stochastic Bolza problem is 
+      \begin{equation}
+      \begin{split}
+      \inf_\gamma\left\{\mathbb{E}\int_0^T L(X(t), \gamma(t), t)dt +\phi(X(T))\right\},
+      \end{split}
+      \end{equation}
+      subject to \eqref{eq:canonical_sde}.
+    </blockquote></i>
+
+    <br><br>
 
     <b>Theorem x — Stochastic Dynamic Programming</b><blockquote><i> 
 
