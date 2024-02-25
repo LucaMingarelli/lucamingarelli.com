@@ -558,13 +558,14 @@ A number triangle is a sequence of numbers starting from a 1-digit number, follo
 
 45265
 
-Write a function Max_Path(T) taking as input the number triangle T as a list of integers representing each level. The function should compute the highest sum of digits on a specific path starting at the top and ending somewhere at the base, following the rule that each step can only go directly-down or down-right.
-
+Write a function <code>Max_Path(T)</code> taking as input the number triangle 
+<code>T</code> as a list of integers representing each level. 
+The function should compute the highest sum of digits on a specific path starting at the top and ending somewhere at the base, following the rule that each step can only go directly-down or down-right.
 In the example the maximising path is highlighted in red.
 
 Test it on <code>T=[7,38,810,2744,45265]</code>: you should find <code>Max_Path(T)=30</code>.
 
-Then, use the following function to generate a triangle of length L:
+Then, use the following function to generate a triangle of length <code>L</code>:
 <pre><code class="lang-python">
   def gen_T(L):         
       from random import randint, seed
