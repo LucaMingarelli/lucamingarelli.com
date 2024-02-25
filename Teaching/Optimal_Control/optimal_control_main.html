@@ -552,6 +552,7 @@ For \(f=\pm 1\)
     Let us now consider an infinitesimal generalisation of Theorem 9.
     To start, consider an infinitesimal dynamic programming principle
     \begin{equation}
+    \label{eq:dpp_eq}
     V(x, t) = \inf_{\gamma}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
     \end{equation}
     The equation of motion is 
@@ -562,10 +563,17 @@ For \(f=\pm 1\)
     \begin{equation}
     \begin{split}
     x(t+\delta t) &= x(t) + \int_t^{t+\delta t} f(x(t'), \gamma(t'), t') dt'\\
-                  &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
+                  &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
     \end{split}
     \end{equation}
-
+    Expanding further \eqref{eq:dpp_eq}
+    \begin{equation}
+    \begin{split}
+    V(x, t) = \inf_{\gamma}\left{
+      L(x(t), \gamma(t), t)\delta t + V(x, t) +\partial_t V(x, t) \delta t + (\nabla_x V(x, t))^Tf(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
+                           \right}
+    \end{split}
+    \end{equation}
     
     <b>Theorem x — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
 
