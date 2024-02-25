@@ -594,14 +594,14 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
   # Sum lines form the bottom to the top and maximise sums
   def solution(A):
-      A=[[int(d) for d in str(n)] for n in A]  # List becomes list of lists
+      A = [[int(d) for d in str(n)] for n in A]  # List becomes list of lists
       while len(A) > 1:
-          e1=A[-1]  # Last level
-          e2=A[-2]  # Penultimate level
-          s1=[e1[n]  +e2[n] for n in range(len(e2))]   # Sum below
-          s2=[e1[n+1]+e2[n] for n in range(len(e2))]   # Sum below right
-          MS=[max(a,b) for a,b in zip(s1,s2)]          # Max of possible sums
-          A[-2]=MS  # Replace penultimate line with MS
+          e1 = A[-1]  # Last level
+          e2 = A[-2]  # Penultimate level
+          s1 = [e1[n]  +e2[n] for n in range(len(e2))]   # Sum below
+          s2 = [e1[n+1]+e2[n] for n in range(len(e2))]   # Sum below right
+          MS = [max(a,b) for a,b in zip(s1,s2)]          # Max of possible sums
+          A[-2] = MS  # Replace penultimate line with MS
           A.pop()   # Remove last line
       return A[0][0]
 
