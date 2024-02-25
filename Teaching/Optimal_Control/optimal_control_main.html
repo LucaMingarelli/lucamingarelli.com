@@ -555,27 +555,35 @@ For \(f=\pm 1\)
     \label{eq:dpp_eq}
     V(x, t) = \inf_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
     \end{equation}
-    The equation of motion is 
-    \begin{equation}
-    \dot{x}(t) = f(x(t), \gamma(t), t).
-    \end{equation}
-    A Taylor expansion yields
+    A Taylor expansion of the equation of motion \(\dot{x}(t) = f(x(t), \gamma(t), t)\) gives
     \begin{equation}
     \begin{split}
     x(t+\delta t) &= x(t) + \int_t^{t+\delta t} f(x(t'), \gamma(t'), t') dt'\\
                   &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
     \end{split}
     \end{equation}
-    Expanding further \eqref{eq:dpp_eq}
+    Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\) gives
     \begin{equation}
     \begin{split}
-    V(x, t) = \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+    V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
                            + V(x, t) +\partial_t V(x, t) \delta t 
-                           + \nabla_x V(x, t) f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
-                           \right\}
+                           + \partial_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
+                           \right\}\\
+          0 &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+                            +\partial_t V(x, t) \delta t 
+                            + \partial_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
+                            \right\},
     \end{split}
     \end{equation}
-    
+
+    which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
+    \begin{equation}
+    -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x(t), \gamma(t), t)       
+                            + \partial_x V(x, t) \cdot f(x(t), \gamma(t), t)
+                            \right\}.
+    \end{equation}
+
+
     <b>Theorem x — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
 
       For 
