@@ -616,46 +616,73 @@ Then, use the following function to generate a triangle of length <code>L</code>
     <h4 style="text-align: left;"><b> The Hamilton-Jacobi-Bellman equation</b></h4>
 
     Let us now consider an infinitesimal generalisation of Theorem 9.
-    To start, consider an infinitesimal dynamic programming principle
-    \begin{equation}
-    \label{eq:dpp_eq}
-    V(x, t) = \inf_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
-    \end{equation}
-    A Taylor expansion of the equation of motion \(\dot{x}(t) = f(x(t), \gamma(t), t)\) gives
-    \begin{equation}
-    \begin{split}
-    x(t+\delta t) &= x(t) + \int_t^{t+\delta t} f(x(t'), \gamma(t'), t') dt'\\
-                  &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
-    \end{split}
-    \end{equation}
-    Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\) gives
-    \begin{equation}
-    \begin{split}
-    V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
-                           + V(x, t) +\partial_t V(x, t) \delta t 
-                           + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
-                           \right\}\\
-          0 &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
-                            +\partial_t V(x, t) \delta t 
-                            + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
-                            \right\},
-    \end{split}
-    \end{equation}
-
-    which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
-    \begin{equation}
-    -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
-                            + \nabla_x V(x, t) \cdot f(x, \gamma, t)
-                            \right\}.
-    \end{equation}
 
 
     <b>Theorem x — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
+      Consider a value function defined by 
+      
+      xxx
 
-      For 
+      Then, \(V\) is the unique viscosity solution of the Hamilton-Jacobi-Bellman equation
+
+      \begin{equation}
+      -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
+        + \nabla_x V(x, t) \cdot f(x, \gamma, t)
+        \right\},
+      \end{equation}
+        with \(V(x, T) = \phi(x(T))\).
     </blockquote></i>
 
-    <br><br>
+    <br>
+
+    <hr class="w3-opacity">
+
+    <h6>Exercise 5</h6>
+    Derive the Hamilton-Jacobi-Bellman equation from Theorem 10.
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
+    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+      To start, consider an infinitesimal dynamic programming principle
+      \begin{equation}
+      \label{eq:dpp_eq}
+      V(x, t) = \inf_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
+      \end{equation}
+      A Taylor expansion of the equation of motion \(\dot{x}(t) = f(x(t), \gamma(t), t)\) gives
+      \begin{equation}
+      \begin{split}
+      x(t+\delta t) &= x(t) + \int_t^{t+\delta t} f(x(t'), \gamma(t'), t') dt'\\
+                    &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
+      \end{split}
+      \end{equation}
+      Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\) gives
+      \begin{equation}
+      \begin{split}
+      V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+                             + V(x, t) +\partial_t V(x, t) \delta t 
+                             + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
+                             \right\}\\
+            0 &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+                              +\partial_t V(x, t) \delta t 
+                              + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
+                              \right\},
+      \end{split}
+      \end{equation}
+  
+      which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
+      \begin{equation}
+      -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
+                              + \nabla_x V(x, t) \cdot f(x, \gamma, t)
+                              \right\}.
+      \end{equation}
+    <p align="right"> ◻</p>
+</div>
+
+
+
+
+    <hr class="w3-opacity">
+
+<br>
 
     <h4 style="text-align: left;"><b> Stochastic DP and HJB equation</b></h4>
 
