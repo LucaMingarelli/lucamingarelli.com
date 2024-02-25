@@ -509,7 +509,7 @@ For \(f=\pm 1\)
 <br>
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-    Start by calling \(P_\tau\) the right hand side of \eqref{eq:dynprogr}
+    Start by calling \(P_\tau\) the right hand side of \eqref{eq:dynprogr}:
     \begin{equation}
     P_\tau = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
     \end{equation}
@@ -523,7 +523,10 @@ For \(f=\pm 1\)
     \end{equation}
     Thus:
     \begin{equation}
-      P_\tau
+    \begin{split}
+      P_\tau &\le \int_s^\tau L(x(t), \gamma(t), t) dt + V(x(tau), \tau)
+             &\le \int_s^T L(x(t), \gamma(t), t) dt + \phi(x(T)) = P[\tilde{\gamma}] \le V(x, t)
+    \end{split}
     \end{equation}
 
 
