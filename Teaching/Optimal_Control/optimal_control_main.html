@@ -575,10 +575,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
   def gen_T(L):         
       from random import randint, seed
       seed(100)
-      T=[]
-      for n in range(L):
-          T.append(randint(10**(n) ,10**(n+1)-1))
-      return T
+      return [randint(10**(n) ,10**(n+1)-1) for n in range(L)]
     </code></pre>
  Test it for <code>L=50</code>: you should find <code>Max_Path(gen_T(50)) = 333</code>.
 
@@ -626,7 +623,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
       V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
       \end{equation}
 
-      Then, \(V\) is the unique viscosity solution [<a href="#ref6">6</a>, <a href="#ref7">[7]</a>] of the Hamilton-Jacobi-Bellman equation
+      Then, \(V\) is the unique viscosity solution [<a href="#ref6">6</a>, <a href="#ref7">7</a>] of the Hamilton-Jacobi-Bellman equation
 
       \begin{equation}
       -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
