@@ -567,11 +567,11 @@ For \(f=\pm 1\)
     \begin{split}
     V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
                            + V(x, t) +\partial_t V(x, t) \delta t 
-                           + \partial_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
+                           + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
                            \right\}\\
           0 &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
                             +\partial_t V(x, t) \delta t 
-                            + \partial_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
+                            + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
                             \right\},
     \end{split}
     \end{equation}
@@ -579,7 +579,7 @@ For \(f=\pm 1\)
     which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
     \begin{equation}
     -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
-                            + \partial_x V(x, t) \cdot f(x, \gamma, t)
+                            + \nabla_x V(x, t) \cdot f(x, \gamma, t)
                             \right\}.
     \end{equation}
 
