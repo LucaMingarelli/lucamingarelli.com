@@ -521,18 +521,23 @@ For \(f=\pm 1\)
     \end{equation}
     Under this control one has (by definition of the value function):
     \begin{equation}
-      V(x(\tau), \tau) \le \int_\tau^T L(x(t), \gamma(t), t) dt + \phi(x(T)).
+      V(x(\tau), \tau) \le \int_\tau^T L(x(t), \tilde{\gamma}(t), t) dt + \phi(x(T)).
     \end{equation}
     Thus:
     \begin{equation}
     \begin{split}
-      P_\tau &\le \int_s^\tau L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\\
-             &\le \int_s^T L(x(t), \gamma(t), t) dt + \phi(x(T)) = P[\tilde{\gamma}] \le V(x, t) + \epsilon.
+      P_\tau &\le \int_s^\tau L(x(t), \tilde{\gamma}(t), t) dt + V(x(\tau), \tau)\\
+             &\le \int_s^T L(x(t), \tilde{\gamma}(t), t) dt + \phi(x(T)) = P[\tilde{\gamma}] \le V(x, t) + \epsilon.
     \end{split}
     \end{equation}
-
-
-
+    Now, consider instead a policy \(\hat{\gamma}\) such that
+    \begin{equation}
+      P_\tau + \epsilon \ge \int_s^\tau L(x(t), \hat{gamma}, t)dt + V(x(\tau), \tau), 
+    \end{equation}
+    and a policy \(\check{\gamma}\) such that
+    \begin{equation}
+     V(x(\tau), \tau) + \epsilon \ge \int_\tau^T L(x(t), \hat{gamma}, t)dt. 
+    \end{equation}
 
 
     <p align="right"> ◻</p>
