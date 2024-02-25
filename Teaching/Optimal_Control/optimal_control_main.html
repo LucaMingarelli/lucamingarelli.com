@@ -583,26 +583,18 @@ Then, use the following function to generate a triangle of length <code>L</code>
 <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
 
   <pre><code class="lang-python">
-  def Pascal(n):
-      row = [1]
-      T=[row]
-      for _ in range(n):
-          row=[l+r for l,r in zip(row+[0], [0]+row)]
-          T.append(row)
-      return T
-  Pascal(6)
-
-  # Sum lines form the bottom to the top and maximise sums
-  def solution(A):
+  # Sum lines from the bottom to the top and maximise sums
+  
+  def Max_Path(A):
       A = [[int(d) for d in str(n)] for n in A]  # List becomes list of lists
       while len(A) > 1:
-          e1 = A[-1]  # Last level
-          e2 = A[-2]  # Penultimate level
+          e1 = A[-1]                                     # Last level
+          e2 = A[-2]                                     # Penultimate level
           s1 = [e1[n]  +e2[n] for n in range(len(e2))]   # Sum below
           s2 = [e1[n+1]+e2[n] for n in range(len(e2))]   # Sum below right
           MS = [max(a,b) for a,b in zip(s1,s2)]          # Max of possible sums
-          A[-2] = MS  # Replace penultimate line with MS
-          A.pop()   # Remove last line
+          A[-2] = MS                                     # Replace penultimate line with MS
+          A.pop()                                        # Remove last line
       return A[0][0]
 
 </code></pre>
