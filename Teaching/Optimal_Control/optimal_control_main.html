@@ -553,11 +553,11 @@ For \(f=\pm 1\)
     To start, consider an infinitesimal dynamic programming principle
     \begin{equation}
     \label{eq:dpp_eq}
-    V(x, t) = \inf_{\gamma}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
+    V(x, t) = \inf_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
     \end{equation}
     The equation of motion is 
     \begin{equation}
-    \dot{x}(t)=f(x(t), \gamma(t), t).
+    \dot{x}(t) = f(x(t), \gamma(t), t).
     \end{equation}
     A Taylor expansion yields
     \begin{equation}
@@ -569,8 +569,9 @@ For \(f=\pm 1\)
     Expanding further \eqref{eq:dpp_eq}
     \begin{equation}
     \begin{split}
-    V(x, t) = \inf_{\gamma}\left\{
-      L(x(t), \gamma(t), t)\delta t + V(x, t) +\partial_t V(x, t) \delta t + (\nabla_x V(x, t))^Tf(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
+    V(x, t) = \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+                           + V(x, t) +\partial_t V(x, t) \delta t 
+                           + \nabla_x V(x, t) f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
                            \right\}
     \end{split}
     \end{equation}
