@@ -495,6 +495,7 @@ For \(f=\pm 1\)
       \end{equation}
       Then, one has
       \begin{equation}
+      \label{eq:dynprogr}
       V(x, t) = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
       \end{equation}
 
@@ -508,9 +509,9 @@ For \(f=\pm 1\)
 <br>
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-    Start by calling
+    Start by calling \(P_\tau\) the right hand side of \eqref{eq:dynprogr}
     \begin{equation}
-    P_\tau = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}
+    P_\tau = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
     \end{equation}
     For some \(\epsilon>0\), pick a policy \(\tilde{\gamma}\) such that
     \begin{equation}
