@@ -536,9 +536,10 @@ For \(f=\pm 1\)
     \end{equation}
     and a policy \(\check{\gamma}\) such that
     \begin{equation}
-     V(x(\tau), \tau) + \epsilon \ge \int_\tau^T L(x(t), \hat{\gamma}, t)dt. 
+     V(x(\tau), \tau) + \epsilon \ge \int_\tau^T L(x(t), \check{\gamma}, t)dt. 
     \end{equation}
 
+    FINISH
 
     <p align="right"> ◻</p>
 </div>
@@ -548,6 +549,22 @@ For \(f=\pm 1\)
 
     <h4 style="text-align: left;"><b> The Hamilton-Jacobi-Bellman equation</b></h4>
 
+    Let us now consider an infinitesimal generalisation of Theorem 9.
+    To start, consider an infinitesimal dynamic programming principle
+    \begin{equation}
+    V(x, t) = \inf_{\gamma}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
+    \end{equation}
+    The equation of motion is 
+    \begin{equation}
+    \dot{x}(t)=f(x(t), \gamma(t), t).
+    \end{equation}
+    A Taylor expansion yields
+    \begin{equation}
+    \begin{split}
+    x(t+\delta t) &= x(t) + \int_t^{t+\delta t} f(x(t'), \gamma(t'), t') dt'\\
+                  &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t)
+    \end{split}
+    \end{equation}
 
     
     <b>Theorem x — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
