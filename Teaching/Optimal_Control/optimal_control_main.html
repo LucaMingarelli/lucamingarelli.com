@@ -509,7 +509,7 @@ For \(f=\pm 1\)
     <h6>Exercise 3</h6>
     Prove Theorem 9 on Dynamic Programming.
 <br>
-<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 3</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
     Start by calling \(P_\tau\) the right hand side of \eqref{eq:dynprogr}:
     \begin{equation}
@@ -542,6 +542,72 @@ For \(f=\pm 1\)
     FINISH
 
     <p align="right"> ◻</p>
+</div>
+
+
+<h6>Exercise 4</h6>
+A number triangle is a sequence of numbers starting from a 1-digit number, followed by a 2-digit number, etc. For example:
+
+7
+
+38
+
+810
+
+2744
+
+45265
+
+Write a function Max_Path(T) taking as input the number triangle T as a list of integers representing each level. The function should compute the highest sum of digits on a specific path starting at the top and ending somewhere at the base, following the rule that each step can only go directly-down or down-right.
+
+In the example the maximising path is highlighted in red.
+
+Test it on T=[7,38,810,2744,45265]: you should find Max_Path(T)=30.
+
+Then, use the following function to generate a triangle of length L:
+
+python      def gen_T(L):         from random import randint, seed         seed(100)         T=[]         for n in range(L):             T.append(randint(10**(n) ,10**(n+1)-1))         return T Test it for L=50: you should find Max_Path(gen_T(50)) = 333.
+
+
+
+
+
+
+
+
+
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 4</button>
+<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+
+
+  def Pascal(n):
+  row = [1]
+  T=[row]
+  for _ in range(n):
+      row=[l+r for l,r in zip(row+[0], [0]+row)]
+      T.append(row)
+  return T
+Pascal(6)
+
+
+
+# Sum lines form the bottom to the top and maximise sums
+def solution(A):
+    A=[[int(d) for d in str(n)] for n in A]  # List becomes list of lists
+    while len(A) > 1:
+        e1=A[-1]  # Last level
+        e2=A[-2]  # Penultimate level
+        s1=[e1[n]  +e2[n] for n in range(len(e2))]   # Sum below
+        s2=[e1[n+1]+e2[n] for n in range(len(e2))]   # Sum below right
+        MS=[max(a,b) for a,b in zip(s1,s2)]          # Max of possible sums
+        A[-2]=MS  # Replace penultimate line with MS
+        A.pop()   # Remove last line
+    return A[0][0]
+
+
+
+<p align="right"> ◻</p>
 </div>
 
 <hr class="w3-opacity">
