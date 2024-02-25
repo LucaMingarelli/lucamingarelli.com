@@ -474,7 +474,7 @@ For \(f=\pm 1\)
     Second, starting from \(x_0\) and proceeding greedily with respect to the value function we are therefore guaranteed
     to find the optimal path.
     <br>
-    This dynamic programming<a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
+    This dynamic programming <a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
     and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\), 
     and for each control. 
     Hence, the computational complexity of the dynamic programming approach is \(\mathcal{O}(T|X||\Gamma|)\). 
@@ -626,7 +626,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
       V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
       \end{equation}
 
-      Then, \(V\) is the unique viscosity solution of the Hamilton-Jacobi-Bellman equation
+      Then, \(V\) is the unique viscosity solution <a href="#ref6">[6]</a> of the Hamilton-Jacobi-Bellman equation
 
       \begin{equation}
       -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
@@ -634,6 +634,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
         \right\},
       \end{equation}
         with \(V(x, T) = \phi(x(T))\).
+        Moreover, this provides a necessary and sufficient condition for optimality.
     </blockquote></i>
 
     <br>
@@ -657,7 +658,8 @@ Then, use the following function to generate a triangle of length <code>L</code>
                     &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
       \end{split}
       \end{equation}
-      Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\) gives
+      Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\), 
+      and assuming sufficient regularity of \(V\), gives
       \begin{equation}
       \begin{split}
       V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
@@ -680,10 +682,12 @@ Then, use the following function to generate a triangle of length <code>L</code>
     <p align="right"> ◻</p>
 </div>
 
-
-
-
     <hr class="w3-opacity">
+
+<br>
+
+<h4 style="text-align: left;"><b> HJB vs. Maximum Principle</b></h4>
+
 
 <br>
 
@@ -762,6 +766,15 @@ Then, use the following function to generate a triangle of length <code>L</code>
       It was something not even a Congressman could object to. 
       So I used it as an umbrella for my activities.</i>»
     <normal>
+      <br>
+      [6] <normal id="ref6">Viscosity solutions are a class of weak solutions to non-linear PDEs,
+        which can be seen as the limit of solutions of the original PDE 
+        regularised with a diffusive term (from which the term "viscosity"). 
+        A viscosity solution does not necessarily satisfy the PDE at every point like a classical solution.
+        Instead, it satisfies certain inequalities that capture the essence of the PDE.
+        <br>See e.g. L. C. Evans, Partial Differential Equations, AMS, 2010. 
+        <normal>
+      <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
 <!--  https://bookdown.org/egarpor/NP-EAFIT/intro-nonpar.html-->
