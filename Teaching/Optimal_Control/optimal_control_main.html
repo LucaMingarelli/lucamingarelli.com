@@ -487,19 +487,19 @@ For \(f=\pm 1\)
 
     <b>Theorem 9 — Dynamic Programming</b><blockquote><i> 
 
-      Given a Bolza problem over the time interval \([t_0, T]\), with payoff functional \(P[\gamma]\) 
+      Given a Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\) 
       and subject to the law of motion \(\dot{x}(t)=f(x(t), \gamma(t), t)\),
       define the <b>Value Function</b>
       \begin{equation}
-      V(x, t) := \sup_{\gamma_{[t_0, T]}}  P[\gamma].
+      V(x, t) := \sup_{\gamma_{[t, T]}}  P[\gamma].
       \end{equation}
       Then, one has
       \begin{equation}
       \label{eq:dynprogr}
-      V(x, t) = \sup_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
+      V(x, t) = \sup_{\gamma_{[t, T]}}  \left\{\int_t^{\tau}L(x(t'), \gamma(t'), t') dt' + V(x(\tau), \tau)\right\}.
       \end{equation}
 
-      for any \(\tau\ge t\), and where \(x\) on the right hand side is he state trajectory corresponding to the control \(\gamma_{[t_0, T]}\).
+      for any \(\tau\ge t\), and where \(x\) on the right hand side is he state trajectory corresponding to the control \(\gamma_{[t, T]}\).
     </blockquote></i>
 
     <br><br>
@@ -697,8 +697,8 @@ Then, use the following function to generate a triangle of length <code>L</code>
 <br>
     Let us therefore introduce the stochastic extensions of the notions learnt above.
 
-    <br>
-    <b>Theorem x — Stochastic Optimal Control Problem</b><blockquote><i> 
+    <br><br>
+    <b>Definition 11 — Stochastic Optimal Control Problem</b><blockquote><i> 
 
       Given a stochastic process defined by the SDE
       \begin{equation}
@@ -713,23 +713,46 @@ Then, use the following function to generate a triangle of length <code>L</code>
       \begin{equation}
       \sup_{\gamma\in\Gamma}\mathbf{P}[\gamma],
       \end{equation}
-      subject to \eqref{eq:canonical_sde}.
+      subject to \eqref{eq:canonical_sde}, with the set of admissable controls \(\Gamma\)
+      being adapted to \(W\).
     </blockquote></i>
+Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
+    
 
-    <br><br>
+<br><br>
 
-    <b>Theorem x — Stochastic Dynamic Programming</b><blockquote><i> 
+<b>Theorem 12 — Stochastic Dynamic Programming</b><blockquote><i> 
 
-      For 
-    </blockquote></i>
+  Given a stochastic Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\)
+  define the <b>Value Function</b>
+  \begin{equation}
+  V(x, t) := \sup_{\gamma_{[t, T]}}  \mathbb{E}\left[\int_t^T L(X(t'), \gamma(t'), t')dt' +\phi(X(T))\right],
+  \end{equation}
+  with \(X(t)=x\).
+  Then, one has
+  \begin{equation}
+  \label{eq:stochdynprogr}
+  V(x, t) = \sup_{\gamma_{[t, T]}}  \mathbb{E}\left\{\int_t^{\tau}L(X(t'), \gamma(t'), t') dt + V(X(\tau), \tau)\right\}.
+  \end{equation}
 
-    <br><br>
+  for any stopping time \(\tau\ge t\), .
+</blockquote></i>
+
+<br><br>
 
 
-    <b>Theorem x — Stochastic HJB equation</b><blockquote><i> 
 
-      For 
-    </blockquote></i>
+    <b>Theorem 13 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
+
+    The value function is the unique viscosity solution to the stochastic Hamilton-Jacobi-Bellman equation
+    \begin{equation}
+    -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
+      + \nabla_x V(x, t) \cdot f(x, \gamma, t) 
+      + \frac{1}{2}\text{Tr}\left[\sigma^T(x, \gamma, t)\nabla_x^2V(x, t)\sigma(x, \gamma, t)\right]
+      \right\},
+    \end{equation}
+      with \(V(X, T) = \phi(X(T))\).
+  </blockquote></i>
 
     <br><br>
 
