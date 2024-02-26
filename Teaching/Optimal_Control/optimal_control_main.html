@@ -491,12 +491,12 @@ For \(f=\pm 1\)
       and subject to the law of motion \(\dot{x}(t)=f(x(t), \gamma(t), t)\),
       define the <b>Value Function</b>
       \begin{equation}
-      V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
+      V(x, t) := \sup_{\gamma_{[t_0, T]}}  P[\gamma].
       \end{equation}
       Then, one has
       \begin{equation}
       \label{eq:dynprogr}
-      V(x, t) = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
+      V(x, t) = \sup_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
       \end{equation}
 
       for any \(\tau\ge t\), and where \(x\) on the right hand side is he state trajectory corresponding to the control \(\gamma_{[t_0, T]}\).
@@ -513,7 +513,7 @@ For \(f=\pm 1\)
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
     Start by calling \(P_\tau\) the right hand side of \eqref{eq:dynprogr}:
     \begin{equation}
-    P_\tau = \inf_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
+    P_\tau = \sup_{\gamma_{[t_0, T]}}  \left\{\int_t^{\tau}L(x(t), \gamma(t), t) dt + V(x(\tau), \tau)\right\}.
     \end{equation}
     For some \(\epsilon>0\), pick a policy \(\tilde{\gamma}\) such that
     \begin{equation}
@@ -620,13 +620,13 @@ Then, use the following function to generate a triangle of length <code>L</code>
       Consider a value function defined by 
       
       \begin{equation*}
-      V(x, t) := \inf_{\gamma_{[t_0, T]}}  P[\gamma].
+      V(x, t) := \sup_{\gamma_{[t_0, T]}}  P[\gamma].
       \end{equation*}
 
       Then, \(V\) is the unique viscosity solution [<a href="#ref6">6</a>, <a href="#ref7">7</a>] of the Hamilton-Jacobi-Bellman equation
 
       \begin{equation}
-      -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
+      -\partial_t V(x, t)  = \max_{\gamma} \left\{ L(x, \gamma, t)       
         + \nabla_x V(x, t) \cdot f(x, \gamma, t)
         \right\},
       \end{equation}
@@ -646,7 +646,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
       To start, consider an infinitesimal dynamic programming principle
       \begin{equation}
       \label{eq:dpp_eq}
-      V(x, t) = \inf_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
+      V(x, t) = \sup_{\gamma_{[t, t+\delta t]}}  \left\{\int_t^{t+\delta t}L(x(t), \gamma(t), t) dt + V(x(t+\delta t), t+\delta t)\right\}.
       \end{equation}
       A Taylor expansion of the equation of motion \(\dot{x}(t) = f(x(t), \gamma(t), t)\) gives
       \begin{equation}
@@ -659,11 +659,11 @@ Then, use the following function to generate a triangle of length <code>L</code>
       and assuming sufficient regularity of \(V\), gives
       \begin{equation}
       \begin{split}
-      V(x, t) &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+      V(x, t) &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
                              + V(x, t) +\partial_t V(x, t) \delta t 
                              + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
                              \right\}\\
-            0 &= \inf_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
+            0 &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
                               +\partial_t V(x, t) \delta t 
                               + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
                               \right\},
@@ -672,7 +672,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
   
       which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
       \begin{equation}
-      -\partial_t V(x, t)  = \inf_{\gamma} \left\{ L(x, \gamma, t)       
+      -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
                               + \nabla_x V(x, t) \cdot f(x, \gamma, t)
                               \right\}.
       \end{equation}
