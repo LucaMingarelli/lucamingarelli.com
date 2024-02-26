@@ -705,11 +705,13 @@ Then, use the following function to generate a triangle of length <code>L</code>
       \label{eq:canonical_sde}
       dX(t) = f(X(t), \gamma(t), t)dt+\sigma(X(t), \gamma(t), t)dW(t),
       \end{equation} 
+      and the associated payoff
+      \begin{equation}
+      \mathbf{P}[\gamma] = \mathbb{E}\left[\int_0^T L(X(t), \gamma(t), t)dt +\phi(X(T))\right],
+      \end{equation} 
       the stochastic Bolza problem is 
       \begin{equation}
-      \begin{split}
-      \inf_\gamma\left\{\mathbb{E}\int_0^T L(X(t), \gamma(t), t)dt +\phi(X(T))\right\},
-      \end{split}
+      \sup_{\gamma\in\Gamma}\mathbf{P}[\gamma],
       \end{equation}
       subject to \eqref{eq:canonical_sde}.
     </blockquote></i>
