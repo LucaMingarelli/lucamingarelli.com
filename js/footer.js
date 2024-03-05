@@ -18,7 +18,7 @@ document.write('<footer class="w3-container w3-padding-8 w3-dark-grey">\
         <p><a href="https://www.linkedin.com/in/lucamingarelli/">LinkedIn</a></br>\
           <a href="https://scholar.google.co.uk/citations?user=NCAmtwMAAAAJ&hl=en">GoogleScholar</a></br>\
           <a href="https://github.com/LucaMingarelli">GitHub</a></br>\
-          <a href="https://www.buymeacoffee.com/lucamingarelli" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 20px !important;width: 72px !important;" ></a>\
+          <a href="https://www.buymeacoffee.com/lucamingarelli" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 109px !important;" ></a>\
       </div>\
     </div>\
   </footer> ')
