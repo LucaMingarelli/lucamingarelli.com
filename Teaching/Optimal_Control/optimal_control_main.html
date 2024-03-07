@@ -233,7 +233,9 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
     \begin{split}
     \dot{\mathbf{x}}(t) &= \nabla_\lambda H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) \quad\quad\quad\quad \phantom{-} (\text{state equation})\\
     \dot{\lambda}(t) &= -\nabla_\mathbf{x} H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) \quad\quad\quad\quad (\text{co-state equation})\\
-     H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &\ge H(\mathbf{x}^*, \mathbf{\gamma}, \lambda^*, t), \quad \forall \gamma \in \Gamma \quad \phantom{-.} (\text{Pontryagin Maximum Principle})
+     H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &\ge H(\mathbf{x}^*, \mathbf{\gamma}, \lambda^*, t), \quad \forall \gamma \in \Gamma \quad \phantom{-.} (\text{Pontryagin Maximum Principle})\\
+     H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &= 0 \quad \forall t \in [0,T]\\
+     \lambda^*(T) &= - \nabla_\mathbf{x}\phi(\mathbf{x}^*(T)) \quad\quad\quad\quad\quad \phantom{..} (\text{Transversality condition})
     \end{split}
     \end{equation}     
     </div>
@@ -241,8 +243,15 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
   </blockquote></i>
   <br>
 
-  In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality.
-  
+  In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality: 
+  an optimal control must globally optimise the Hamiltonian.
+  The state and co-state equations are also known as canonical equations and describe the system's dynamics. 
+  <!-- Finally, the transversality condition states that the vector \(\lambda^*(T)\) 
+  is orthogonal to the tangent space to \(\mathcal{S}\) at \(\mathbf{x}^*(T)\); 
+  as such it represents a set of boundary conditions. 
+  In particular, notice that -->
+
+
   <br><br>
   
   <b>Theorem xxx — Transversality Conditions</b><blockquote><i> 
