@@ -686,6 +686,66 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
 <h4 style="text-align: left;"><b> HJB vs. Maximum Principle</b></h4>
 
+...
+<br>
+
+<h4 style="text-align: left;"><b> Linear-Quadratic Regulator</b></h4>
+
+Let us now turn our attention to the specialised cased 
+of a finite-horizon linear system with quadratic payoff:
+
+
+\begin{equation}
+\begin{split}
+f(x(t), \gamma(t), t) &= A(t)x + B(t)\gamma,\\
+L(x(t), \gamma(t)) &= Q(t)x^2(t)+R(t)\gamma^2(t),\\
+\phi(x(T)) &= Mx^2(T).,
+\end{split}
+\end{equation}
+with \(A\), \(B\), \(Q\), \(R\), and \(M\) all positive.
+That is to say, the system with equation of motion
+\begin{equation}
+\dot{x} = A(t)x + B(t)\gamma,
+\end{equation}
+
+and payoff function
+\begin{equation}
+P[\gamma] = \int_0^T Q(t)x^2(t)+R(t)\gamma^2(t)dt + Mx^2(T).
+\end{equation}
+As we shall see, this linear-quadratic regulator (LQR)
+is particularly useful as it is fully solvable and allow us to discuss
+controllability and observability...
+
+<br>
+The Hamiltonian for the system can be then found to be
+\begin{equation}
+H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
+\end{equation}
+and its gradient with respect to the control
+\begin{equation}
+\partial_\gamma H = B(t)p-2R(t)\gamma,
+\end{equation}
+and \(\partial_\gamma^2H=-2R(t)<0\). 
+Therefore, an optimal control \(\gamma^*\) must satisfy
+\begin{equation}
+\gamma^*= \frac{R^{-1}(t)}{2}B(t)p^*,
+\end{equation}
+while the co-state satisfies the adjoin equation
+
+\begin{equation}
+\begin{split}
+\dot{p}^* &= -\partial_x H = 2Q(t)x^*-A(t)p^* ,\\
+p^*(T) &= Mx^*(T),
+\end{split}
+\end{equation}
+
+
+
+
+
+
+
+
 
 <br>
 
@@ -756,6 +816,36 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
   </blockquote></i>
 
     <br><br>
+
+
+
+  
+
+
+    <hr class="w3-opacity">
+
+    <h6>Exercise 6</h6>
+    Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 13. 
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
+        <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        
+    
+        <p align="right"> ◻</p>
+    </div>
+    
+    <h6>Exercise 7</h6>
+    Show that a p
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
+        <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+        Consider 
+    
+    
+        <p align="right"> ◻</p>
+    </div>
+    
+    <hr class="w3-opacity">
 
 
 
