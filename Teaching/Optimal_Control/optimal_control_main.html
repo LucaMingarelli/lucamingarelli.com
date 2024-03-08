@@ -721,7 +721,7 @@ The Hamiltonian for the system can be then found to be
 \begin{equation}
 H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
 \end{equation}
-and its gradient with respect to the control
+its gradient with respect to the control
 \begin{equation}
 \partial_\gamma H = B(t)p-2R(t)\gamma,
 \end{equation}
@@ -735,11 +735,35 @@ while the co-state satisfies the adjoin equation
 \begin{equation}
 \begin{split}
 \dot{p}^* &= -\partial_x H = 2Q(t)x^*-A(t)p^* ,\\
-p^*(T) &= Mx^*(T),
+p^*(T) &= Mx^*(T).
 \end{split}
 \end{equation}
 
+For the whole system we can therefore write
 
+\begin{equation}
+\begin{pmatrix}
+    \dot{x}^*\\
+    \dot{p}^*
+  \end{pmatrix} =
+  
+\mathcal{H}(t)
+  \begin{pmatrix}
+    x^*\\
+    p^*
+  \end{pmatrix}
+\end{equation}
+
+where the so called Hamiltonian matrix \(\mathcal{H}(t)\)
+is given by
+\begin{equation}
+  
+\mathcal{H}(t) = 
+  \begin{pmatrix}
+    A(t) & \frac{R^{-1}(t)}{2}B(t)\\
+    2Q(t) & -A(t)
+  \end{pmatrix}.
+\end{equation}
 
 
 
