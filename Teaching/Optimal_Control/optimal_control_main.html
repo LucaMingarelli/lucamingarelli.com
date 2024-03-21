@@ -893,9 +893,18 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     \end{equation}
     That is, the change in wealth is driven by the return on the risky portfolio, 
     plus the return on the saving account, minus the amount of wealth consumed.
-    
+    <br>
+    Therefore, the optimal control problem is 
 
-
+      subject to 
+      \begin{equation}
+      \begin{split}
+      & \text{max}\left\{\mathbb{E}\int_0^T e^{-\rho t}U(C_t) dt\right\} \\ 
+      & \text{subject to}\\
+      & dW_t =  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt\\
+      & C_t \ge 0      
+      \end{split}
+      \end{equation}
     </i>
 
 
@@ -961,7 +970,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
       [7] <normal id="ref7"><a href="http://home.ustc.edu.cn/~wclw8181/wffc.files/Partial%20Differential%20Equations.Evans.pdf">L. C. Evans, Partial Differential Equations, AMS, 2010</a>. 
         <normal>
           <br><br>
-      [8] <normal id="ref8">This is of course under the assumption of continuous trading and absence of transaction and commission costs. See e.g. Harrison and Pliska <a href="https://www.sciencedirect.com/science/article/pii/0304414981900260">"Martingales and stochastic integrals in the theory of continuous trading"</a> (1981) for a more rigorous treatment of the problem.
+      [8] <normal id="ref8">This is of course under the assumption of continuous trading and absence of transaction and commission costs. See e.g.  <a href="https://www.sciencedirect.com/science/article/pii/0304414981900260">Harrison and Pliska, "Martingales and stochastic integrals in the theory of continuous trading", Stochastic Processes and their Applications, (1981)</a>  for a more rigorous treatment of the problem.
             <normal>
       <br>
 
