@@ -868,14 +868,35 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     
         <p align="right"> ◻</p>
     </div>
-    
     <hr class="w3-opacity">
-
-
 
     <br>
 
+    <b>Example 2 — Optimal Consumption-Investment </b>
+    <br><br>
+    <i>
+    Consider the stochastic optimal control problem of adjusting consumption \(C_t\) and investments in an initial amount of wealth \(W_0\) in either a saving account with interest rate \(r\)
+    or in a risky portfolio with average rate of return \(\mu\) and return variance \(\sigma^2\):
+    
+    \begin{equation}
+    \frac{d S_t}{S_t} = r dt,\quad\quad \frac{d P_t}{P_t} = \mu dt + \sigma dZ_t,
+    \end{equation}
 
+    with \(dZ_t\) a standard Wiener process. 
+    
+    The utility of consumption is \(U(c) = \log(c)\) and the rate of discount applied to consumption utility is \(\rho\).
+    <br>
+    Denoting by \(Q_t\) the fraction of wealth invested in the risky portfolio at time \(t\),
+    the time-dynamics of wealth is therefore described by<a href="#ref8">[8]</a>
+    \begin{equation}
+    dW_t =  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt .
+    \end{equation}
+    That is, the change in wealth is driven by the return on the risky portfolio, 
+    plus the return on the saving account, minus the amount of wealth consumed.
+    
+
+
+    </i>
 
 
 
@@ -939,6 +960,9 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
           <br><br>
       [7] <normal id="ref7"><a href="http://home.ustc.edu.cn/~wclw8181/wffc.files/Partial%20Differential%20Equations.Evans.pdf">L. C. Evans, Partial Differential Equations, AMS, 2010</a>. 
         <normal>
+          <br><br>
+      [8] <normal id="ref8">This is of course under the assumption of continuous trading and absence of transaction and commission costs. See e.g. Harrison and Pliska <a href="https://www.sciencedirect.com/science/article/pii/0304414981900260">"Martingales and stochastic integrals in the theory of continuous trading"</a> (1981) for a more rigorous treatment of the problem.
+            <normal>
       <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
