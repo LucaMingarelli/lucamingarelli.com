@@ -720,7 +720,7 @@ controllability and observability...
 The Hamiltonian for the system can be then found to be
 \begin{equation}
 \label{eq:lqr_hamiltonian}
-H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
+H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 \end{equation}
 
 
@@ -729,15 +729,18 @@ H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
   one has the following <i>linear state feedback law</i>
   
   \begin{equation}
+  \label{eq:lqr_lsfl}
   \gamma^{*}(t) = -R^{-1}(t)B(t)\chi(t) x^{*}(t),
   \end{equation}
   where the function \(\chi(t)\) satisfied the <i>Riccati Differential Equation</i>
   \begin{equation}
-  \dot{\chi} = R^{-1}B\chi^2-2A\chi-Q.
+  \label{eq:lqr_rde}
+  \dot{\chi} = R^{-1}B^2\chi^2-2A\chi-Q.
   \end{equation}
-  Moreover, one further finds
+  Furthermore
   \begin{equation}
-  p^*(t) = -2\chi(t) x^*(t).
+  \label{eq:lqr_state_costate_linear_rel}
+  \lambda^*(t) = -2\chi(t) x^*(t).
   \end{equation}
 </blockquote></i>
 
@@ -748,35 +751,41 @@ H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
 <p align="right"> ◻</p>
 </div>
 The gradient of the Hamiltonian \eqref{eq:lqr_hamiltonian} with respect to the control is
+
 \begin{equation}
-\partial_\gamma H = B(t)p-2R(t)\gamma,
+\partial_\gamma H = B(t)\lambda-2R(t)\gamma,
 \end{equation}
+
 and \(\partial_\gamma^2H=-2R(t)<0\). 
 Therefore, an optimal control \(\gamma^*\) must satisfy
+
 \begin{equation}
-\gamma^*= \frac{R^{-1}(t)}{2}B(t)p^*,
+\label{eq:lqr_costate_optimal_condition}
+\gamma^*= \frac{R^{-1}(t)}{2}B(t)\lambda^*,
 \end{equation}
+
 while the co-state satisfies the adjoin equation
 
 \begin{equation}
 \begin{split}
-\dot{p}^* &= -\partial_x H = 2Q(t)x^*-A(t)p^* ,\\
-p^*(T) &= Mx^*(T).
+\dot{\lambda}^* &= -\partial_x H = 2Q(t)x^*-A(t)\lambda^* ,\\
+\lambda^*(T) &= Mx^*(T).
 \end{split}
 \end{equation}
 
-For the whole system we can therefore write
+For the whole system we can therefore write the canonical equations
 
 \begin{equation}
+\label{eq:lqr_canonical_equations}
 \begin{pmatrix}
     \dot{x}^*\\
-    \dot{p}^*
+    \dot{\lambda}^*
   \end{pmatrix} =
   
 \mathcal{H}(t)
   \begin{pmatrix}
     x^*\\
-    p^*
+    \lambda^*
   \end{pmatrix}
 \end{equation}
 
@@ -786,7 +795,7 @@ is given by
   
 \mathcal{H}(t) = 
   \begin{pmatrix}
-    A(t) & \frac{R^{-1}(t)}{2}B(t)\\
+    A(t) & \frac{R^{-1}(t)}{2}B^2(t)\\
     2Q(t) & -A(t)
   \end{pmatrix}. 
 \end{equation}
@@ -795,32 +804,60 @@ is given by
 Consider now instead the transition matrix, or <i> propagator </i> \(P(t, t_0) = P^{-1}(t_0, t)\)
 such that
 \begin{equation}
+\label{eq:propagated}
 \begin{pmatrix}
 x^*(t)\\
-p^*(t)
+\lambda^*(t)
 \end{pmatrix} = P(t, t0)\begin{pmatrix}
 x^*(t_0)\\
-p^*(t_0)
-\end{pmatrix}
+\lambda^*(t_0)
+\end{pmatrix}.
 
 \end{equation}
 
+The transversality condition \(\lambda^*(T) = Mx^*(T)\) then implies that \eqref{eq:propagated}
+can be rewritten as 
 
+\begin{equation}
+\label{eq:propagated2}
+\begin{pmatrix}
+x^*(t)\\
+\lambda^*(t)
+\end{pmatrix} = \bar{P}(t, t0)\begin{pmatrix}
+x^*(t_0)\\
+x^*(t_0)
+\end{pmatrix},
+\end{equation}
+so that we can write
 
+\begin{equation}
+\lambda^* = -2\chi x^*
+\end{equation}
+ 
+with 
 
+\begin{equation}
+-2\chi = \frac{\bar{P}_{21}+\bar{P}_{22}}{\bar{P}_{11}+\bar{P}_{12}},
+\end{equation}
 
-
-
-
-
-
-
-
-
-
-
-
-
+where \(\bar{P}_{ij}\) denotes the element \(i,j\) of \(\bar{P}\).
+<br>
+This proves \eqref{eq:lqr_state_costate_linear_rel}.
+<br>
+Combining \eqref{eq:lqr_costate_optimal_condition} with \eqref{eq:lqr_state_costate_linear_rel}
+further yields \eqref{eq:lqr_lsfl}.
+<br>
+We are left to prove that \(\chi\) satisfies the Riccati equation \eqref{eq:lqr_rde}.
+Differentiating \eqref{eq:lqr_state_costate_linear_rel} yields
+\begin{equation}
+\dot{\lambda}^* = -2\chi x^* -2\chi \dot{x}^*.
+\end{equation}
+Expanding \(\dot{x}^*\) and \(\dot{\lambda}^*\) via the canonical equations \eqref{eq:lqr_canonical_equations}
+\begin{equation}
+2Q x^* - A\lambda^* = -2\chi x^* -2\chi Ax^* -2\chi \frac{R^{-1}}{2}B^2\lambda^*.
+\end{equation}
+Further expanding \(\lambda^*\) via eqref{eq:lqr_state_costate_linear_rel} yields
+the desired result.
 
 
 
