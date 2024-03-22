@@ -762,8 +762,79 @@ is given by
   \begin{pmatrix}
     A(t) & \frac{R^{-1}(t)}{2}B(t)\\
     2Q(t) & -A(t)
-  \end{pmatrix}.
+  \end{pmatrix}. 
 \end{equation}
+
+
+Consider now instead the transition matrix, or <i> propagator </i> \(P(t, t_0) = P^{-1}(t_0, t)\)
+such that
+\begin{equation}
+\begin{pmatrix}
+x^*(t)\\
+p^*(t)
+\end{pmatrix} = P(t, t0)\begin{pmatrix}
+x^*(t_0)\\
+p^*(t_0)
+\end{pmatrix}
+
+\end{equation}
+
+
+<b>Theorem 11 — LQR Linear State Feedback Law</b><blockquote><i> 
+  For the Linear Quadratic Regulator defined above, 
+  one has the following <i>linear state feedback law</i>
+  
+  \begin{equation}
+  \gamma^{*}(t) = -R^{-1}(t)B(t)\chi(t) x^{*}(t),
+  \end{equation}
+  where the function \(\chi(t)\) satisfied the <i>Riccati Differential Equation</i>
+  \begin{equation}
+  \dot{\chi} = R^{-1}B\chi^2-2A\chi-Q.
+  \end{equation}
+  Moreover, one further finds
+  \begin{equation}
+  p^*(t) = -2\chi(t) x^*(t).
+  \end{equation}
+</blockquote></i>
+
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Prove</button>
+<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+  To start, 
+<p align="right"> ◻</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -896,13 +967,14 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     <br>
     Therefore, the optimal control problem is 
 
-      subject to 
       \begin{equation}
       \begin{split}
-      & \text{max}\left\{\mathbb{E}\int_0^T e^{-\rho t}U(C_t) dt\right\} \\ 
+      \text{max}&\left\{\mathbb{E}\int_0^T e^{-\rho t}U(C_t) dt\right\} \\ 
+      & \\
       & \text{subject to}\\
-      & dW_t =  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt\\
-      & C_t \ge 0      
+      & \\
+      dW_t &=  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt\\
+      C_t &\ge 0      
       \end{split}
       \end{equation}
     </i>
@@ -926,7 +998,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
   <br><br>
   [5] <normal id="ref5">Why is this approach named <i>Dynamic Programming</i>?
     The term was coined in the early 50s by Richard Bellman while working on his research on multistage decision processes 
-    at RAND Corporation, at that time fully funded by US government. 
+    at RAND Corporation, at that time fully funded by the US government. 
     The justification for the label has a rather interesting story. 
     From Bellman's autobiography <i>Eye of the Hurricane: An Autobiography</i> (1984, page 159): 
     «<i>I spent the Fall quarter (of 1950) at RAND. 
