@@ -719,9 +719,35 @@ controllability and observability...
 <br>
 The Hamiltonian for the system can be then found to be
 \begin{equation}
+\label{eq:lqr_hamiltonian}
 H(x, \gamma, p, t) = A(t)px+B(t)p\gamma-Q(t)x^2-R(t)\gamma^2,
 \end{equation}
-its gradient with respect to the control
+
+
+<b>Theorem 11 — LQR Linear State Feedback Law</b><blockquote><i> 
+  For the Linear Quadratic Regulator defined above, 
+  one has the following <i>linear state feedback law</i>
+  
+  \begin{equation}
+  \gamma^{*}(t) = -R^{-1}(t)B(t)\chi(t) x^{*}(t),
+  \end{equation}
+  where the function \(\chi(t)\) satisfied the <i>Riccati Differential Equation</i>
+  \begin{equation}
+  \dot{\chi} = R^{-1}B\chi^2-2A\chi-Q.
+  \end{equation}
+  Moreover, one further finds
+  \begin{equation}
+  p^*(t) = -2\chi(t) x^*(t).
+  \end{equation}
+</blockquote></i>
+
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof</button>
+<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+  To start, 
+<p align="right"> ◻</p>
+</div>
+The gradient of the Hamiltonian \eqref{eq:lqr_hamiltonian} with respect to the control is
 \begin{equation}
 \partial_\gamma H = B(t)p-2R(t)\gamma,
 \end{equation}
@@ -778,31 +804,6 @@ p^*(t_0)
 \end{pmatrix}
 
 \end{equation}
-
-
-<b>Theorem 11 — LQR Linear State Feedback Law</b><blockquote><i> 
-  For the Linear Quadratic Regulator defined above, 
-  one has the following <i>linear state feedback law</i>
-  
-  \begin{equation}
-  \gamma^{*}(t) = -R^{-1}(t)B(t)\chi(t) x^{*}(t),
-  \end{equation}
-  where the function \(\chi(t)\) satisfied the <i>Riccati Differential Equation</i>
-  \begin{equation}
-  \dot{\chi} = R^{-1}B\chi^2-2A\chi-Q.
-  \end{equation}
-  Moreover, one further finds
-  \begin{equation}
-  p^*(t) = -2\chi(t) x^*(t).
-  \end{equation}
-</blockquote></i>
-
-<br>
-<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Prove</button>
-<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-  To start, 
-<p align="right"> ◻</p>
-</div>
 
 
 
