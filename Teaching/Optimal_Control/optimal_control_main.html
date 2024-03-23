@@ -888,6 +888,40 @@ than the general optimal control problem \eqref{xxx}.
 Crucially, the task of solving the HJB partial differential equation
 is reduced to solving the Riccati differential equation wich is an ODE.
 
+<hr class="w3-opacity">
+
+<h6>Exercise 6</h6>
+Consider the integrator \(\dot{x}=\gamma\) with payoff \(P(\gamma) = -\int_0^Tx^2(t)+\gamma^2(t) dt\). 
+Find the optimal control
+<br>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
+<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+  To start, notice that the problem corresponds to the following identification
+  \begin{equation*}
+  A = M = 0,\quad B=Q=R=1.
+  \end{equation*}
+  The Riccati equation is therefore
+  \begin{equation*}
+  \dot{\chi}=\chi^2-1,
+  \end{equation*}
+  with boundary condition \(\chi(T)=0\). Thus,
+  \begin{equation*}
+  \begin{split}
+  \int_{\chi(t)}^0\frac{d\chi}{\chi^2-1}&=\int_t^T ds,\\
+  \tanh^{-1}{\chi(t)}&=T-t,\\
+  \tanh{T-t}&=\chi(t).
+  \end{split}
+  \end{equation*}
+  Therefore the optimal control is given by the feedback law
+  \begin{equation*}
+  \gamma(t)=-\tanh(T-t)x(t).
+  \end{equation*}
+  <p align="right"> ◻</p>
+</div>
+
+<hr class="w3-opacity">
+
+<br>
 
 
 
