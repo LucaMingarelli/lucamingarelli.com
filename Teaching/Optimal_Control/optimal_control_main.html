@@ -627,6 +627,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
       Then, \(V\) is the unique viscosity solution [<a href="#ref6">6</a>, <a href="#ref7">7</a>] of the Hamilton-Jacobi-Bellman equation
 
       \begin{equation}
+      \label{eq:HJB}
       -\partial_t V(x, t)  = \max_{\gamma} \left\{ L(x, \gamma, t)       
         + \nabla_x V(x, t) \cdot f(x, \gamma, t)
         \right\},
@@ -634,6 +635,21 @@ Then, use the following function to generate a triangle of length <code>L</code>
         with \(V(x, T) = \phi(x(T))\).
         Moreover, this provides a necessary and sufficient condition for optimality.
     </blockquote></i>
+
+    <br>
+
+    The Hamilton-Jacobi-Bellman (HJB) equation \eqref{eq:HJB} 
+    is the nonlinear partial differential equation providing necessary and sufficient conditions 
+    for optimality of the control \(\gamma\) 
+    with respect to the payoff function.
+    <br>
+    Notice that the terminal cost enters only the boundary condition 
+    and does not explicitely appear in the HJB equation itself.
+<br>
+
+
+
+
 
     <br>
 
@@ -684,10 +700,6 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
 <br>
 
-<h4 style="text-align: left;"><b> HJB vs. Maximum Principle</b></h4>
-
-...
-<br>
 
 <h3 style="text-align: left;"><b> Linear-Quadratic Regulator</b></h3>
 
