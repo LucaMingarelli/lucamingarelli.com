@@ -710,7 +710,7 @@ That is to say, the system with equation of motion
 
 and payoff function
 \begin{equation}
-P[\gamma] = \int_0^T Q(t)x^2(t)+R(t)\gamma^2(t)dt + Mx^2(T).
+P[\gamma] = -\int_0^T Q(t)x^2(t)+R(t)\gamma^2(t)dt - Mx^2(T).
 \end{equation}
 As we shall see, this linear-quadratic regulator (LQR)
 is particularly useful as it is fully solvable and allow us to discuss
@@ -874,7 +874,12 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof of Theorem 12</button>
 <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-  The 
+  The HJB equation for the LQR problem reads
+  \begin{equation}
+  -\partial_t V(x, t) = \max_\gamma\left\{Qx^2+r\gamma^2+\nabla_xV(x,t)(Ax+B\gamma)\right\}
+  \end{equation}
+  with boundary condition \(V(x, T)=Mx^2\).
+
 <p align="right"> ◻</p>
 </div>
 
