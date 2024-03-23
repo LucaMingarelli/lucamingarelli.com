@@ -735,8 +735,9 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   where the function \(\chi(t)\) satisfied the <i>Riccati Differential Equation</i>
   \begin{equation}
   \label{eq:lqr_rde}
-  \dot{\chi} = R^{-1}B^2\chi^2-2A\chi-Q.
+  \dot{\chi} = R^{-1}B^2\chi^2-2A\chi-Q,
   \end{equation}
+  with boundary condition \(\chi(T)=M\).
   Furthermore
   \begin{equation}
   \label{eq:lqr_state_costate_linear_rel}
@@ -745,7 +746,7 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 </blockquote></i>
 
 <br>
-<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof</button>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof of Theorem 11</button>
 <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
   The gradient of the Hamiltonian \eqref{eq:lqr_hamiltonian} with respect to the control is
 
@@ -855,13 +856,16 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   \end{equation}
   Further expanding \(\lambda^*\) via \eqref{eq:lqr_state_costate_linear_rel} yields
   the desired result.
-  
+  <br>
+  Finally, the boundary condition for the Riccati equation 
+  can be found by combining \eqref{eq:lqr_state_costate_linear_rel}
+  with the boundary condition \(\lambda^*(T) = -2Mx^*(T)\) for the co-state variable
   
 <p align="right"> ◻</p>
 </div>
 
 
-
+Theorem 11 is a remarkable result.
 
 
 
