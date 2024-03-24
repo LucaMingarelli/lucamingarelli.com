@@ -1,6 +1,10 @@
 import numpy as np
 import pylab as plt
+import matplotlib
 
+# plt.rc('text', usetex=True)
+# plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.pyplot.rcParams.update(params)
 
 x = np.linspace(0,3, 200)
 
