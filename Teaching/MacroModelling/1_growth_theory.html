@@ -166,6 +166,7 @@ so that the equation of motion finally turns into
 
 
 \begin{equation}
+\label{eq:solow_ode}
 \boxed{\dot{k} = s\cdot f(k,t) - (n+\delta) k.}
 \end{equation}
 
@@ -177,11 +178,30 @@ so that the equation of motion finally turns into
   
   </blockquote></i>
   <br>
-In the steady state one has capital per capita \(k^*\) such that
+
+Notice that the notion of balanced growth path is relevant 
+because the ODE \eqref{eq:solow_ode} 
+has asymptotically stable solutions. 
+This can be seen by noticing that \(V(k) = (k-\frac{s}{\delta}f(k))^2\) 
+is a valid Lyapunov function<a href="#ref6">[6]</a>. Then clearly \(\dot{V} < 0\)
+
+
+<figure>
+  <img class="center" alt="growth"
+       src="./solow_chart.svg"
+       width="100%" >
+  <figcaption><i><b>Fig.2:</b> XXXX.</i></figcaption>
+</figure>
+
+
+<br>
+
+  In the steady state one has capital per capita \(k^*\) such that
 \begin{equation}
 s f(k^*) = (n+\delta)k^*.
 \end{equation}
-Notice that output per capita is also constant through time \(y^*=f(k^*)\) unless the production function changes.
+
+Output per capita is also constant through time \(y^*=f(k^*)\) unless the production function changes.
 Clearly this does not mean that there is no growth in the levels of capital \(K\) and output \(Y\): 
 their growth is however merely driven by population growth.
 
@@ -311,6 +331,8 @@ Therefore, the Solow model with exhogenous technological change \eqref{eq:solow_
   [4] <a href="https://web.stanford.edu/~chadj/JonesRomer2010.pdf" id="ref4">"The New Kaldor Facts: Ideas, Institutions, Population, and Human Capital", Charles I. Jones and Paul M. Romer, 2010. </a>
   <br>
   [5] <a href="https://www.jstor.org/stable/1884513" id="ref5">"A Contribution to the Theory of Economic Growth", Robert M. Solow, The Quarterly Journal of Economics, 1956. </a>
+  <br>
+  [6] For a function \(V(x)\) to be a valid Lyapunov function, it must be such that \(V(x)=0\) if and only if \(x=0\), and \(V(x)>0\) if and only if \(x\ne 0\). It is trivial to verify that \(V(k)=(k-\frac{s}{\delta}f(k))^2\) satisfies these conditions.
   <br>
       <br>
 
