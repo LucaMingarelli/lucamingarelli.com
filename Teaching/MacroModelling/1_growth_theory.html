@@ -87,7 +87,7 @@ These became known as the <i>Kaldor facts</i>:
   <img class="center" alt="growth"
        src="./growth.svg"
        width="100%" >
-  <figcaption><i><b>Fig.1:</b> GDP per capita for selected countries.</i></figcaption>
+  <figcaption><i><b>Fig.1:</b> GDP per capita for selected countries. The y-axis is logarithmic.</i></figcaption>
 </figure>
 
 
@@ -97,20 +97,68 @@ Let us consider an economy with only
 <i>physical capital</i> \(K\) and <i>labour</i> \(L\) as inputs, 
 producing <i>output</i> \(Y\) according to the production function
 \begin{equation}
-Y = F(K, L, t).
+Y = F(K, L, t),
 \end{equation}
 
+which is assumed to have the following properties:
+<ul>
+  <li>Positive and diminishing marginal products with respect to each input, that is \(\partial_x F>0\), \(\partial_x^2 F < 0\), for  \(x \in \{K,L\}\);</li>
+  <li>Constant return to scale, that is \(F(\lambda K, \lambda L) = \lambda F(K, L)\) for any \(\lambda >0\);</li>
+  <li>Respect the following <i>Inada conditions</i>
+  \begin{equation*}
+  \begin{split}
+  &\lim_{K\rightarrow 0}\partial_K F = \lim_{L\rightarrow 0}\partial_L F = \infty\\
+  &\lim_{K\rightarrow\infty}\partial_K F = \lim_{L\rightarrow\infty}\partial_L F = 0\\
+  \end{split}
+  \end{equation*}
+  </li>
+</ul>
+
+Such a production function is referred to as a <i>neoclassical production function</i>.
+
+<br>
+ 
+
+
+
 In such an economy, output is a good which can either be consumed or invested to create new capital.
+Denoting by \(s\) the fraction of output saved (saving rate), 
+and by \(\delta>0\) the constant depreciation rate of capital, 
+one can write the following equation of motion for the amount of capital in the economy
+\begin{equation}
+\dot{K} = s\cdot F(K,L,t) - \delta K.
+\end{equation}
 
+Notice that the constant return to scale condition assumed for the production function
+implies that \(F(K,L) = L\cdot F(K/L, 1)\). 
+For simplicity, let us therefore define the output-per-capita \(y = Y/L\), 
+capital-to-labour ratio \(k=K/L\), and \(f(k):=F(k,1)\). 
 
+The equation of motion for capital can therefore be rewritten as 
+\begin{equation}
+\frac{\dot{K}}{L} = s\cdot f(k,t) - \delta k.
+\end{equation}
 
+Further assuming a constant exogenous growth rate of labour (assumed equivalent to the population)
+of \( n = \dot{L}/L > 0\) (that is \(L(t) = e^{nt}\)) we can further find \(\dot{K}/L=\dot{k}+nk\), 
+so that the equation of motion finally turns into
 
+\begin{equation}
+\dot{k} = s\cdot f(k,t) - (n+\delta) k.
+\end{equation}
+
+<br><br>
+
+<br><br>
+
+<br><br>
 
 
 
   <h3 style="text-align: left;"><b>The neoclassical growth model</b></h3>
 
   <h3 style="text-align: left;"><b>Fundamental causes of growth</b></h3>
+
 
 
 
@@ -124,20 +172,6 @@ In such an economy, output is a good which can either be consumed or invested to
     </blockquote></i>
     <br>
 
-
-
-
-    <b>Theorem 13 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
-
-    The value function is the unique viscosity solution to the stochastic Hamilton-Jacobi-Bellman equation
-    \begin{equation}
-    -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
-      + \nabla_x V(x, t) \cdot f(x, \gamma, t) 
-      + \frac{1}{2}\text{Tr}\left[\sigma^T(x, \gamma, t)\nabla_x^2V(x, t)\sigma(x, \gamma, t)\right]
-      \right\},
-    \end{equation}
-      with \(V(X, T) = \phi(X(T))\).
-  </blockquote></i>
 
     <br><br>
 
