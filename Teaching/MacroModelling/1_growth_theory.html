@@ -73,10 +73,10 @@ In 1957, Nicolas Kaldor stated<a href="#ref1">[1]</a> some empirical facts
 that economic growth seemed to satisfy. 
 These became known as the <i>Kaldor facts</i>:
 <ul>
-  <li>Output per worker growth continuously</li>
-  <li>The ratio of capital to output is approximately constant</li>
-  <li>Capital per worker grows continuously</li>
-  <li>The rate of return on capital is approximately constant</li>
+  <li>Output per worker growth</li>
+  <li>Constant capital-to-output ratio</li>
+  <li>Capital per worker growth</li>
+  <li>Constant rate of return on capital</li>
   <li>Labour and capital receive contant shares of total income</li>
   <li>The growth rate of output per worker is vastly heterogeneous across countries</li>
 </ul>
@@ -185,6 +185,40 @@ with \(A(t)\) the level of technology and \(0 < \alpha < 1 \).
 
 It is easy to verify that \eqref{eq:cobb_douglas} respects the conditions of neoclassical production functions stated above.
 
+<br>
+
+Let us denote the growth rate of technological level by \(a = \dot{A}/A\). 
+This implies that \(\dot{y}/y=a\), 
+that is per capita rate of growth of output is driven exclusively by technological change.
+A different way to look at changes in technology is through labour efficiency \(E(t) = L(t)e^{\lambda t}\), 
+with the production function \(Y = F(K, E)\).
+<br>
+Proceeding as before, defining \(\kappa = K / E\), one finds the equation of motion
+
+\begin{equation}
+\label{eq:solow_etc}
+\dot{\kappa} = sf(\kappa) - (\delta+n+\lambda)\kappa.
+\end{equation}
+
+The steady state is still defined by \(\dot{\kappa} = 0 \), but now
+
+\begin{equation}
+\frac{\partial_t (Y/L)}{Y/L} = \lambda.
+\end{equation}
+
+Now the output per person grows even on the steady state. 
+<br>
+
+Therefore, the Solow model with exhogenous technological change \eqref{eq:solow_etc} accounts for all Kaldor's facts:
+
+<ul>
+  <li>Output per worker growth: \(\frac{\partial_t (Y/L)}{Y/L} = \lambda\)</li>
+  <li>Constant capital-to-output ratio: </li>
+  <li>Capital per worker growth: </li>
+  <li>Constant rate of return on capital</li>
+  <li>Labour and capital receive contant shares of total income</li>
+  <li>The growth rate of output per worker is vastly heterogeneous across countries</li>
+</ul>
 
 
 <br><br>
