@@ -24,11 +24,14 @@ plt.gca().annotate(r'$\dot{k}<0$', xy=(0.75, 0.1), xytext=(2, 0.1))
 # Draw axis
 plt.gca().annotate("", xy=(3.2, 0), xytext=(-.008, 0), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
 plt.gca().annotate("", xy=(0, 2), xytext=(0, -.008), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
-for k in np.linspace(0,1.5, 15)[::-1]:
-    plt.gca().annotate("", xy=(k, 0), xytext=(0, 0),
-                      arrowprops=dict(arrowstyle="->"))
-    plt.gca().annotate("", xy=(3-k, 0), xytext=(3, 0),
-                      arrowprops=dict(arrowstyle="->"))
+for k in np.linspace(0,1.5, 20)[::-1]:
+    plt.gca().annotate("", xy=(k, 0), xytext=(max(k-0.1,0), 0),
+                      arrowprops=dict(arrowstyle="->", color='red', 
+                                      alpha=min(1.2-k**.5/1.5**.5, 1)))
+    plt.gca().annotate("", xy=(3-k, 0), xytext=(3-max(k-0.1,0), 0),
+                      arrowprops=dict(arrowstyle="->", color='red', 
+                                      alpha=min(1.2-k**.5/1.5**.5, 1)))
+
 plt.tight_layout()
 plt.savefig("Teaching/MacroModelling/solow_chart.svg", transparent=True)
 plt.show()
