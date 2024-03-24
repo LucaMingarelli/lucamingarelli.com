@@ -16,8 +16,10 @@ plt.gca().spines[['right', 'top', 'left', 'bottom']].set_visible(False)
 # Annotations
 plt.gca().annotate(r"$sf(k)$", xy=(3, 1.8), xytext=(3, 1.8))
 plt.gca().annotate(r"$(n+\delta)k$", xy=(2.5, 2), xytext=(2.5, 2))
-plt.gca().annotate(r'$sf(k)>(n+\delta)k$', xy=(0.75, 0.1), xytext=(0.5, 0.1))
-plt.gca().annotate(r'$sf(k)<(n+\delta)k$', xy=(0.75, 0.1), xytext=(2, 0.1))
+# plt.gca().annotate(r'$sf(k)>(n+\delta)k$', xy=(0.75, 0.1), xytext=(0.5, 0.1))
+# plt.gca().annotate(r'$sf(k)<(n+\delta)k$', xy=(0.75, 0.1), xytext=(2, 0.1))
+plt.gca().annotate(r'$\dot{k}>0$', xy=(0.75, 0.1), xytext=(0.5, 0.1))
+plt.gca().annotate(r'$\dot{k}<0$', xy=(0.75, 0.1), xytext=(2, 0.1))
 
 # Draw axis
 plt.gca().annotate("", xy=(3.2, 0), xytext=(-.008, 0), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
