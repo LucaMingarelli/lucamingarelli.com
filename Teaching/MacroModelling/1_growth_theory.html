@@ -296,7 +296,8 @@ Fact 2, that is the constancy of capital-to-output ratio, is a direct implicatio
 Fact 3 then follows from 1 and 2 combined.
 Fact 4 is explicitely stated in \eqref{eq:capital_and_output_growth_rate}.
 Fact 5 is built in the model rather than an implication, but part of the system nonetheless.
-Fact 6 can be addressed by explaining country heterogeneity as a function of different levels of productivity, a view which seems corroborated by empirical comparisons of total factor productivity (see e.g. <a href="#ref8">[8]</a>).
+Fact 6 can be addressed by explaining country heterogeneity as a function of different levels of productivity, a view 
+which seems corroborated by empirical comparisons of total factor productivity (see e.g. <a href="#ref8">[8]</a>).
 
 <!-- <br>
 <h5 style="text-align: left;"><b>Dynamic inefficiencies</b></h5>
@@ -317,12 +318,65 @@ attaining its maximum for some \(k_g\) determined by \(f'(k_g)=(n+\delta)\). -->
 
 <br><br>
 
-<br><br>
-
-
-
   <h3 style="text-align: left;"><b>The neoclassical growth model</b></h3>
 
+  One of the main limitation of the Solow model is the assumed constancy of the saving rate,
+  where no optimisation is involved. 
+  The problem with optimising agents was solved already back in the 1928 by British philosopher and mathematician 
+  Frank Ramsey <a href="#ref9">[9]</a>, 
+  and independently rediscovered in the economic discipline 
+  only thirty years later by David Cass 
+  and Tjalling Koopmans <a href="#ref10">[10,11]</a>. 
+  The model, which often goes by the name of Ramsey-Cass-Koopmans model, 
+  is more widely known as the <i>Neoclassical Growth Model</i> (NGM).
+<br>
+  Consider a closed economy with one representative household, 
+  whose members are both consumer and producers, infinitely lived, 
+  and with population growth \(n\) as before<a href="#ref12">[12]</a>, 
+  and seeking to maximise future discounted utility:
+  \begin{equation}
+  U(t) = \int_0^\infty u(c(t))e^{nt-\rho t}.
+  \end{equation}
+  Here it is assumed \(\rho>n\), and that \(u'(c(t))>0\), \(u''(c(t)) < 0\), and that \(u\) satisfies the Inada conditions.
+  The economy's dynamics now accounts for consumption \(C(t)\), 
+  but assumes no depreciation: 
+  \begin{equation}
+  \dot{K}(t) = F(K(t), L(t))-C(t),
+  \end{equation}
+  which can be equivalently written in per capita units as   
+  \begin{equation}
+  \dot{k}(t) = f(k(t))-nk(t)-c(t).
+  \end{equation}
+
+  Therefore, the model reads
+  \begin{equation} 
+  \label{eq:ngm}
+  \boxed{
+  \begin{split}
+  \max_{c(t)}& \int_0^\infty u(c(t))e^{nt-\rho t}\\
+  &\text{subject to}&\\
+  \dot{k}(t) &= f(k(t))-nk(t)-c(t)
+  \end{split}} \quad .
+  \end{equation} 
+
+  To solve \eqref{eq:ngm} one starts as usual by writing the lagrangian
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
   <h3 style="text-align: left;"><b>Fundamental causes of growth</b></h3>
 
 
@@ -396,6 +450,18 @@ attaining its maximum for some \(k_g\) determined by \(f'(k_g)=(n+\delta)\). -->
   <br>
   [8] <a href="https://mitpress.mit.edu/9780262661300/barriers-to-riches/" id="ref8">"Barriers to Riches", Stephen L. Parente and Edward C. Prescott, MIT press, 2002. </a>
   <br>
+  [9] <a href="https://www.jstor.org/stable/2224098" id="ref9">"A Mathematical Theory of Saving", F. P. Ramsey, The Economic Journal, Vol. 38, No. 152 (1928). </a>
+  <br>
+  [10] <a href="https://academic.oup.com/restud/article-abstract/32/3/233/1551001?redirectedFrom=fulltext&login=true" id="ref10">"Optimum Growth in an Aggregative Model of Capital Accumulation", David Cass, The Review of Economic Studies, Volume 32, Issue 3, 1965. </a>
+  <br>
+  [11] <a href="https://econpapers.repec.org/paper/cwlcwldpp/163.htm" id="ref11">"On the Concept of Optimal Economic Growth", Tjalling Koopmans, No 163, Cowles Foundation Discussion Papers from Cowles Foundation for Research in Economics, Yale University, 1963. </a>
+  <br>
+  [12] <span id="ref12">COMMENTS ON NGM ASSUMPTIONS.</span>
+  <br>
+  
+  
+  
+
   <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
