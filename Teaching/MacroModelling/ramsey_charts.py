@@ -19,7 +19,7 @@ k_max = k[np.abs(c)[1:].argmin()+1] * 1.1
 c_max = c.max() * 1.1
 
 
-xlim = 0, k_max
+xlim = -0.01, k_max
 ylim = -0.01, c_max
 
 Cm, Km = np.mgrid[ylim[0]:ylim[1]:100j, xlim[0]:xlim[1]:100j]
