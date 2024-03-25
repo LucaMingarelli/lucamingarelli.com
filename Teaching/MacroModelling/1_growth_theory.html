@@ -353,13 +353,61 @@ attaining its maximum for some \(k_g\) determined by \(f'(k_g)=(n+\delta)\). -->
   \label{eq:ngm}
   \boxed{
   \begin{split}
-  \max_{c(t)}& \int_0^\infty u(c(t))e^{nt-\rho t}\\
+  \max_{c(t)}& \int_0^\infty u(c(t))e^{(n-\rho) t}\\
   &\text{subject to}&\\
   \dot{k}(t) &= f(k(t))-nk(t)-c(t)
   \end{split}} \quad .
   \end{equation} 
 
-  To solve \eqref{eq:ngm} one starts as usual by writing the lagrangian
+  To solve \eqref{eq:ngm} one starts as usual 
+  by writing the present-value Hamiltonian
+  \begin{equation}
+  H = u(c(t))e^{(n-\rho) t} + \lambda(t)\left[f(k(t))-nk(t)-c(t)\right].
+  \end{equation}
+The co-state equation then reads
+\begin{equation}
+\label{eq:costateeq_ramsey}
+\dot{\lambda} = -\frac{\partial H}{\partial k} = -\lambda(f'(k)-n),
+\end{equation}
+while Pontryagin's maximum principle demands
+\begin{equation}
+\label{eq:pmp_ramsey}
+\begin{split}
+\frac{\partial H}{\partial c} &= 0\\ 
+\lambda &= u'(c)e^{(n-\rho) t}
+\end{split}\quad ,
+\end{equation}
+with transversality condition
+\begin{equation}
+\lim_{t\rightarrow\infty} \lambda(t)k(t) = 0.
+\end{equation}
+These are also referred to as <i>first order conditions</i> (FOC).
+Indeed, Pontryagin's principle provides only necessary conditions for optimality.
+
+Consider now the first order time-derivative of \eqref{eq:pmp_ramsey}:
+\begin{equation}
+\begin{split}
+\dot{\lambda} &= u''(c)\dot{c}e^{(n-\rho) t} + \lambda (n-\rho),\\
+\frac{\dot{\lambda}}{\lambda} &= \frac{u''(c)}{u'(c)}\dot{c} + (n-\rho),\\
+\frac{\dot{\lambda}}{\lambda} &= -\frac{1}{\sigma}\frac{\dot{c}}{c} + (n-\rho),
+\end{split}
+\end{equation}
+where the elasticity of intertemporal substitution in consumption is defined by
+\begin{equation}
+\sigma = -\frac{1}{c(t)}\frac{u'(c(t))}{u''(c(t))} >0.
+\end{equation}
+
+Finally, using the co-state equation \eqref{eq:costateeq_ramsey} and rearranging, 
+one obtains the <i>Ramsey rule</i>
+
+\begin{equation}
+\label{eq:ramsey_euler_equation}
+\frac{\dot{c}}{c} = \sigma\left[f'(k)-\rho\right],
+\end{equation}
+
+also referred to more generally as the <i>Euler equation</i>.
+
+
 
 
 
