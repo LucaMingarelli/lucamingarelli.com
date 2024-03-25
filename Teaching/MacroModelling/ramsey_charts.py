@@ -50,7 +50,7 @@ plt.gca().annotate(r"$c$", xy=(-0.035, 0.27), xytext=(-0.035, 0.27),annotation_c
 plt.gca().annotate(r"$k$", xy=(1.115, -0.015), xytext=(1.115, -0.015),annotation_clip=False)
 plt.scatter(x=1, y=0, marker='o', color='black', zorder=5)
 plt.scatter(x=0, y=0, marker='o', color='black', zorder=5)
-plt.scatter(x=k_star, y=f(k_star) - (n+δ)*k_star, marker='o', color='green', zorder=5)
+plt.scatter(x=k_star, y=f(k_star) - (n+δ)*k_star, marker='o', color='red', zorder=5)
 plt.tight_layout()
 plt.savefig("Teaching/MacroModelling/ramsey_chart.svg", transparent=True)
 plt.show()
