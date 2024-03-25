@@ -38,7 +38,7 @@ k_star = (A/(δ+ρ))**2/4
 plt.axvline(k_star, color='k', linewidth=1, ymin=0.04)
 plt.gca().annotate(r"$\dot{c}=0$", xy=(0.135, 0.28), xytext=(0.135, 0.28),annotation_clip=False)
 plt.gca().annotate(r"$\dot{k}=0$", xy=(0.7, 0.15), xytext=(0.7, 0.15),annotation_clip=False)
-xlim = 0, k_max*1.025
+xlim = -0.01, k_max*1.025
 plt.xlim(*xlim)
 plt.ylim(*ylim)
 plt.gca().spines[['right', 'top', 'left', 'bottom']].set_visible(False)
