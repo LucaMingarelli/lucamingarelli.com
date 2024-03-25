@@ -182,9 +182,36 @@ so that the equation of motion finally turns into
 Notice that the notion of balanced growth path is relevant 
 because the ODE \eqref{eq:solow_ode} 
 has asymptotically stable solutions. 
-This can be seen by noticing that \(V(k) = (k-\frac{s}{n+\delta}f(k))^2\) 
-is a valid Lyapunov function<a href="#ref6">[6]</a>. 
-Then its total time derivative is clearly negative \(\frac{dV}{dt} < 0\) implying that the system is <i>asymptotically stable</i>.
+
+Writing \(g(k) = s f(k)-(n+\delta)k\), the system is <i>asymptotically stable</i><a href="#ref6">[6]</a> if 
+\(\left.\frac{d g(k)}{dk}\right|_{k=k^*} < 0 \) 
+or <i>unstable</i> when 
+\(\left.\frac{d g(k)}{dk}\right|_{k=k^*} > 0 \):
+
+\begin{equation}
+\label{eq:solow_stability_condition}
+\begin{split}
+\left.\frac{d g(k)}{dk}\right|_{k=k^*} &= sf'(k^*)-(n+\delta)\\
+&=\frac{s}{k^*}f(k^*)\left(\frac{k^*f'(k^*)}{f(k^*)}-1\right).
+\end{split}
+\end{equation}
+
+Therefore, stability hinges on the value of the <i>output elasticity of capital</i>
+\(\frac{k^*f'(k^*)}{f(k^*)}\), 
+which being always bound in the unit interval 
+guarantees that \eqref{eq:solow_stability_condition} is negative, 
+and hence that the system is asymptotically stable.
+
+<!-- This can be seen by noticing that \(V(k) = (k-\frac{s}{n+\delta}f(k))^2\) 
+is a valid Lyapunov function<a href="#ref6">[6]</a>. Its total time derivative is
+\begin{equation}
+\frac{\text{d}V}{\text{d}t} = \frac{dV}{dk}\frac{dk}{dt}=-\frac{2}{\delta+n}(sf(k)-\delta k)^2(1-\frac{s}{n+\delta}\frac{df(k)}{dk}).
+\end{equation}
+By Lyapunov's stability criterion the system is therefore 
+<i>asymptotically stable</i> if is strictly negative \(\frac{dV}{dt} < 0\), <i>unstable</i> if it is positive \(\frac{dV}{dt} > 0\). -->
+
+
+
 This can also be seen graphically by the dynamics depicted in Fig. 2. 
 
 
@@ -334,9 +361,13 @@ Therefore, the Solow model with exhogenous technological change \eqref{eq:solow_
   <br>
   [5] <a href="https://www.jstor.org/stable/1884513" id="ref5">"A Contribution to the Theory of Economic Growth", Robert M. Solow, The Quarterly Journal of Economics, 1956. </a>
   <br>
-  [6] For a function \(V(x)\) to be a valid Lyapunov function, it must be such that \(V(x)=0\) if and only if \(x=0\), and \(V(x)>0\) if and only if \(x\ne 0\). It is trivial to verify that \(V(k)=(k-\frac{s}{n+\delta}f(k))^2\) satisfies these conditions.
+  <!-- [6] <span id="ref6">For a function \(V(x)\) to be a valid Lyapunov function, it must be such that \(V(x)=0\) if and only if \(x=0\), and \(V(x)>0\) if and only if \(x\ne 0\). It is trivial to verify that \(V(k)=(k-\frac{s}{n+\delta}f(k))^2\) satisfies these conditions. </span>
+  <br> -->
+  [6] <span id="ref6">  <a href="https://books.google.de/books?id=kKRyws2x9tQC&pg=PA63&redir_esc=y#v=onepage&q&f=false">Theorem 3.2.1 in Zhang (2005)</a>: . </span>
   <br>
-      <br>
+
+
+  <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
 <!--  https://bookdown.org/egarpor/NP-EAFIT/intro-nonpar.html-->
