@@ -19,10 +19,11 @@ k_max = k[np.abs(c)[1:].argmin()+1] * 1.1
 c_max = c.max() * 1.1
 
 
-xlim = -0.01, k_max
-ylim = -0.01, c_max
+xlim = -0.05, k_max
+ylim = -0.05, c_max
 
 Cm, Km = np.mgrid[ylim[0]:ylim[1]:200j, xlim[0]:xlim[1]:200j]
+Cm,  = Cm[30:,:], Km[30:,:]
 U = f(Km) - (n+δ)*Km - Cm
 V = σ * (f_(Km)-δ-ρ) * Cm
 V[np.abs(V)==np.inf] = np.nan
