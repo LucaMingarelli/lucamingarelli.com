@@ -32,7 +32,7 @@ plt.figure(figsize=(5.5, 3.5))
 plt.streamplot(Km, Cm, U, V, color=(np.abs(U)+np.abs(V))**0.0001, 
                linewidth=(U**2+V**2)**(1/2)*4, # 0.5, 
                cmap='viridis_r', broken_streamlines=False,
-               density=1
+               density=0.5
                )
 plt.plot(k, c, color='k')
 k_star = (A/(δ+ρ))**2/4
