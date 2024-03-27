@@ -24,8 +24,8 @@ plt.yticks([0.25, 0.5, 0.75, 1, 1.25], [r'$\vdots$', r'$n-1$', r'$n$', r'$n+1$',
 
 # Draw axis
 plt.gca().spines[['right', 'top', 'left', 'bottom']].set_visible(False)
-plt.gca().annotate("", xy=(4.5, 0), xytext=(-.015, 0), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
-plt.gca().annotate("", xy=(0, 1.5), xytext=(0, -.015), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
+plt.gca().annotate("", xy=(4.5, 0), xytext=(-.0175, 0), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
+plt.gca().annotate("", xy=(0, 1.5), xytext=(0, -.0175), arrowprops=dict(arrowstyle="-|>", lw=0.5, color='black'))
 
 plt.xlabel("Time")
 plt.ylabel("Generations")
