@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2024-03-27T17:53:56.162058</dc:date>
+    <dc:date>2024-03-27T17:58:03.869807</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -135,12 +135,12 @@ z
     <g id="ytick_1">
      <g id="line2d_1">
       <defs>
-       <path id="mdad2a732c5" d="M 0 0 
+       <path id="m3a50c00ab1" d="M 0 0 
 L -3.5 0 
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#mdad2a732c5" x="57.404668" y="161.066667" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m3a50c00ab1" x="57.404668" y="161.066667" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_2">
@@ -174,7 +174,7 @@ z
     <g id="ytick_2">
      <g id="line2d_2">
       <g>
-       <use xlink:href="#mdad2a732c5" x="57.404668" y="131.013333" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m3a50c00ab1" x="57.404668" y="131.013333" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_3">
@@ -235,7 +235,7 @@ z
     <g id="ytick_3">
      <g id="line2d_3">
       <g>
-       <use xlink:href="#mdad2a732c5" x="57.404668" y="100.96" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m3a50c00ab1" x="57.404668" y="100.96" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_4">
@@ -248,7 +248,7 @@ z
     <g id="ytick_4">
      <g id="line2d_4">
       <g>
-       <use xlink:href="#mdad2a732c5" x="57.404668" y="70.906667" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m3a50c00ab1" x="57.404668" y="70.906667" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_5">
@@ -280,7 +280,7 @@ z
     <g id="ytick_5">
      <g id="line2d_5">
       <g>
-       <use xlink:href="#mdad2a732c5" x="57.404668" y="40.853333" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#m3a50c00ab1" x="57.404668" y="40.853333" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_6">
@@ -479,32 +479,32 @@ z
    <g id="patch_3">
     <path d="M 72.372002 131.013333 
 Q 102.795169 131.013333 133.218336 131.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 72.372002 121.013333 
 L 72.372002 121.013333 
 L 72.372002 141.013333 
 L 72.372002 141.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 133.218336 141.013333 
 L 133.218336 141.013333 
 L 133.218336 121.013333 
 L 133.218336 121.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
     <path d="M 137.215409 131.013333 
 Q 167.638576 131.013333 198.061743 131.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 137.215409 121.013333 
 L 137.215409 121.013333 
 L 137.215409 141.013333 
 L 137.215409 141.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 198.061743 141.013333 
 L 198.061743 141.013333 
 L 198.061743 121.013333 
 L 198.061743 121.013333 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
    </g>
    <g id="text_8">
     <!-- Work -->
@@ -549,7 +549,7 @@ z
    </g>
    <g id="text_9">
     <!-- Retire -->
-    <g transform="translate(148.185438 127.406933) scale(0.1 -0.1)">
+    <g transform="translate(154.669779 127.406933) scale(0.1 -0.1)">
      <defs>
       <path id="DejaVuSans-52" d="M 2841 2188 
 Q 3044 2119 3236 1894 
@@ -591,32 +591,32 @@ z
    <g id="patch_5">
     <path d="M 137.215409 100.96 
 Q 167.638576 100.96 198.061743 100.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 137.215409 90.96 
 L 137.215409 90.96 
 L 137.215409 110.96 
 L 137.215409 110.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 198.061743 110.96 
 L 198.061743 110.96 
 L 198.061743 90.96 
 L 198.061743 90.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
    </g>
    <g id="patch_6">
     <path d="M 202.058816 100.96 
 Q 232.481983 100.96 262.905151 100.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 202.058816 90.96 
 L 202.058816 90.96 
 L 202.058816 110.96 
 L 202.058816 110.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 262.905151 110.96 
 L 262.905151 110.96 
 L 262.905151 90.96 
 L 262.905151 90.96 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
    </g>
    <g id="text_10">
     <!-- Work -->
@@ -629,7 +629,7 @@ L 262.905151 90.96
    </g>
    <g id="text_11">
     <!-- Retire -->
-    <g transform="translate(213.028845 97.3536) scale(0.1 -0.1)">
+    <g transform="translate(219.513186 97.3536) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-52"/>
      <use xlink:href="#DejaVuSans-65" x="64.982422"/>
      <use xlink:href="#DejaVuSans-74" x="126.505859"/>
@@ -641,32 +641,32 @@ L 262.905151 90.96
    <g id="patch_7">
     <path d="M 202.058816 70.906667 
 Q 232.481983 70.906667 262.905151 70.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 202.058816 60.906667 
 L 202.058816 60.906667 
 L 202.058816 80.906667 
 L 202.058816 80.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
     <path d="M 262.905151 80.906667 
 L 262.905151 80.906667 
 L 262.905151 60.906667 
 L 262.905151 60.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #008000; stroke-linecap: round"/>
    </g>
    <g id="patch_8">
     <path d="M 266.902223 70.906667 
 Q 297.32539 70.906667 327.748558 70.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 266.902223 60.906667 
 L 266.902223 60.906667 
 L 266.902223 80.906667 
 L 266.902223 80.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 327.748558 80.906667 
 L 327.748558 80.906667 
 L 327.748558 60.906667 
 L 327.748558 60.906667 
-" style="fill: none; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; stroke: #ff0000; stroke-linecap: round"/>
    </g>
    <g id="text_12">
     <!-- Work -->
@@ -679,7 +679,7 @@ L 327.748558 60.906667
    </g>
    <g id="text_13">
     <!-- Retire -->
-    <g transform="translate(277.872252 67.300267) scale(0.1 -0.1)">
+    <g transform="translate(284.356593 67.300267) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-52"/>
      <use xlink:href="#DejaVuSans-65" x="64.982422"/>
      <use xlink:href="#DejaVuSans-74" x="126.505859"/>
@@ -689,44 +689,44 @@ L 327.748558 60.906667
     </g>
    </g>
    <g id="patch_9">
+    <path d="M 59.402529 161.066667 
+Q 63.887548 161.066667 68.372567 161.066667 
+" style="fill: none; opacity: 0.2; stroke-dasharray: 1,1.65; stroke-dashoffset: 0; stroke: #008000; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
     <path d="M 72.372002 161.066667 
 Q 102.795169 161.066667 133.218336 161.066667 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 72.372002 151.066667 
 L 72.372002 151.066667 
 L 72.372002 171.066667 
 L 72.372002 171.066667 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #ff0000; stroke-linecap: round"/>
     <path d="M 133.218336 171.066667 
 L 133.218336 171.066667 
 L 133.218336 151.066667 
 L 133.218336 151.066667 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
-   </g>
-   <g id="patch_10">
-    <path d="M 59.402529 161.066667 
-Q 63.887548 161.066667 68.372567 161.066667 
-" style="fill: none; opacity: 0.2; stroke-dasharray: 1,1.65; stroke-dashoffset: 0; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #ff0000; stroke-linecap: round"/>
    </g>
    <g id="patch_11">
     <path d="M 266.902223 40.853333 
 Q 297.32539 40.853333 327.748558 40.853333 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #008000; stroke-linecap: round"/>
     <path d="M 266.902223 30.853333 
 L 266.902223 30.853333 
 L 266.902223 50.853333 
 L 266.902223 50.853333 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #008000; stroke-linecap: round"/>
     <path d="M 327.748558 50.853333 
 L 327.748558 50.853333 
 L 327.748558 30.853333 
 L 327.748558 30.853333 
-" style="fill: none; opacity: 0.2; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke: #008000; stroke-linecap: round"/>
    </g>
    <g id="patch_12">
     <path d="M 331.744839 40.853333 
 Q 336.229858 40.853333 340.714877 40.853333 
-" style="fill: none; opacity: 0.2; stroke-dasharray: 1,1.65; stroke-dashoffset: 0; stroke: #000000; stroke-linecap: round"/>
+" style="fill: none; opacity: 0.2; stroke-dasharray: 1,1.65; stroke-dashoffset: 0; stroke: #ff0000; stroke-linecap: round"/>
    </g>
    <g id="patch_13">
     <path d="M 58.428893 191.12 
