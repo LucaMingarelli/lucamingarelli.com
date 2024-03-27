@@ -611,6 +611,50 @@ Then, use the following function to generate a triangle of length <code>L</code>
 <hr class="w3-opacity">
 
 
+
+
+
+<b>Example 2 — Discrete-time Dynamic Programming in Economics </b>
+<br><br>
+<i>
+  In economics it is often useful and convenient 
+  to consider time-discretised models. 
+  
+
+  <h5 style="text-align: left;"><b>Finite horizon </b></h5>
+   Assume time is discretised as \(t=0,1,...,T\).
+   Agents seek to maximise the total utility
+
+  \begin{equation}
+  \begin{split}
+  \max_{c_t}&{\sum_{t=0}^T\beta^t u(s_t, c_t)}\\
+  &\text{subject to}\\
+  s_{t+1} &= f(s_t, c_t)
+  \end{split}
+  \end{equation}
+
+  where the istantaneous utility \(u(s_t, c_t)\) 
+  is a function of a state variable \(s_t\) and a control variable \(c_t\). 
+  Moreover, the discount factor is such that \(0 < \beta < 1\).
+
+
+
+
+
+
+
+
+
+<h5 style="text-align: left;"><b>Infinite horizon </b></h5>
+Consider the st
+
+</i>
+
+
+
+
+
+
     <h4 style="text-align: left;"><b> The Hamilton-Jacobi-Bellman equation</b></h4>
 
     Let us now consider an infinitesimal generalisation of Theorem 9.
