@@ -81,15 +81,71 @@
 Let us start by considering a discrete-time model with two overlapping cohorts 
 due to Samuelson <a href="#ref1">[1]</a> and Diamond <a href="#ref2">[2]</a>.
 
+The economy cosists of individuals and firm.
+Individuals live for two periods: young-age and old-age. 
+In the former period they work for firms and receive a wage \(w_t\), 
+and lend their savings \(s_t\) to firms for which they are remunerated at a given rental rate \(r_t\); 
+in the latter period they retire. The population grows as before as \(L_t=L_0(1+n)^t\).
+
 
 <figure>
   <img class="center" alt="growth"
        src="./ogm.svg"
-       width="90%" >
+       width="80%" >
   <figcaption><i><b>Fig 1:</b> Caption.
     
   </i></figcaption>
 </figure>
+
+
+
+Firm on the other hand are assumed to be competitive and use produce according 
+to the production function \(Y=F(K,L)\).
+
+\begin{equation}
+U(c_{\text{young}}, c_{\text{old}}) = \frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{young}, t}+\frac{1}{1+\rho}\frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{old}, t+1}
+\end{equation}
+
+The maximisation problem for an individual born at time \(t\) is:
+\begin{equation}
+\boxed{
+\begin{split}
+&\max{U(c_{\text{young}}, c_{\text{old}})}\\
+&\phantom{xxx} \text{subject to}\\
+&c_{\text{young}, t} =   w_t-s_t\\
+&c_{\text{old}, t} = (1+r_{t+1})s_t\\
+\end{split}
+}
+\end{equation}
+
+Firms produce competitively, maximising profits \(\Pi_t=F(K_t,L_t)-r_tK_t-w_tL_t\).
+That is, it produces renting capital up to when the marginal product of capital becomes equal to its rental rate (\(\partial_K\Pi=0\)),
+and hiring labour up to when then marginal product of labour equals the wage (\(\partial_L\Pi=0\)): 
+
+\begin{equation}
+\boxed{
+\begin{split}
+\frac{\partial F(K, L)}{\partial K}&=f'(k_t) =   r_t\\
+\frac{\partial F(K, L)}{\partial L}&=f(k_t)-k_tf'(k_t) = w_t
+\end{split}
+}
+\end{equation}
+
+where as before quantities are expressed in per-capita terms.
+<br>
+Finally, market equilibrium requires net investments (left) to equal net savings (right):
+
+\begin{equation}
+\boxed{
+K_{t+1}-K_t = L_t s_t - K_t.
+}
+\end{equation}
+
+
+
+
+
+
 
 
 
