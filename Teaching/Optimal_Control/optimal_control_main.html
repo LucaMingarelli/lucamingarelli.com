@@ -783,14 +783,14 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
   The Bellman equation of the problem reads
   \begin{equation}
   \label{eq:exercise5_BE}
-  J(x) = \max_{c}\left\{-\frac{2}{3}x^2-c^2+\beta J(x+u)\right\}.
+  V(x) = \max_{c}\left\{-\frac{2}{3}x^2-c^2+\beta V(x+c)\right\}.
   \end{equation}
   
-  Guess a functional form for the optimal value function: \(J(x) = -\alpha x^2\).
+  Guess a functional form for the optimal value function: \(V(x) = -\alpha x^2\).
   Then, \eqref{eq:exercise5_BE} becomes
   \begin{equation}
   \label{eq:exercise5_BE2}
-  -\alpha x^2 = \max_{c}\left\{-\frac{2}{3}x^2-c^2-\beta \alpha (x+u)^2\right\}.
+  -\alpha x^2 = \max_{c}\left\{-\frac{2}{3}x^2-c^2-\beta \alpha (x+c)^2\right\}.
   \end{equation}
   
   The right hand side of \eqref{eq:exercise5_BE2} is maximised by
