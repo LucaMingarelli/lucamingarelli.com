@@ -639,15 +639,15 @@ Then, use the following function to generate a triangle of length <code>L</code>
     <br>
     Let the optimal value function be defined by
     \begin{equation}
-    V_s(x) = \max_{c_{t\ge s}}{\sum_{t=s}^T\beta^t u(x_t, c_t)}.
+    V_s(x) = \max_{c_{t\ge s}}\left\{\sum_{t=s}^T\beta^t u(x_t, c_t)\right\}.
     \end{equation}
 
     Then
 
     \begin{equation}
     \begin{split}
-    V_s(x) &= \max_{c}{\beta^t u(x, c) + V_{s+1}(f(x, u))},\\
-    V_T(x) &= \max_{c}{\beta^T u(x, c)}.
+    V_s(x) &= \max_{c}\left\{\beta^t u(x, c) + V_{s+1}(f(x, u))\right\},\\
+    V_T(x) &= \max_{c}\left\{\beta^T u(x, c)\right\}.
     \end{split}  
     \end{equation}  
       
@@ -686,6 +686,75 @@ Then, use the following function to generate a triangle of length <code>L</code>
 Solve the following discrete time optimisation problem
 \begin{equation}
 \begin{split}
+&\max{\sum_{t=0}^3}\left(1+x_t-c^2_t\right)\\
+&\phantom{xxx}\text{subject to}\\
+&x_{t+1} = x_t+c_t
+\end{split}
+\end{equation}
+with \(x_0=0\) and \(c_t\in \mathbb{R}\).
+
+<br>
+
+
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
+<div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+
+
+  Let's start form \(t=T=3\):
+  \begin{equation}
+  V_3(x) = \max_{c}\left\{1+x_t-c^2_t\right\},
+  \end{equation}
+  that is \(c_3^*=0\) and \(V_3(x) = 1+x\).
+  <br>
+  Then
+  \begin{equation}
+  \begin{split}
+  V_2(x) &= \max_{c}\left\{1+x_t-c^2_t+V_3(f(x, c, 2))\right\}\\
+         &= \max_{c}\left\{1+x_t-c^2_t+ 1 + x + c \right\}\\
+         &= \max_{c}\left\{2(1+x)+c(1-c) \right\},
+  \end{split}
+  \end{equation}
+  so that \(c_2^* = \frac{1}{2}\) and \(V_2(x) = 2x + \frac{9}{4}\).
+  <br>
+  Moving on, 
+  \begin{equation}
+  \begin{split}
+  V_1(x) &= \max_{c}\left\{1+x_t-c^2_t+V_2(f(x, c, 2))\right\}\\
+         &= \max_{c}\left\{1+x_t-c^2_t+ 2(x+c) + \frac{9}{4} \right\}\\
+         &= \max_{c}\left\{\frac{14}{3}+3x + c(2-c) \right\},
+  \end{split}
+  \end{equation}
+  so that \(c_1^* = 1\) and \(V_1(x) = 3x + \frac{17}{4}\).
+  <br>
+  Finally, 
+  \begin{equation}
+  \begin{split}
+  V_0(x) &= \max_{c}\left\{1+x_t-c^2_t+V_1(f(x, c, 2))\right\}\\
+         &= \max_{c}\left\{1+x_t-c^2_t+ 3(x+c) + \frac{17}{4} \right\}\\
+         &= \max_{c}\left\{21 + 4x + c(3-c) \right\},
+  \end{split}
+  \end{equation}
+  so that \(c_0^* = \frac{3}{2}\) and \(V_0(x) = 4x + \frac{29}{4}\).
+  <br>
+  In summary, the sequence of optimal controls is
+  \begin{equation}
+  \left\{c^*_t\right\}_{t=0}^3 = \left\{\frac{3}{2}, 1, \frac{1}{2}, 0 \right\}.
+  \end{equation}
+  Consequently, the sequence of optimal states is 
+  \begin{equation}
+  \left\{x^*_t\right\}_{t=0}^3 = \left\{x^*_{t-1}+c^*_{t-1}\right\}_{t=0}^3 
+   = \left\{0, \frac{3}{2}, \frac{5}{2}, 3 \right\}.
+  \end{equation}
+
+<p align="right"> ◻</p>
+</div>
+
+
+
+<h6>Exercise 6</h6>
+Solve the following discrete time optimisation problem
+\begin{equation}
+\begin{split}
 &\max{\sum_{t=0}^\infty}\beta^t\left(-\frac{2}{3}x_t^2-c_t^2\right)\\
 &\phantom{xxx}\text{subject to}\\
 &x_{t+1} = x_t+c_t
@@ -696,7 +765,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 <br>
 
 
-<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 5</button>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 6</button>
 <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
 
   The Bellman equation of the problem reads
@@ -730,6 +799,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 
 <p align="right"> ◻</p>
 </div>
+
 
 <hr class="w3-opacity">
 
