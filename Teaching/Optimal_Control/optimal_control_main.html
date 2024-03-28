@@ -611,12 +611,8 @@ Then, use the following function to generate a triangle of length <code>L</code>
 <hr class="w3-opacity">
 
 
-
-
-
-<b>Example 2 — Discrete-time Dynamic Programming in Economics </b>
 <br><br>
-<i>
+
   In economics it is often useful and convenient 
   to consider time-discretised models. 
   
@@ -627,14 +623,14 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
   \begin{equation}
   \begin{split}
-  \max_{c_t}&{\sum_{t=0}^T\beta^t u(s_t, c_t)}\\
+  \max_{c_t}&{\sum_{t=0}^T\beta^t u(x_t, c_t)}\\
   &\text{subject to}\\
-  s_{t+1} &= f(s_t, c_t)
+  x_{t+1} &= f(x_t, c_t)
   \end{split}
   \end{equation}
 
-  where the istantaneous utility \(u(s_t, c_t)\) 
-  is a function of a state variable \(s_t\) and a control variable \(c_t\). 
+  where the istantaneous utility \(u(x_t, c_t)\) 
+  is a function of a state variable \(x_t\) and a control variable \(c_t\). 
   Moreover, the discount factor is such that \(0 < \beta < 1\).
 
 
@@ -646,9 +642,21 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
 
 <h5 style="text-align: left;"><b>Infinite horizon </b></h5>
-Consider the st
+Consider the optimisation problem
 
-</i>
+\begin{equation}
+\begin{split}
+\max_{c_t}&{\sum_{t=0}^\infty\beta^t u(x_t, c_t)}\\
+&\text{subject to}\\
+x_{t+1} &= f(x_t, c_t)
+\end{split}
+\end{equation}
+
+with discount factor is such that \(0 < \beta < 1\). 
+Assume further that \(u\) is bounded in absolute value: this ensures convergence of the sum above.
+
+
+
 
 
 <hr class="w3-opacity">
