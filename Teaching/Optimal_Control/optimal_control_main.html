@@ -614,46 +614,64 @@ Then, use the following function to generate a triangle of length <code>L</code>
 <br><br>
 
   In economics it is often useful and convenient 
-  to consider time-discretised models. 
+  to consider time-discretised models 
+  where the objective function takes the form \(\beta^t u_t\), 
+  for some istantaneous utility function \(u_t\) and discount factor \(\beta\in(0,1)\). 
   
+  <br><br>
+  <b>Theorem 10 — Discrete-time Finite-Horizon Dynamic Programming</b><blockquote><i> 
 
-  <h5 style="text-align: left;"><b>Finite horizon </b></h5>
-   Assume time is discretised as \(t=0,1,...,T\).
-   Agents seek to maximise the total utility
+   Consider the discrete-time finite-horizon problem 
+   
+   \begin{equation}
+   \begin{split}
+   \max_{c_t}&{\sum_{t=0}^T\beta^t u(x_t, c_t)}\\
+   &\text{subject to}\\
+   x_{t+1} &= f(x_t, c_t)
+   \end{split}
+   \end{equation}
+ 
+    where the istantaneous utility \(u(x_t, c_t)\) 
+    is a function of the state variable \(x_t\) and control variable \(c_t\). 
+    <br>
+    Let the optimal value function be defined by
+    \begin{equation}
+    V_s(x) = \max_{c_{t\ge s}}{\sum_{t=s}^T\beta^t u(x_t, c_t)}.
+    \end{equation}
 
-  \begin{equation}
-  \begin{split}
-  \max_{c_t}&{\sum_{t=0}^T\beta^t u(x_t, c_t)}\\
-  &\text{subject to}\\
-  x_{t+1} &= f(x_t, c_t)
-  \end{split}
-  \end{equation}
+    Then
 
-  where the istantaneous utility \(u(x_t, c_t)\) 
-  is a function of a state variable \(x_t\) and a control variable \(c_t\). 
-  Moreover, the discount factor is such that \(0 < \beta < 1\).
+    \begin{equation}
+    \begin{split}
+    V_s(x) &= \max_{c}{\beta^t u(x, c) + V_{s+1}(f(x, u))},\\
+    V_T(x) &= \max_{c}{\beta^T u(x, c)}.
+    \end{split}  
+    \end{equation}  
+      
 
-
+  </blockquote></i>
 
 
+  <br><br>
+  <b>Theorem 11 — Discrete-time Infinite-Horizon Dynamic Programming</b><blockquote><i> 
+
+   Consider the discrete-time infinite-horizon problem 
+
+   \begin{equation}
+   \begin{split}
+   \max_{c_t}&{\sum_{t=0}^\infty\beta^t u(x_t, c_t)}\\
+   &\text{subject to}\\
+   x_{t+1} &= f(x_t, c_t)
+   \end{split}
+   \end{equation}
+
+   Assume further that \(u\) is bounded in absolute value: this ensures convergence of the sum above.
+   
+  </blockquote></i>
 
 
 
 
-
-<h5 style="text-align: left;"><b>Infinite horizon </b></h5>
-Consider the optimisation problem
-
-\begin{equation}
-\begin{split}
-\max_{c_t}&{\sum_{t=0}^\infty\beta^t u(x_t, c_t)}\\
-&\text{subject to}\\
-x_{t+1} &= f(x_t, c_t)
-\end{split}
-\end{equation}
-
-with discount factor is such that \(0 < \beta < 1\). 
-Assume further that \(u\) is bounded in absolute value: this ensures convergence of the sum above.
 
 
 
