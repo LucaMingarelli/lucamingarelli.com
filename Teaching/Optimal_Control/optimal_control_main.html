@@ -826,7 +826,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 
     <br><br>
 
-    <b>Theorem 10 — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
+    <b>Theorem 12 — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
       Consider a value function defined by 
       
       \begin{equation*}
@@ -865,7 +865,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
     <hr class="w3-opacity">
 
     <h6>Exercise 7</h6>
-    Derive the Hamilton-Jacobi-Bellman equation from Theorem 10.
+    Derive the Hamilton-Jacobi-Bellman equation from Theorem 12.
 <br>
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 7</button>
     <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
@@ -945,7 +945,7 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 \end{equation}
 
 
-<b>Theorem 11 — LQR Linear State Feedback Law</b><blockquote><i> 
+<b>Theorem 13 — LQR Linear State Feedback Law</b><blockquote><i> 
   For the Linear Quadratic Regulator defined above, 
   one has the following <i>linear state feedback law</i>
   
@@ -967,7 +967,7 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 </blockquote></i>
 
 <br>
-<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof of Theorem 11</button>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Proof of Theorem 13</button>
 <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
   The gradient of the Hamiltonian \eqref{eq:lqr_hamiltonian} with respect to the control is
 
@@ -1087,19 +1087,19 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 <br><br>
 
 
-<b>Theorem 12 — Global optimality of the Linear State Feedback Law</b><blockquote><i> 
+<b>Theorem 14 — Global optimality of the Linear State Feedback Law</b><blockquote><i> 
   The <i>linear state feedback law</i> \eqref{eq:lqr_lsfl}
   obtained by the maximum principle is globally optimal.
 
 </blockquote></i>
 
 <br>
-Theorem 12 can be proved by considering the HJB equation for the LQR problem, 
+Theorem 14 can be proved by considering the HJB equation for the LQR problem, 
 and realising that the value function \(V(x, t)=\chi(t)x^2\) satisfies it, 
 with \(\chi\) the solution to the differential Riccati equation.
 <br><br>
 
-Theorems 11 and 12 are remarkable results.
+Theorems 13 and 14 are remarkable results.
 They make the LQR problem substantially more tractable 
 than the general optimal control problem presented in Definition 4. 
 Crucially, the task of solving the HJB partial differential equation
@@ -1214,7 +1214,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
 
 <br><br>
 
-<b>Theorem 12 — Stochastic Dynamic Programming</b><blockquote><i> 
+<b>Theorem 15 — Stochastic Dynamic Programming</b><blockquote><i> 
 
   Given a stochastic Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\)
   define the <b>Value Function</b>
@@ -1235,7 +1235,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
 
 
 
-    <b>Theorem 13 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
+    <b>Theorem 16 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
 
     The value function is the unique viscosity solution to the stochastic Hamilton-Jacobi-Bellman equation
     \begin{equation}
@@ -1257,7 +1257,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     <hr class="w3-opacity">
 
     <h6>Exercise 9</h6>
-    Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 13. 
+    Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 16. 
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
