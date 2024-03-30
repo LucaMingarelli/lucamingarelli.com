@@ -98,12 +98,12 @@ in the latter period they retire. The population grows as before as \(L_t=L_0(1+
 </figure>
 
 
-
-Firm on the other hand are assumed to be competitive and use produce according 
-to the production function \(Y=F(K,L)\).
+Individuals derive utility 
+from consumption in the current period \(c_{\text{young}, t}\)
+plus (discounted) consumption in the subsequent period \(c_{\text{old}, t+1}\):
 
 \begin{equation}
-U(c_{\text{young}}, c_{\text{old}}) = \frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{young}, t}+\frac{1}{1+\rho}\frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{old}, t+1}
+U(c_{\text{young}}, c_{\text{old}}) = \frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{young}, t}+\frac{1}{1+\rho}\frac{\sigma}{\sigma-1}c^{\frac{\sigma-1}{\sigma}}_{\text{old}, t+1}.
 \end{equation}
 
 The maximisation problem for an individual born at time \(t\) is:
@@ -113,7 +113,7 @@ The maximisation problem for an individual born at time \(t\) is:
 &\max{U(c_{\text{young}}, c_{\text{old}})}\\
 &\phantom{xxx} \text{subject to}\\
 &c_{\text{young}, t} =   w_t-s_t\\
-&c_{\text{old}, t} = (1+r_{t+1})s_t\\
+&c_{\text{old}, t+1} = (1+r_{t+1})s_t\\
 \end{split}
 }
 \end{equation}
@@ -149,15 +149,15 @@ Let us start by solving the individuals maximisation problem.
 First, notice that 
 \begin{equation}
 \begin{split}
-\partial_s U &= c^{\frac{-1}{\sigma}}_{\text{young}, t} \cdot \partial_s c_{\text{young}, t}+\frac{1}{1+\rho}c^{\frac{-1}{\sigma}}_{\text{old}, t+1}\cdot \partial_s c_{\text{old}, t}\\
-             &= -c^{\frac{-1}{\sigma}}_{\text{young}, t}+\frac{1+r_{t+1}}{1+\rho}c^{\frac{-1}{\sigma}}_{\text{old}, t}.
+\partial_s U &= c^{\frac{-1}{\sigma}}_{\text{young}, t} \cdot \partial_s c_{\text{young}, t}+\frac{1}{1+\rho}c^{\frac{-1}{\sigma}}_{\text{old}, t+1}\cdot \partial_s c_{\text{old}, t+1}\\
+             &= -c^{\frac{-1}{\sigma}}_{\text{young}, t}+\frac{1+r_{t+1}}{1+\rho}c^{\frac{-1}{\sigma}}_{\text{old}, t+1}.
 \end{split}
 \end{equation}
 
 Therefore, the first-order condition for maximising \(U\) with respect to \(s_t\) is the Euler equation
 \begin{equation}
 \label{eq:sd_foc}
-\frac{c_{\text{old}, t}}{c_{\text{young}, t}} = \left(\frac{1+r_{t+1}}{1+\rho}\right)^\sigma.
+\frac{c_{\text{old}, t+1}}{c_{\text{young}, t}} = \left(\frac{1+r_{t+1}}{1+\rho}\right)^\sigma.
 \end{equation}
 
 It is also easy to check that \(\partial^2_s U < 0\), so that \eqref{eq:sd_foc} provides indeed a sufficient condition for a maximum.
