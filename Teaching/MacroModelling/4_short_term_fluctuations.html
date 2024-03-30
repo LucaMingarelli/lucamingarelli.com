@@ -68,11 +68,59 @@
 <h2 style="text-align: left;"><b>Short Term Fluctuations </b></h2>
 
 
-
-
+The previous chapter has focused on long-term dynamics and the process of capital accumulation.
+One is however often interested in the short-term dynamics of business cycles.
+<br>
+By and large there exist two main schools of thought ...
 
   <h3 style="text-align: left;"><b>The Real business cycle model</b></h3>
-  
+
+The so called <i>Real busiless cycle model </i>  (RBC) was introduced 
+in 1982 by Kydland and Prescott <a href="#ref1">[1]</a> building on a discrete-time version of the neoclassical growth model framework.
+Crucially however, uncertainty is introduced 
+in the form of exhogenous productivity shocks, so that productivity
+follows the \(AR(1)\) process
+
+\begin{equation}
+\label{eq:productivity_process}
+z_{t+1} = \varphi z_{t} +\varepsilon_{t+1}.
+\end{equation}
+
+
+Moreover, a choice between the fraction of time devoted to
+labour \(l_t\) and leisure \(h_t\) is also introduced 
+with the natural constraint
+\begin{equation}
+l_t+h_t = 1.
+\end{equation}
+
+We consider a Cobb-Douglas per-capita production function 
+\begin{equation}
+f(k_t, l_t, z_t) = z_t k_t^\alpha l_t^{1-\alpha},
+\end{equation}
+with as usual \(\alpha\) being the output elasticity of capital.
+
+Because of the stochasticity of 
+the productivity process \eqref{eq:productivity_process} 
+consumers will aim at maximising <i>expected</i> utility, 
+so that the optimisation problem reads
+\begin{equation}
+\boxed{
+\begin{split}
+&\max_{c_t, h_t}\mathbb{E}\left[\sum_t\frac{1}{(1+\rho)^t}\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
+&\phantom{xxx}\text{subject to}\\
+&k_{t+1} = l_t w_t + (1+r_t)k_t - c_t
+\end{split}
+}
+\end{equation}
+
+Notice that the household has two control variables: consumption \(c_t\) and leisure \(h_t\).
+Here \(0 < \eta < 1\) is a mixing parameter determining 
+the relative relevance of consumption utility versus leisure utility in the total utility function ...
+
+
+
+
   <h3 style="text-align: left;"><b>The New Keynesian model</b></h3>
 
 
@@ -83,7 +131,7 @@
 <br><br>
   <h4 id="REFERENCES"><i>References and notes</i></h4>
 
-  [1] <a href="" id="ref1">"", </a>
+  [1] <a href="https://www.jstor.org/stable/1913386" id="ref1">"Time to Build and Aggregate Fluctuations", Finn E. Kydland, Edward C. Prescott, Econometrica, Vol. 50, No. 6 (1982) </a>
   <br><br>
   [2] <a href="" id="ref2">"",  . </a>
   <br><br>
