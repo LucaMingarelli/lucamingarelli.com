@@ -145,6 +145,30 @@ K_{t+1}-K_t = L_t s_t - K_t.
 <br><br>
 Let us start by solving the individuals maximisation problem.
 
+<br>
+Inserting the budget contraints into \(U(c_{\text{young}}, c_{\text{old}})\) yields
+\begin{equation}
+U = \frac{\sigma}{\sigma-1}(w_t-s_t)^{\frac{\sigma-1}{\sigma}}+\frac{1}{1+\rho}\frac{\sigma}{\sigma-1}((1+r_{t+1})s_t)^{\frac{\sigma-1}{\sigma}},
+\end{equation}
+and
+\begin{equation}
+\begin{split}
+\partial_s U &= -(w_t-s_t)^{\frac{-1}{\sigma}}+\frac{1+r_{t+1}}{1+\rho}((1+r_{t+1})s_t)^{\frac{-1}{\sigma}}\\
+             &= -c^{\frac{-1}{\sigma}}_{\text{young}, t}+\frac{1+r_{t+1}}{1+\rho}c^{\frac{-1}{\sigma}}_{\text{old}, t}\\
+\end{split}
+\end{equation}
+
+Therefore, the first-order condition for maximising \(U\) with respect to \(s_t\) is
+\begin{equation}
+\label{eq:sd_foc}
+\frac{c_{\text{old}, t}}{c_{\text{young}, t}} = \left(\frac{1+r_{t+1}}{1+\rho}\right)^\sigma.
+\end{equation}
+
+It is also easy to check that \(\partial^2_s U < 0\), so that \eqref{eq:sd_foc} provides indeed a sufficient condition for a maximum.
+
+
+
+
 
 
 
