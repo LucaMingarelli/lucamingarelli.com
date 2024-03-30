@@ -123,6 +123,7 @@ That is, it produces renting capital up to when the marginal product of capital 
 and hiring labour up to when then marginal product of labour equals the wage (\(\partial_L\Pi=0\)): 
 
 \begin{equation}
+\label{eq:firms_competitiveness_conditions}
 \boxed{
 \begin{split}
 \frac{\partial F(K, L)}{\partial K}&=f'(k_t) =   r_t\\
@@ -136,14 +137,20 @@ where as before quantities are expressed in per-capita terms.
 Finally, market equilibrium requires net investments (left) to equal net savings (right):
 
 \begin{equation}
+\label{eq:market_equilibrium}
 \boxed{
-K_{t+1}-K_t = L_t s_t - K_t.
+K_{t+1}-K_t = L_t s_t - K_t
 }
+\end{equation}
+or equivalently, in per capita terms:
+\begin{equation}
+\label{eq:market_equilibrium_per_capita}
+(1+n)k_{t+1} = s_t.
 \end{equation}
 
 
 <br><br>
-Let us start by solving the individuals maximisation problem.
+Let us then solve the individuals' optimisation problem.
 
 <br>
 First, notice that 
@@ -165,14 +172,33 @@ Finally, through the budget constraints,
 the Euler equation can be expressed as
 
 \begin{equation}
+\label{eq:savings_function}
 s_t = \left(\frac{1}{(1+\rho)^\sigma(1+r_{t+1})^{1-\sigma} +1}\right)w_t.
 \end{equation}
 
-Notice that the optimal saving rate is an increasing function of wage \(w_t\).
+Notice that the optimal saving rate \(s(w_t, r_{t+1})\) is an increasing function of wage \(w_t\).
 The effects of an increase in interest rate \(r_{t+1}\) instead 
 depend on the value of the elasticity of substitution \(\sigma\).
 If \(\sigma > 1\) (\(\sigma < 1\)) an increase in \(r_{t+1}\) determines an increase (decrease) in the saving rate.
 If \(\sigma=0\) there is no effect.
+<br>
+Recalling \eqref{eq:firms_competitiveness_conditions}, 
+equation \eqref{eq:savings_function} can be written as
+
+\begin{equation}
+\label{eq:savings_function2}
+s_t = \left(\frac{1}{(1+\rho)^\sigma(1+f'(k_{t+1}))^{1-\sigma} +1}\right)(f(k_t)-k_t f'(k_t)).
+\end{equation}
+
+
+<br>
+
+Finally, looking now back at \eqref{eq:market_equilibrium}, which can be written in per capita terms as 
+
+
+
+
+
 
 
 
@@ -181,8 +207,6 @@ If \(\sigma=0\) there is no effect.
 
   <h3 style="text-align: left;"><b>OGM</b></h3>
   <!-- UNIFIED GROWTH THEORY? -->
-
-
 
 
   <b>Definition 1 — Control function</b><blockquote><i> 
