@@ -105,6 +105,7 @@ the productivity process \eqref{eq:productivity_process}
 consumers will aim at maximising <i>expected</i> utility, 
 so that the optimisation problem reads
 \begin{equation}
+\label{eq:rbc_opt_problem}
 \boxed{
 \begin{split}
 &\max_{c_t, h_t}\mathbb{E}\left[\sum_t\frac{1}{(1+\rho)^t}\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
@@ -117,6 +118,47 @@ so that the optimisation problem reads
 Notice that the household has two control variables: consumption \(c_t\) and leisure \(h_t\).
 Here \(0 < \eta < 1\) is a mixing parameter determining 
 the relative relevance of consumption utility versus leisure utility in the total utility function ...
+
+<br>
+Problem \eqref{eq:rbc_opt_problem} has Bellman equation
+
+\begin{equation}
+V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\phi\nu(h_t)+\frac{1}{1+\rho}\mathbb{E}\left[V(k_{t+1})\right]\right\}
+\end{equation}
+
+which is maximised for
+\begin{equation}
+\label{eq:opt_rbc_bellman}
+\frac{d V(k_t)}{d c_t} = (1-\eta)u'(c_t)-\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})] = 0,
+\end{equation}
+that is \(\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})]=(1-\eta)u'(c_t)\).
+Then, notice that 
+ \begin{equation}
+ \frac{d V(k_t)}{d k_t} = \frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})](1+r_t) = (1-\eta)u'(c_t)(1+r_t),
+ \end{equation}
+so that \(V'(k_{t+1}) = (1-\eta)u'(c_{t+1})(1+r_{t+1})\).
+
+Therefore from \eqref{eq:opt_rbc_bellman} one has
+
+\begin{equation}
+\begin{split}
+u'(c_t) &= \frac{1}{1+\rho}\frac{\mathbb{E}[V'(k_{t+1})]}{1-\eta}\\
+        &=\frac{1}{1+\rho}\frac{1}{1-\eta}\mathbb{E}[(1-\eta)u'(c_{t+1})(1+r_{t+1})]\\
+        &=\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})]
+\end{split}
+\end{equation}
+
+that is the Euler equation is:
+
+\begin{equation}
+u'(c_t) =\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})].
+\end{equation}
+
+
+
+
+
+
 
 
 
