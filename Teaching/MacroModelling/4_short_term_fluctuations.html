@@ -73,7 +73,7 @@ One is however often interested in the short-term dynamics of business cycles.
 <br>
 By and large there exist two main schools of thought ...
 
-  <h3 style="text-align: left;"><b>The Real business cycle model</b></h3>
+  <h3 style="text-align: left;"><b>The Real Business Cycle model</b></h3>
 
 The so called <i>Real busiless cycle model </i>  (RBC) was introduced 
 in 1982 by Kydland and Prescott <a href="#ref1">[1]</a> building on a discrete-time version of the neoclassical growth model framework.
@@ -132,8 +132,10 @@ which is maximised for
 \frac{d V(k_t)}{d c_t} = (1-\eta)u'(c_t)-\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})] = 0,
 \end{equation}
 that is \(\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})]=(1-\eta)u'(c_t)\).
+
 Then, notice that 
  \begin{equation}
+ \label{eq:V_prime}
  \frac{d V(k_t)}{d k_t} = \frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})](1+r_t) = (1-\eta)u'(c_t)(1+r_t),
  \end{equation}
 so that \(V'(k_{t+1}) = (1-\eta)u'(c_{t+1})(1+r_{t+1})\).
@@ -145,14 +147,69 @@ Therefore from \eqref{eq:opt_rbc_bellman} one has
 u'(c_t) &= \frac{1}{1+\rho}\frac{\mathbb{E}[V'(k_{t+1})]}{1-\eta}\\
         &=\frac{1}{1+\rho}\frac{1}{1-\eta}\mathbb{E}[(1-\eta)u'(c_{t+1})(1+r_{t+1})]\\
         &=\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})]
+\end{split}\quad .
+\end{equation}
+
+
+Similarly, for labour-leisure choice one has
+
+\begin{equation}
+\label{eq:opt_rbc_bellman2}
+\frac{d V(k_t)}{d h_t} = \eta\nu'(h_t)-\frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})]w_t = 0,
+\end{equation}
+
+meaning that \(\frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})] = \eta\nu'(h_t)\).
+
+Therefore, putting this result together with \eqref{eq:V_prime}:
+\begin{equation}
+V'(k_{t+1}) = \frac{\eta\nu'(h_{t+1})}{w_{t+1}} (1+r_{t+1})
+\end{equation}
+and
+\begin{equation}
+\begin{split}
+\nu'(h_t) &= \frac{w_t}{\eta(1+\rho)}\mathbb{E}[V'(k_{t+1})]\\
+          &= \frac{1+r_{t+1}}{1+\rho}\mathbb{E}[\frac{w_t}{w_{t+1}}\nu'(h_{t+1})]
+\end{split}\quad.
+\end{equation}
+That is to say, the Euler equations are:
+
+\begin{equation}
+\label{eq:rbc_euler_equations}
+\begin{split}
+u'(c_t) &= \frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})],\\
+\nu'(h_t) &= \frac{1+r_{t+1}}{1+\rho}\mathbb{E}[\frac{w_t}{w_{t+1}}\nu'(h_{t+1})].
 \end{split}
 \end{equation}
 
-that is to say,  the Euler equation is:
+<br>
+In order to clarify the meaning of this result it is useful to look at 
+the deterministic case with log-utility.
+In this case, equations \eqref{eq:rbc_euler_equations} become
 
 \begin{equation}
-u'(c_t) =\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})].
+\begin{split}
+\frac{c_{t+1}}{c_{t}} &= \frac{1+r_{t+1}}{1+\rho},\\
+\frac{h_{t+1}}{h_{t}} &= \frac{1+r_{t+1}}{1+\rho}\frac{w_t}{w_{t+1}}.
+\end{split}
 \end{equation}
+
+Therefore, higher wages increase the supply of labour proportionally to the level of interest rates.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
