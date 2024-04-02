@@ -144,12 +144,12 @@ svg.append("path")
 
 if (isSafari){
  var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
-     ylabeltranslate = (x(0)) + " ," +  y(10),  
+     ylabeltranslate = (x(0)- 15) + " ," +  y(10),  
      f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
      fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
-       ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
+       ylabeltranslate = (x(0)) + " ," +  y(10),  
        f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
        fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
 }
