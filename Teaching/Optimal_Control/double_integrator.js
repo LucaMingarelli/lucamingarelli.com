@@ -1,3 +1,10 @@
+var isOpera = (navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1
+var isEdge = navigator.userAgent.indexOf("Edg") != -1
+var isChrome = navigator.userAgent.indexOf("Chrome") != -1
+var isSafari = navigator.userAgent.indexOf("Safari") != -1
+var isFirefox = navigator.userAgent.indexOf("Firefox") != -1
+var isIE = (navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)
+
 function get_val(y, t0, y0, cond){
   if (cond) {
     traj =  2*t0*(y+2*t0) - (y+2*t0)*(y+2*t0)/2 - t0*t0
@@ -135,10 +142,23 @@ svg.append("path")
 .attr("marker-start", "url(#arrowhead)")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
+if (isSafari){
+ var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
+     ylabeltranslate = (x(0)) + " ," +  y(10),  
+     f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
+     fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
+} else {
+   var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
+       ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
+       f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
+       fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
+}
+
+
 // For x-axis label
 svg.append("g")             
 .attr("transform",
-      "translate(" + x(52) + " ," + (y(0) + 20) + ")")
+      "translate(" + xlabeltranslate + ")")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
@@ -146,11 +166,10 @@ svg.append("g")
     .append("xhtml:div")
     .html("\\(x\\)");
 
-
 // For y-axis label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(0) - 15) + " ," +  y(10) + ")")
+      "translate(" + ylabeltranslate + ")")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
@@ -158,14 +177,10 @@ svg.append("g")
     .append("xhtml:div")
     .html("\\(v\\)");
 
-
-
-
 // For f=1 label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(52) + 15) + " ," + 
-                    (y(-10) + 5) + ")")
+      "translate(" + f1labeltranslate + ")")
 .append("svg:foreignObject")
 .attr("width", 80)
 .attr("height", 20)
@@ -177,8 +192,7 @@ svg.append("g")
 // For f=-1 label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(-52) - 15) + " ," + 
-                    (y(10) + 5) + ")")
+      "translate(" + fm1labeltranslate + ")")
 .append("svg:foreignObject")
     .attr("width", 80)
     .attr("height", 20)
