@@ -143,7 +143,7 @@ svg.append("path")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
 if (isSafari){
- var xlabeltranslate = (x(0) - 15) + " ," +  y(0),   // x(0) + " ," + (y(0)),
+ var xlabeltranslate = (x(0) + 150) + " ," +  y(0),   // x(0) + " ," + (y(0)),
      ylabeltranslate = (x(0) - 15) + " ," +  y(10),   //(x(0)+20) + " ," +  y(10),  
      f1labeltranslate = (x(0) - 15) + " ," +  y(10),  //(x(52) + 15) + " ," + (y(-10) + 5),
      fm1labeltranslate = (x(0) - 15) + " ," +  y(-1), //(x(0) - 15) + " ," + (y(-5)),
@@ -152,7 +152,7 @@ if (isSafari){
      flabel = "",
      fmlabel = "\\(f=-1\\)";
 } else {
-   var xlabeltranslate =  (x(52)+100) + " ," + (y(0) + 20),
+   var xlabeltranslate =  x(52) + " ," + (y(0) + 2),
        ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
        f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
        fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5),
