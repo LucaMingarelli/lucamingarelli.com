@@ -148,8 +148,8 @@ if (isSafari){
      f1labeltranslate = (x(0) - 15) + " ," +  y(10),  //(x(52) + 15) + " ," + (y(-10) + 5),
      fm1labeltranslate = (x(0) - 15) + " ," +  y(10), //(x(0) - 15) + " ," + (y(-5)),
      xlabel = "\\(x\\)",
-     ylabel = "\\(v\\)",
-     flabel = "\\(f=+1\\)",
+     ylabel = "",
+     flabel = "",
      fmlabel = "\\(f=-1\\)";
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
