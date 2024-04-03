@@ -143,10 +143,10 @@ svg.append("path")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
 if (isSafari){
- var xlabeltranslate = (x(0) - 15) + " ," +  y(10),   // x(0) + " ," + (y(0)),
+ var xlabeltranslate = (x(0) - 15) + " ," +  y(0),   // x(0) + " ," + (y(0)),
      ylabeltranslate = (x(0) - 15) + " ," +  y(10),   //(x(0)+20) + " ," +  y(10),  
      f1labeltranslate = (x(0) - 15) + " ," +  y(10),  //(x(52) + 15) + " ," + (y(-10) + 5),
-     fm1labeltranslate = (x(0) - 15) + " ," +  y(10), //(x(0) - 15) + " ," + (y(-5)),
+     fm1labeltranslate = (x(0) - 15) + " ," +  y(-1), //(x(0) - 15) + " ," + (y(-5)),
      xlabel = "\\(x\\)",
      ylabel = "",
      flabel = "",
