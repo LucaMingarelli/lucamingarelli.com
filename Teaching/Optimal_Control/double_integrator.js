@@ -154,6 +154,17 @@ if (isSafari){
      axistransform = "",
      flabeltransform = "",
      fmlabeltransform = "";
+
+
+  // For x-axis label
+svg.append("g")
+.append("svg:foreignObject")
+    .attr("width", 40)
+    .attr("height", 20)
+    .append("xhtml:div")
+    .html(xlabel);
+
+  
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
        ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
