@@ -143,19 +143,23 @@ svg.append("path")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
 if (isSafari){
- var xlabeltranslate = "0,0",   // x(0) + " ," + (y(0)),
-     ylabeltranslate = "0,0",   //(x(0)+20) + " ," +  y(10),  
-     f1labeltranslate = "0,0",  //(x(52) + 15) + " ," + (y(-10) + 5),
-     fm1labeltranslate = "0,0", //(x(0) - 15) + " ," + (y(-5)),
+ var xlabeltranslate = (x(0) - 15) + " ," +  y(10),   // x(0) + " ," + (y(0)),
+     ylabeltranslate = (x(0) - 15) + " ," +  y(10),   //(x(0)+20) + " ," +  y(10),  
+     f1labeltranslate = (x(0) - 15) + " ," +  y(10),  //(x(52) + 15) + " ," + (y(-10) + 5),
+     fm1labeltranslate = (x(0) - 15) + " ," +  y(10), //(x(0) - 15) + " ," + (y(-5)),
      xlabel = "\\(x\\)",
-     ylabel = "\\(SAFARI\\)";
+     ylabel = "\\(v\\)",
+     flabel = "\\(f=+1\\)",
+     fmlabel = "\\(f=-1\\)";
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
        ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
        f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
        fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5),
        xlabel = "\\(x\\)",
-       ylabel = "\\(v\\)";
+       ylabel = "\\(v\\)",
+      flabel = "\\(f=+1\\)",
+      fmlabel = "\\(f=-1\\)";
 }
 console.log(xlabeltranslate, ylabeltranslate, f1labeltranslate, fm1labeltranslate)
 
@@ -190,7 +194,7 @@ svg.append("g")
 .attr("height", 20)
 .attr("transform", "translate(-30,-10)")
 .append("xhtml:div")
-.html("\\(f=+1\\)");
+.html(flabel);
 
 
 // For f=-1 label
@@ -202,7 +206,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-35,-10)")
     .append("xhtml:div")
-    .html("\\(f=-1\\)");
+    .html(fmlabel);
 
 
 // Define the line
