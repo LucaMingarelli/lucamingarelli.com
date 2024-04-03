@@ -146,12 +146,16 @@ if (isSafari){
  var xlabeltranslate = "0,0",   // x(0) + " ," + (y(0)),
      ylabeltranslate = "0,0",   //(x(0)+20) + " ," +  y(10),  
      f1labeltranslate = "0,0",  //(x(52) + 15) + " ," + (y(-10) + 5),
-     fm1labeltranslate = "0,0"; //(x(0) - 15) + " ," + (y(-5));
+     fm1labeltranslate = "0,0", //(x(0) - 15) + " ," + (y(-5)),
+     xlabel = "\\(x\\)",
+     ylabel = "\\(SAFARI\\)";
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
        ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
        f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
-       fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
+       fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5),
+       xlabel = "\\(x\\)",
+       ylabel = "\\(v\\)";
 }
 console.log(xlabeltranslate, ylabeltranslate, f1labeltranslate, fm1labeltranslate)
 
@@ -164,7 +168,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-20,-15)")
     .append("xhtml:div")
-    .html("\\(x\\)");
+    .html(xlabel);
 
 // For y-axis label
 svg.append("g")             
@@ -175,7 +179,7 @@ svg.append("g")
     .attr("height", 20)
     .attr("transform", "translate(-20,-15)")
     .append("xhtml:div")
-    .html("\\(v\\)");
+    .html(ylabel);
 
 // For f=1 label
 svg.append("g")             
