@@ -1,9 +1,9 @@
-var isOpera = (navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1
-var isEdge = navigator.userAgent.indexOf("Edg") != -1
-var isChrome = navigator.userAgent.indexOf("Chrome") != -1
-var isSafari = navigator.userAgent.indexOf("Safari") != -1
-var isFirefox = navigator.userAgent.indexOf("Firefox") != -1
-var isIE = (navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)
+var isOpera = (navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1;
+var isEdge = navigator.userAgent.indexOf("Edg") != -1;
+var isChrome = navigator.userAgent.indexOf("Chrome") != -1;
+var isSafari = navigator.userAgent.indexOf("Safari") != -1;
+var isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
+var isIE = (navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true);
 
 function get_val(y, t0, y0, cond){
   if (cond) {
