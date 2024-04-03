@@ -150,7 +150,10 @@ if (isSafari){
      xlabel = "\\(x\\)",
      ylabel = "",
      flabel = "",
-     fmlabel = "\\(f=-1\\)";
+     fmlabel = "\\(f=-1\\)",
+     axistransform = "",
+     flabeltransform = "",
+     fmlabeltransform = "";
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
        ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
@@ -159,7 +162,10 @@ if (isSafari){
        xlabel = "\\(x\\)",
        ylabel = "\\(v\\)",
       flabel = "\\(f=+1\\)",
-      fmlabel = "\\(f=-1\\)";
+      fmlabel = "\\(f=-1\\)",
+      axistransform = "translate(-20,-15)",
+      flabeltransform = "translate(-30,-10)",
+      fmlabeltransform = "translate(-35,-10)";
 }
 console.log(xlabeltranslate, ylabeltranslate, f1labeltranslate, fm1labeltranslate)
 
@@ -170,7 +176,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(-20,-15)")
+    .attr("transform", axistransform)
     .append("xhtml:div")
     .html(xlabel);
 
@@ -181,7 +187,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(-20,-15)")
+    .attr("transform", axistransform)
     .append("xhtml:div")
     .html(ylabel);
 
@@ -192,7 +198,7 @@ svg.append("g")
 .append("svg:foreignObject")
 .attr("width", 80)
 .attr("height", 20)
-.attr("transform", "translate(-30,-10)")
+.attr("transform", flabeltransform)
 .append("xhtml:div")
 .html(flabel);
 
@@ -204,7 +210,7 @@ svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 80)
     .attr("height", 20)
-    .attr("transform", "translate(-35,-10)")
+    .attr("transform", fmlabeltransform)
     .append("xhtml:div")
     .html(fmlabel);
 
