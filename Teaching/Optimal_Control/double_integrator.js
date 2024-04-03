@@ -143,17 +143,17 @@ svg.append("path")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
 if (isSafari){
- var xlabeltranslate =  x(52) + " ," + (y(0) + 2),
-     ylabeltranslate = (x(0)) + " ," +  y(10),  
+ var xlabeltranslate =  x(50) + " ," + (y(0)),
+     ylabeltranslate = (x(0)+20) + " ," +  y(10),  
      f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
      fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
 } else {
    var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
-       ylabeltranslate = (x(0)) + " ," +  y(10),  
+       ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
        f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
        fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5);
 }
-
+console.log(xlabeltranslate, ylabeltranslate, f1labeltranslate, fm1labeltranslate)
 
 // For x-axis label
 svg.append("g")             
