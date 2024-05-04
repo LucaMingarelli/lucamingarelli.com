@@ -38,7 +38,7 @@ plt.streamplot(Km, Cm, U, V, color=(np.abs(U)+np.abs(V))**0.0001,
 plt.plot(k, c, color='k')
 k_star = (A/(δ+ρ))**2/4
 plt.axvline(k_star, color='k', linewidth=1, ymin=0.155)
-plt.gca().annotate(r"$\dot{c}=0$", xy=(0.135, 0.28), xytext=(0.135, 0.28),annotation_clip=False)
+plt.gca().annotate(r"$\dot{c}=0$", xy=(0.345, 0.28), xytext=(0.345, 0.28),annotation_clip=False)
 plt.gca().annotate(r"$\dot{k}=0$", xy=(0.7, 0.15), xytext=(0.7, 0.15),annotation_clip=False)
 xlim = -0.012, k_max*1.025
 plt.xlim(*xlim)
