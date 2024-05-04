@@ -1,3 +1,10 @@
+var isOpera = (navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1;
+var isEdge = (navigator.userAgent.indexOf("Edg") != -1) & !isOpera;
+var isChrome = (navigator.userAgent.indexOf("Chrome") != -1) & !isOpera & !isEdge;
+var isSafari = (navigator.userAgent.indexOf("Safari") != -1) & !isOpera & !isEdge & !isChrome;
+var isFirefox = (navigator.userAgent.indexOf("Firefox") != -1) & !isOpera & !isEdge & !isChrome & !isSafari;
+var isIE = ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) & !isOpera & !isEdge & !isChrome & !isSafari & !isFirefox;
+
 function get_val(y, t0, y0, cond){
   if (cond) {
     traj =  2*t0*(y+2*t0) - (y+2*t0)*(y+2*t0)/2 - t0*t0
@@ -135,56 +142,88 @@ svg.append("path")
 .attr("marker-start", "url(#arrowhead)")
 .attr("d", `M ${x(0)},${y(9.999)}  ${x(0)},${y(10)}`);
 
-// For x-axis label
-svg.append("g")             
-.attr("transform",
-      "translate(" + x(52) + " ," + (y(0) + 20) + ")")
+if (isSafari){
+ var xlabeltranslate = 150 + " ," +  y(0),   // x(0) + " ," + (y(0)),
+     ylabeltranslate = (x(0) - 15) + " ," +  y(10),   //(x(0)+20) + " ," +  y(10),  
+     f1labeltranslate = (x(0) - 15) + " ," +  y(10),  //(x(52) + 15) + " ," + (y(-10) + 5),
+     fm1labeltranslate = (x(0) - 15) + " ," +  y(-1), //(x(0) - 15) + " ," + (y(-5)),
+     xlabel = "\\(x\\)",
+     ylabel = "",
+     flabel = "",
+     fmlabel = "\\(f=-1\\)",
+     axistransform = "",
+     flabeltransform = "",
+     fmlabeltransform = "";
+
+
+  // For x-axis label
+svg.append("g")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(-20,-15)")
     .append("xhtml:div")
-    .html("\\(x\\)");
+    .html(xlabel);
 
+  
+} else {
+   var xlabeltranslate =  x(52) + " ," + (y(0) + 20),
+       ylabeltranslate = (x(0) - 15) + " ," +  y(10),  
+       f1labeltranslate = (x(52) + 15) + " ," + (y(-10) + 5),
+       fm1labeltranslate = (x(-52) - 15) + " ," + (y(10) + 5),
+       xlabel = "\\(x\\)",
+       ylabel = "\\(v\\)",
+      flabel = "\\(f=+1\\)",
+      fmlabel = "\\(f=-1\\)",
+      axistransform = "translate(-20,-15)",
+      flabeltransform = "translate(-30,-10)",
+      fmlabeltransform = "translate(-35,-10)";
+}
+console.log(xlabeltranslate, ylabeltranslate, f1labeltranslate, fm1labeltranslate)
+
+// For x-axis label
+svg.append("g")             
+.attr("transform",
+      "translate(" + xlabeltranslate + ")")
+.append("svg:foreignObject")
+    .attr("width", 40)
+    .attr("height", 20)
+    .attr("transform", axistransform)
+    .append("xhtml:div")
+    .html(xlabel);
 
 // For y-axis label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(0) - 15) + " ," +  y(10) + ")")
+      "translate(" + ylabeltranslate + ")")
 .append("svg:foreignObject")
     .attr("width", 40)
     .attr("height", 20)
-    .attr("transform", "translate(-20,-15)")
+    .attr("transform", axistransform)
     .append("xhtml:div")
-    .html("\\(v\\)");
-
-
-
+    .html(ylabel);
 
 // For f=1 label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(52) + 15) + " ," + 
-                    (y(-10) + 5) + ")")
+      "translate(" + f1labeltranslate + ")")
 .append("svg:foreignObject")
 .attr("width", 80)
 .attr("height", 20)
-.attr("transform", "translate(-30,-10)")
+.attr("transform", flabeltransform)
 .append("xhtml:div")
-.html("\\(f=+1\\)");
+.html(flabel);
 
 
 // For f=-1 label
 svg.append("g")             
 .attr("transform",
-      "translate(" + (x(-52) - 15) + " ," + 
-                    (y(10) + 5) + ")")
+      "translate(" + fm1labeltranslate + ")")
 .append("svg:foreignObject")
     .attr("width", 80)
     .attr("height", 20)
-    .attr("transform", "translate(-35,-10)")
+    .attr("transform", fmlabeltransform)
     .append("xhtml:div")
-    .html("\\(f=-1\\)");
+    .html(fmlabel);
 
 
 // Define the line
