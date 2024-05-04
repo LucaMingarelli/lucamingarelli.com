@@ -60,7 +60,6 @@
 <script src="https://d3js.org/d3.v5.js"></script>
 
 
-
 <div class="w3-content w3-justify" style="max-width:800px">
 
   <h1 style="text-align: left;"><b>Macro-Economic Modelling 1</b></h1>
@@ -520,18 +519,16 @@ c(t) = ((1-\sigma)A+\sigma\rho)k(t).
 Given an initial state \(k(0)=k_0\) for the capital at time zero, it is trivial to find the following solution:
 
 \begin{equation}
-\begin{align}
-    \begin{bmatrix}
+    \begin{pmatrix}
            k(t) \\
            y(t) \\
            c(t)
-         \end{bmatrix} &= 
-         \begin{bmatrix}
+         \end{pmatrix} = 
+         \begin{pmatrix}
            1 \\
            A \\
            (1-\sigma)A + \sigma\rho
-         \end{bmatrix} k_0 e^{\sigma(A-\rho)t}
-  \end{align}.
+         \end{pmatrix} k_0 e^{\sigma(A-\rho)t}.
 \end{equation}
 
 One interesting feature of this model 
