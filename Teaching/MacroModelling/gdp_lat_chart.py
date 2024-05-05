@@ -30,7 +30,7 @@ gdp_lat.index = ['50°S', '40°S', '30°S', '20°S',
                  '30°N°', '40°N', '50°N°', '60°N°']
 
 
-gdp_lat.plot.bar(legend=False, rot=0, color='black')
+gdp_lat.plot.bar(legend=False, rot=0, color='black', figsize=(8,4))
 plt.xlabel('')
 plt.tight_layout()
 plt.savefig("Teaching/MacroModelling/gdp_lat_chart.svg", transparent=True)
