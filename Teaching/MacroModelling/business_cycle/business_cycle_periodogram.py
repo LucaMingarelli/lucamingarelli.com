@@ -81,6 +81,7 @@ tfp_f = hpfilter(tfp.dropna().cumsum() / 250, 1600)[0]
 
 kwargs = dict(ticks=_TICKS[:5], normalise=True, ticks_multiplier=4,
               k=11, _n=600, _ns=20)
+plt.figure(figsize=(8,4))
 plot_periodogram(gdp_f.values,
                  plot_kwargs=dict(label='GDP', color='k'), **kwargs)
 plot_periodogram(wage_f.values,
