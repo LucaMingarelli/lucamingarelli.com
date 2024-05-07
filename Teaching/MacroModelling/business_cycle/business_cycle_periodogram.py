@@ -101,7 +101,7 @@ plt.annotate('Hours worked', xy=(37.5, 0.75), xytext=(0.75, 0.8), **ann_kwargs)
 plt.annotate('Consumption', xy=(44, 0.17), xytext=(0.825, 0.25), **ann_kwargs)
 
 plt.xlabel('Years')
-plt.ylim(0,1.1)
+plt.ylim(0,1.01)
 plt.yticks([])
 plt.legend(loc='upper left', bbox_to_anchor=[0,0,0,1.1], frameon=False, ncol=4)
 plt.tight_layout(rect=(0,0,1,0.975))
