@@ -38,7 +38,7 @@ plot_periodogram(hpfilter(np.log(unrate), 1600)[0].values,
 
 plt.xlabel('Years')
 plt.ylim(0,1)
-plt.yticks([0,1], [0,1])
+plt.yticks([])
 plt.legend(loc='upper left', bbox_to_anchor=[0,0,0,1.1], frameon=False, ncol=2)
 plt.tight_layout(rect=(0,0,1,0.975))
 plt.savefig("Teaching/MacroModelling/BC_periodogram.svg", transparent=True)
