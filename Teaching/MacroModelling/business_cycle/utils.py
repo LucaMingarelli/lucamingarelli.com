@@ -33,7 +33,7 @@ def smooth_periodogram(x, window='hamming', scaling='density', detrend='linear')
 def plot_periodogram(x, smooth=True, ticks=_TICKS[1:-2], window='hamming',
                      scaling='density', detrend='linear',
                      normalise=False, ticks_multiplier=4,
-                     k=nkr, _n=200, _ns=2, label=None, color=None):
+                     k=nkr, _n=200, _ns=2, plot_kwargs=None):
     freq, spectral_density = periodogram(x, window=window, scaling=scaling, detrend=detrend)
     if smooth:
         freq, spectral_density = smooth_interp(freq, spectral_density, k=k, _n=_n, _ns=_ns)
@@ -44,14 +44,13 @@ def plot_periodogram(x, smooth=True, ticks=_TICKS[1:-2], window='hamming',
     x, y = 1 / freq, spectral_density
     mask = (x>ticks[0] * 4)&(x<ticks[-1]*ticks_multiplier)
     x, y = x[mask], y[mask]
-    line = plt.plot(x, y, color=color, label=label)
+    line = plt.plot(x, y, **plot_kwargs)
     line[0].set_clip_on(False)
     plt.xscale('log')
     ticks = np.array(ticks)
     plt.xticks(ticks * ticks_multiplier, ticks)
     plt.xlim(ticks[0] * 4, ticks[-1]*ticks_multiplier)
     plt.ylim(0, spectral_density[(1 / freq) < ticks_multiplier * ticks[-1]].max())
-
 
 
 
