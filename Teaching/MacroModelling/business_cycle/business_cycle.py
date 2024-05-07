@@ -63,7 +63,7 @@ item = 'TFP' ### TFP, GDP, & Recessions
 
 
 
-fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(8,10),
+fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(8,7),
                         sharex=True, sharey=True)
 
 for n in range(6):
