@@ -93,14 +93,15 @@ for var in (pce_f, hw_f, gpdi_f, tfp_f,
 ## ANNOTATIONS
 ann_kwargs = dict(xycoords='data', textcoords='axes fraction', va='top', ha='left',
                   arrowprops=dict( arrowstyle='-', linewidth=0.5))
-plt.annotate('TFP', xy=(28, 0.9), xytext=(0.53, .985), **ann_kwargs)
+plt.annotate('TFP', xy=(28.1, 0.9), xytext=(0.53, .985), **ann_kwargs)
 plt.annotate('Investment', xy=(27.5, 0.85), xytext=(0.7, .905), **ann_kwargs)
-plt.annotate('Wage', xy=(40, 0.9), xytext=(0.7, .98), **ann_kwargs)
+plt.annotate('Wage', xy=(39, 0.94), xytext=(0.7, .98), **ann_kwargs)
 plt.annotate('Unemployment', xy=(39, 0.8), xytext=(0.75, 0.835), **ann_kwargs)
 plt.annotate('Hours worked', xy=(37.5, 0.75), xytext=(0.75, 0.76), **ann_kwargs)
-plt.annotate('Consumption', xy=(44, 0.17), xytext=(0.825, 0.25), **ann_kwargs)
+plt.annotate('Consumption', xy=(44.1, 0.17), xytext=(0.825, 0.25), **ann_kwargs)
 
 plt.xlabel('Years')
+plt.ylabel('Spectral density')
 plt.ylim(0,1.01)
 plt.yticks([])
 plt.legend(loc='upper left', bbox_to_anchor=[0,0,0,1.1], frameon=False, ncol=4)
