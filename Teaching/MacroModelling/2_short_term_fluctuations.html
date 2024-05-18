@@ -59,6 +59,14 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v5.js"></script>
 
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css"
+/>
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</script>
 
 
 <div class="w3-content w3-justify" style="max-width:800px">
@@ -293,8 +301,8 @@ The RBC model is therefore specified by the dynamical system:
     w_t = (1-\alpha)y_t, & \text{Wage}\\
     c_{t+1} = \beta(1+r_{t+1}) c_t, & \text{Euler Equation for Consumption}\\
     k_{t+1} = (1 - r_t)k_t + l_tw_t - c_t, & \text{Equation of Motion for Capital}\\
-    l_t = 1-\frac{\eta}{1-\eta} \frac{c_t}{w_t}, & \text{Labour Supply}
-
+    l_t = 1-\frac{\eta}{1-\eta} \frac{c_t}{w_t}, & \text{Labour Supply}\\
+    \log(A_{t+1}) = \varphi \log(A_{t}) +\varepsilon_{t+1}, & \text{Log-Productivity AR(1) process}
 \end{cases}
 \end{equation}
 
@@ -321,15 +329,13 @@ using MacroModelling
 import StatsPlots
 
 @model RBC begin
-  r[0] = α * TFP[0] * k[0]^(α-1) * ℓ[0]^(1-α) - δ # Real Rate of Interest: Marginal Product of Capital minus Capital Depreciation 
-  w[0] = (1-α) * y[0]                             # Wage: Marginal Product of Labour
-  c[1] / c[0] = β * (1+r[1])                      # Euler Equation for Consumption
+  r[0] = α * TFP[0] * k[0]^(α-1) * ℓ[0]^(1-α) - δ  # Real Rate of Interest
+  w[0] = (1-α) * y[0]                              # Wage: Marginal Product of Labour
+  c[1] / c[0] = β * (1+r[1])                       # Euler Equation for Consumption
   k[0] = (1 - r[-1]) * k[-1] + ℓ[-1]*w[-1] - c[-1] # EoM
-  # ℓ[1] = 1- β *(1+r[1]) * w[0] / w[1] * (1-ℓ[0])
-  ℓ[0] = 1-η/(1-η) * c[0] / w[0]                  # Labout Supply
-  y[0] = TFP[0] * k[0]^α * ℓ[0]^(1-α)           # Production Function
-  log(TFP[0]) = φ * log(TFP[-1]) + σᶻ * ϵᶻ[x]     # AR(1)
-  
+  ℓ[0] = 1-η/(1-η) * c[0] / w[0]                   # Labout Supply
+  y[0] = TFP[0] * k[0]^α * ℓ[0]^(1-α)              # Production Function
+  log(TFP[0]) = φ * log(TFP[-1]) + σᶻ * ϵᶻ[x]      # AR(1) 
 end
 
 
