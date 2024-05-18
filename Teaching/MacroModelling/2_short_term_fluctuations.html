@@ -334,12 +334,12 @@ import StatsPlots
   k[0] = (1 - r[-1]) * k[-1] + ℓ[-1]*w[-1] - c[-1] # EoM
   ℓ[0] = 1-η/(1-η) * c[0] / w[0]                   # Labout Supply
   y[0] = A[0] * k[0]^α * ℓ[0]^(1-α)                # Production Function
-  log(A[0]) = φ * log(A[-1]) + σᶻ * ϵᶻ[x]          # AR(1) 
+  log(A[0]) = ϕ * log(A[-1]) + σᶻ * ε[x]           # AR(1) 
 end
 
 @parameters RBC begin
   σᶻ= 0.00763
-  φ = 0.9
+  ϕ = 0.9
   δ = 0.025
   α = 0.36
   β = 0.99
@@ -347,9 +347,22 @@ end
 end
 </code></pre>
 
+The associated impulse-response functions, 
+describing the evolution of the (non-stochastic) system
+upon a shock can now be simply obtained as
 
-
-
+<pre><code class="lang-julia"></code>
+plot_irf(RBC, periods=150)
+</code></pre>
+<figure>
+  <img class="center" alt="growth"
+       src="./RBC_IRF.svg"
+       width="100%" >
+  <figcaption><i><b>Fig.1:</b> Business cycles in main US macroeconomic aggregates. 
+    Deviations from the trend are extracted via Hodrick-Prescott filters with \(\lambda=1600\). 
+    Details on series in <a href="#ref1">[1]</a>.
+  </i></figcaption>
+</figure>
 
 
 
