@@ -165,7 +165,7 @@ so that the optimisation problem reads
 \label{eq:rbc_opt_problem}
 \boxed{
 \begin{split}
-&\max_{c_t, h_t}\mathbb{E}\left[\sum_t\beta\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
+&\max_{c_t, h_t}\mathbb{E}\left[\sum_t\beta^t\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
 &\phantom{xxx}\text{subject to}\\
 &k_{t+1} = l_t w_t + (1+r_t)k_t - c_t
 \end{split}
@@ -203,7 +203,7 @@ Therefore from \eqref{eq:opt_rbc_bellman} one has
 \begin{split}
 u'(c_t) &= \beta\frac{\mathbb{E}[V'(k_{t+1})]}{1-\eta}\\
         &=\beta\frac{1}{1-\eta}\mathbb{E}[(1-\eta)u'(c_{t+1})(1+r_{t+1})]\\
-        &=\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})]
+        &=\beta(1+r_{t+1})\mathbb{E}[u'(c_{t+1})]
 \end{split}\quad .
 \end{equation}
 
