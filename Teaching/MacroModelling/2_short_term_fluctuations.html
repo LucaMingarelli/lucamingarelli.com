@@ -319,9 +319,13 @@ x_t = \overline{x}e^{\hat{x}_t} = \overline{x}(1+\hat{x}_t) + \mathcal{O}(\hat{x
 \end{equation}
 
 where the power series expansion has been truncated to first order, but can in principle be taken at arbitrarily higher orders. 
-
+For more details, the interested reader can refer to xxx.
 <br> 
 Here we will solve the model through the convenient Julia library <i><a href="https://thorek1.github.io/MacroModelling.jl/stable">Macromodelling.jl</a></i> <a href="#ref4">[4]</a>.
+We write the dynamical equations \eqref{eq:RBC_system_of_dyn_eqs} 
+adding for completeness the (redundant) implicit equation 
+for the saving rate \(s_t\).
+The choice of the parameters is taken from the empirical literature [xx].
 
 <pre><code class="lang-julia">
 using MacroModelling
@@ -335,6 +339,8 @@ import StatsPlots
   ℓ[0] = 1-η/(1-η) * c[0] / w[0]                   # Labout Supply
   y[0] = A[0] * k[0]^α * ℓ[0]^(1-α)                # Production Function
   log(A[0]) = ϕ * log(A[-1]) + σᶻ * ε[x]           # AR(1) 
+  # -----------------------
+  c[0] =  (1-s[0]) * y[0]                          # Saving rate
 end
 
 @parameters RBC begin
