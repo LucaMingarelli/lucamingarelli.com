@@ -180,23 +180,30 @@ the relative relevance of consumption utility versus leisure utility in the tota
 Problem \eqref{eq:rbc_opt_problem} has Bellman equation
 
 \begin{equation}
-V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\eta\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\right\}
+V(k_t) = \max_{}\Bigl\{(1-\eta)u(c_t)+\eta\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\Bigr\}.
+\end{equation}
+For convenience, denote the right-hand side argument 
+of \eqref{eq:opt_rbc_bellman} by \(\overline{V}_t = (1-\eta)u(c_t)+\eta\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\).
+
+Notice that 
+ \begin{equation}
+ \frac{d \overline{V}_t}{d c_t} = (1-\eta)u'(c_t)-\beta\mathbb{E}[V'(k_{t+1})],
 \end{equation}
 
-which is maximised for
+so that \(\overline{V}_t\) is maximised with respect to consumption \(c_t\) for
+
 \begin{equation}
 \label{eq:opt_rbc_bellman}
-(1-\eta)u'(c_t) = \beta \mathbb{E}[V'(k_{t+1})].
+\beta \mathbb{E}[V'(k_{t+1})] = (1-\eta)u'(c_t).
 \end{equation}
 
-Then, notice that 
- \begin{equation}
- \label{eq:V_prime}
- \frac{d V(k_t)}{d k_t} = \beta\mathbb{E}[V'(k_{t+1})](1+r_t) = (1-\eta)u'(c_t)(1+r_t),
- \end{equation}
-so that \(V'(k_{t+1}) = (1-\eta)u'(c_{t+1})(1+r_{t+1})\).
-
-Therefore from \eqref{eq:opt_rbc_bellman} one has
+Then, observe that
+\begin{equation}
+\label{eq:V_prime}
+\frac{d \overline{V}_t}{d k_t} = \beta\mathbb{E}[V'(k_{t+1})](1+r_t). 
+\end{equation}
+Thus,  \(V'(k_{t+1}) = (1-\eta)u'(c_{t+1})(1+r_{t+1})\),
+and from \eqref{eq:opt_rbc_bellman} one has
 
 \begin{equation}
 \begin{split}
@@ -214,7 +221,7 @@ Similarly, for labour-leisure choice one has
 \frac{d V(k_t)}{d h_t} = \eta\nu'(h_t)-\beta\mathbb{E}[V'(k_{t+1})]w_t = 0,
 \end{equation}
 
-meaning that \(\beta\mathbb{E}[V'(k_{t+1})] = \eta\nu'(h_t)\).
+meaning that \(\beta\mathbb{E}[V'(k_{t+1})] = \eta\nu'(h_t) / w_t\).
 
 Therefore, putting this result together with \eqref{eq:V_prime}:
 \begin{equation}
@@ -238,12 +245,14 @@ u'(c_t) &= (1+r_{t+1})\beta\mathbb{E}[u'(c_{t+1})],\\
 \end{equation}
 
 
-Now, notice that \eqref{eq:opt_rbc_bellman} and \eqref{eq:opt_rbc_bellman2} taken together imply
+Furthermore, notice that \eqref{eq:opt_rbc_bellman} and \eqref{eq:opt_rbc_bellman2} taken together imply
 
 \begin{equation}
-(1-\eta)u'(c_t) = \eta\nu'(h_t) = \eta\nu'(1-l_t).
+\label{eq:rbc_labour_supply0}
+(1-\eta)u'(c_t)w_t = \eta\nu'(h_t) = \eta\nu'(1-l_t),
 \end{equation}
 
+which provides an equation for the supply of labour \(l_t\).
 
 <br>
 In order to clarify the meaning of this result it is useful to look at 
@@ -264,15 +273,61 @@ In this case, equations \eqref{eq:rbc_euler_equations} become
 
 Therefore, higher wages increase the supply of labour proportionally to the level of interest rates.
 
+The labout supply \eqref{eq:rbc_labour_supply0} then reads
 
+\begin{equation}
+\label{eq:rbc_labour_supply}
+l_t = 1-\frac{\eta}{1-\eta} \frac{c_t}{w_t}.
+\end{equation}
 
+Notice that the labour-leisure choice is therefore static, 
+being determined in each specific period from only concurrent states.
+<br>
+The RBC model is therefore specified by the dynamical system:
 
+\begin{equation} 
+\label{eq:RBC_system_of_dyn_eqs}
+\begin{cases}
+    y_t = A_t k_t^\alpha  l_t^{1-\alpha}, & \text{Production function}\\
+    r_t = \alpha A k_t^{\alpha-1}l^{1-\alpha} - \delta, & \text{Real Rate of Interest}\\
+    w_t = (1-\alpha)y_t, & \text{Wage}\\
+    c_{t+1} = \beta(1+r_{t+1}) c_t, & \text{Euler Equation for Consumption}\\
+    k_{t+1} = (1 - r_t)k_t + l_tw_t - c_t, & \text{Equation of Motion for Capital}\\
+    l_t = 1-\frac{\eta}{1-\eta} \frac{c_t}{w_t}, & \text{Labour Supply}
 
+\end{cases}
+\end{equation}
 
+Systems like \eqref{eq:RBC_system_of_dyn_eqs} do not admit 
+closed form solutions, so that the standard approach is to employ perturbation
+methods around the non-stochastic steady state, 
+and by log-linearisation. 
+<br>
+The core idea, for a given state \(x_t\), 
+is to consider the steady state \(\overline{x}\) 
+and the log deviation from it \(\hat{x}_t\equiv\log\left(\frac{x_t}{\overline{x}}\right)\),
+so that one can write 
+\begin{equation}
+x_t = \overline{x}e^{\hat{x}_t} = \overline{x}(1+\hat{x}_t) + \mathcal{O}(\hat{x}_t^2),
+\end{equation}
 
+where the power series expansion has been truncated to first order, but can in principle be taken at arbitrarily higher orders. 
 
+<br> 
+Here we will solve the model through a convenient Julia library: <a href="https://thorek1.github.io/MacroModelling.jl/stable">Macromodelling.jl</a>.
 
-
+<pre><code class="lang-python">
+  import numpy as np
+  import scipy.sparse as sp
+  from functools import lru_cache
+  
+  @lru_cache()
+  def _generate_epsilon(n=None, diff_order=1):
+      row = np.arange(n - diff_order)
+      col = row + diff_order
+      data = np.ones(n - diff_order)
+      return sp.coo_matrix((data, (row, col)), shape=(n, n)).toarray()
+    </code></pre>
 
 
 
