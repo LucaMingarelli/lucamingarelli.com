@@ -165,13 +165,13 @@ so that the optimisation problem reads
 \label{eq:rbc_opt_problem}
 \boxed{
 \begin{split}
-&\max_{c_t, h_t}\mathbb{E}\left[\sum_t\frac{1}{(1+\rho)^t}\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
+&\max_{c_t, h_t}\mathbb{E}\left[\sum_t\beta\left((1-\eta)u(c_t)+\eta\nu(h_t)\right)\right]\\
 &\phantom{xxx}\text{subject to}\\
 &k_{t+1} = l_t w_t + (1+r_t)k_t - c_t
 \end{split}
 }
 \end{equation}
-
+with \(\beta\) the discount factor.
 Notice that the household has two control variables: consumption \(c_t\) and leisure \(h_t\).
 Here \(0 < \eta < 1\) is a mixing parameter determining 
 the relative relevance of consumption utility versus leisure utility in the total utility function ...
@@ -180,20 +180,20 @@ the relative relevance of consumption utility versus leisure utility in the tota
 Problem \eqref{eq:rbc_opt_problem} has Bellman equation
 
 \begin{equation}
-V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\phi\nu(h_t)+\frac{1}{1+\rho}\mathbb{E}\left[V(k_{t+1})\right]\right\}
+V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\phi\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\right\}
 \end{equation}
 
 which is maximised for
 \begin{equation}
 \label{eq:opt_rbc_bellman}
-(1-\eta)u'(c_t)-\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})] = 0,
+(1-\eta)u'(c_t)-\beta \mathbb{E}[V'(k_{t+1})] = 0,
 \end{equation}
-that is \(\frac{1}{1+\rho} \mathbb{E}[V'(k_{t+1})]=(1-\eta)u'(c_t)\).
+that is \(\beta \mathbb{E}[V'(k_{t+1})]=(1-\eta)u'(c_t)\).
 
 Then, notice that 
  \begin{equation}
  \label{eq:V_prime}
- \frac{d V(k_t)}{d k_t} = \frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})](1+r_t) = (1-\eta)u'(c_t)(1+r_t),
+ \frac{d V(k_t)}{d k_t} = \beta\mathbb{E}[V'(k_{t+1})](1+r_t) = (1-\eta)u'(c_t)(1+r_t),
  \end{equation}
 so that \(V'(k_{t+1}) = (1-\eta)u'(c_{t+1})(1+r_{t+1})\).
 
@@ -201,8 +201,8 @@ Therefore from \eqref{eq:opt_rbc_bellman} one has
 
 \begin{equation}
 \begin{split}
-u'(c_t) &= \frac{1}{1+\rho}\frac{\mathbb{E}[V'(k_{t+1})]}{1-\eta}\\
-        &=\frac{1}{1+\rho}\frac{1}{1-\eta}\mathbb{E}[(1-\eta)u'(c_{t+1})(1+r_{t+1})]\\
+u'(c_t) &= \beta\frac{\mathbb{E}[V'(k_{t+1})]}{1-\eta}\\
+        &=\beta\frac{1}{1-\eta}\mathbb{E}[(1-\eta)u'(c_{t+1})(1+r_{t+1})]\\
         &=\frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})]
 \end{split}\quad .
 \end{equation}
@@ -212,10 +212,10 @@ Similarly, for labour-leisure choice one has
 
 \begin{equation}
 \label{eq:opt_rbc_bellman2}
-\frac{d V(k_t)}{d h_t} = \eta\nu'(h_t)-\frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})]w_t = 0,
+\frac{d V(k_t)}{d h_t} = \eta\nu'(h_t)-\beta\mathbb{E}[V'(k_{t+1})]w_t = 0,
 \end{equation}
 
-meaning that \(\frac{1}{1+\rho}\mathbb{E}[V'(k_{t+1})] = \eta\nu'(h_t)\).
+meaning that \(\beta\mathbb{E}[V'(k_{t+1})] = \eta\nu'(h_t)\).
 
 Therefore, putting this result together with \eqref{eq:V_prime}:
 \begin{equation}
@@ -240,7 +240,12 @@ u'(c_t) &= \frac{1+r_{t+1}}{1+\rho}\mathbb{E}[u'(c_{t+1})],\\
 
 <br>
 In order to clarify the meaning of this result it is useful to look at 
-the deterministic case with log-utility.
+the deterministic case with log-utility:
+
+\begin{equation}
+U(c_t, h_t) = (1-\phi)u(c_t) + \phi \nu(h_t). = (1-\phi)log(c_t) + \phi log(h_t).
+\end{equation}
+
 In this case, equations \eqref{eq:rbc_euler_equations} become
 
 \begin{equation}
