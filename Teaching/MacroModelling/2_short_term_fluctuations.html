@@ -180,15 +180,14 @@ the relative relevance of consumption utility versus leisure utility in the tota
 Problem \eqref{eq:rbc_opt_problem} has Bellman equation
 
 \begin{equation}
-V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\phi\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\right\}
+V(k_t) = \max_{}\left\{(1-\eta)u(c_t)+\eta\nu(h_t)+\beta\mathbb{E}\left[V(k_{t+1})\right]\right\}
 \end{equation}
 
 which is maximised for
 \begin{equation}
 \label{eq:opt_rbc_bellman}
-(1-\eta)u'(c_t)-\beta \mathbb{E}[V'(k_{t+1})] = 0,
+(1-\eta)u'(c_t) = \beta \mathbb{E}[V'(k_{t+1})].
 \end{equation}
-that is \(\beta \mathbb{E}[V'(k_{t+1})]=(1-\eta)u'(c_t)\).
 
 Then, notice that 
  \begin{equation}
