@@ -290,7 +290,7 @@ l_t = 1-\frac{\eta}{1-\eta} \frac{c_t}{w_t}.
 Notice that the labour-leisure choice is therefore static, 
 being determined in each specific period from only concurrent states.
 <br>
-The RBC model is therefore specified by the dynamical system:
+Summing up, the RBC model is therefore specified by the dynamical system:
 
 \begin{equation} 
 \label{eq:RBC_system_of_dyn_eqs}
@@ -321,7 +321,7 @@ x_t = \overline{x}e^{\hat{x}_t} = \overline{x}(1+\hat{x}_t) + \mathcal{O}(\hat{x
 where the power series expansion has been truncated to first order, but can in principle be taken at arbitrarily higher orders. 
 For more details, the interested reader can refer to xxx.
 <br> 
-Here we will solve the model through the convenient Julia library <i><a href="https://thorek1.github.io/MacroModelling.jl/stable">Macromodelling.jl</a></i> <a href="#ref4">[4]</a>.
+Here however, we will solve the model through the convenient Julia library <i><a href="https://thorek1.github.io/MacroModelling.jl/stable">Macromodelling.jl</a></i> <a href="#ref4">[4]</a>.
 We write the dynamical equations \eqref{eq:RBC_system_of_dyn_eqs} 
 adding for completeness the (redundant) implicit equation 
 for the saving rate \(s_t\).
@@ -365,7 +365,8 @@ upon a shock can now be simply obtained as
        src="./RBC_IRF.svg"
        width="100%" >
   <figcaption><i><b>Fig.3:</b> Impulse-response functions for the RBC model. 
-    The solid black lines denote the steady states.
+    The solid black lines denote the steady states, and the right-axis denote percentage deviations from the steady state.
+
   </i></figcaption>
 </figure>
 
