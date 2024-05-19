@@ -760,7 +760,7 @@ th:last-child {
 
 As we have seen, business cycles in the RBC are the result of <i>optimal</i> responses of the economy to (exhogenous) disturbances.
 This has the stark consequence that counter-cyclical policies are undesirable as interfering with the optimal dynamics of the economic system.
- 
+
 
 <br>
 Money neutrality - xxx
@@ -775,8 +775,62 @@ Money neutrality - xxx
   <h3 style="text-align: left;"><b>The New Keynesian model</b></h3>
 
 
+  If the RBC framework is based on the notion that business cycles are optimal adjustment of the economy to external shocks, 
+  the New Kensian view is instead characterised at its core by a prominent role of imperfect competition.
 
 
+  <br>
+
+  <h3 style="text-align: left;"><b>Calvo Model</b></h3>
+Consider an economy populated by a continuum of monopolistically-competitive firms (EXPLAIN).
+Each firm sets sets its ouptu privr in yrtmd og yhr fomrdyiv vuttrnvy snf vsn vhsnhr iy onlu ehrn iy trvribrd  ptice-change signal. The rpobability of receiiving sucha signal speriods from now is assumed to be independent of the last time the first got the signal and given by
+
+\begin{equation}
+\alpha e^{-\alpha s}, \quad \alpha>0
+\end{equation}
+
+
+
+\begin{equation}
+p_t = \alpha \int_\infty^t \nu_s e^{-\alpha(t-s)}ds
+\end{equation}
+
+\begin{equation}
+\nu_t = p_t + \alpha \int_t^\infty \left(\nu_s - p_s + \eta x_s\right)e^{(\alpha+\rho)(t-s)}ds
+\end{equation}
+
+\begin{equation}
+\pi_t \equiv \dot{p}_t = \alpha \left(nu_t-p_t\right)
+\end{equation}
+
+and 
+
+
+\begin{equation}
+\dot{\nu}_t-\dot{p}_t = -\alpha\eta x_t + \rho\left(\nu_t p_t\right)
+\end{equation}
+
+which taken together with \eqref{xxx} gives
+
+\begin{equation}
+\dot{\nu}_t-\dot{p}_t = -\alpha\eta x_t + \frac{\rho}{\alpha}\pi_t
+\end{equation}
+
+
+Finally, the second derivative of xxx yields
+\begin{equation}
+\boxed{
+\dot{\pi}_t = \rho\pi_t - \kappa x_t
+}
+\end{equation}
+
+The latter can be solved forward in time to yields
+
+\begin{equation}
+\pi_t = \int_t^\infty k x_s e^{-\rho(s-t)} ds
+\end{equation}
+
+that is inflation is the present discounted value of all future output gaps.
 
 
 <br><br>
