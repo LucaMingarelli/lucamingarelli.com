@@ -20,7 +20,7 @@ gdp_f = hpfilter(np.log(gdp), 1600)[0]
 dff = fred.get_series('DFF')
 dff.index = pd.to_datetime(dff.index)
 dff = dff[dff.index.isin(gdp.index)]
-dff_f = hpfilter(np.log(dff), 1600)[0]
+dff_f = hpfilter(dff, 1600)[0]
 
 pce = fred.get_series('PCE')
 pce.index = pd.to_datetime(pce.index)
@@ -51,7 +51,8 @@ tfp_f = hpfilter(tfp.dropna().cumsum() / 250, 1600)[0]
 
 ############ STDs
 
-print(dff_f.std()*100)
+
+print(dff.std()*100)
 print(gdp_f.std()*100)
 print(pce_f.std()*100)
 print(wage_f.std()*100)
@@ -63,12 +64,13 @@ def corr(x, y):
     return np.corrcoef(jf.iloc[:,0], jf.iloc[:,1])
 
 
-corr(x=gdp_f, y=dff_f)[0][1]
+
 corr(x=gdp_f, y=pce_f)[0][1]
 corr(x=gdp_f, y=wage_f)[0][1]
 corr(x=gdp_f, y=tfp_f)[0][1]
 corr(x=pce_f, y=wage_f)[0][1]
 corr(x=tfp_f, y=wage_f)[0][1]
+corr(x=tfp_f, y=pce_f)[0][1]
 
 
 
