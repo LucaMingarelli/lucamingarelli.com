@@ -792,7 +792,7 @@ The households' maximisation problem is
 \label{eq:nk_opt_problem}
 \boxed{
 \begin{split}
-&\max_{C, L}\int_0^\infty e^{-\rho t}u(C(t), L(t))\\
+&\max_{C, L}\int_0^\infty e^{-\rho t}u(C(t), L(t)) dt\\
 &\phantom{xxx}\text{subject to}\\
 &P(t)C(t) + \dot{B}(t) = i(t) B(t) + W(t)L(t)
 \end{split}
@@ -807,12 +807,8 @@ H = u(C(t), L(t))e^{-\rho t}+\lambda(t)\left[iB+WL-PC\right],
 with associated co-state equation
 
 \begin{equation}
-\dot{\lambda} = -\frac{\partial H}{\partial B} =-\lambda(t) i(t),
-\end{equation}
-or 
-\begin{equation}
 \label{eq:costate_nk0}
-\frac{\dot{\lambda}}{\lambda} = - i.
+\dot{\lambda} = -\frac{\partial H}{\partial B} =-\lambda(t) i(t).
 \end{equation}
 
 On the other hand, Pontryagin's maximum principle requires
@@ -826,7 +822,7 @@ that is
 \lambda(t) = \frac{\partial_C u }{P(t)}e^{-\rho t} .
 \end{equation}
 
-Taking the first order time derivative  and  taking \eqref{eq:pmp_nk0} into account,
+Taking the first order time derivative  and  accounting for \eqref{eq:pmp_nk0},
 one finds
 
 
@@ -850,32 +846,12 @@ one finally obtains the Euler equation for consumption:
 \end{equation}
 
 
-
-
-
-
-
-
-
-
-
+Clearing in the goods markets requires that all goods produced are consumed, that is 
+\(Y(t)=C(t), \quad \forall t\).
 
 
   <br>
-Consider the production function xxx
 
-xxx
-
-we arrive at the Euler equation
-
-\begin{equation}
-\frac{\dot{c}}{c} = \sigma (r_t-\rho)
-\end{equation}
-
-
-\(C_t = Y_t\)
-
-defining \(r_t\equiv i_t - \pi_t\) then
 
 \begin{equation}
 \dot{Y} = \sigma(i_t - \pi_t-\rho)
@@ -917,7 +893,17 @@ Finally, defining the so called <i>Wicksellian interest rate</i> also known as
 
 
 
-On the supply side we consider a continuum of monopolistically-competitive firms (EXPLAIN).
+
+On the supply side we consider a continuum of monopolistically-competitive firms indexed by \(j \in [0,1]\), 
+producing different goods using the same technology according to the production function
+
+\begin{equation}
+Y_j(t) = A L_j(t)^{1-\alpha}.
+\end{equation}
+
+Following Calvo <a href="#ref8">[8]</a>, each firm may adjust its price at any point in time with 
+probability \(1-\theta\) and independent from previous price adjustments.
+
 Each firm sets its ouptu privr in yrtmd og yhr fomrdyiv vuttrnvy snf vsn vhsnhr iy onlu ehrn iy trvribrd  ptice-change signal. The rpobability of receiiving sucha signal speriods from now is assumed to be independent of the last time the first got the signal and given by
 
 \begin{equation}
