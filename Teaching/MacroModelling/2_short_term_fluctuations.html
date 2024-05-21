@@ -778,6 +778,88 @@ Money neutrality - xxx
   If the RBC framework is based on the notion that business cycles are optimal adjustment of the economy to external shocks, 
   the New Kensian view is instead characterised at its core by a prominent role of imperfect competition.
 
+<br>
+For simplicity we start by considering a non-stochastic continuous time model:
+this is helpful to fix ideas, and to highlight the core dynamics. 
+Then, as done before, we will consider a discrete-time stochastic version which lends itself more to practical applications.
+
+<br>
+Consider an economy with no capital, where households provide labour \(L\) in exchange of wage \(W\),
+can invest in a bond \(B\) paying a nominal interest rate \(i\), and maximise utility with respect to both consumption \(C\) and labour.
+The households' maximisation problem is 
+
+\begin{equation}
+\label{eq:nk_opt_problem}
+\boxed{
+\begin{split}
+&\max_{C, L}\int_0^\infty e^{-\rho t}u(C(t), L(t))\\
+&\phantom{xxx}\text{subject to}\\
+&P(t)C(t) + \dot{B}(t) = i(t) B(t) + W(t)L(t)
+\end{split}
+}
+\end{equation}
+The present-value Hamiltonian is
+
+\begin{equation}
+H = u(C(t), L(t))e^{-\rho t}+\lambda(t)\left[iB+WL-PC\right],
+\end{equation}
+
+with associated co-state equation
+
+\begin{equation}
+\dot{\lambda} = -\frac{\partial H}{\partial B} =-\lambda(t) i(t),
+\end{equation}
+or 
+\begin{equation}
+\label{eq:costate_nk0}
+\frac{\dot{\lambda}}{\lambda} = - i.
+\end{equation}
+
+On the other hand, Pontryagin's maximum principle requires
+\begin{equation}
+\frac{\partial H}{\partial C} = e^{-\rho t} \partial_C u - P(t)\lambda(t)= 0
+\end{equation}
+
+that is
+\begin{equation}
+\label{eq:pmp_nk0}
+\lambda(t) = \frac{\partial_C u }{P(t)}e^{-\rho t} .
+\end{equation}
+
+Taking the first order time derivative  and  taking \eqref{eq:pmp_nk0} into account,
+one finds
+
+
+\begin{equation}
+\frac{\dot{\lambda}}{\lambda} = - \frac{\dot{P}}{P} + \frac{\partial_C^2 u}{\partial_C u}\dot{C}-\rho.
+\end{equation}
+
+The <i>inflation rate</i> \(\pi(t)\) is defined by 
+
+\begin{equation}
+\label{eq:inflation_rate_definition}
+\pi = \frac{\dot{P}}{P}.
+\end{equation}
+
+Therefore, pluggin in \eqref{eq:costate_nk0} and \eqref{eq:inflation_rate_definition}, 
+and recalling the identification \(\partial_Cu/\partial^2_Cu = -\sigma C \) with \(\sigma\) the elasticity of intertemporal substitution in consumption, 
+one finally obtains the Euler equation for consumption:
+
+\begin{equation}
+\frac{\dot{C}}{C} = \sigma\left(i-\pi-\rho\right).
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
 
   <br>
 Consider the production function xxx
@@ -831,9 +913,12 @@ Finally, defining the so called <i>Wicksellian interest rate</i> also known as
 
 
 
-  <h3 style="text-align: left;"><b>Calvo Model</b></h3>
-Consider an economy populated by a continuum of monopolistically-competitive firms (EXPLAIN).
-Each firm sets sets its ouptu privr in yrtmd og yhr fomrdyiv vuttrnvy snf vsn vhsnhr iy onlu ehrn iy trvribrd  ptice-change signal. The rpobability of receiiving sucha signal speriods from now is assumed to be independent of the last time the first got the signal and given by
+
+
+
+
+On the supply side we consider a continuum of monopolistically-competitive firms (EXPLAIN).
+Each firm sets its ouptu privr in yrtmd og yhr fomrdyiv vuttrnvy snf vsn vhsnhr iy onlu ehrn iy trvribrd  ptice-change signal. The rpobability of receiiving sucha signal speriods from now is assumed to be independent of the last time the first got the signal and given by
 
 \begin{equation}
 \alpha e^{-\alpha s}, \quad \alpha>0
@@ -881,6 +966,40 @@ The latter can be solved forward in time to yields
 \end{equation}
 
 that is inflation is the present discounted value of all future output gaps.
+
+
+
+
+
+
+
+https://benjaminmoll.com/wp-content/uploads/2019/07/Lecture2_ECO521.pdf
+
+
+
+
+Why Should You Care?
+• Simple framework to think about relationship between monetary
+policy, inflation and the business cycle
+• RBC model: cannot even think about these issues! Real variables
+are completely separate from nominal variables (“monetary
+neutrality”, “classical dichotomy”)
+• Corollary: monetary policy has no effect on any real variables
+• Sticky prices break “monetary neutrality”
+• Workhorse model at central banks (see Fed presentation
+https://www.dropbox.com/s/74x17k3pgq1h5g2/MacroModelsAtTheFed.pdf?dl=0)
+• Makes some sense of newspaper statements like: “a boom leads
+the economy to overheat and creates inflationary pressure”
+• Some reason to believe that “demand shocks” (e.g. consumer
+confidence, animal spirits) may drive business cycle. Sticky prices
+= one way to get this story off the ground.
+
+
+
+
+
+
+
 
 
 <br><br>
