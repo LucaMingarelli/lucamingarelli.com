@@ -19,11 +19,12 @@ rn = ρ + g/σ
 xlim = -0.05, 0.05
 ylim = -0.07, 0.07
 
-x = np.linspace(*xlim, 200)
+
+x = np.linspace(*xlim, 600)
 π1 = θ ** 2 / ρ * x
 π2 = -φ_x * x / (φ_π - 1)
 
-πm, xm = np.mgrid[ylim[0]:ylim[1]:200j, xlim[0]:xlim[1]:200j]
+πm, xm = np.mgrid[ylim[0]:ylim[1]:600j, xlim[0]:xlim[1]:600j]
 
 U = σ * ((φ_π - 1) * πm + φ_x * x)
 V = ρ * πm - θ ** 2 * xm
