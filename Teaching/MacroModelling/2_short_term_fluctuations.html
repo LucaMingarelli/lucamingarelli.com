@@ -75,6 +75,50 @@
 <h2 style="text-align: left;"><b>Short Term Dynamics: Fluctuations and the Business Cycle </b></h2>
 
 
+
+Following Calvo <a href="#ref8">[8]</a>, each firm may adjust its price with respect to the price level by \(xxx\) at any point in time with 
+probability \(\theta\) and independently from previous price adjustments and other firms; that is to say, price adjustments follow independent Poisson processes.
+
+
+Denote the price set by firm 
+\(j\) at time 
+\(s\) when it adjusts as 
+\(P^*(s)\), independent of which firm is adjusting. 
+Further, define the indicator \(I_j(s)\) to unity 
+if firm \(j\) adjusts its price at time \(s\), zero otherwise.
+
+Then one can write the current price of firm \(j\)
+as a sums of contributions of all past price settings
+weighted by the probability that they remain unchanged 
+until the current time \(t\):
+
+\begin{equation}
+P_j(t) = \int_{-\infty}^tP^*(s)I_j(s)e^{-\theta(t-s)} ds.
+\end{equation}
+
+The average price set by adjusting firms at time \(s\) is
+\(\int_{0}^1 P^*(s)I_j(s) dj = P^*(s)\theta\).
+
+Therefore, the aggregate price level is
+
+\begin{equation}
+\begin{split}
+P(t) &\equiv \int_0^1 P_j(t) dj\\
+      &= \int_0^1\int_{-\infty}^tP^*(s)I_j(s)e^{-\theta(t-s)} ds dj\\
+      &= \int_{-\infty}^tP^*(s)\left(\int_0^1I_j(s)dj \right)e^{-\theta(t-s)} ds\\
+      &= \int_{-\infty}^t P^*(s)\theta e^{-\theta(t-s)} ds
+.
+\end{split}
+\end{equation}
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+
+
 The previous chapter has focused on long-term dynamics and the process of capital accumulation.
 One is however often interested in the short-term dynamics of <i>business cycles</i>, 
 that is fluctuations in output and employment around a long-term trend. 
@@ -898,18 +942,29 @@ On the supply side we consider a continuum of monopolistically-competitive firms
 producing different goods using the same technology according to the production function
 
 \begin{equation}
-Y_j(t) = A L_j(t)^{1-\alpha}.
+Y_j(t) = A L_j(t)^{1-\alpha},
 \end{equation}
 
-Following Calvo <a href="#ref8">[8]</a>, each firm may adjust its price at any point in time with 
-probability \(1-\theta\) and independent from previous price adjustments.
+and setting their price \(P_j(t)\).
 
-Each firm sets its ouptu privr in yrtmd og yhr fomrdyiv vuttrnvy snf vsn vhsnhr iy onlu ehrn iy trvribrd  ptice-change signal. The rpobability of receiiving sucha signal speriods from now is assumed to be independent of the last time the first got the signal and given by
+Aggregate output is thus \(Y(t) = \int_0^1Y_j(t) dj\), 
+and the <i>price level</i> is
 
 \begin{equation}
-\alpha e^{-\alpha s}, \quad \alpha>0
+P(t) = \int_0^1 P_j(t) dj.
 \end{equation}
 
+Following Calvo <a href="#ref8">[8]</a>, each firm may adjust its price with respect to the price level by \(xxx\) at any point in time with 
+probability \(\theta\) and independently from previous price adjustments and other firms; that is to say, price adjustments follow independent Poisson processes.
+
+The probability that a firm adjusts its price in an interval \(\tau>0\) of time is therefore \(\theta e^{-\theta \tau}\).
+
+
+
+
+<br>
+
+<!-- This is equivalent to say <a href="#ref9">[9]</a> that a fraction of firms \(\theta\) adjusts its prices per unit of time. -->
 
 
 \begin{equation}
@@ -1014,11 +1069,13 @@ confidence, animal spirits) may drive business cycle. Sticky prices
   <br><br>
   [8] <a href="https://www.sciencedirect.com/science/article/pii/0304393283900600" id="ref8">"Staggered prices in a utility-maximizing framework",Guillermo A. Calvo, Journal of Monetary Economics, Volume 12, Issue 3, September 1983, Pages 383-398 . </a>
   <br><br>
-  [9] <a href="https://www.sciencedirect.com/science/article/pii/S0304393296900409" id="ref9">"Nominal price rigidity, money supply endogeneity, and business cycles", Tack Yun, Journal of Monetary Economics, Volume 37, Issue 2, April 1996, Pages 345-370. </a>
+  [9] <span id="ref9">By the law of large numbers. </a>
   <br><br>
-  [10] <a href="" id="ref10">"", . </a>
+  [10] <a href="https://www.sciencedirect.com/science/article/pii/S0304393296900409" id="ref10">"Nominal price rigidity, money supply endogeneity, and business cycles", Tack Yun, Journal of Monetary Economics, Volume 37, Issue 2, April 1996, Pages 345-370. </a>
   <br><br>
   [11] <a href="" id="ref11">"", . </a>
+  <br><br>
+  [12] <a href="" id="ref12">"", . </a>
   <br><br>
 
       <br>
