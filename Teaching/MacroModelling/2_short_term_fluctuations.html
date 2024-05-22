@@ -76,16 +76,20 @@
 
 
 
-Following Calvo <a href="#ref8">[8]</a>, each firm may adjust its price with respect to the price level by \(xxx\) at any point in time with 
-probability \(\theta\) and independently from previous price adjustments and other firms; that is to say, price adjustments follow independent Poisson processes.
+Following Calvo <a href="#ref8">[8]</a>, 
+each firm may adjust its price at any point in time with 
+probability \(\theta\) 
+and independently from previous price adjustments and other firms; 
+that is to say, price adjustments follow independent Poisson processes.
 
 
-Denote the price set by firm 
-\(j\) at time 
-\(s\) when it adjusts as 
-\(P^*(s)\), independent of which firm is adjusting. 
-Further, define the indicator \(I_j(s)\) to unity 
-if firm \(j\) adjusts its price at time \(s\), zero otherwise.
+Denote the log-price of firm \(j\) at time \(t\) by \(p_j(t)=\log{P_j(t)}\), 
+and the log-price set by firm 
+\(j\) when it adjusts as 
+\(p^*(s)\), independent of which firm is adjusting. 
+Further, define the indicator \(I_j(t)\) to unity 
+if firm \(j\) adjusts its price at time \(t\), zero otherwise.
+
 
 Then one can write the current price of firm \(j\)
 as a sums of contributions of all past price settings
@@ -93,23 +97,66 @@ weighted by the probability that they remain unchanged
 until the current time \(t\):
 
 \begin{equation}
-P_j(t) = \int_{-\infty}^tP^*(s)I_j(s)e^{-\theta(t-s)} ds.
+p_j(t) = \int_{-\infty}^t p^*(s)I_j(s)e^{-\theta(t-s)} ds.
 \end{equation}
 
 The average price set by adjusting firms at time \(s\) is
-\(\int_{0}^1 P^*(s)I_j(s) dj = P^*(s)\theta\).
+\(\int_{0}^1 p^*(s)I_j(s) dj = p^*(s)\theta\).
 
 Therefore, the aggregate price level is
 
 \begin{equation}
+\label{eq:log_price_level_calvo}
 \begin{split}
-P(t) &\equiv \int_0^1 P_j(t) dj\\
-      &= \int_0^1\int_{-\infty}^tP^*(s)I_j(s)e^{-\theta(t-s)} ds dj\\
-      &= \int_{-\infty}^tP^*(s)\left(\int_0^1I_j(s)dj \right)e^{-\theta(t-s)} ds\\
-      &= \int_{-\infty}^t P^*(s)\theta e^{-\theta(t-s)} ds
+p(t) &\equiv \int_0^1 p_j(t) dj\\
+      &= \int_0^1\int_{-\infty}^t p^*(s)I_j(s)e^{-\theta(t-s)} ds dj\\
+      &= \int_{-\infty}^t p^*(s)\left(\int_0^1I_j(s)dj \right)e^{-\theta(t-s)} ds\\
+      &= \theta\int_{-\infty}^t p^*(s) e^{-\theta(t-s)} ds
 .
 \end{split}
 \end{equation}
+
+The <i>optimal</i> price adustment \(\delta p_j(t) = p^*(t)-p_j(t)\) 
+chosen by each firm at time \(t\) is computed as 
+the sum of all future discounted price adjustments and output gaps 
+weighted by the probability they will have to adjust in the future REF. 
+That is, in terms of aggregate price adjustment \(\delta p(t) = p^*(t)-p(t)\):
+
+\begin{equation}
+\label{eq:log_price_adjustment_calvo}
+\delta p(t) = \theta\int_{t}^\infty e^{-\rho(s-t)}\left(\delta p(s)+x(s)\right)e^{-\theta(s-t)} ds.
+\end{equation}
+
+Differentiating \eqref{eq:log_price_level_calvo} and \eqref{eq:log_price_adjustment_calvo}
+therefore yields
+\begin{equation}
+\begin{split}
+\dot{p}(t) &= \theta\delta p(t)\\
+\dot{\delta p}(t) &= -\theta x(t) +\rho\delta p(t)
+\end{split}
+\end{equation}
+which together with the definition \(\pi(t) = \dot{p}(t)\) of the <i>inflation rate</i> give
+\begin{equation}
+\dot{\delta p}(t) = -\theta x(t) +\frac{\rho}{\theta}\pi(t).
+\end{equation}
+
+Finally, from the second derivative of \eqref{eq:log_price_level_calvo} 
+we obtain
+\begin{equation}
+\label{eq:nk_phillips_curve}
+\boxed{
+\dot{\pi}(t) = \rho \pi(t) -\theta^2x(t)
+}
+\end{equation}
+
+which is known as the <i>New Keynesian Phillips curve</i>.
+
+
+
+
+
+
+
 
 
 <br><br><br><br><br><br><br>
