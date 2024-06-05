@@ -405,6 +405,7 @@ while Pontryagin's maximum principle demands
 \end{equation}
 with transversality condition
 \begin{equation}
+\label{eq:transversality_condition_ramsey}
 \lim_{t\rightarrow\infty} \lambda(t)k(t) = 0.
 \end{equation}
 These are also referred to as <i>first order conditions</i> (FOC).
@@ -451,7 +452,12 @@ c^* &= f(k^*)-nk^*.
 \end{equation}
 
 This equilibrium point is a saddle point.
-The phase space of Ramsey's neoclassical growth model is depicted in Fig. 3. 
+The phase space of Ramsey's neoclassical growth model is depicted in Fig. 3: 
+of all possible trajectories, only one is allowed, the so called <i>saddle path</i> solution (in red in Fig. 3), 
+which is also the only trajectory intersecting the steady state defined by \eqref{eq:ramsey_steady_state}.
+All other trajectories are ruled out by the transversality condition \eqref{eq:transversality_condition_ramsey} .
+
+
 
 <figure>
   <img class="center" alt="growth"
@@ -462,7 +468,7 @@ The phase space of Ramsey's neoclassical growth model is depicted in Fig. 3.
     Similarly, the region to the left of the boundary \(\dot{c}=0\) 
     corresponds to \(\dot{c} > 0\) and the region to its right to \(\dot{c} < 0\).
     The non-trivial steady state \eqref{eq:ramsey_steady_state} is indicated by the red dot, while two more black dots 
-    at the origin and at \((k, c) = (f(k^*)/n, 0)\) indicate the other two steady states.
+    at the origin and at \((k, c) = (f(k^*)/n, 0)\) indicate the other two steady states. The saddle path solution is depicted in red.
   </i></figcaption>
 </figure>
 
