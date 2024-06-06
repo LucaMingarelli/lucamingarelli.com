@@ -89,7 +89,7 @@ for i,(x,y) in enumerate(zip(ksp_u[::10], csp_u[::10])):
 # plt.ylim(*ylim)
 # plt.show()
 
-plt.gca().annotate(r"$\dot{c}=0$", xy=(0.345, 0.28), xytext=(0.345, 0.28),annotation_clip=False)
+plt.gca().annotate(r"$\dot{c}=0$", xy=(0.345, 0.335), xytext=(0.345, 0.335),annotation_clip=False)
 plt.gca().annotate(r"$\dot{k}=0$", xy=(0.7, 0.15), xytext=(0.7, 0.15),annotation_clip=False)
 xlim = -0.012, k_max*1.025
 plt.xlim(*xlim)
