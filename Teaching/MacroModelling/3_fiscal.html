@@ -73,7 +73,17 @@ they, as any other economic agent, are subject to a budget constraint.
 In particular, the present value of government's spending \(G\) cannot exceed 
 the present value of tax revenues \(T\) net initial government debt/wealth outstanding \(D\).
 <br>
-Denoting the discount factor \(e^{-R(t)}=\exp\left(-\int_{0}^t r(t')dt'\right)\), with \(r(t)\) the istantaneous real interest rate, 
+The stock of debt \(D\) 
+increases (decreases) as a function of 
+<i>primary deficits</i> (<i>surpluses</i>) \(G-T\) plus interest payments \(r(t)D(t)\), with \(r(t)\) the istantaneous real interest rate.
+Thus, \(D\) is governed by
+
+\begin{equation}
+\label{eq:gov_debt_stock_eom}
+\dot{D}(t) = G(t)-T(t) + r(t)D(t).
+\end{equation}
+
+Denoting the discount factor \(e^{-R(t)}=\exp\left(-\int_{0}^t r(t')dt'\right)\), 
 the government budget constraint reads 
 
 \begin{equation}
@@ -105,16 +115,14 @@ nor from continuously expanding it, as long as its growth rate is less than the 
 
     <h6>Exercise 1</h6>
     Show that \eqref{eq:gov_BC2} follows directly from \eqref{eq:gov_BC}.
-    To do so, keep in mind that debt \(D(t)\) at time \(t\) can be written as debt at time \(t=0\) 
-    plus all deficits \(G(t')-T(t')\) at all \(t' < t \).
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-          To start, notice that
+          To start, notice that integration of \eqref{eq:gov_debt_stock_eom} yields
           \begin{equation}
           D(t) = e^{R(t)}D(0)+\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'
           \end{equation}
-          can be equivalently written as
+          which can be equivalently written as
           \begin{equation}
           \begin{split}
           e^{-R(t)}D(t) - D(0) &= e^{-R(t)}\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'\\
