@@ -68,31 +68,33 @@
 <h2 style="text-align: left;"><b>Fiscal Policy </b></h2>
 
 
-  <b>Definition 1 — Control function</b><blockquote><i> 
-    A <strong>control function</strong>
-    \(\mathbf{\gamma}(t)\) is a map from time \(t\in [0, \infty)\) to the set of <i>admissable controls</i> \(\Gamma\).
-    <br>
-    The control is also called a <strong>policy</strong>.
-    
-    </blockquote></i>
-    <br>
+Governments cannot create resources out of thin-air: 
+they, as any other economic agent, are subject to a budget constraint. 
+In particular, the present value of government's spending \(G\) cannot exceed 
+the present value of tax revenues \(T\) net initial government debt/wealth outstanding \(D\).
+<br>
+Denoting the discount factor \(e^{-R(t)}=\exp\left(-\int_{0}^t r(t')dt'\right)\), with \(r(t)\) the istantaneous real interest rate, 
+the government budget constraint reads 
+
+\begin{equation}
+\label{eq:gov_BC}
+\int_0^\infty e^{-R(t)}G(t)dt \le \int_0^\infty e^{-R(t)}T(t)dt - D(0).
+\end{equation}
+
+This constraint can equivalently be written as 
+\begin{equation}
+\label{eq:gov_BC2}
+\lim_{t\rightarrow\infty}e^{-R(t)}D(t) \le  0,
+\end{equation}
+implying that the present value of government debt must be non-positive.
+
+Notice that nothing prevents the government from never repaying its debt 
+(it can continously roll it over)
+nor from continuously expanding it, as long as its growth rate is less than the real interest rate. 
 
 
 
-
-    <b>Theorem 13 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
-
-    The value function is the unique viscosity solution to the stochastic Hamilton-Jacobi-Bellman equation
-    \begin{equation}
-    -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
-      + \nabla_x V(x, t) \cdot f(x, \gamma, t) 
-      + \frac{1}{2}\text{Tr}\left[\sigma^T(x, \gamma, t)\nabla_x^2V(x, t)\sigma(x, \gamma, t)\right]
-      \right\},
-    \end{equation}
-      with \(V(X, T) = \phi(X(T))\).
-  </blockquote></i>
-
-    <br><br>
+<br><br>
 
 
 
@@ -102,11 +104,29 @@
     <hr class="w3-opacity">
 
     <h6>Exercise 1</h6>
-    S
+    Show that \eqref{eq:gov_BC2} follows directly from \eqref{eq:gov_BC}.
+    To do so, keep in mind that debt \(D(t)\) at time \(t\) can be written as debt at time \(t=0\) 
+    plus all deficits \(G(t')-T(t')\) at all \(t' < t \).
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        
+          To start, notice that
+          \begin{equation}
+          D(t) = e^{R(t)}D(0)+\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'
+          \end{equation}
+          can be equivalently written as
+          \begin{equation}
+          \begin{split}
+          e^{-R(t)}D(t) - D(0) &= e^{-R(t)}\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'\\
+          &= \int_0^t e^{-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'\\
+          \end{split}.
+          \end{equation}
+          Taking the limit \(t\rightarrow\infty\) one obtains:
+          
+          \begin{equation}
+          \lim_{t\rightarrow\infty}e^{-R(t)}D(t) - D(0) =  \int_0^\infty e^{-R(t)}\Bigl(G(t)-T(t)\Bigr) dt,
+          \end{equation}
+          which plugged into \eqref{eq:gov_BC} gives the desired result \eqref{eq:gov_BC2}.
     
         <p align="right"> ◻</p>
     </div>
@@ -131,7 +151,7 @@
 <br><br>
   <h4 id="REFERENCES"><i>References and notes</i></h4>
 
-  [1] <a href="https://link.springer.com/article/10.1007/BF02419594" id="ref1">"Über zwei Euler’sche Aufgaben aus der Variationsrechnung", Oskar Bolza, 1913, Annali di Matematica Pura ed Applicata</a>
+  [1] <span id="ref1">That is, minus its initial wealth.</span>
   <br><br>
   [2] <a href="https://arxiv.org/pdf/1909.03192.pdf" id="ref2">"Analytic Solution of the Time-Optimal Control of a Double Integrator from an Arbitrary State to the State-space Origin", Marcello Romano, and Fabio Curti, 2019. </a>
   <br><br>
