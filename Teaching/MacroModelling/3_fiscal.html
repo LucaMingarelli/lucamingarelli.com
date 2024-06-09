@@ -112,20 +112,36 @@ nor from continuously expanding it, as long as its growth rate is less than the 
     <hr class="w3-opacity">
 
     <h6>Exercise 1</h6>
-    Show that \eqref{eq:gov_BC2} follows directly from \eqref{eq:gov_BC}.
+    Integrate \eqref{eq:gov_debt_stock_eom} to find an expression for \(D(t)\). 
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
 
-          To start, integrate \eqref{eq:gov_debt_stock_eom}: to do that, realise the integrating factor is \(\exp(-\int r(t)dt)=e^{-R(t)}\). 
+          To start, realise the integrating factor is \(\exp(-\int r(t)dt)=e^{-R(t)}\). 
           Multiplying through one gets
           \begin{equation}
           \begin{split}
           e^{-R(t)}\frac{dD(t)}{dt}-e^{-R(t)}r(t)D(t) &= e^{-R(t)}G(t)-e^{-R(t)}T(t)\\
           \int_0^t e^{-R(t')}\frac{dD(t')}{dt'}-e^{-R(t')}r(t')D(t') dt' &= \int_0^t e^{-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'\\
-          e^{-R(t)}D(t)-D(0) &= \int_0^t e^{-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'\\
-          D(t) &= e^{R(t)}D(0)+\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'
+          e^{-R(t)}D(t)-D(0) &= \int_0^t e^{-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'
           \end{split}
+          \end{equation}
+          Therefore:
+          \begin{equation}
+          D(t) &= e^{R(t)}D(0)+\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'.
+          \end{equation}
+    
+        <p align="right"> ◻</p>
+    </div>
+    
+    <h6>Exercise 2</h6>
+    Show that \eqref{eq:gov_BC2} follows directly from \eqref{eq:gov_BC}.
+    <br>
+    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
+        <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
+          To start, realise (cf. Exercise 1) that integration of \eqref{eq:gov_debt_stock_eom} yields 
+          \begin{equation}
+          D(t) = e^{R(t)}D(0)+\int_0^t e^{R(t)-R(t')}\Bigl(G(t')-T(t')\Bigr) dt'
           \end{equation}
           which can be equivalently written as
           \begin{equation}
@@ -140,16 +156,7 @@ nor from continuously expanding it, as long as its growth rate is less than the 
           \lim_{t\rightarrow\infty}e^{-R(t)}D(t) - D(0) =  \int_0^\infty e^{-R(t)}\Bigl(G(t)-T(t)\Bigr) dt,
           \end{equation}
           which plugged into \eqref{eq:gov_BC} gives the desired result \eqref{eq:gov_BC2}.
-    
-        <p align="right"> ◻</p>
-    </div>
-    
-    <h6>Exercise 2</h6>
-    Show that a p
-    <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
-        <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        Consider 
+     
     
     
         <p align="right"> ◻</p>
