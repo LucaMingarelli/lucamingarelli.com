@@ -172,19 +172,61 @@ nor from continuously expanding it, as long as its growth rate is less than the 
     is there any real implication of the government's choice 
     to finance itself via debt or via taxes?
     To answer this question let us consider the 
-    <a href="https://lucamingarelli.com/Teaching/MacroModelling/1_growth_theory.html#ramsey_NGM">Ramsey NGM model </a>
+    <a href="https://lucamingarelli.com/Teaching/MacroModelling/1_growth_theory.html#ramsey_NGM">Ramsey NGM model </a>.
+    In addition, let us further assume that:
+    <ol>
+      <li>The government satisfies its budget constraint with equality</li>
+      <li>The financing cost of households and the government is the same (\(r_G=r_H=r\))</li>
+      <li>Taxes are lump-sum</li>
+      <li>Taxes do not enter directly into the households' utility function</li>
+    </ol>
+    The household's budget constraint requires that the present value of consumption
+    does not exceed after-tax income (wage \(W\) minus tax \(T\)) plus any initial wealth (capital plus debt):
+    \begin{equation}
+    \int_0^\infty e^{-R(t)}C(t)dt\le \int_0^\infty e^{-R(t)}\Bigl(W(t)-T(t)\Bigr)dt + K(0)+D(0).
+    \end{equation}
+    Accounting for \eqref{eq:gov_BC} with <i>assumption 1</i> then implies that 
+    \begin{equation}
+    \label{eq:ricardian_HH_budget_constraint}
+    \int_0^\infty e^{-R(t)}C(t)dt\le \int_0^\infty e^{-R(t)}\Bigl(W(t)-G(t)\Bigr)dt + K(0).
+    \end{equation}
+    Looking at \eqref{eq:ricardian_HH_budget_constraint} it is apparent that 
+    what enters the budget constraint of households is only the present value of government spending \(G\),
+    regardless of how this was financed.
+    Therefore, one finds an important result: 
+    only government spending impacts consumption and capital accumulation, 
+    not whether this spending is financed via debt or taxes. 
+    Or put differently, additional government debt is equivalent to present or future additional taxation.
+    <br>
+    This equivalence principle was first proposed in the late 19th century by Ricardo <a href="#ref1">[1]</a>, reason for which it goes by the name of <i>Ricardian equivalence</i>, 
+    but the derivation in the context of the NGM is due to Barro <a href="#ref2">[2]</a>.
+    <br>
+    This result rests however on a number of assumptions which fundamentally determine 
+    the extent to which Ricardian equivalence may hold in practice: let's consider each in turn.
+    <br>
+    First, the NGM comes with the assumption of infinitely lived households. 
+    This is clearly not true in reality, but it can be shown that such a world is equivalent
+    to one in which finitely-lived households care about the wellbeing of the next generation <a href="#ref3">[3]</a>
+    as shown in <a href="#ref2">[2]</a>. 
+    Moreover, albeit finite, 
+    the average houshold lifespan is substantially longer 
+    than the typical government financing schedule <a href="#ref4">[4]</a>, implying that Ricardian equivalence may be at least a good approximation.
+    <br>
 
+    
 <br><br>
   <h4 id="REFERENCES"><i>References and notes</i></h4>
 
-  [1] <span id="ref1">That is, minus its initial wealth.</span>
+  <b>[1]</b> <span id="ref1"> "Essay on the Funding System" in The Works of David Ricardo, David Ricardo, London: John Murray, 1888.</span>
   <br><br>
-  [2] <a href="https://arxiv.org/pdf/1909.03192.pdf" id="ref2">"Analytic Solution of the Time-Optimal Control of a Double Integrator from an Arbitrary State to the State-space Origin", Marcello Romano, and Fabio Curti, 2019. </a>
+  <b>[2]</b> <a href="https://www.jstor.org/stable/1830663" id="ref2">"Are Government Bonds Net Wealth?", Robert J. Barro, Journal of Political Economy, Vol. 82, No. 6 (1974). </a>
   <br><br>
-  [3] <a href="https://gwern.net/doc/statistics/decision/1957-bellman-dynamicprogramming.pdf" id="ref3">"Dynamic Programming", Richard Bellman, 1957, Chap. III.3. </a>
+  <b>[3]</b> <span id="ref3">That is they derive utility from the consumption level of the future generation. </span>
+  <br><br>
+  <b>[4]</b> <a href="https://www.sciencedirect.com/science/article/pii/0304393287900213" id="ref4">"Finite lifetimes and the effects of budget deficits on national saving", James Poterba and Lawrence Summers, Journal of Monetary Economics, 1987, vol. 20, issue 2, 369-391. </a>
   <br><br>
 
-      <br>
+  <br>
 
 <!--  https://bookdown.org/egarpor/NP-UC3M/kde-ii-asymp.html-->
 <!--  https://bookdown.org/egarpor/NP-EAFIT/intro-nonpar.html-->
