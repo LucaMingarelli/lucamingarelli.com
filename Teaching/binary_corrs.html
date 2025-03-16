@@ -110,13 +110,15 @@
         // Add legend
         const legend = svg.append("g").attr("transform", `translate(${width - 100}, 20)`);
         
-        legend.append("rect").attr("x", 0).attr("y", 0).attr("width", 12).attr("height", 12).attr("fill", "red");
+        legend.append("rect").attr("x", 0).attr("y", 0).attr("width", 12).attr("height", 12).attr("fill", "blue");
         legend.append("text").attr("x", 20).attr("y", 10).attr("class", "legend mathjax-label")
-            .text("\\( \\phi_{\\text{min}} \\)");
+              .append("xhtml:div")
+              .text("\\( \\phi_{\\text{min}} \\)");
         
-        legend.append("rect").attr("x", 0).attr("y", 20).attr("width", 12).attr("height", 12).attr("fill", "blue");
+        legend.append("rect").attr("x", 0).attr("y", 20).attr("width", 12).attr("height", 12).attr("fill", "red");
         legend.append("text").attr("x", 20).attr("y", 30).attr("class", "legend mathjax-label")
-            .text("\( \phi_{\text{max}} \)");
+              .append("xhtml:div")    
+              .text("\\( \\phi_{\\text{max}} \\)");
 
         function computePhi(p1, p2) {
             let q1 = 1 - p1, q2 = 1 - p2;
