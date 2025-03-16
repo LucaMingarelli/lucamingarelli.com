@@ -88,7 +88,7 @@ return { phiMin, phiMax };
 }
 
 function updatePlot(p2) {
-let data = d3.range(0, 1.01, 0.01).map(p1 => {
+let data = d3.range(0, 1.01, 0.001).map(p1 => {
 let { phiMin, phiMax } = computePhi(p1, p2);
 return { p1, phiMin, phiMax };
 });
