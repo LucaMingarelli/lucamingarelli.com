@@ -89,7 +89,7 @@
         g.append("g").attr("transform", `translate(0,${height})`).attr("class", "axis").call(d3.axisBottom(xScale));
         g.append("g").attr("class", "axis").call(d3.axisLeft(yScale));
         
-        g.append("text")
+        g.append("svg:foreignObject")
             .attr("class", "axis-label")
             .attr("x", width / 2)
             .attr("y", height + 35)
