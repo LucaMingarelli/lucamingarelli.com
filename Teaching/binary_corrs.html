@@ -92,6 +92,7 @@
             .attr("x", width / 2)
             .attr("y", height + 35)
             .style("text-anchor", "middle")
+            .append("xhtml:div")
             .text("\\(p_X\\)");
 
         g.append("text")
@@ -100,7 +101,8 @@
             .attr("x", -height / 2)
             .attr("y", -40)
             .style("text-anchor", "middle")
-            .text("\\(\rho\\)");
+            .append("xhtml:div")
+            .text("\\(\\rho\\)");
 
         const lineMin = g.append("path").attr("fill", "none").attr("stroke", "red").attr("stroke-width", 2);
         const lineMax = g.append("path").attr("fill", "none").attr("stroke", "blue").attr("stroke-width", 2);
