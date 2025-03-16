@@ -2,7 +2,7 @@
 // width = +svg.attr("width") - margin.left - margin.right,
 // height = +svg.attr("height") - margin.top - margin.bottom;
 
-var margin = {top: 30, bottom: 70, right: document.getElementById("correlation_bounds_interactive").offsetWidth/8, left: document.getElementById("correlation_bounds_interactive").offsetWidth/8},
+var margin = {top: 10, bottom: 70, right: document.getElementById("correlation_bounds_interactive").offsetWidth/8, left: document.getElementById("correlation_bounds_interactive").offsetWidth/8},
 width = document.getElementById("correlation_bounds_interactive").offsetWidth*3/4 - document.getElementById("correlation_bounds_interactive").offsetWidth/4,
 height = 350 - margin.top - margin.bottom;
 
