@@ -131,4 +131,4 @@ updatePlot(p2);
 });
 
 // Initial plot rendering.
-updatePlot(0.5);
+updatePlot(0.3);
