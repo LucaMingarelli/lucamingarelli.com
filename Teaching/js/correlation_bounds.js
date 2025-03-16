@@ -35,7 +35,7 @@ g.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("\\(\\phi\\)");
+.html("\\(\\rho\\)");
 
 const lineMin = g.append("path")
             .attr("fill", "none")
@@ -61,7 +61,7 @@ legend.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("\\(\\phi_{\\text{min}}\\)");
+.html("\\(\\rho_{\\text{min}}\\)");
 
 legend.append("rect")
 .attr("x", 0)
@@ -75,7 +75,7 @@ legend.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("\\(\\phi_{\\text{max}}\\)");
+.html("\\(\\rho_{\\text{max}}\\)");
 
 function computePhi(p1, p2) {
 let q1 = 1 - p1, q2 = 1 - p2;

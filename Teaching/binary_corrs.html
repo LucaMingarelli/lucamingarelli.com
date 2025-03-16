@@ -76,13 +76,13 @@ When considering two binary variates \(X,Y\in \{0,1\}\times\{0,1\}\),
 the correlation coefficient \(\rho\) between the two cannot span the full range \([-1,1]\). 
 Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations are bounded as
     \begin{equation}\label{eq:achievable_corrs}
-        \phi_{\text{min}} \le \rho \le \phi_{\text{max}},
+        \rho_{\text{min}} \le \rho \le \rho_{\text{max}},
     \end{equation}
     where 
     \begin{equation}
     \begin{split}
-    \phi_{\text{min}} &= \text{max}\left(-\sqrt{\frac{p_X p_Y}{ q_X q_Y}}, -\sqrt{\frac{q_X q_Y}{p_Xp_Y}}\right)\\
-    \phi_{\text{max}} &= \text{min}\left(\sqrt{\frac{p_X q_Y}{ p_Y q_X}}, \sqrt{\frac{p_Y q_X}{p_X q_Y}}\right).
+    \rho_{\text{min}} &= \text{max}\left(-\sqrt{\frac{p_X p_Y}{ q_X q_Y}}, -\sqrt{\frac{q_X q_Y}{p_Xp_Y}}\right)\\
+    \rho_{\text{max}} &= \text{min}\left(\sqrt{\frac{p_X q_Y}{ p_Y q_X}}, \sqrt{\frac{p_Y q_X}{p_X q_Y}}\right).
     \end{split}
     \label{eq:correlation_bounds}
     \end{equation}
@@ -128,7 +128,7 @@ Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations ar
                 \rho &\le \min\left(\frac{p_X+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Y+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
     &= \min\left(\frac{p_Xq_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Yq_X}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
     &= \min\left(\sqrt{\frac{p_Xq_Y}{q_Xp_Y}}, \sqrt{\frac{p_Yq_X}{p_Xq_Y}}\right)\\
-    &=\phi_{\text{max}}.
+    &=\rho_{\text{max}}.
         \end{split}
     \end{equation}
     This proves the second bound in \eqref{eq:correlation_bounds}.
@@ -153,7 +153,7 @@ Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations ar
             \rho &\ge \max\left(-\frac{p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{-p_Xp_Y+p_X+p_Y-1}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
             &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
             &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \sqrt{-\frac{q_Xq_Y}{p_Xp_Y}}\right)\\
-            &=\phi_{\text{min}}.
+            &=\rho_{\text{min}}.
         \end{split}
     \end{equation}
     
