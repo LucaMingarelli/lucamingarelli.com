@@ -1,13 +1,19 @@
-const svg = d3.select("svg"),
-margin = { top: 20, right: 30, bottom: 40, left: 50 },
+// margin = { top: 20, right: 30, bottom: 40, left: 50 },
 // width = +svg.attr("width") - margin.left - margin.right,
 // height = +svg.attr("height") - margin.top - margin.bottom;
 
-const containerWidth = svg.node().parentNode.clientWidth;
-const width = 0.8 * containerWidth- margin.left - margin.right,;
-const height = width - margin.top - margin.bottom;
-svg.attr("width", width)
-   .attr("height", height);
+var margin = {top: 30, bottom: 30, right: document.getElementById("correlation_bounds_interactive").offsetWidth/8, left: document.getElementById("correlation_bounds_interactive").offsetWidth/8},
+width = document.getElementById("correlation_bounds_interactive").offsetWidth*3/4 - document.getElementById("correlation_bounds_interactive").offsetWidth/4,
+height = 350 - margin.top - margin.bottom;
+
+var svg = d3.select("#correlation_bounds_interactive")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform",
+    "translate(" + margin.left + "," + margin.top + ")");
+
 
 
 const xScale = d3.scaleLinear().domain([0, 1]).range([0, width]);
