@@ -4,7 +4,7 @@
 
 var margin = {top: 5, bottom: 70, right: 70, left: 70},
 width = document.getElementById("correlation_bounds_interactive").offsetWidth*0.8,
-height = width//350 - margin.top - margin.bottom;
+height = width*3/4//350 - margin.top - margin.bottom;
 
 var svg = d3.select("#correlation_bounds_interactive")
 .append("svg")
