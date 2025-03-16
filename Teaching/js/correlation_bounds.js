@@ -75,7 +75,7 @@ legend.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("$\\phi_{\\text{max}}$");
+.html("\\(\\phi_{\\text{max}}\\)");
 
 function computePhi(p1, p2) {
 let q1 = 1 - p1, q2 = 1 - p2;
