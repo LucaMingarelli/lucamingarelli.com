@@ -1,7 +1,14 @@
 const svg = d3.select("svg"),
 margin = { top: 20, right: 30, bottom: 40, left: 50 },
-width = +svg.attr("width") - margin.left - margin.right,
-height = +svg.attr("height") - margin.top - margin.bottom;
+// width = +svg.attr("width") - margin.left - margin.right,
+// height = +svg.attr("height") - margin.top - margin.bottom;
+
+const containerWidth = svg.node().parentNode.clientWidth;
+const width = 0.8 * containerWidth- margin.left - margin.right,;
+const height = width - margin.top - margin.bottom;
+svg.attr("width", width)
+   .attr("height", height);
+
 
 const xScale = d3.scaleLinear().domain([0, 1]).range([0, width]);
 const yScale = d3.scaleLinear().domain([-1, 1]).range([height, 0]);
