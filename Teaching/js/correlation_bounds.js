@@ -63,13 +63,13 @@ const lineMax = g.append("path")
 const legend = svg.append("g").attr("transform", `translate(${width - 100}, 20)`);
 
 legend.append("rect")
-.attr("x", 0)
+.attr("x", 50)
 .attr("y", 0)
 .attr("width", 12)
 .attr("height", 12)
 .attr("fill", "blue");
 legend.append("svg:foreignObject")
-.attr("x", 20)
+.attr("x", 70)
 .attr("y", -3)
 .attr("width", 40)
 .attr("height", 20)
@@ -77,13 +77,13 @@ legend.append("svg:foreignObject")
 .html("\\(\\rho_{\\text{min}}\\)");
 
 legend.append("rect")
-.attr("x", 0)
+.attr("x", 50)
 .attr("y", 20)
 .attr("width", 12)
 .attr("height", 12)
 .attr("fill", "red");
 legend.append("svg:foreignObject")
-.attr("x", 20)
+.attr("x", 70)
 .attr("y", 17)
 .attr("width", 40)
 .attr("height", 20)
