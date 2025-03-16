@@ -152,7 +152,6 @@ Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations ar
             \rho\sqrt{p_Xq_Xp_Yq_Y}-p_Xp_Y &\ge \max\left(0, p_X+p_Y-1\right)\\
             \rho &\ge \max\left(-\frac{p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{-p_Xp_Y+p_X+p_Y-1}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
             &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
-            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
             &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \sqrt{-\frac{q_Xq_Y}{p_Xp_Y}}\right)\\
             &=\phi_{\text{min}}.
         \end{split}
@@ -187,7 +186,7 @@ Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations ar
          src="img/Dependence/achievable_corrs.svg"
          width="80%" >
     <figcaption><i><b>Fig.1:</b> Correlation bounds (cf. equation \eqref{eq:achievable_corrs}) as a function of marginal probabilities. 
-        Negative correlations are increasingly limited when $p_X$ and $p_Y$ are both large or both small; 
+        Negative correlations are increasingly limited when \(p_X\) and \(p_Y\) are both large or both small; 
         conversely, positive correlations are limited when \(p_X\) is large and \(p_Y\) is small or vice versa.
     </i></figcaption>
 </figure>
