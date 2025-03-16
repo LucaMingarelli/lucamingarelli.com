@@ -60,11 +60,101 @@
 
     <h1 style="text-align: left;"><b>Correlation for binary variates</b></h1>
 
-    For convenience, one often desires to summarise
-    the dependency structure of a multivariate distribution
-    with a single scalar metric. The most common measures is
-    linear correlation. However this metric is known to have its
-    severe pitfalls in many general cases, and better measures should be considered.
+
+    It is worth recalling that while for continuous variates there exist numerous distinct correlation metrics, such as Pearson correlation $\rho$, Spearman's rho $\rho_S$, and Kendall's tau $\tau$, all of these become equivalent when considering binary variates instead: $\rho(X, Y)=\rho_S(X, Y)=\tau(X, Y)$. The Yule phi coefficient \citep{Yule1912} (also known as the mean square contingency coefficient or the Matthews correlation coefficient in the ML literature)
+    is a measure of the association of two binary variables, which is also equivalent to Pearson's correlation coefficient in the case of dichotomous variables.
+    
+    
+    When considering two binary variates $X,Y\in \{0,1\}\times\{0,1\}$, the correlation coefficient $\rho$ between the two cannot span the full range $[-1,1]$. Instead, denoting by $p_j=\mathbb{P}(j)$ and $q_j = 1- p_j$, correlations are bounded as
+    \begin{equation}\label{eq:achievable_corrs}
+        \phi_{\text{min}} \le \rho \le \phi_{\text{max}},
+    \end{equation}
+    where 
+    \begin{equation}
+    \begin{split}
+    \phi_{\text{min}} &= \text{max}\left(-\sqrt{\frac{p_X p_Y}{ q_X q_Y}}, -\sqrt{\frac{q_X q_Y}{p_Xp_Y}}\right)\\
+    \phi_{\text{max}} &= \text{min}\left(\sqrt{\frac{p_X q_Y}{ p_Y q_X}}, \sqrt{\frac{p_Y q_X}{p_X q_Y}}\right).
+    \end{split}
+    \label{eq:correlation_bounds}
+    \end{equation}
+    
+    To see that, let us start by recalling that a Bernoulli random vector $(X, Y)$ takes values in the Cartesian product space $\{0,1\}\times \{0,1\}$, with probability mass function given by:
+    
+    \begin{equation}\label{eq:bernoulli_bivariate}
+        f(x, y) = p_{11}^{xy}p_{10}^{x(1-y)}p_{01}^{(1-x)y}p_{00}^{(1-x)(1-y)}
+    \end{equation}
+    where $p_{ij}=\mathbb{P}(X=i, Y=j)$, and $p_{00}+p_{01}+p_{10}+p_{11}=1$. The marginal probabilities of $X$ and $Y$ are then clearly given by 
+    \begin{equation}
+        \begin{split}
+            p_X &= p_{10} + p_{11},\\
+            p_Y &= p_{01} + p_{11}.\\
+        \end{split}
+    \end{equation}
+    Obviously, $\mathbb{E}(X) = p_X$ and $\mathbb{E}(Y) = p_Y$.
+    Therefore, recalling that
+    
+    \begin{equation}
+    \begin{split}
+    \rho &= \frac{\text{cov}\left(X, Y\right)}{\sigma_X\sigma_Y}\\
+         &= \frac{\mathbb{E}\left[XY\right]-\mathbb{E}\left[X\right]\mathbb{E}\left[Y\right]}{\sqrt{p_Xq_Xp_Yq_Y}}\\
+         &= \frac{\mathbb{E}\left[XY\right]-p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}.
+    \end{split}
+    \end{equation}
+    Noting that
+    $$
+    \mathbb{E}[XY] = \sum_{x,y}xyp_{xy}=p_{11},
+    $$
+    (since all terms where either $x$ or $y$ are zero, cancel out) one obtains
+    
+    \begin{equation}
+    \rho = \frac{p_{11}-p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}.
+    \end{equation}
+    At this point, notice that one must always have $p_{11}\le \min\left(p_X, p_Y\right)$. Hence:
+    
+    \begin{equation}
+        \begin{split}
+            \rho\sqrt{p_Xq_Xp_Yq_Y}-p_Xp_Y &\le \min\left(p_X, p_Y\right)\\
+                \rho &\le \min\left(\frac{p_X+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Y+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+    &= \min\left(\frac{p_Xq_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Yq_X}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+    &= \min\left(\sqrt{\frac{p_Xq_Y}{q_Xp_Y}}, \sqrt{\frac{p_Yq_X}{p_Xq_Y}}\right)\\
+    &=\phi_{\text{max}}.
+        \end{split}
+    \end{equation}
+    This proves the second bound in \eqref{eq:correlation_bounds}.
+    To prove the lower bound instead, consider that every joint probability must be non-negative: $p_{ij}\ge0$ for all $i$ and $j$. This means that 
+    \begin{equation}
+        \begin{split}
+            p_{00}&=1-p_{01}-p_{10}-p_{11}\\
+                  &=1-p_X-p_Y+p_{11}\ge0\\
+            p{11}&\ge p_X+p_Y-1,
+        \end{split}
+    \end{equation}
+    
+    which implies 
+    \begin{equation}
+       p{11} \ge \max\left(0, p_X+p_Y-1\right) .
+    \end{equation}
+    
+    As before, this results in:
+    \begin{equation}
+        \begin{split}
+            \rho\sqrt{p_Xq_Xp_Yq_Y}-p_Xp_Y &\ge \max\left(0, p_X+p_Y-1\right)\\
+            \rho &\ge \max\left(-\frac{p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{-p_Xp_Y+p_X+p_Y-1}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \sqrt{-\frac{q_Xq_Y}{p_Xp_Y}}\right)\\
+            &=\phi_{\text{min}}.
+        \end{split}
+    \end{equation}
+    
+    The bounds con the correlation $\rho$ from \eqref{eq:correlation_bounds} are plotted in Figure \ref{fig:achievable_corrs}.
+    \begin{figure}[!ht]
+    \includegraphics[width=\linewidth]{img/distribs/achievable_corrs.png}
+    \caption{Correlation bounds (cf. equation \eqref{eq:achievable_corrs}) as a function of marginal probabilities. Negative correlations are increasingly limited when $p_1$ and $p_2$ are both large or both small; conversely, positive correlations are limited when $p_1$ is large and $p_2$ is small or vice versa.} \label{fig:achievable_corrs}
+    \end{figure}
+    Notice in particular, that $|\phi_{\text{min}}|$ is maximal when $p_1=q_2$, while $|\phi_{\text{max}}|$ is maximal when $p_1=p_2$. Conversely, the constraint on how negative correlations can get ($\phi_{\text{min}}$) is more binding when either both marginals are small $p_1\approx p_2\approx0$, or when both marginals are large $p_1\approx p_2\approx1$. Likewise, the constraint on how positive correlations can get ($\phi_{\text{max}}$) is more binding when $|p_1-p_2|\approx1$, that is when one is large and the other small. Finally, the full range of possible correlations $[-1,1]$ is achievable only for $p_1=p_2=\frac{1}{2}$.
+    
+    
 
     <br><br>
     <div>
@@ -155,6 +245,15 @@
         
         updatePlot(0.5);
     </script>
+
+<figure>
+    <img class="center" alt="tail_dependence"
+         src="img/Dependence/corrbounds.svg"
+         width="80%" >
+    <figcaption><i><b>Fig.1:</b> Correlation bounds.
+    </i></figcaption>
+</figure>
+
 
 
     <h2 style="text-align: left;">Linear correlation</h2>
