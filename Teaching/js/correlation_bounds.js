@@ -2,8 +2,8 @@
 // width = +svg.attr("width") - margin.left - margin.right,
 // height = +svg.attr("height") - margin.top - margin.bottom;
 
-var margin = {top: 5, bottom: 70, right: 50, left: 50},
-width = document.getElementById("correlation_bounds_interactive").offsetWidth*3/4,
+var margin = {top: 5, bottom: 70, right: 70, left: 70},
+width = document.getElementById("correlation_bounds_interactive").offsetWidth*0.8,
 height = width//350 - margin.top - margin.bottom;
 
 var svg = d3.select("#correlation_bounds_interactive")
