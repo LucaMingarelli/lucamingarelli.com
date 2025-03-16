@@ -25,7 +25,7 @@ g.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("$p_X$");
+.html("\\(p_X\\)");
 
 g.append("svg:foreignObject")
 .attr("class", "axis-label")
@@ -35,7 +35,7 @@ g.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("$\\phi$");
+.html("\\(\\phi\\)");
 
 const lineMin = g.append("path")
             .attr("fill", "none")
@@ -61,7 +61,7 @@ legend.append("svg:foreignObject")
 .attr("width", 40)
 .attr("height", 20)
 .append("xhtml:div")
-.html("$\\phi_{\\text{min}}$");
+.html("\\(\\phi_{\\text{min}}\\)");
 
 legend.append("rect")
 .attr("x", 0)
