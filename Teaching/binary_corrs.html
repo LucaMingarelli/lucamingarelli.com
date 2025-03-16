@@ -106,8 +106,8 @@
             .append("xhtml:div")
             .text("\\(\\rho\\)");
 
-        const lineMin = g.append("path").attr("fill", "none").attr("stroke", "red").attr("stroke-width", 2);
-        const lineMax = g.append("path").attr("fill", "none").attr("stroke", "blue").attr("stroke-width", 2);
+        const lineMin = g.append("path").attr("fill", "none").attr("stroke", "blue").attr("stroke-width", 2);
+        const lineMax = g.append("path").attr("fill", "none").attr("stroke", "red").attr("stroke-width", 2);
 
         // Add legend
         const legend = svg.append("g").attr("transform", `translate(${width - 100}, 20)`);
