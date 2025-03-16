@@ -65,7 +65,7 @@ While for continuous variates there exist numerous distinct correlation metrics,
 Spearman's rho \(\rho_S\), and Kendall's tau \(\tau\), 
 all of these become equivalent when considering binary variates instead: 
 \(\rho(X, Y)=\rho_S(X, Y)=\tau(X, Y)\). 
-The Yule phi coefficient \citep{Yule1912} 
+The Yule phi coefficient <a href="#ref1">[1]</a>
 (also known as the mean square contingency coefficient 
 or the Matthews correlation coefficient in the ML literature)
     is a measure of the association of two binary variables, 
@@ -274,140 +274,20 @@ Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations ar
 
 
 
-    <h2 style="text-align: left;">Linear correlation</h2>
-    The first measure of dependency we encounter is Pearson's coefficient of
-    linear correlation:
-    <div style="overflow-x: auto; overflow-y: hidden;">
-    \begin{equation}
-    \begin{split}
-    \rho(X_1, X_2) &= \frac{\text{cov}(X_1, X_2)}{\sigma_{X_1} \sigma_{X_2}} \\
-    &= \frac{\mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2))}{\sqrt{\mathbb{E}((X_1-\mathbb{E}X_1)^2)}\sqrt{\mathbb{E}((X_2-\mathbb{E}X_2)^2)}}
-    \end{split}.
-    \label{eq:lin_corr}
-    \end{equation}
-        </div>
-    While very useful in many linear or approximately linear scenarios, this metric however fails
-    to capture fundamental properties of more complex and realistic distributions.
-    In addition, thinking in terms of linear correlation can easily make us prey of insidious
-    pitfalls and fallacies.
-    <br>
-    First of all we notice that \eqref{eq:lin_corr} depends on the marginals
-    and in particular, that it is well defined if and only if the second moments exist,
-    \(\mathbb{E}(X_j)^2<\infty,\ \forall j\). Therefore this metric is not well defined
-    for a number of marginals such as many power-law distributions where the second moment does not exist.
-    <br>
-    Moreover, the linear correlation \eqref{eq:lin_corr} is also unable to capture
-    strong non-linear functional dependencies such as \(X_2=X_1^2\) or \(X_2 = \sin(X_1)\).
-    Indeed in general one has \(|\rho|\le 1\) and \(|\rho|=1\iff X_2 = aX_1+b\)
-    for some \(a\in\mathbb{R}\backslash \{0\},\ b\in\mathbb{R} \).
-    <br>
-    The linear correlation \(\rho\) is also invariant under strictly increasing
-    <u>linear</u> transformation, but not under more general stricly increasing transformations.
-
-    <br>
-    One further source of confusion arise from us being used to reason in terms of
-    normal distributions. Indeed a number of seemingly intuitive statements on
-    correlations which are true in the case of normal distributions do not generalise outside of this distribution.
-    <br>
-    As an example, for normal distributions one finds zero correlation and independence equivalent, which
-    is no longer true already for e.g. student-t distributed random variables.
-    <br>
-    Another fallacy is to think that the marginals and the correlations matrix
-    (\(F_1\), \(F_2\), and \(\rho\) in the bivariate case) are sufficient to determine
-    the joint distribution \(F\). This is true for elliptical distributions, but wrong in general.
-    Indeed the only mathematical object encoding all information concerning the dependency structure
-    is the copula itself.
-    <br>
-    Yet another fallacy is to think two marginals \(F_1\), \(F_2\),
-    any value of \(\rho\in[-1,1]\) is attainable. Again, this is true for elliptically
-    distributed \((X_1, X_2)\) with finite second moment, but wrong in general.
-    The attainable range can be computed via <i>Hoeffding's formula</i>
-    <div style="overflow-x: auto; overflow-y: hidden;">
-    \begin{equation}
-    \text{cov}(X_1, X_2) = \int_{-\infty}^\infty\int_{-\infty}^\infty C(F_1(x_1), F_2(x_2))-F_1(x_1)F_2(x_2)\text{d} x \text{d} y,
-    \label{eq:Hoeffding_formula}
-    \end{equation}
-        </div>
-    where \(\rho_{\text{min}}\) is attained for \(C=W_{\text{counter}}\) and \(\rho_{\text{max}}\) for \(C=C_{\text{co}}\).
-    This can be arbitrarily small for appropriate choices of the marginals \(F_1\) and \(F_2\).
-
-    <figure>
-        <img class="center" alt="tail_dependence"
-             src="img/Dependence/attainable_corr.svg"
-             width="80%" >
-        <figcaption><i><b>Fig.1:</b> Attainable range \([\rho_{\text{min}}, \rho_{\text{max}}]\)
-            of the linear correlation coefficient for two random variables
-            \(\log X_1 \sim \mathcal{N}(0,1)\) and \(\log X_2 \sim \mathcal{N}(0,\sigma^2)\).
-        See <a href="#ref1">[1]</a> for more details.
-        </i></figcaption>
-    </figure>
-
-
-    <hr class="w3-opacity">
-
-    <h6>Exercise 1</h6>
-    Consider two independent random variables \(Z, W \sim \mathcal{N}(0,1)\).
-    The random variables \(X=Z\) and \(Y = ZW\) are clearly not independent.
-    What's \(\rho(X, Y)\)?
-    <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 1</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        The linear correlation coefficient is
-        \begin{align*}
-        \rho(X, Y) &= \text{cov}(X, Y) \newline
-        &= \mathbb{E}(XY)\newline
-        &= \mathbb{E}(W)\mathbb{E}(Z^2) = 0
-        \end{align*}
-        <p align="right"> ◻</p>
-    </div>
-
-    <h6>Exercise 2</h6>
-    Prove \eqref{eq:Hoeffding_formula}.
-    <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 2</button>
-    <div class="content" style="background-color: rgba(85,203,253,0.12) ;
-    padding: 20px; border: 2px solid #9cc5ff;overflow-x: auto;">
-        Start by considering an \(X_j, Y_j \sim F_j\),
-        with \(X_j \perp\!\!\!\perp Y_j\), for \(j\in\{1,2\}\).
-        One has:
-        \begin{align*}
-        2\text{cov}(X_1, X_2) &= \mathbb{E}((X_1-\mathbb{E}X_1)(X_2-\mathbb{E}X_2)) + \mathbb{E}((Y_1-\mathbb{E}Y_1)(Y_2-\mathbb{E}Y_2)) \newline
-        &=\mathbb{E}\left(((X_1 - \mathbb{E}X_1)-(Y_1 - \mathbb{E}Y_1))((X_2 - \mathbb{E}X_2)-(Y_2 - \mathbb{E}Y_2))\right) \newline
-        &= \mathbb{E}((X_1-Y_1)(X_2-Y_2)).
-        \end{align*}
-        Now recall that for any \(a,b\in\mathbb{R}\) one has
-        \[
-        b-a = \int_{-\infty}^\infty \Theta(x-a) - \Theta(x-b)\text{d}x,
-        \]
-        with \(\Theta(x)\) indicating Heaviside's theta function
-        (with the convention \(\Theta(0)=1\)). Therefore:
-        \begin{align*}
-        2\text{cov}(X_1, X_2) &=
-        \mathbb{E}\int_{-\infty}^\infty\int_{-\infty}^\infty
-        (\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))
-        \text{d}x_1\text{d}x_2 \newline
-        \xrightarrow[]{\text{Fubini}}&=\int_{-\infty}^\infty\int_{-\infty}^\infty
-        \mathbb{E}\left((\Theta(x_1-Y_1) - \Theta(x_1-X_1))(\Theta(x_2-Y_2) - \Theta(x_2-X_2))\right)
-        \text{d}x_1\text{d}x_2\newline
-        &=2\int_{-\infty}^\infty\int_{-\infty}^\infty F(x_1, x_2) - F_1(x_1)F_2(x_2)\text{d}x_1\text{d}x_2.
-        \end{align*}
-        <p align="right"> ◻</p>
-    </div>
-
     <hr class="w3-opacity">
     <br>
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.321.5607&rep=rep1&type=pdf" id="ref1"> "Correlation and Dependence in Risk Management: Properties and Pitfalls", Paul Embrechts, Alexander McNeil, and Daniel Straumann, 1999</a>
+    [1] <a href="http://www.jstor.org/stable/2340126" id="ref1"> "On the Methods of Measuring Association Between Two Attributes", G. Udny Yule, 1912</a>
     <br>
-    [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
+    <!-- [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
     <br>
     [3] <a href="http://www.macs.hw.ac.uk/~cd134/2010/donemb.pdf" id="ref3"> "The devil is in the tails: actuarial mathematics and the subprime mortgage crisis", Catherine Donnelly and Paul Embrechts, 2010,  ASTIN Bulletin: The Journal of the IAA, 40(1), 1-33</a>
     <br>
     [4] <a href="http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/9c8e3fd4d8874d60c1257052003eced6/34e84cb615c8b4eac12575fe006a9759/$FILE/li.defaultcorrelation.pdf" id="ref4">  "On Default Correlation: A Copula Function Approach", David X. Li, April 2000, The RiskMetrics Group Working Paper Number 99-07</a>
     <br>
-    [5] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref5"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a>
+    [5] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref5"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a> -->
     <br><br>
 
 
