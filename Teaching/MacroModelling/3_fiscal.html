@@ -289,6 +289,98 @@ If this condition did not hold, the government's debt would be growing faster th
     but also underscores that its effects are contingent on the financial health and planning horizons of households.
 
 
+  <h4 style="text-align: left;"><b>Optimal Fiscal Policy: Tax Smoothing </b></h4>
+
+
+  The discussion of Ricardian Equivalence is \emph{positive}: 
+  it describes how households might react to government financing decisions. 
+  A related but \emph{normative} question is how a government should optimally finance its spending over time, 
+  given that it must respect its intertemporal budget constraint. 
+  This leads to the theory of tax smoothing, most famously developed by Robert Barro <a href="#ref5">[5]</a>.
+  The core idea is that governments should maintain a stable, or "smooth," tax rate over time, 
+  rather than allowing tax rates to fluctuate with temporary changes in government spending or economic output.
+  The rationale for this stems from the deadweight loss of taxation. 
+  As discussed earlier, most real-world taxes are distortionary, 
+  they alter the incentives for households and firms, leading to inefficiencies. 
+  For example, a tax on labor income distorts the trade-off between working and leisure.
+  Crucially, this deadweight loss (or "distortion cost") is generally assumed to be convex. 
+  
+  We can formalise this idea by switching our setup slightly. 
+  The Ricardian Equivalence models used lump-sum taxes \(T(t)\), which have no distortionary cost. 
+  To model tax smoothing, we must assume taxes are distortionary. 
+  Let's make the following changes to the framework: 
+  * Tax Rate vs. Tax Revenue: Instead of lump-sum revenue \(T(t)\), 
+  the government now sets a proportional tax rate \(\tau(t)\) on a tax base, which we can assume is output (income) \(Y(t)\). 
+  Total tax revenue is \(T(t) = \tau(t)Y(t)\).
+  * Cost of Taxation: The deadweight loss (or distortion cost) from this tax is a convex function of the tax rate. 
+  Let's represent this cost as a share of output, \(C(\tau(t))Y(t)\), where \(C\) is an increasing and convex function. 
+  The government's goal is to choose a path of tax rates \(\{\tau(t)\}_{t=0}^\infty\) to minimise the total present value of distortion costs:
+  
+  \begin{equation}
+  \min_{\{\tau(t)\}} \int_0^\infty e^{-R(t)} C(\tau(t))Y(t) dt
+  \end{equation}
+  
+  This objective seems to imply setting \(\tau(t) = 0\) always. 
+  However, the government cannot do this. 
+  It must still satisfy its intertemporal budget constraint, which is the same as Equation (2) from before, 
+  but now with \(T(t) = \tau(t)Y(t)\)
+  
+  \begin{equation}
+  \int_0^\infty e^{-R(t)} \tau(t)Y(t) dt = \int_0^\infty e^{-R(t)} G(t) dt + D(0)
+  \end{equation}
+
+  The left side is the present value of all future tax revenues. 
+  The right side is the present value of all future government spending plus any initial debt that must be repaid. 
+  This is the government's "bill".
+  The problem is therefore to minimise the integral of a convex function \(C(\tau(t))\), 
+  subject to an integral constraint on its tax revenue \(\tau(t)Y(t)\).
+  <br>
+  For simplicity, let's assume the interest rate \(r\) and the tax base \(Y\) are constant. 
+  The government's problem is to choose \(\tau(t)\) to minimise \(\int_0^\infty e^{-rt} C(\tau(t)) dt\) 
+  subject to \(\int_0^\infty e^{-rt} \tau(t)Y dt = \text{Constant}\).
+  Because the cost function \(C(\tau)\) is convex, any "variance" in the tax rate is costly. 
+  The most efficient way to raise the required revenue is to keep the tax rate perfectly constant over time: 
+  \(\tau(t) = \tau\) for all \(t\).
+  A volatile path (e.g., \(\tau=50\%\) today, \(\tau=10\%\) tomorrow) and a smooth path (\(\tau=30\%\) always) 
+  might raise the same present-value revenue, 
+  but the smooth path will have a much lower total distortion cost due to convexity.
+  This constant, optimal tax rate \(\tau^*\) would be the one that just satisfies the GBC:
+  
+  \begin{equation}
+  \tau^* = \frac{\int_0^\infty e^{-R(t)} G(t) dt + D(0)}{\int_0^\infty e^{-R(t)} Y(t) dt}
+  \end{equation}
+
+  That is, the optimal policy is to set the tax rate equal to the total present value of all government liabilities 
+  (spending + initial debt) divided by the total present value of the national tax base (output).
+  This is the formal logic of tax smoothing. 
+  The government runs deficits or surpluses in specific periods not to balance the budget annually, 
+  but to keep the tax rate $\tau^*$ constant in the face of temporary fluctuations in \(G(t)$ or $Y(t)\).
+
+  <br>
+
+  This means the economic harm from a tax increases more than proportionally with the tax rate. 
+  For instance, doubling the tax rate will more than double the deadweight loss.
+  Given this, the government can minimize the total present-value burden of tax distortions by keeping the tax rate constant. 
+  A volatile path of tax rates (e.g., 50% in one year and 10% in the next) 
+  will create a higher total deadweight loss over time than a stable 30% tax rate that raises the same total revenue in present value. 
+  A constant tax rate avoids the exceptionally harmful periods of very high taxation.
+  How can the government achieve smooth tax rates when its spending ($G(t)$) is volatile (e.g., spiking during wars or recessions) 
+  and its tax base ($Y(t)$) also fluctuates? 
+  The answer is to use debt as a buffer: 
+  When spending is temporarily high (like during a war) or output is temporarily low (like in a recession): 
+  The government should not spike tax rates to cover the gap. 
+  Instead, it should keep tax rates stable and finance the shortfall by running a deficit (issuing new debt).
+  When spending is temporarily low (during peacetime) or output is temporarily high (in an economic boom): 
+  The government should not cut taxes. 
+  It should maintain the same stable tax rate and use the resulting budget surplus to pay down the debt accumulated in the bad times.
+  This theory provides a powerful normative benchmark for fiscal policy. 
+  It implies that deficits and surpluses are not inherently "good" or "bad". 
+  They are optimal tools for insulating the economy from the high distortion costs of volatile tax rates, 
+  allowing the government to finance temporary shocks by spreading the tax burden over time. 
+  This framework also generates empirically testable predictions: 
+  we should expect to see government debt-to-GDP ratios rise during major wars and deep recessions, 
+  and fall (or grow more slowly) during periods of peace and prosperity.
+
 
 
 <br><br>
@@ -301,6 +393,8 @@ If this condition did not hold, the government's debt would be growing faster th
   <b>[3]</b> <span id="ref3">That is they derive utility from the consumption level of the future generation. </span>
   <br><br>
   <b>[4]</b> <a href="https://www.sciencedirect.com/science/article/pii/0304393287900213" id="ref4">"Finite lifetimes and the effects of budget deficits on national saving", James Poterba and Lawrence Summers, Journal of Monetary Economics, 1987, vol. 20, issue 2, 369-391. </a>
+  <br><br>
+  <b>[5]</b> <a href="https://www.jstor.org/stable/1833077" id="ref5">"On the Determination of the Public Debt.", Robert Barro, Journal of Political Economy, 87(5), 940–971. </a>
   <br><br>
 
   <br>
