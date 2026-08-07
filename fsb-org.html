@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSB Masterclass — The Financial Stability Board Quiz</title>
+<style>
+  :root{
+    --navy:#0E2238;
+    --navy-2:#14304A;
+    --steel:#1F4E7A;
+    --slate:#3A506B;
+    --paper:#F3EFE4;
+    --paper-2:#EAE3D2;
+    --ink:#1B2430;
+    --gold:#C89B3C;
+    --gold-2:#E4C778;
+    --good:#2E7D5B;
+    --bad:#B23A48;
+    --line: rgba(255,255,255,0.12);
+    --serif: 'Iowan Old Style','Palatino Linotype', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 800px at 10% -10%, #163455 0%, transparent 60%),
+      radial-gradient(1000px 700px at 100% 0%, #12283f 0%, transparent 55%),
+      var(--navy);
+    color:var(--paper);
+    font-family:var(--sans);
+    min-height:100vh;
+    padding:28px 16px 60px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  /* ===== Header / masthead ===== */
+  .masthead{
+    border:1px solid var(--line);
+    border-bottom:3px solid var(--gold);
+    padding:22px 26px 18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+    display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;
+  }
+  .masthead .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--gold-2); margin:0 0 6px;
+  }
+  .masthead h1{
+    font-family:var(--serif); font-weight:600; font-size:clamp(26px,4vw,38px);
+    margin:0; line-height:1.05; letter-spacing:.2px;
+  }
+  .masthead .sub{ font-size:13.5px; color:#B9C4D0; margin-top:6px; max-width:520px; }
+  .masthead .datebox{
+    font-family:var(--mono); font-size:11.5px; color:#9FB0C2; text-align:right; white-space:nowrap;
+    border-left:1px solid var(--line); padding-left:16px;
+  }
+
+  /* ===== Progress / stats bar ===== */
+  .statsbar{
+    display:grid; grid-template-columns: 1fr auto auto auto; gap:14px; align-items:center;
+    margin-top:16px; padding:14px 18px; background:rgba(255,255,255,0.035);
+    border:1px solid var(--line);
+  }
+  .progress-track{ height:8px; background:rgba(255,255,255,0.08); position:relative; overflow:hidden; }
+  .progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-2)); width:0%; transition:width .5s ease; }
+  .stat{ font-family:var(--mono); font-size:12px; color:#B9C4D0; text-align:center; }
+  .stat b{ display:block; font-family:var(--serif); font-size:20px; color:var(--paper); font-weight:600; }
+  .stat.gold b{ color:var(--gold-2); }
+
+  /* ===== org-chart tracker ===== */
+  .tracker{
+    margin-top:14px; padding:16px 18px; border:1px solid var(--line); background:rgba(0,0,0,0.15);
+  }
+  .tracker .lbl{ font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:#8FA1B6; margin-bottom:10px;}
+  .tracker-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .node{
+    font-family:var(--mono); font-size:10.5px; padding:5px 10px; border:1px solid var(--line);
+    color:#6C7C8E; background:rgba(255,255,255,0.02); transition:all .35s ease;
+  }
+  .node.lit{ color:var(--navy); background:var(--gold-2); border-color:var(--gold-2); font-weight:600; }
+
+  /* ===== Card ===== */
+  .card{
+    margin-top:20px; background:var(--paper); color:var(--ink);
+    border:1px solid rgba(0,0,0,0.08); box-shadow:0 18px 40px rgba(0,0,0,0.35);
+    padding:0; overflow:hidden;
+  }
+  .card-top{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:14px 24px; background:var(--paper-2); border-bottom:1px solid rgba(0,0,0,0.08);
+  }
+  .tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    padding:4px 9px; border:1px solid rgba(0,0,0,0.15); color:var(--slate); background:rgba(255,255,255,0.4);
+  }
+  .diff-dots{ display:flex; gap:4px; align-items:center; }
+  .diff-dots span{ width:7px; height:7px; border-radius:50%; background:rgba(0,0,0,0.15); }
+  .diff-dots span.on{ background:var(--gold); }
+
+  .q-area{ padding:26px 26px 8px; display:flex; gap:18px; align-items:flex-start; }
+  .q-avatar{
+    flex:0 0 auto; width:64px; height:64px; border-radius:50%; overflow:hidden;
+    border:2px solid var(--gold); box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  }
+  .q-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .q-text{ flex:1 1 auto; }
+  .q-text h2{
+    font-family:var(--serif); font-weight:600; font-size:clamp(19px,2.6vw,23px); line-height:1.32; margin:0;
+  }
+  .q-person-name{ font-family:var(--mono); font-size:11px; color:var(--slate); margin-top:6px; }
+
+  .opts{ padding:18px 26px 26px; display:grid; gap:10px; }
+  .opt{
+    text-align:left; padding:13px 16px; border:1.5px solid rgba(0,0,0,0.16); background:#fff;
+    font-family:var(--sans); font-size:14.5px; color:var(--ink); cursor:pointer;
+    display:flex; gap:12px; align-items:flex-start; transition:all .15s ease;
+  }
+  .opt .letter{
+    font-family:var(--mono); font-weight:700; font-size:12px; color:var(--slate);
+    border:1px solid rgba(0,0,0,0.2); width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex:0 0 auto; margin-top:1px;
+  }
+  .opt:hover:not(.disabled){ border-color:var(--steel); background:#FBFAF6; transform:translateX(2px); }
+  .opt.disabled{ cursor:default; }
+  .opt.correct{ border-color:var(--good); background:#EAF5EF; }
+  .opt.correct .letter{ background:var(--good); color:#fff; border-color:var(--good); }
+  .opt.wrong{ border-color:var(--bad); background:#FBECEE; }
+  .opt.wrong .letter{ background:var(--bad); color:#fff; border-color:var(--bad); }
+  .opt.faded{ opacity:.55; }
+
+  /* ===== Masterclass panel ===== */
+  .masterclass{
+    display:none; margin:0 26px 26px; padding:20px 22px; background:var(--navy-2); color:var(--paper);
+    border-left:4px solid var(--gold);
+  }
+  .masterclass.show{ display:block; animation:fadein .35s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .mc-head{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .mc-avatar{ width:46px; height:46px; border-radius:50%; overflow:hidden; border:2px solid var(--gold-2); flex:0 0 auto; }
+  .mc-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .mc-eyebrow{ font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-2); }
+  .mc-person{ font-family:var(--serif); font-size:15.5px; font-weight:600; margin-top:1px; }
+  .mc-person-role{ font-family:var(--sans); font-size:11.5px; color:#9FB0C2; }
+  .mc-body{ font-size:14.5px; line-height:1.6; color:#DCE3EA; }
+  .mc-body b{ color:#fff; }
+
+  .card-bottom{ padding:0 26px 26px; display:flex; justify-content:flex-end; }
+  .btn{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.08em; text-transform:uppercase;
+    padding:12px 22px; background:var(--navy); color:var(--gold-2); border:1px solid var(--navy);
+    cursor:pointer; transition:all .15s ease;
+  }
+  .btn:hover{ background:var(--gold); color:var(--navy); border-color:var(--gold); }
+
+  /* ===== Start / End screens ===== */
+  .screen{
+    margin-top:20px; background:var(--paper); color:var(--ink); padding:40px 30px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.35); text-align:center;
+  }
+  .screen h2{ font-family:var(--serif); font-size:clamp(22px,3.2vw,30px); margin:0 0 12px; }
+  .screen p{ max-width:520px; margin:0 auto 22px; color:var(--slate); line-height:1.6; font-size:14.5px; }
+  .screen .btn.big{ padding:14px 32px; font-size:13px; }
+  .catgrid{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
+  .catgrid span{
+    font-family:var(--mono); font-size:10.5px; padding:5px 11px; border:1px solid rgba(0,0,0,0.15);
+    color:var(--slate); text-transform:uppercase; letter-spacing:.06em;
+  }
+  .score-big{ font-family:var(--serif); font-size:56px; font-weight:600; color:var(--steel); margin:6px 0; }
+  .grade{ font-family:var(--mono); font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:18px;}
+  .breakdown{ display:flex; justify-content:center; gap:22px; margin:18px 0 28px; flex-wrap:wrap; }
+  .bd{ text-align:center; }
+  .bd b{ display:block; font-family:var(--serif); font-size:24px; }
+  .bd span{ font-family:var(--mono); font-size:10.5px; color:var(--slate); text-transform:uppercase; }
+
+  footer{ text-align:center; margin-top:26px; font-family:var(--mono); font-size:11px; color:#5C6C7E; }
+
+  @media (max-width:560px){
+    .q-area{ flex-direction:column; }
+    .statsbar{ grid-template-columns:1fr; }
+    .stat{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <p class="eyebrow">Interactive Masterclass · Institutional Knowledge</p>
+      <h1>The Financial Stability Board</h1>
+      <p class="sub">Learn the FSB's full architecture — Plenary, Standing Committees, Resolution Steering Group and Regional Consultative Groups — one question at a time.</p>
+    </div>
+    <div class="datebox">Source chart<br>as of 29 July 2025<br>Basel, Switzerland</div>
+  </div>
+
+  <div class="statsbar" id="statsbar" style="display:none;">
+    <div style="grid-column:1/-1;">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="stat">Question<b id="statQNum">0/0</b></div>
+    <div class="stat gold">Score<b id="statScore">0</b></div>
+    <div class="stat">Streak<b id="statStreak">0</b></div>
+    <div class="stat">Level<b id="statLevel">—</b></div>
+  </div>
+
+  <div class="tracker" id="tracker" style="display:none;">
+    <div class="lbl">Org chart unlocked</div>
+    <div class="tracker-row" id="trackerRow"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen" id="startScreen">
+    <h2>Ready to test your FSB knowledge?</h2>
+    <p>87 questions, five difficulty tiers — from the shape of the organisational chart to the tangled web of dual-hatted officials who actually run it. Every answer, right or wrong, unlocks a masterclass insight that goes deeper than the question itself.</p>
+    <div class="catgrid">
+      <span>Foundations</span><span>Structure</span><span>Mandates</span><span>Chairs</span><span>Outside Roles</span><span>Expert</span>
+    </div>
+    <button class="btn big" onclick="startGame()">Begin the Masterclass</button>
+  </div>
+
+  <!-- QUIZ CARD -->
+  <div class="card" id="quizCard" style="display:none;">
+    <div class="card-top">
+      <span class="tag" id="catTag">Foundations</span>
+      <div class="diff-dots" id="diffDots"></div>
+    </div>
+    <div class="q-area">
+      <div class="q-avatar" id="qAvatarWrap" style="display:none;"><img id="qAvatarImg" src="" alt=""></div>
+      <div class="q-text">
+        <h2 id="qText"></h2>
+        <div class="q-person-name" id="qPersonName" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="opts" id="optsArea"></div>
+    <div class="masterclass" id="masterclass">
+      <div class="mc-head">
+        <div class="mc-avatar" id="mcAvatarWrap" style="display:none;"><img id="mcAvatarImg" src="" alt=""></div>
+        <div>
+          <div class="mc-eyebrow">Masterclass Insight</div>
+          <div class="mc-person" id="mcPerson" style="display:none;"></div>
+          <div class="mc-person-role" id="mcPersonRole" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="mc-body" id="mcBody"></div>
+    </div>
+    <div class="card-bottom">
+      <button class="btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div class="screen" id="endScreen" style="display:none;">
+    <h2>Dossier Complete</h2>
+    <div class="score-big" id="finalScore">0 / 0</div>
+    <div class="grade" id="finalGrade">—</div>
+    <div class="breakdown" id="finalBreakdown"></div>
+    <p id="finalNote"></p>
+    <button class="btn big" onclick="restartGame()">Restart Masterclass</button>
+  </div>
+
+  <footer>Content drawn from the FSB Organisation Chart (as of 29 July 2025) and public biographical sources · Chair and co-chair roles rotate periodically</footer>
+</div>
+
+<script>
+// ============ PEOPLE ============
+const PEOPLE = {
+  bailey:   { name:"Andrew Bailey", role:"Chair, FSB Plenary & Steering Committee", org:"Governor, Bank of England", bg:"https://www.telegraph.co.uk/content/dam/newsletters/business-briefing/Images/andrew-bailey-xlarge.png" },
+  schindler:{ name:"John Schindler", role:"Secretary General, FSB Secretariat", org:"Based in Basel, hosted by the BIS", bg:"https://www.fsb.org/uploads/JS-768x768.jpg" },
+  macklem:  { name:"Tiff Macklem", role:"Chair, Standing Committee on Assessment of Vulnerabilities (SCAV)", org:"Governor, Bank of Canada", bg:"https://www.fsb.org/uploads/Co-Chair-RCG-Americas-Tiff-Macklem-768x768.jpg" },
+  bowman:   { name:"Michelle Bowman", role:"Chair, Standing Committee on Supervisory & Regulatory Cooperation (SRC)", org:"Vice Chair for Supervision, US Federal Reserve", bg:"https://upload.wikimedia.org/wikipedia/commons/0/02/Michelle_Bowman.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled" },
+  himino:   { name:"Ryozo Himino", role:"Chair, Standing Committee on Standards Implementation (SCSI)", org:"Deputy Governor, Bank of Japan", bg:"https://www.fsb.org/uploads/RH-768x768.jpg" },
+  schlegel: { name:"Martin Schlegel", role:"Chair, Standing Committee on Budget & Resources (SCBR)", org:"Chairman, Swiss National Bank", bg:"https://www.fsb.org/uploads/martin-schlegel-768x768.jpg" },
+  laboureix:{ name:"Dominique Laboureix", role:"Chair, Resolution Steering Group (ResG)", org:"Chair, Single Resolution Board (SRB)", bg:"https://fbf.eui.eu/wp-content/uploads/2023/03/Dominique-Laboureix-e1678699706513.jpg" },
+  cook:     { name:"Lisa Cook", role:"Co-Chair, RCG Americas", org:"Member, US Federal Reserve Board of Governors", bg:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Lisa_D._Cook%2C_Federal_Reserve_Governor.jpg/1280px-Lisa_D._Cook%2C_Federal_Reserve_Governor.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail" },
+  lewis:    { name:"Jide Lewis", role:"Co-Chair, RCG Americas", org:"Deputy Governor, Bank of Jamaica", bg:"https://www.fsb.org/uploads/jl.jpg" },
+  bullock:  { name:"Michele Bullock", role:"Co-Chair, RCG Asia", org:"Governor, Reserve Bank of Australia", bg:"https://www.fsb.org/uploads/mb.jpg" },
+  phamthanhha:{ name:"Pham Thanh Ha", role:"Co-Chair, RCG Asia", org:"Deputy Governor, State Bank of Vietnam", bg:"https://www.fsb.org/uploads/pth.jpg" },
+  moiseev:  { name:"Alexey Moiseev", role:"Co-Chair, RCG CIS", org:"Deputy Finance Minister, Russia", bg:"https://www.fsb.org/uploads/AM.jpg" },
+  nurbekyan:{ name:"Armen Nurbekyan", role:"Co-Chair, RCG CIS", org:"Central Bank of Armenia", bg:"https://www.fsb.org/uploads/AN.png" },
+  martin:   { name:"Antoine Martin", role:"Co-Chair, RCG Europe", org:"Vice Chairman, Governing Board, Swiss National Bank", bg:"https://www.fsb.org/uploads/am-snb.jpg" },
+  nykanen:  { name:"Marja Nykänen", role:"Co-Chair, RCG Europe", org:"Deputy Governor, Bank of Finland", bg:"https://www.fsb.org/uploads/nm.jpg" },
+  karahan:  { name:"Fatih Karahan", role:"Co-Chair, RCG Middle East & North Africa", org:"Governor, Central Bank of the Republic of Türkiye", bg:"https://www.fsb.org/uploads/fk.png" },
+  abdalla:  { name:"Hassan Abdalla", role:"Co-Chair, RCG Middle East & North Africa", org:"Governor, Central Bank of Egypt", bg:"https://www.fsb.org/uploads/AH-768x768.jpg" },
+  kganyago: { name:"Lesetja Kganyago", role:"Co-Chair, RCG Sub-Saharan Africa", org:"Governor, South African Reserve Bank", bg:"https://www.fsb.org/uploads/LK-768x768.jpg" },
+  kalyalya: { name:"Denny Kalyalya", role:"Co-Chair, RCG Sub-Saharan Africa", org:"Governor, Bank of Zambia", bg:"https://www.fsb.org/uploads/DK-768x768.jpg" },
+};
+
+// ============ QUESTIONS ============
+// difficulty: 1 (foundations) -> 5 (expert)
+// personQ: person id whose avatar shows NEXT TO THE QUESTION (only set if the name is literally in the question text)
+// personA: person id whose avatar shows in the masterclass panel AFTER answering (the person the explanation is about)
+const QUESTIONS = [
+
+// ---------- DIFFICULTY 1 : FOUNDATIONS ----------
+{d:1,cat:"Foundations",q:"What does the acronym FSB stand for?",opts:["Financial Standards Body","Financial Stability Board","Federal Supervisory Bureau","Fiscal Solvency Board"],correct:1,
+ personQ:null,personA:null,
+ m:"The Financial Stability Board is the body the G20 created after the 2008/09 crisis to monitor and make recommendations about the global financial system. It doesn't regulate directly — it coordinates the national and regional authorities (central banks, finance ministries, supervisors) who do."},
+
+{d:1,cat:"Foundations",q:"Who sits at the very top of the FSB's organisation chart, chairing both the Plenary and the Steering Committee?",opts:["Christine Lagarde","Jerome Powell","Andrew Bailey","Klaas Knot"],correct:2,personQ:"bailey",personA:"bailey",
+ m:"Andrew Bailey, Governor of the Bank of England, became FSB Chair on 1 July 2025 for a three-year term, succeeding Klaas Knot of De Nederlandsche Bank. He is only the fifth FSB Chair since the Board's founding in 2009, and the second to come from the Bank of England (after Mark Carney)."},
+
+{d:1,cat:"Foundations",q:"Where is the FSB Secretariat physically located?",opts:["Washington, D.C.","Basel, Switzerland","Frankfurt, Germany","London, United Kingdom"],correct:1,personQ:null,personA:"schindler",
+ m:"The Secretariat sits in Basel and is hosted by the Bank for International Settlements (BIS) — the same city that hosts the Basel Committee on Banking Supervision. Hosting by the BIS gives the FSB institutional infrastructure without making it a BIS department; the FSB remains a distinct standard-setting body with its own governance."},
+
+{d:1,cat:"Foundations",q:"Who is the Secretary General of the FSB, running the Secretariat?",opts:["Mark Carney","John Schindler","Klaas Knot","Randal Quarles"],correct:1,personQ:null,personA:"schindler",
+ m:"John Schindler leads the Secretariat, the FSB's permanent staff body that supports the Plenary, prepares analysis, and coordinates the standing committees' work. Unlike the Chair — a sitting central banker who rotates every few years — the Secretary General role is a full-time, dedicated FSB position."},
+
+{d:1,cat:"Foundations",q:"How many Standing Committees report into the FSB Plenary/Steering Committee (not counting the Resolution Steering Group)?",opts:["Three","Four","Five","Six"],correct:1,personQ:null,personA:null,
+ m:"There are four Standing Committees: Assessment of Vulnerabilities (SCAV), Supervisory & Regulatory Cooperation (SRC), Standards Implementation (SCSI), and Budget & Resources (SCBR). The Resolution Steering Group (ResG) sits alongside them as a fifth body with its own specialised mandate over resolution policy."},
+
+{d:1,cat:"Foundations",q:"How many Regional Consultative Groups (RCGs) does the FSB run?",opts:["Four","Five","Six","Eight"],correct:2,personQ:null,personA:null,
+ m:"Six: Americas, Asia, CIS (Commonwealth of Independent States), Europe, Middle East & North Africa, and Sub-Saharan Africa. They were established in 2011 to extend the FSB's reach beyond its G20-heavy membership to the rest of the world."},
+
+{d:1,cat:"Foundations",q:"Every FSB Regional Consultative Group is led by how many co-chairs?",opts:["One","Two","Three","It varies by region"],correct:1,personQ:null,personA:null,
+ m:"Two, always. And critically, the two co-chairs must come from different countries — one from an FSB member jurisdiction, one from a non-member jurisdiction in that region. That pairing is deliberate: it forces genuine dialogue between the 'inside' G20-linked FSB world and the 'outside' regional world, rather than the RCG just being a briefing session."},
+
+{d:1,cat:"Foundations",q:"As of the org chart's date, who chairs the Standing Committee on Assessment of Vulnerabilities (SCAV)?",opts:["Michelle Bowman","Ryozo Himino","Tiff Macklem","Martin Schlegel"],correct:2,personQ:"macklem",personA:"macklem",
+ m:"Tiff Macklem, Governor of the Bank of Canada, chairs SCAV. This committee is the FSB's 'radar' — it scans the global financial system for emerging risks (leverage, liquidity mismatches, interconnectedness) before they become crises, feeding early warnings up to the Plenary."},
+
+{d:1,cat:"Foundations",q:"Who chairs the Resolution Steering Group (ResG)?",opts:["Dominique Laboureix","John Schindler","Andrew Bailey","Martin Schlegel"],correct:0,personQ:"laboureix",personA:"laboureix",
+ m:"Dominique Laboureix chairs ResG. He also chairs the Single Resolution Board (SRB), the EU authority responsible for winding down failing banks in the Banking Union — arguably the closest real-world match to the FSB group he leads, since ResG's entire job is resolution policy: making sure large banks can fail safely without taxpayer bailouts or global contagion."},
+
+{d:1,cat:"Foundations",q:"Which of these is NOT one of the FSB's four Standing Committees?",opts:["Standing Committee on Standards Implementation","Standing Committee on Budget and Resources","Standing Committee on Supervisory & Regulatory Cooperation","Standing Committee on Monetary Policy"],correct:3,personQ:null,personA:null,
+ m:"There is no 'Standing Committee on Monetary Policy' — and that's not an accident. The FSB deliberately stays out of monetary policy, which remains the sovereign responsibility of individual central banks. The FSB's remit is financial *stability*: vulnerabilities, supervision, standards, and resolution — not interest rates or inflation targeting."},
+
+{d:1,cat:"Foundations",q:"What is the full name of the committee abbreviated 'SRC' on the chart?",opts:["Standards & Regulatory Committee","Standing Committee on Supervisory & Regulatory Cooperation","Systemic Risk Council","Standing Resolution Committee"],correct:1,personQ:null,personA:"bowman",
+ m:"SRC — the Standing Committee on Supervisory & Regulatory Cooperation — is chaired by Michelle Bowman. Its job is to get supervisors and regulators from different countries actually talking to and coordinating with each other, so a bank operating across borders doesn't fall through gaps between national regulators."},
+
+{d:1,cat:"Foundations",q:"What does 'SCSI' stand for?",opts:["Standing Committee on Standards Implementation","Systemic Crisis Simulation Institute","Standing Council for Supervisory Independence","Standard Compliance & Sanctions Investigation"],correct:0,personQ:null,personA:"himino",
+ m:"SCSI monitors whether FSB members actually *implement* the standards and policies the Board agrees on. Agreeing global standards is one challenge; getting ~25 jurisdictions to translate them into enforceable domestic law is another — SCSI, chaired by Ryozo Himino, is the body that tracks that follow-through."},
+
+{d:1,cat:"Foundations",q:"What does 'SCBR' stand for?",opts:["Standing Committee on Budget and Resources","Systemic Capital Buffer Requirements","Standing Council on Bank Resolution","Supervisory Committee for Bank Reporting"],correct:0,personQ:null,personA:"schlegel",
+ m:"SCBR, chaired by Martin Schlegel, oversees the FSB's own budget and resourcing — a necessary but less glamorous function. Every international body needs someone minding its finances and staffing, and the FSB is no exception, even though it doesn't have the deep pockets of, say, the IMF."},
+
+{d:1,cat:"Foundations",q:"Which institution's Governor chairs the FSB itself — separate from any Standing Committee?",opts:["The IMF","The Bank of England","The European Central Bank","The Bank for International Settlements"],correct:1,personQ:null,personA:"bailey",
+ m:"The FSB Chair is a part-time role held by a sitting central bank governor alongside their day job — currently Andrew Bailey of the Bank of England. This 'dual-hatting' is deliberate: it keeps the FSB Chair grounded in the realities of running an actual institution, not just chairing meetings."},
+
+// ---------- DIFFICULTY 2 : STRUCTURE & MANDATES ----------
+{d:2,cat:"Mandates",q:"Which Standing Committee would you go to if you wanted to know whether a jurisdiction has actually written a new global capital standard into its domestic banking law?",opts:["SCAV","SRC","SCSI","SCBR"],correct:2,personQ:null,personA:"himino",
+ m:"That's a textbook SCSI question — implementation, not design. SCAV would ask 'is this a risk?', SRC would ask 'are supervisors coordinating on it?', but only SCSI systematically tracks the follow-through: did the standard actually become enforceable law at home."},
+
+{d:2,cat:"Mandates",q:"A shadow-banking vulnerability is spotted growing in non-bank private credit funds. Which committee's core job is to flag this kind of systemic risk early?",opts:["SCAV","SCBR","ResG","Secretariat"],correct:0,personQ:null,personA:"macklem",
+ m:"This is squarely SCAV's job — the Standing Committee on Assessment of Vulnerabilities, chaired by Tiff Macklem. Notably, private credit and non-bank financial intermediation (NBFI) is one of the FSB's actual current priority areas, precisely because risk has been migrating outside the traditional, heavily-supervised banking sector."},
+
+{d:2,cat:"Mandates",q:"A large cross-border bank fails. Whose committee designed the playbook for winding it down without a taxpayer bailout?",opts:["SCAV","SRC","ResG","SCSI"],correct:2,personQ:null,personA:"laboureix",
+ m:"The Resolution Steering Group, chaired by Dominique Laboureix. Post-2008, 'too big to fail' became the FSB's founding obsession — ResG's work on resolution planning and loss-absorbing capacity (TLAC) exists specifically so a failing megabank can be resolved in an orderly way instead of triggering a taxpayer bailout or a Lehman-style shock."},
+
+{d:2,cat:"Mandates",q:"Which committee would set the FSB's own annual staffing and spending plan?",opts:["SCBR","SRC","ResG","Steering Committee"],correct:0,personQ:null,personA:"schlegel",
+ m:"SCBR — Standing Committee on Budget and Resources, chaired by Martin Schlegel. It's the internal-facing committee: while the others look outward at the financial system, SCBR looks inward at what the FSB itself needs to keep functioning."},
+
+{d:2,cat:"Mandates",q:"Which body's whole purpose is to build a bridge between FSB members and countries that are NOT members of the FSB?",opts:["Steering Committee","Regional Consultative Groups","SRC","Secretariat"],correct:1,personQ:null,personA:null,
+ m:"The RCGs. Full FSB membership is largely G20-plus-a-few, but financial stability is a genuinely global problem — a crisis in a non-member jurisdiction can still spill over everywhere. RCGs let non-member authorities feed their views and vulnerabilities into FSB thinking, and let FSB policy reach further than its formal membership would otherwise allow."},
+
+{d:2,cat:"Mandates",q:"What is the key difference in scope between SCAV and SRC?",opts:["SCAV looks at risks system-wide; SRC coordinates how supervisors act on individual firms","SCAV is EU-only; SRC is global","SCAV covers banks; SRC covers insurers","There is no meaningful difference"],correct:0,personQ:null,personA:null,
+ m:"SCAV takes the macro, system-wide view — scanning for vulnerabilities across markets, sectors, and interconnections. SRC operates closer to the supervisory coalface — making sure the people who actually oversee individual firms (bank examiners, market regulators) are coordinating across borders. Think 'macroprudential radar' versus 'supervisory plumbing.'"},
+
+{d:2,cat:"Mandates",q:"Which committee chair also personally holds one of the top two roles at the US Federal Reserve for bank oversight?",opts:["Tiff Macklem (SCAV)","Michelle Bowman (SRC)","Ryozo Himino (SCSI)","Martin Schlegel (SCBR)"],correct:1,personQ:null,personA:"bowman",
+ m:"Michelle Bowman is the Federal Reserve's Vice Chair for Supervision — the US central bank's top bank-supervision job — while also chairing SRC at the FSB. That's a deliberate pattern across the org chart: FSB committee chairs are almost always the person already doing that exact job at the national level, so their FSB role and their day job reinforce each other."},
+
+{d:2,cat:"Mandates",q:"Why does it make sense that the Resolution Steering Group is drawn as a separate box alongside the four Standing Committees rather than folded into SCSI?",opts:["Resolution is a distinct legal and technical discipline (bank insolvency law, TLAC, bail-in) needing dedicated expertise and its own workstream","It's purely historical accident with no functional reason","ResG actually reports to SCAV, not the Plenary","The FSB wanted exactly five equal boxes for visual symmetry"],correct:0,personQ:null,personA:null,
+ m:"Resolution is genuinely different work: it involves specialised legal frameworks (bail-in powers, resolution colleges, cross-border recognition of resolution actions) that don't map neatly onto 'implementing standards' or 'assessing vulnerabilities.' Giving it a standalone steering group, chaired by someone who runs an actual resolution authority (Laboureix at the SRB), keeps that expertise concentrated rather than diluted."},
+
+{d:2,cat:"Structure",q:"True or false: every FSB Standing Committee chair is also, separately, a member of the FSB Plenary.",opts:["True","False"],correct:0,personQ:null,personA:null,
+ m:"True. Standing Committee chairs are senior officials from FSB member institutions who sit in the Plenary in their own right, then additionally take on responsibility for chairing a specific committee. The structure isn't a separate bureaucracy bolted onto the Plenary — it's Plenary members organising their own work into specialised streams."},
+
+{d:2,cat:"Structure",q:"The RCG for CIS covers which grouping of countries?",opts:["Central Islamic States","Commonwealth of Independent States","Caribbean & Island States","Central & Inner Sea states"],correct:1,personQ:null,personA:null,
+ m:"CIS stands for the Commonwealth of Independent States — a group of former Soviet states. It's one of the six RCG regions, alongside Americas, Asia, Europe, Middle East & North Africa, and Sub-Saharan Africa, reflecting the FSB's attempt to give every part of the globe a seat at the outreach table."},
+
+{d:2,cat:"Structure",q:"Which RCG region includes Turkey and Egypt among its co-chairs' home countries?",opts:["Europe","CIS","Middle East & North Africa","Sub-Saharan Africa"],correct:2,personQ:null,personA:null,
+ m:"RCG Middle East & North Africa (MENA), co-chaired by Fatih Karahan (Governor, Central Bank of the Republic of Türkiye) and Hassan Abdalla (Governor, Central Bank of Egypt). Grouping by region rather than strict geography lets the FSB cluster countries with genuinely overlapping financial-stability concerns."},
+
+{d:2,cat:"Structure",q:"Which RCG region includes co-chairs from Australia and Vietnam?",opts:["Asia","Americas","CIS","Sub-Saharan Africa"],correct:0,personQ:null,personA:null,
+ m:"RCG Asia, co-chaired by Michele Bullock (Governor, Reserve Bank of Australia) and Pham Thanh Ha (Deputy Governor, State Bank of Vietnam). Notice the FSB-member / non-member pairing again: Australia is an FSB member (it's in the G20), Vietnam is not — so the pairing rule holds here too."},
+
+{d:2,cat:"Mandates",q:"If the FSB wanted feedback from African financial authorities that aren't part of the G20, which structure would it use?",opts:["Standing Committee on Budget and Resources","RCG Sub-Saharan Africa","The Secretariat directly","ResG"],correct:1,personQ:null,personA:null,
+ m:"RCG Sub-Saharan Africa, co-chaired by Lesetja Kganyago (Governor, South African Reserve Bank) and Denny Kalyalya (Governor, Bank of Zambia). South Africa is the region's FSB member; pairing it with Zambia's governor brings in a non-member perspective directly into FSB discussions."},
+
+// ---------- DIFFICULTY 3 : CHAIRS & HOME INSTITUTIONS ----------
+{d:3,cat:"Chairs",q:"Martin Schlegel, who chairs the Standing Committee on Budget & Resources, holds what role at his home institution?",opts:["Chairman of the Swiss National Bank's Governing Board","Vice-President of the ECB","Governor of the Bank of France","Head of the Swiss Financial Market Supervisory Authority"],correct:0,personQ:"schlegel",personA:"schlegel",
+ m:"Martin Schlegel is Chairman of the Governing Board of the Swiss National Bank (SNB) — effectively Switzerland's top central banker — and represents Switzerland in the FSB Plenary and Steering Committee, on top of chairing SCBR. Basel's location as home to both the BIS and the FSB Secretariat makes Swiss officials naturally central to the FSB's day-to-day life."},
+
+{d:3,cat:"Chairs",q:"Ryozo Himino, chair of SCSI, holds which position at the Bank of Japan?",opts:["Governor","Deputy Governor","Chief Economist","Head of Payment Systems"],correct:1,personQ:"himino",personA:"himino",
+ m:"Ryozo Himino is a Deputy Governor of the Bank of Japan. His academic and professional background spans both law and central banking (he holds an MBA from Harvard alongside a law degree from the University of Tokyo), and he has been an outspoken voice internationally on how stablecoins and CBDCs are reshaping the 'singleness of money.'"},
+
+{d:3,cat:"Chairs",q:"Dominique Laboureix chairs both ResG at the FSB and which EU resolution authority at home?",opts:["The European Banking Authority (EBA)","The Single Resolution Board (SRB)","The European Stability Mechanism (ESM)","The European Systemic Risk Board (ESRB)"],correct:1,personQ:"laboureix",personA:"laboureix",
+ m:"The Single Resolution Board is the EU Banking Union's authority for resolving failing banks across participating member states. Laboureix chairing both bodies is a clean example of the FSB's pattern: put the person who does the job for real at the head of the global group doing policy on that job."},
+
+{d:3,cat:"Chairs",q:"Tiff Macklem, chair of SCAV, leads which G7 central bank?",opts:["Bank of England","Bank of Canada","Federal Reserve","Bank of Japan"],correct:1,personQ:"macklem",personA:"macklem",
+ m:"Tiff Macklem is Governor of the Bank of Canada. As chair of SCAV, his committee's job — scanning the global system for emerging vulnerabilities — mirrors a core function central bank governors already do domestically through financial stability reports, just projected onto a global canvas."},
+
+{d:3,cat:"Chairs",q:"What was the previous FSB Chair Klaas Knot's home institution, before Andrew Bailey succeeded him in July 2025?",opts:["Deutsche Bundesbank","Banque de France","De Nederlandsche Bank (DNB)","Banca d'Italia"],correct:2,personQ:null,personA:"bailey",
+ m:"Klaas Knot was Governor of De Nederlandsche Bank (the Dutch central bank) and, notably, stepped down from that domestic role at the very moment his FSB term ended — underscoring how tightly the FSB chairmanship is tied to holding a major central-bank governorship simultaneously, rather than being a standalone career post."},
+
+{d:3,cat:"Chairs",q:"Who chaired the FSB immediately before Klaas Knot — a figure now better known for an entirely different job in Canadian politics?",opts:["Ben Bernanke","Mark Carney","Mario Draghi","Janet Yellen"],correct:1,personQ:null,personA:"bailey",
+ m:"Mark Carney chaired the FSB while he was Governor of the Bank of England (and, before that, of the Bank of Canada). He later became Prime Minister of Canada — making Andrew Bailey the second Bank of England governor to chair the FSB, following directly in Carney's footsteps at the Bank, if not the same path afterward."},
+
+{d:3,cat:"Chairs",q:"Andrew Bailey's three-year term as FSB Chair began on which date?",opts:["1 January 2025","1 July 2025","29 July 2025","1 July 2026"],correct:1,personQ:"bailey",personA:"bailey",
+ m:"1 July 2025 — the same day Klaas Knot's term ended (and, not coincidentally, the same day he stepped down as DNB Governor). Note this is distinct from the org chart's own date stamp of 29 July 2025, which is simply when that particular snapshot document was published, a few weeks into Bailey's term."},
+
+{d:3,cat:"Chairs",q:"Before becoming Bank of England Governor in 2020, what senior UK regulatory role did Andrew Bailey hold?",opts:["Chancellor of the Exchequer","Chief Executive of the Financial Conduct Authority (FCA)","Chairman of Lloyds Banking Group","Permanent Secretary to the Treasury"],correct:1,personQ:"bailey",personA:"bailey",
+ m:"Bailey ran the FCA, the UK's conduct regulator, from 2016 to 2020, and before that was Deputy Governor for Prudential Regulation at the Bank of England. That career arc — supervision, then prudential regulation, then the top job — is a common path for people who end up steering bodies like the FSB, where supervisory credibility matters as much as monetary-policy credentials."},
+
+{d:3,cat:"Chairs",q:"Which FSB committee chair is the ONLY member of their FSB group with formal banking-supervisory (not just monetary-policy) experience as their defining credential, according to their own biography?",opts:["Andrew Bailey","Michelle Bowman","Tiff Macklem","Martin Schlegel"],correct:1,personQ:"bowman",personA:"bowman",
+ m:"Michelle Bowman is noted as the only member of the Federal Reserve's Board of Governors with direct banking and state supervisory experience (she was Kansas's state bank commissioner before joining the Fed). That specialism is precisely why she was a natural fit to chair the FSB's supervisory-cooperation committee, SRC, rather than a vulnerabilities- or standards-focused body."},
+
+{d:3,cat:"Chairs",q:"Michelle Bowman also chairs which US interagency body, separate from her FSB role?",opts:["The Federal Financial Institutions Examination Council (FFIEC)","The Financial Stability Oversight Council (FSOC)","The Securities and Exchange Commission (SEC)","The Office of the Comptroller of the Currency (OCC)"],correct:0,personQ:"bowman",personA:"bowman",
+ m:"Bowman chairs the FFIEC, the US interagency body that promotes consistency across the country's various bank examiners. It's a domestic mirror of what SRC tries to do internationally — get different supervisory authorities pulling in the same direction — which makes her dual role a genuinely coherent pairing rather than two unrelated jobs."},
+
+{d:3,cat:"Chairs",q:"Which committee chair's academic path includes both a law degree from the University of Tokyo and an MBA from Harvard Business School?",opts:["Ryozo Himino","Martin Schlegel","Dominique Laboureix","John Schindler"],correct:0,personQ:"himino",personA:"himino",
+ m:"Ryozo Himino. It's a distinctive combination — legal training plus a business degree — and shows up in his public speeches, which often blend precise regulatory reasoning with vivid, almost literary framing devices (he has, for instance, compared an economic-overview chart to a Buddhist mandala in a public lecture)."},
+
+// ---------- DIFFICULTY 4 : OUTSIDE ROLES & CROSS-LINKS ----------
+{d:4,cat:"Outside Roles",q:"Beyond chairing SRC, what other major international supervisory group does Michelle Bowman sit on?",opts:["The Governors and Heads of Supervision group of the Basel Committee on Banking Supervision","The IMF Executive Board","The G7 Finance Deputies","The Bank for International Settlements Board of Directors"],correct:0,personQ:"bowman",personA:"bowman",
+ m:"Bowman serves on the Basel Committee's Governors and Heads of Supervision (GHOS) group — the body that actually signs off on the Basel capital and liquidity standards banks worldwide must meet. This is a good illustration of how the FSB, the Basel Committee, and national regulators aren't separate silos: the same handful of senior officials sit across several of these bodies simultaneously, which is how coordination actually happens in practice."},
+
+{d:4,cat:"Outside Roles",q:"Martin Schlegel represents Switzerland at which other major international financial institution's board, on top of his SNB and FSB roles?",opts:["The IMF Executive Board","The Board of Directors of the Bank for International Settlements (BIS)","The World Bank Board of Governors","The European Central Bank's Governing Council"],correct:1,personQ:"schlegel",personA:"schlegel",
+ m:"Schlegel sits on the BIS Board of Directors in Basel — fittingly, since the BIS also hosts the FSB Secretariat itself. He's also Switzerland's Governor at the IMF. Between the SNB, the BIS, the IMF, and the FSB's SCBR, Schlegel's various hats all cluster around the same city and the same interlocking set of institutions, which is fairly typical for a senior Swiss central banker given Basel's outsized role in global financial governance."},
+
+{d:4,cat:"Outside Roles",q:"Antoine Martin, co-chair of RCG Europe, began his central banking career in the United States. At which institution?",opts:["Federal Reserve Bank of New York","Federal Reserve Bank of Kansas City","US Treasury Department","World Bank"],correct:1,personQ:"martin",personA:"martin",
+ m:"Antoine Martin started at the Federal Reserve Bank of Kansas City in 2001 before moving to the Federal Reserve Bank of New York, where he built a research career in money and payments — only later joining the Swiss National Bank's Governing Board in 2024 and becoming its Vice Chairman later that year. It's a reminder that FSB officials' careers are often genuinely international, not confined to the institution whose seat they currently occupy."},
+
+{d:4,cat:"Outside Roles",q:"What is distinctive about the co-chair pairing rule for every Regional Consultative Group?",opts:["Both co-chairs must be central bank governors","One co-chair must come from an FSB member jurisdiction and the other from a non-member jurisdiction in that region","Co-chairs must alternate annually between men and women","One co-chair is always appointed directly by the G20"],correct:1,personQ:null,personA:null,
+ m:"Every RCG pairs an FSB-member official with a non-member official from the same region — for example, RCG Europe pairs Switzerland's Antoine Martin (FSB member) with Finland's Marja Nykänen (a non-member jurisdiction, since Finland isn't itself a separate FSB member — it participates via the euro area / ECB and EU-level representation). The design forces the RCG to be a genuine two-way conversation rather than the 'inside' group simply presenting decisions to the 'outside' group."},
+
+{d:4,cat:"Outside Roles",q:"Jide Lewis, co-chair of RCG Americas, holds which specific supervisory title at the Bank of Jamaica?",opts:["Governor","Deputy Governor, Financial Institutions Supervisory Division","Chief Economist","Head of Payment Systems"],correct:1,personQ:"lewis",personA:"lewis",
+ m:"Jide Lewis is Deputy Governor, Financial Institutions Supervisory Division, and Deputy Supervisor of Banks at the Bank of Jamaica — meaning his day job is directly hands-on bank supervision, which is exactly the kind of frontline expertise the FSB wants represented through its RCG network, rather than only macro-level central-banking voices."},
+
+{d:4,cat:"Outside Roles",q:"Which US Federal Reserve Board member co-chairs RCG Americas alongside Jide Lewis?",opts:["Michelle Bowman","Lisa Cook","Jerome Powell","Christopher Waller"],correct:1,personQ:"cook",personA:"cook",
+ m:"Lisa Cook, a member of the US Federal Reserve's Board of Governors, co-chairs RCG Americas. Note this is a different Fed official from Michelle Bowman, who chairs the global SRC Standing Committee — a useful reminder that a single member institution (here, the Fed) can have different officials representing it in different parts of the FSB structure simultaneously."},
+
+{d:4,cat:"Outside Roles",q:"Alexey Moiseev, co-chair of RCG CIS, holds which government position rather than a central-bank governorship?",opts:["Deputy Finance Minister of Russia","Ambassador to the FSB","Head of the Russian Central Securities Depository","Chairman of the Moscow Exchange"],correct:0,personQ:"moiseev",personA:"moiseev",
+ m:"Moiseev is a Deputy Finance Minister of Russia, not a central banker — a useful reminder that FSB representation isn't limited to central bank governors. Finance ministries, as the bodies responsible for fiscal policy and often financial-sector legislation, are just as core to the FSB's membership base as central banks and supervisors."},
+
+{d:4,cat:"Outside Roles",q:"Lesetja Kganyago, co-chair of RCG Sub-Saharan Africa, is Governor of which institution?",opts:["Central Bank of Kenya","South African Reserve Bank","Bank of Ghana","Central Bank of Nigeria"],correct:1,personQ:"kganyago",personA:"kganyago",
+ m:"Lesetja Kganyago governs the South African Reserve Bank — South Africa being the only Sub-Saharan African country that is itself a full FSB member (via its G20 seat), which is exactly why an SARB official is paired with Denny Kalyalya of Zambia's central bank to bring in a non-member perspective."},
+
+{d:4,cat:"Outside Roles",q:"Which RCG co-chair pairing links South Africa with Zambia?",opts:["RCG CIS","RCG Sub-Saharan Africa","RCG MENA","RCG Americas"],correct:1,personQ:"kalyalya",personA:"kalyalya",
+ m:"RCG Sub-Saharan Africa, co-chaired by Lesetja Kganyago (SARB) and Denny Kalyalya, Governor of the Bank of Zambia. Kalyalya's presence brings a non-G20, non-FSB-member central bank directly into FSB conversations about issues like cross-border payments and de-risking that disproportionately affect smaller African economies."},
+
+{d:4,cat:"Outside Roles",q:"Fatih Karahan, co-chair of RCG MENA, governs which central bank?",opts:["Central Bank of Egypt","Central Bank of the Republic of Türkiye","Central Bank of Jordan","Saudi Central Bank (SAMA)"],correct:1,personQ:"karahan",personA:"karahan",
+ m:"Fatih Karahan is Governor of the Central Bank of the Republic of Türkiye. He co-chairs RCG MENA with Hassan Abdalla, Governor of the Central Bank of Egypt — two of the region's largest and most systemically important central banks, both grappling in recent years with high inflation and currency-stability challenges that make financial-stability coordination especially salient for them."},
+
+{d:4,cat:"Outside Roles",q:"Michele Bullock, co-chair of RCG Asia, holds which role in Australia?",opts:["Treasurer of Australia","Governor, Reserve Bank of Australia","Chair of the Australian Prudential Regulation Authority","Chief Executive of the ASX"],correct:1,personQ:"bullock",personA:"bullock",
+ m:"Michele Bullock is Governor of the Reserve Bank of Australia. She co-chairs RCG Asia with Pham Thanh Ha of Vietnam's central bank, spanning a huge range of financial-development stages within a single RCG — from a mature, deep financial system like Australia's to a fast-growing, still-developing one like Vietnam's."},
+
+// ---------- DIFFICULTY 5 : EXPERT / SYNTHESIS ----------
+{d:5,cat:"Expert",q:"Considering the full chart, which committee chair is the ONLY one whose home-institution role is explicitly a resolution authority rather than a central bank or a bank-supervision arm of one?",opts:["Martin Schlegel","Dominique Laboureix","Ryozo Himino","Tiff Macklem"],correct:1,personQ:"laboureix",personA:"laboureix",
+ m:"Dominique Laboureix, via the Single Resolution Board. Every other Standing Committee chair on the chart comes from a central bank (Macklem, Himino, Schlegel) or a central bank's supervisory arm (Bowman at the Fed). Laboureix is structurally different — the SRB isn't a central bank at all, it's a dedicated EU resolution authority — which mirrors ResG's own distinct, specialised mandate within the FSB."},
+
+{d:5,cat:"Expert",q:"If SCAV flags a fast-growing vulnerability in non-bank private credit, and SCSI later needs to check whether new rules addressing it were actually adopted domestically, which committee would NOT be directly involved in that particular sequence?",opts:["ResG","SCAV","SCSI","The Plenary, which would need to approve any resulting policy recommendation"],correct:0,personQ:null,personA:null,
+ m:"ResG's mandate is specifically resolution — winding down failing institutions — which is a different problem from monitoring an emerging vulnerability (SCAV) or checking whether resulting standards get implemented (SCSI). Unless the private-credit vulnerability specifically created a resolution question (e.g., a systemic non-bank lender needing an orderly wind-down framework), ResG wouldn't be a natural part of that particular vulnerability-to-implementation pipeline."},
+
+{d:5,cat:"Expert",q:"Andrew Bailey is the FSB's fifth chair since 2009. Which of these correctly orders any two chairs who are known to have held the role, based on what we've covered?",opts:["Mark Carney chaired the FSB, then Klaas Knot, then Andrew Bailey","Klaas Knot chaired the FSB, then Mark Carney, then Andrew Bailey","Andrew Bailey chaired the FSB, then Mark Carney, then Klaas Knot","Mark Carney and Andrew Bailey chaired simultaneously as co-chairs"],correct:0,personQ:null,personA:"bailey",
+ m:"Mark Carney (while BoE Governor) came before Klaas Knot (DNB Governor), who came before Andrew Bailey (BoE Governor again) from July 2025. There's no co-chair arrangement at the FSB — leadership is sequential, one governor at a time, each serving a defined multi-year term before handing over."},
+
+{d:5,cat:"Expert",q:"Why does the FSB deliberately choose sitting central bank governors and supervisors — people with demanding full-time day jobs — to chair its committees, rather than hiring dedicated full-time FSB officials for every role?",opts:["Purely to save money on salaries","To ensure committee leadership is grounded in current, hands-on institutional experience and carries real domestic authority and credibility, not just theoretical policy expertise","Because the FSB's charter legally forbids full-time appointees","Because no qualified full-time candidates have ever applied"],correct:1,personQ:null,personA:null,
+ m:"This 'dual-hatting' model is a deliberate design choice, not an accident or a cost-cutting measure. A committee chair who is also, say, actually running bank supervision at the Federal Reserve (Bowman) brings real-time, hands-on knowledge of what's happening on the ground — and crucially, carries the institutional weight to get their own country's regulators to actually follow through on FSB recommendations. The Secretariat (a genuinely full-time body under Schindler) exists precisely to provide the continuous administrative backbone that these part-time chairs, busy with domestic responsibilities, can't provide themselves."},
+
+{d:5,cat:"Expert",q:"Across the entire org chart, how many of the eleven top-level leadership figures (Plenary/Steering Committee chair, Secretariat head, and the five Standing-Committee-or-ResG chairs) come from central banks located in the G7?",opts:["All of them","Five: Bailey, Macklem, Bowman, Himino, and Schlegel's Switzerland (a G7-adjacent but not G7 member)","Four: Bailey (UK), Macklem (Canada), Bowman (USA), Himino (Japan) — Schindler and Schlegel are not G7-affiliated in this sense, and Laboureix represents the EU's SRB, not a national G7 central bank","None; all seven come from emerging markets"],correct:2,personQ:null,personA:null,
+ m:"Four of the six top committee/Plenary chairs are from G7 countries: Bailey (UK), Macklem (Canada), Bowman (USA), Himino (Japan). Schlegel represents Switzerland, which is not a G7 member; Laboureix represents an EU-level resolution authority, not a national central bank; and Schindler leads the Secretariat, a staff body rather than a national representative. This G7-heavy tilt at the very top is one reason RCGs matter so much — they're the FSB's main structural counterweight, deliberately built to bring non-G7, non-member voices into the conversation."},
+
+{d:5,cat:"Expert",q:"A country is an FSB member but does NOT chair any Standing Committee, ResG, or the Plenary itself, yet still has real influence in the structure shown on this chart. Which mechanism most directly gives such a country a voice?",opts:["It has no mechanism; only chairs matter","Its officials can still be Plenary members with a vote on recommendations, and/or serve as an RCG co-chair representing the 'FSB member' side of a regional pairing","It must wait for a Standing Committee chair to retire before gaining any influence","The Secretariat automatically represents all non-chairing members equally"],correct:1,personQ:null,personA:null,
+ m:"Chairing a committee is only one form of influence. Every FSB member's officials sit in the Plenary — the body that actually approves recommendations — regardless of whether they chair anything. Beyond that, member-country officials often serve as the 'member' half of an RCG co-chair pairing (as Switzerland's Antoine Martin does for RCG Europe, or the US's Lisa Cook does for RCG Americas) even when they don't chair a Standing Committee. The org chart's boxes show formal leadership, but Plenary membership itself is where most members' real influence sits."},
+
+{d:5,cat:"Expert",q:"Suppose the FSB wants to check both (a) whether a new resolution-related standard was adopted into law in a non-member Asian jurisdiction, and (b) get that jurisdiction's own view on whether the standard is workable for them. Which TWO structures on the chart would most plausibly be involved together?",opts:["SCAV and SCBR","SCSI (checks implementation) and RCG Asia (channels the non-member jurisdiction's own feedback)","ResG and the Secretariat only","Steering Committee and SCBR"],correct:1,personQ:null,personA:null,
+ m:"SCSI's job is precisely to monitor implementation of agreed standards across jurisdictions — including resolution-related ones designed with ResG's input. But SCSI doesn't have a standing channel into non-member views; that's what RCG Asia is for, giving the non-member jurisdiction's own supervisors and central bankers (via co-chairs like Michele Bullock and Pham Thanh Ha) a structured way to feed back whether a standard is actually workable on the ground. In practice, FSB policy work regularly combines a Standing Committee's technical view with an RCG's regional-reality-check."},
+
+{d:5,cat:"Expert",q:"Why is it structurally significant that Michelle Bowman chairs SRC at the FSB while ALSO sitting on the Basel Committee's GHOS group and chairing the US's own FFIEC?",opts:["It's a coincidence with no structural significance","It demonstrates the layered, overlapping architecture of global financial governance: the same individual can simultaneously sit at the domestic (FFIEC), Basel-standard-setting (GHOS), and global-coordination (FSB) layers, which is how standards actually flow between levels","It means the FSB, Basel Committee, and FFIEC are legally the same organisation","It is a conflict of interest that the FSB's rules formally prohibit"],correct:1,personQ:"bowman",personA:"bowman",
+ m:"This layering is deliberate and pervasive, not a loophole. Global standards (Basel capital rules, agreed via GHOS) need domestic implementation (via bodies like the FFIEC) and cross-border coordination (via FSB's SRC) — and having the same trusted, technically fluent official sit across all three layers is exactly how information and political will actually travel between them. Multiply Bowman's pattern by the other chairs and RCG co-chairs across the org chart, and the FSB's real power turns out to lie less in its own formal authority (it has none — it can't compel anyone) and more in this dense web of shared personnel across institutions."},
+
+{d:5,cat:"Expert",q:"Based on everything covered, what is the single best one-line description of what the FSB actually IS, structurally?",opts:["A supranational regulator that can fine banks directly for non-compliance","A G20-created coordination body with no direct enforcement power, whose influence comes from bringing together the same senior officials who run supervision, resolution, and central banking nationally, plus outreach to non-members via RCGs","A private industry association funded by major banks","A subsidiary agency of the International Monetary Fund"],correct:1,personQ:null,personA:null,
+ m:"The FSB cannot fine anyone, issue binding law, or seize an asset. Its entire power is soft: it sets standards and expectations, then relies on member jurisdictions to implement them domestically — checked via SCSI — using the credibility and authority of officials (like Bailey, Bowman, Macklem, Himino, Schlegel, Laboureix, and the RCG co-chairs) who are simultaneously running the actual institutions responsible for financial stability at home. That's the throughline across this entire org chart: coordination and peer pressure among people who already have real jobs, not a new layer of supranational enforcement."},
+
+// ---------- ADDITIONAL MIXED-DIFFICULTY QUESTIONS TO REACH 80+ ----------
+
+{d:3,cat:"Chairs",q:"Which of the following pairs correctly matches a Standing Committee chair with their central bank's country?",opts:["Himino — Canada","Macklem — Japan","Bowman — United States","Schlegel — United Kingdom"],correct:2,personQ:"bowman",personA:"bowman",
+ m:"Michelle Bowman — United States (Federal Reserve). The others are mismatched: Himino is Japan (Bank of Japan), Macklem is Canada (Bank of Canada), and Schlegel is Switzerland (Swiss National Bank), not the UK."},
+
+{d:1,cat:"Foundations",q:"Which committee's name most directly signals a focus on RISK DETECTION rather than rule-writing or enforcement?",opts:["Standing Committee on Assessment of Vulnerabilities","Standing Committee on Standards Implementation","Standing Committee on Budget and Resources","Resolution Steering Group"],correct:0,personQ:null,personA:"macklem",
+ m:"'Assessment of Vulnerabilities' is explicitly about detection and monitoring — finding weak points in the system — rather than setting standards (SCSI's implementation focus) or handling failures after the fact (ResG). It's the FSB's forward-looking, preventative function."},
+
+{d:3,cat:"Chairs",q:"Which chair's biography explicitly notes they are the only Federal Reserve Board member with direct state bank supervisory experience?",opts:["Lisa Cook","Michelle Bowman","Jerome Powell","Christopher Waller"],correct:1,personQ:"bowman",personA:"bowman",
+ m:"Michelle Bowman — she served as the Kansas state bank commissioner before joining the Fed's Board of Governors, giving her a hands-on supervisory background that most Fed governors, who often come from academic or markets backgrounds, don't share."},
+
+{d:2,cat:"Mandates",q:"Which FSB structure would be most relevant if you wanted to understand how smaller, non-G20 economies experience 'de-risking' by global banks withdrawing correspondent banking relationships?",opts:["Regional Consultative Groups","Standing Committee on Budget and Resources","The Secretariat's internal HR function","The Plenary's meeting minutes only"],correct:0,personQ:null,personA:null,
+ m:"RCGs are the FSB's main channel for hearing directly from smaller and non-member economies — and de-risking (large global banks cutting off correspondent banking ties with smaller markets, often over compliance-cost concerns) has been a recurring, real topic at RCG meetings, precisely because it disproportionately hits regions like the Caribbean and Sub-Saharan Africa that are heavily represented via RCGs rather than full FSB membership."},
+
+{d:4,cat:"Outside Roles",q:"Pham Thanh Ha, co-chair of RCG Asia, holds which role at Vietnam's central bank?",opts:["Governor","Deputy Governor","Chief Economist","Head of Banking Supervision"],correct:1,personQ:"phamthanhha",personA:"phamthanhha",
+ m:"Pham Thanh Ha is Deputy Governor of the State Bank of Vietnam. Vietnam is not an FSB member, so pairing his role with Australia's Michele Bullock (an FSB member via the G20) follows the standard RCG member/non-member co-chair pattern seen across all six regions."},
+
+{d:4,cat:"Outside Roles",q:"Armen Nurbekyan, co-chair of RCG CIS, represents which institution?",opts:["Central Bank of Armenia","Central Bank of Kazakhstan","Central Bank of Russia","Central Bank of Georgia"],correct:0,personQ:"nurbekyan",personA:"nurbekyan",
+ m:"Armen Nurbekyan represents the Central Bank of Armenia, co-chairing RCG CIS alongside Alexey Moiseev, a Deputy Finance Minister of Russia — pairing a smaller CIS-region central bank with a larger member-jurisdiction finance ministry official, consistent with the RCG member/non-member design."},
+
+{d:4,cat:"Outside Roles",q:"Marja Nykänen, co-chair of RCG Europe, holds which role at the Bank of Finland?",opts:["Governor","Deputy Governor","Head of Payments","Chief Legal Counsel"],correct:1,personQ:"nykanen",personA:"nykanen",
+ m:"Marja Nykänen is Deputy Governor of the Bank of Finland, appointed Co-Chair of RCG Europe effective 1 July 2025, describing it as building on prior experience as a group member before stepping into the co-chair role — a fairly common career path within the FSB's RCG structure, where members are often promoted to co-chair over time rather than parachuted in externally."},
+
+{d:5,cat:"Expert",q:"Hassan Abdalla, co-chair of RCG MENA, governs a central bank that has managed one of the region's most closely watched currency policies in recent years. Which country?",opts:["Egypt","Saudi Arabia","United Arab Emirates","Morocco"],correct:0,personQ:"abdalla",personA:"abdalla",
+ m:"Hassan Abdalla is Governor of the Central Bank of Egypt. Egypt's managed currency and periodic devaluations have made it a frequent case study in regional financial-stability discussions — exactly the kind of real-world material RCG MENA meetings are built to surface and discuss among peers, both member and non-member."},
+
+{d:2,cat:"Structure",q:"Which of these correctly lists all six FSB Regional Consultative Group regions?",opts:["Americas, Asia, CIS, Europe, Middle East & North Africa, Sub-Saharan Africa","Americas, Asia-Pacific, EU, Middle East, Africa, Oceania","North America, South America, Asia, Europe, Africa, Middle East","G7, G20, CIS, EU, ASEAN, African Union"],correct:0,personQ:null,personA:null,
+ m:"Americas, Asia, CIS, Europe, Middle East & North Africa, and Sub-Saharan Africa — six regions, twelve co-chairs total, each pairing an FSB member with a non-member from that region."},
+
+{d:3,cat:"Chairs",q:"Which committee chair's institution (Swiss National Bank) also happens to be based in the same country that hosts the FSB Secretariat?",opts:["Tiff Macklem","Martin Schlegel","Ryozo Himino","Michelle Bowman"],correct:1,personQ:"schlegel",personA:"schlegel",
+ m:"Martin Schlegel's SNB is headquartered in Switzerland, the same country (specifically Basel) that hosts the FSB Secretariat and the BIS. This proximity is part of why Swiss officials are so deeply embedded across Basel-based international bodies — it's not unusual for a senior SNB figure to walk between SNB, BIS, and FSB meetings in the same week."},
+
+{d:2,cat:"Mandates",q:"A jurisdiction agrees to a new FSB standard on climate-related financial disclosures. A year later, the FSB wants to know if it was actually adopted into that country's law. Which committee handles that check?",opts:["SCAV","SCSI","ResG","SCBR"],correct:1,personQ:null,personA:"himino",
+ m:"SCSI, chaired by Ryozo Himino — Standing Committee on Standards Implementation. This is the FSB's accountability mechanism: agreeing a standard is the easy part; SCSI exists to make sure agreement doesn't just quietly evaporate once the cameras are gone."},
+
+{d:1,cat:"Foundations",q:"Which of the following is the correct chair-to-committee match?",opts:["Dominique Laboureix — SCAV","Tiff Macklem — ResG","Andrew Bailey — SCBR","Ryozo Himino — SCSI"],correct:3,personQ:"himino",personA:"himino",
+ m:"Ryozo Himino chairs SCSI. The others are deliberately mismatched in this question: Laboureix actually chairs ResG (not SCAV), Macklem actually chairs SCAV (not ResG), and Bailey chairs the Plenary/Steering Committee overall (not SCBR, which is Schlegel's)."},
+
+{d:3,cat:"Chairs",q:"Which chair's committee (SRC) most directly overlaps with their own day job title, almost word for word?",opts:["Andrew Bailey — Plenary Chair / BoE Governor","Michelle Bowman — Chair of Supervisory & Regulatory Cooperation / Vice Chair for Supervision","Tiff Macklem — SCAV / Governor","Martin Schlegel — SCBR / SNB Chairman"],correct:1,personQ:"bowman",personA:"bowman",
+ m:"Bowman's FSB title (Standing Committee on Supervisory & Regulatory Cooperation) and her Fed title (Vice Chair for Supervision) are about as close a match as you'll find on this chart — both are literally about supervision. It's a clean illustration of the FSB's general pattern of matching people to committees that mirror their actual jobs, just occasionally more explicit than others."},
+
+{d:2,cat:"Structure",q:"How many total individual named co-chairs are there across all six RCGs combined?",opts:["Six","Ten","Twelve","Eighteen"],correct:2,personQ:null,personA:null,
+ m:"Twelve — two co-chairs for each of the six regions (Americas, Asia, CIS, Europe, MENA, Sub-Saharan Africa). Combined with the six Standing-Committee-or-ResG chairs, the Plenary chair, and the Secretary General, that's a total of twenty named leadership roles across the entire chart."},
+
+{d:4,cat:"Outside Roles",q:"Which RCG Americas co-chair sits on the US Federal Reserve's Board of Governors, distinct from Michelle Bowman's role chairing SRC?",opts:["Lisa Cook","Jide Lewis","Christopher Waller","Philip Jefferson"],correct:0,personQ:"cook",personA:"cook",
+ m:"Lisa Cook is the Federal Reserve Board member who co-chairs RCG Americas. It's worth keeping straight: Bowman (SRC chair) and Cook (RCG Americas co-chair) are two different Fed officials holding two entirely different FSB roles at the same time — the Fed, like several large members, has more than one seat at the FSB table."},
+
+{d:5,cat:"Expert",q:"Considering both the Standing Committee chairs AND the RCG co-chairs together, which country appears to have the most individuals holding named FSB leadership roles on this chart?",opts:["Switzerland","United States","Japan","Canada"],correct:1,personQ:null,personA:null,
+ m:"The United States: Michelle Bowman (SRC chair) and Lisa Cook (RCG Americas co-chair) are both named leadership figures from the US Federal Reserve. Switzerland is close behind with Martin Schlegel (SCBR chair) and Antoine Martin (RCG Europe co-chair) also both from the SNB — reflecting both countries' outsized structural weight in global financial governance, for very different reasons (US market size versus Switzerland's role as host to Basel-based institutions)."},
+
+{d:1,cat:"Foundations",q:"True or false: the FSB Chair role and the Secretary General role are the same job.",opts:["True","False"],correct:1,personQ:null,personA:null,
+ m:"False — they're structurally very different. The Chair (Bailey) is a part-time role held by a sitting central bank governor, rotating every few years. The Secretary General (Schindler) leads the full-time, permanent Secretariat staff. One provides political leadership and external representation; the other provides continuity, analysis, and administration."},
+
+{d:3,cat:"Chairs",q:"Which committee chair's home institution is described as being 'the third' person to hold their specific title at that institution?",opts:["Michelle Bowman, as the third Vice Chair for Supervision at the Federal Reserve","Andrew Bailey, as the third Governor of the Bank of England","Tiff Macklem, as the third Governor of the Bank of Canada","Ryozo Himino, as the third Deputy Governor of the Bank of Japan"],correct:0,personQ:"bowman",personA:"bowman",
+ m:"Michelle Bowman was sworn in on 9 June 2025 as the third person to hold the Federal Reserve's Vice Chair for Supervision role — a position created in the wake of the 2008 crisis specifically to give bank supervision a dedicated, senior champion on the Fed's Board, distinct from the Fed Chair's broader monetary-policy focus."},
+
+{d:2,cat:"Mandates",q:"Of the five committees/groups reporting to the Plenary (four Standing Committees plus ResG), which one is explicitly NOT called a 'Standing Committee' in its own name?",opts:["SCAV","SRC","SCSI","ResG"],correct:3,personQ:null,personA:"laboureix",
+ m:"The Resolution Steering Group is named a 'Steering Group,' not a 'Standing Committee' — the only one of the five bodies with that different label. Naming conventions in org charts are rarely accidental; it visually signals ResG's distinct character and mandate compared to its four Standing Committee peers."},
+
+{d:4,cat:"Outside Roles",q:"Which of these best explains why an FSB Standing Committee chair role and a Regional Consultative Group co-chair role are considered structurally different kinds of leadership, even though both appear as 'chairs' on an org chart?",opts:["There is no real difference between them","Standing Committee chairs lead global, cross-cutting policy work across all FSB members; RCG co-chairs lead regional outreach and dialogue that includes non-members and channels their views inward","RCG co-chairs outrank Standing Committee chairs in the FSB hierarchy","Standing Committee chairs are elected by the public; RCG co-chairs are appointed"],correct:1,personQ:null,personA:null,
+ m:"Standing Committee chairs (like Macklem or Bowman) run substantive global policy workstreams that apply across the whole FSB membership. RCG co-chairs (like Bullock or Nurbekyan) run regional forums whose core purpose is dialogue and outreach — bringing in views from outside the formal membership — rather than producing global policy themselves. Both matter, but they answer different questions: 'what should the policy be?' versus 'how do we make sure the policy reflects reality outside our own membership?'"},
+
+{d:3,cat:"Chairs",q:"Which chair's biography mentions serving on the Advisory Board of the Financial Stability Institute at the BIS, in addition to their FSB and Fed roles?",opts:["Lisa Cook","Michelle Bowman","John Schindler","Andrew Bailey"],correct:1,personQ:"bowman",personA:"bowman",
+ m:"Michelle Bowman. The Financial Stability Institute is the BIS's dedicated arm for training and supporting supervisors worldwide — another layer in the dense, overlapping network of Basel-based bodies where the same senior officials show up again and again across slightly different mandates."},
+
+{d:1,cat:"Foundations",q:"Which is the correct order, from the top of the org chart downward?",opts:["Secretariat → Plenary → Standing Committees → RCGs","FSB Plenary/Steering Committee → Standing Committees & ResG → Regional Consultative Groups","Standing Committees → FSB Plenary → RCGs → Secretariat","RCGs → Standing Committees → Plenary → Secretariat"],correct:1,personQ:null,personA:null,
+ m:"Top to bottom: the Plenary/Steering Committee sits at the apex (with the Secretariat alongside it, not below it); the four Standing Committees plus ResG report into the Plenary next; and the Regional Consultative Groups sit at the base, connected by the long vertical line straight down from the Plenary."},
+
+{d:5,cat:"Expert",q:"Why might it matter, in practice, that the FSB Chair role changed from Klaas Knot (DNB) to Andrew Bailey (BoE) at the exact same moment Knot also stepped down as his own central bank's governor?",opts:["It doesn't matter at all operationally","It shows the FSB chairmanship is treated as an extension of holding a major central bank governorship, not a standalone career track — so a change of FSB chair typically coincides with a change of national leadership too, affecting continuity on both fronts simultaneously","It proves the FSB Chair and DNB Governor were legally the same office","It was purely coincidental timing with no institutional meaning"],correct:1,personQ:null,personA:"bailey",
+ m:"The timing wasn't coincidental — it reflects how tightly the FSB chairmanship is bound to holding a major central-bank governorship. Because the FSB deliberately picks sitting governors rather than standalone career officials (see the earlier question on 'dual-hatting'), a governor's domestic retirement and their FSB departure often land together, meaning the FSB experiences a bigger leadership discontinuity at that moment than a body with a dedicated, career FSB chair would. The Secretariat's permanence (under Schindler) is partly what cushions that transition."},
+
+{d:2,cat:"Mandates",q:"Which committee's work would be most directly relevant to designing 'bail-in' rules that make a failing bank's own creditors absorb losses instead of taxpayers?",opts:["ResG","SCAV","SCBR","Secretariat"],correct:0,personQ:null,personA:"laboureix",
+ m:"ResG — the Resolution Steering Group, chaired by Dominique Laboureix. Bail-in tools and total loss-absorbing capacity (TLAC) requirements are core resolution-policy concepts, designed precisely so a failing bank's shareholders and certain creditors take the hit before any public money would ever be considered."},
+
+{d:1,cat:"Foundations",q:"How many named individuals hold the top-level Plenary/Steering Committee chair and Secretariat leadership roles combined?",opts:["One","Two","Three","Four"],correct:1,personQ:null,personA:null,
+ m:"Two: Andrew Bailey chairs the Plenary and Steering Committee; John Schindler leads the Secretariat as Secretary General. They sit side-by-side on the chart as the FSB's top two figures, one political/representative, one administrative/analytical."},
+
+{d:3,cat:"Chairs",q:"Which committee chair's institution is a monetary authority for a G7 country that is NOT the United States, United Kingdom, or Japan?",opts:["Tiff Macklem (Bank of Canada)","Michelle Bowman (Federal Reserve)","Andrew Bailey (Bank of England)","Ryozo Himino (Bank of Japan)"],correct:0,personQ:"macklem",personA:"macklem",
+ m:"Tiff Macklem, Governor of the Bank of Canada. Canada is a G7 member distinct from the US, UK, and Japan, rounding out the chart's G7 representation across four of the six top committee/Plenary chairs."},
+
+{d:4,cat:"Outside Roles",q:"Considering both Michelle Bowman (SRC) and Antoine Martin (RCG Europe co-chair), what pattern do their biographies share?",opts:["Both began their careers at a different country's central bank before reaching their current senior role","Both chair Standing Committees","Both represent non-FSB-member jurisdictions","Neither has any international role beyond the FSB"],correct:0,personQ:null,personA:null,
+ m:"Both had international career detours before their current post: Bowman was a Kansas state bank commissioner before the Fed (a domestic rather than international detour, but a distinct supervisory track), while Antoine Martin literally began at the Federal Reserve Bank of Kansas City and New York before joining Switzerland's SNB. Martin's case is the more striking one — a career built almost entirely at the Fed system before crossing over to lead financial stability at a different country's central bank entirely."},
+
+{d:5,cat:"Expert",q:"If you had to design a new, seventh Regional Consultative Group tomorrow following the FSB's existing structural logic, which design choice would be most consistent with the other six?",opts:["Give it three co-chairs instead of two, for extra balance","Pair a co-chair from an FSB member jurisdiction in the new region with a co-chair from a non-member jurisdiction in the same region","Have a Standing Committee chair automatically also chair the new RCG","Make it report directly to SCSI instead of the Plenary"],correct:1,personQ:null,personA:null,
+ m:"Every existing RCG follows the member/non-member co-chair pairing rule (South Africa/Zambia, Switzerland/Finland, Australia/Vietnam, and so on) and reports to the Plenary itself, not to any single Standing Committee. A new RCG built consistently with that logic would keep the two-co-chair, member/non-member pairing, and sit at the same level as the existing six — reporting upward to the Plenary, alongside them, not folded into SCSI or any other committee's remit."},
+
+{d:1,cat:"Foundations",q:"Which best describes the FSB's overall purpose, in one sentence?",opts:["A body that lends money directly to struggling banks","A coordinating body that monitors and makes recommendations about global financial stability, without direct enforcement power","A private ratings agency for sovereign debt","An international court for financial disputes"],correct:1,personQ:null,personA:null,
+ m:"The FSB monitors the global financial system and makes recommendations to strengthen it — but unlike, say, a national regulator, it can't fine anyone or force compliance directly. Its influence flows through its members' own authority, its published standards, and structures like SCSI that track whether those standards actually get adopted."},
+];
+
+</script>
+<script>
+function avatarUrl(pid){
+  const p = PEOPLE[pid];
+  const initials = encodeURIComponent(p.name.split(' ').map(w=>w[0]).join(''));
+  return `${p.bg}`;
+}
+
+let order = [];
+let idx = 0;
+let score = 0;
+let streak = 0;
+let bestStreak = 0;
+let answered = false;
+let catStats = {};
+let unlockedNodes = new Set();
+
+const ORG_NODES = [
+  "FSB Plenary","Steering Committee","Secretariat",
+  "SCAV","SRC","SCSI","SCBR","ResG",
+  "RCG Americas","RCG Asia","RCG CIS","RCG Europe","RCG MENA","RCG SSA"
+];
+const NODE_BY_CAT_HINT = {
+  "Foundations":["FSB Plenary","Steering Committee","Secretariat"],
+  "Structure":["Secretariat","RCG Americas","RCG Asia"],
+  "Mandates":["SCAV","SRC","SCSI","SCBR","ResG"],
+  "Chairs":["SCAV","SRC","SCSI","SCBR","ResG"],
+  "Outside Roles":["RCG Americas","RCG Asia","RCG CIS","RCG Europe","RCG MENA","RCG SSA"],
+  "Expert":["FSB Plenary","Steering Committee","Secretariat","SCAV","SRC","SCSI","SCBR","ResG"]
+};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildTracker(){
+  const row = document.getElementById('trackerRow');
+  row.innerHTML = '';
+  ORG_NODES.forEach(n=>{
+    const el = document.createElement('div');
+    el.className = 'node';
+    el.id = 'node-'+n.replace(/\s+/g,'_');
+    el.textContent = n;
+    row.appendChild(el);
+  });
+}
+
+function litNode(cat){
+  const candidates = NODE_BY_CAT_HINT[cat] || [];
+  const unlit = candidates.filter(c=>!unlockedNodes.has(c));
+  const pick = unlit.length ? unlit[0] : candidates[Math.floor(Math.random()*candidates.length)];
+  if(pick){
+    unlockedNodes.add(pick);
+    const el = document.getElementById('node-'+pick.replace(/\s+/g,'_'));
+    if(el) el.classList.add('lit');
+  }
+}
+
+function startGame(){
+  order = shuffle(QUESTIONS.map((q,i)=>i));
+  idx = 0; score = 0; streak = 0; bestStreak = 0; answered = false;
+  catStats = {}; unlockedNodes = new Set();
+  document.getElementById('startScreen').style.display='none';
+  document.getElementById('endScreen').style.display='none';
+  document.getElementById('quizCard').style.display='block';
+  document.getElementById('statsbar').style.display='grid';
+  document.getElementById('tracker').style.display='block';
+  buildTracker();
+  renderQuestion();
+}
+
+function restartGame(){ startGame(); }
+
+function renderQuestion(){
+  answered = false;
+  const q = QUESTIONS[order[idx]];
+  document.getElementById('catTag').textContent = q.cat;
+
+  // diff dots
+  const dd = document.getElementById('diffDots');
+  dd.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const s = document.createElement('span');
+    if(i<=q.d) s.classList.add('on');
+    dd.appendChild(s);
+  }
+
+  // question avatar (ONLY if person is literally named in the question text)
+  const qAvatarWrap = document.getElementById('qAvatarWrap');
+  const qPersonName = document.getElementById('qPersonName');
+  if(q.personQ){
+    const p = PEOPLE[q.personQ];
+    document.getElementById('qAvatarImg').src = avatarUrl(q.personQ);
+    qAvatarWrap.style.display='block';
+    qPersonName.style.display='block';
+    qPersonName.textContent = p.name + ' — ' + p.role;
+  } else {
+    qAvatarWrap.style.display='none';
+    qPersonName.style.display='none';
+  }
+
+  document.getElementById('qText').textContent = q.q;
+
+  // options
+  const optsArea = document.getElementById('optsArea');
+  optsArea.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((optText,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${optText}</span>`;
+    btn.onclick = ()=>selectOption(i, btn);
+    optsArea.appendChild(btn);
+  });
+
+  document.getElementById('masterclass').classList.remove('show');
+  document.getElementById('nextBtn').style.display='none';
+
+  updateStatsBar();
+}
+
+function selectOption(i, btnEl){
+  if(answered) return;
+  answered = true;
+  const q = QUESTIONS[order[idx]];
+  const correct = i === q.correct;
+  const allOpts = document.querySelectorAll('.opt');
+
+  allOpts.forEach((el,j)=>{
+    el.classList.add('disabled');
+    if(j===q.correct) el.classList.add('correct');
+    else if(j===i) el.classList.add('wrong');
+    else el.classList.add('faded');
+  });
+
+  if(correct){
+    score++; streak++; bestStreak = Math.max(bestStreak, streak);
+  } else {
+    streak = 0;
+  }
+  catStats[q.cat] = catStats[q.cat] || {right:0,total:0};
+  catStats[q.cat].total++;
+  if(correct) catStats[q.cat].right++;
+
+  litNode(q.cat);
+
+  // masterclass panel
+  const mcAvatarWrap = document.getElementById('mcAvatarWrap');
+  const mcPerson = document.getElementById('mcPerson');
+  const mcPersonRole = document.getElementById('mcPersonRole');
+  if(q.personA){
+    const p = PEOPLE[q.personA];
+    document.getElementById('mcAvatarImg').src = avatarUrl(q.personA);
+    mcAvatarWrap.style.display='block';
+    mcPerson.style.display='block';
+    mcPersonRole.style.display='block';
+    mcPerson.textContent = p.name;
+    mcPersonRole.textContent = p.role + ' · ' + p.org;
+  } else {
+    mcAvatarWrap.style.display='none';
+    mcPerson.style.display='none';
+    mcPersonRole.style.display='none';
+  }
+  document.getElementById('mcBody').innerHTML = (correct ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.m;
+  document.getElementById('masterclass').classList.add('show');
+  document.getElementById('nextBtn').style.display='inline-block';
+  document.getElementById('nextBtn').textContent = (idx === order.length-1) ? 'See Final Report →' : 'Next Question →';
+
+  updateStatsBar();
+}
+
+function updateStatsBar(){
+  document.getElementById('statQNum').textContent = (idx+1)+'/'+order.length;
+  document.getElementById('statScore').textContent = score;
+  document.getElementById('statStreak').textContent = streak;
+  const q = QUESTIONS[order[idx]];
+  const levels = ['','Foundational','Working','Proficient','Advanced','Expert'];
+  document.getElementById('statLevel').textContent = levels[q.d];
+  document.getElementById('progressFill').style.width = (((idx)/order.length)*100)+'%';
+}
+
+function nextQuestion(){
+  if(idx === order.length-1){ endGame(); return; }
+  idx++;
+  document.getElementById('progressFill').style.width = ((idx/order.length)*100)+'%';
+  renderQuestion();
+}
+
+function endGame(){
+  document.getElementById('quizCard').style.display='none';
+  document.getElementById('statsbar').style.display='none';
+  document.getElementById('endScreen').style.display='block';
+  document.getElementById('progressFill').style.width='100%';
+
+  const pct = Math.round((score/order.length)*100);
+  document.getElementById('finalScore').textContent = score+' / '+order.length;
+  let grade = 'Observer';
+  if(pct>=95) grade='FSB Chair-Calibre';
+  else if(pct>=85) grade='Standing Committee Chair';
+  else if(pct>=70) grade='Plenary Member';
+  else if(pct>=50) grade='RCG Delegate';
+  else grade='Analyst-in-Training';
+  document.getElementById('finalGrade').textContent = grade + ' · ' + pct + '%';
+
+  const bd = document.getElementById('finalBreakdown');
+  bd.innerHTML='';
+  Object.keys(catStats).forEach(cat=>{
+    const s = catStats[cat];
+    const div = document.createElement('div');
+    div.className='bd';
+    div.innerHTML = `<b>${s.right}/${s.total}</b><span>${cat}</span>`;
+    bd.appendChild(div);
+  });
+
+  document.getElementById('finalNote').textContent =
+    bestStreak >= 8 ? `Longest streak: ${bestStreak}. That kind of consistency would get you noticed at the Plenary.` :
+    `Longest streak: ${bestStreak}. Run it back — the question order reshuffles every time.`;
+}
+</script>
+</body>
+</html>
