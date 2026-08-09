@@ -68,27 +68,27 @@
 <!--  <h2 style="text-align: left;"><b>The <i>efficiency-generality</i> trade-off</b></h2>-->
 
 <h3 style="text-align: left;"><b>Defining the Problem</b></h3>
-  
 
-  <b>Definition 1 — Control function</b><blockquote><i> 
+
+  <b>Definition 1 — Control function</b><blockquote><i>
     A <strong>control function</strong>
     \(\mathbf{\gamma}(t)\) is a map from time \(t\in [0, \infty)\) to the set of <i>admissable controls</i> \(\Gamma\).
     <br>
     The control is also called a <strong>policy</strong>.
-    
+
     </blockquote></i>
     <br>
 
     <b>Definition 2 — Controlled Dynamical System</b><blockquote><i> A system whose dynamics is described by the equation of motion
-      
+
       \begin{equation}
       \dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
       \end{equation}
-      
-      is called a <strong>\(\mathbf{\gamma}\)-Controlled Dynamical System</strong>. 
+
+      is called a <strong>\(\mathbf{\gamma}\)-Controlled Dynamical System</strong>.
       <br>
-      A system which does not explicitely depent on time 
-  
+      A system which does not explicitely depent on time
+
       \begin{equation}
       \dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t)),
       \end{equation}
@@ -96,7 +96,7 @@
       is called <strong>Autonomous</strong>.
       <br>
       The <strong>state</strong> of the system \(\mathbf{x}(t)\in \mathbb{R}^n\) is also called <strong>trajectory</strong>.
-  
+
 
       </blockquote></i>
       <br>
@@ -107,20 +107,20 @@
         \mathbf{P}[\mathbf{\gamma}] := \int_0^T L(\mathbf{x}(t), \mathbf{\gamma}(t)) dt + \phi(\mathbf{x}(T)),
         \end{equation}
         </div>
-        is called a <strong>Payoff Functional</strong>, 
-        where the function \(L\) is called <strong>running payoff</strong> or <strong>Lagrangian</strong> 
+        is called a <strong>Payoff Functional</strong>,
+        where the function \(L\) is called <strong>running payoff</strong> or <strong>Lagrangian</strong>
         and \(\phi\) is called <strong>terminal payoff</strong> or <strong>boundary cost</strong> (sometimes also referred to as Mayer's Term).
         </blockquote></i>
         <br>
-  
-  
 
-  <b>Definition 4 — Optimal Control Problem</b><blockquote><i> 
-    Given a system with controls \(\mathbf{\gamma}\) 
-    and payoff functional \(\mathbf{P}[\mathbf{\gamma}]\), 
-    the associated <strong>Optimal Control Problem </strong> amounts to finding 
-    an <strong>optimal control</strong> \(\mathbf{\gamma}^*\) maximising the payoff: 
-    
+
+
+  <b>Definition 4 — Optimal Control Problem</b><blockquote><i>
+    Given a system with controls \(\mathbf{\gamma}\)
+    and payoff functional \(\mathbf{P}[\mathbf{\gamma}]\),
+    the associated <strong>Optimal Control Problem </strong> amounts to finding
+    an <strong>optimal control</strong> \(\mathbf{\gamma}^*\) maximising the payoff:
+
     \begin{equation}
     \mathbf{P}[\mathbf{\gamma}^*] = \sup_{\mathbf{\gamma}\in\Gamma} \mathbf{P}[\mathbf{\gamma}],
     \end{equation}
@@ -135,8 +135,8 @@
     When both \(L\ne0\) and \(\phi\ne0\) it is also called a Bolza Problem <a href="#ref1">[1]</a>.
 
     </blockquote></i>
-    
-    
+
+
 <hr class="w3-opacity">
 
 <h6>Exercise 1</h6>
@@ -151,9 +151,9 @@ Show that a problem in the Lagrange form can be turned into a Mayer problem with
     \tilde{x}(t=0) &= 0.
     \end{split}
     \end{equation}
-    Clearly this is such that 
+    Clearly this is such that
     \begin{equation}
-    \tilde{x}(t=T) = \int_0^TL(x(t), \gamma(t), t) dt . 
+    \tilde{x}(t=T) = \int_0^TL(x(t), \gamma(t), t) dt .
     \end{equation}
     Therefore, the problem expressed in terms of \(\tilde{x}\) is a Mayer problem.
 
@@ -183,39 +183,39 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
 
     <br>
 
-    Real world applications are abundant, from minimising fuel consumption when designing space missions, to optimising the production of chemicals, 
-    from maximisation of throughput of information transmition over a communication channel, to the determination of optimal policy paths for monetary policy setting. 
+    Real world applications are abundant, from minimising fuel consumption when designing space missions, to optimising the production of chemicals,
+    from maximisation of throughput of information transmition over a communication channel, to the determination of optimal policy paths for monetary policy setting.
     Even more so, optimality can be considered to a large extent a universal principle of nature, in the sense that
-    most processess seem to be optimising over some specific quantity. 
-    This is true for nature's fundamentals, where often one can describe physical systems via principles of least action, 
+    most processess seem to be optimising over some specific quantity.
+    This is true for nature's fundamentals, where often one can describe physical systems via principles of least action,
     for biological systems, e.g. explaining animals foraging behaviour, up to societies whose individuals maximise their respective expected utilities.
-    Furthermore, optimisaion clearly also plays a crucial role in many 
+    Furthermore, optimisaion clearly also plays a crucial role in many
 
 
 
     <h3 style="text-align: left;"><b>The Maximum Principle</b></h3>
 
 
-    <b>Definition 5 — Hamiltonian</b><blockquote><i> 
-      Given a system with controls \(\mathbf{\gamma}\), 
+    <b>Definition 5 — Hamiltonian</b><blockquote><i>
+      Given a system with controls \(\mathbf{\gamma}\),
       payoff functional \(\mathbf{P}[\mathbf{\gamma}]\),
-      and dynamics of the state variable \(\mathbf{x}\) 
-      governed by the law of motion 
+      and dynamics of the state variable \(\mathbf{x}\)
+      governed by the law of motion
       \(\dot{\mathbf{x}}(t)=\mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t)\)
-      
+
       the <strong>control Hamiltonian</strong> is
       <div style="overflow-x: auto; overflow-y: hidden;">
       \begin{equation}
       H(\mathbf{x}(t), \mathbf{\gamma}(t), \lambda(t), t) := L(\mathbf{x}(t), \mathbf{\gamma}(t), t) +\lambda^T(t)  \mathbf{f}(\mathbf{x}(t), \mathbf{\gamma}(t), t),
-      \end{equation}     
+      \end{equation}
       </div>
       where \(L\) is the Lagrangian term in \(\mathbf{P}\) (running payoff),
       and \(\lambda\) is called the <strong>co-state</strong> variable.
-      
-    
+
+
     </blockquote></i>
     <br>
-  Notice that the multiplier (or co-state) \(\lambda(t)\), 
+  Notice that the multiplier (or co-state) \(\lambda(t)\),
   unlike the Lagrangian multiplier in static optimisation, depends on time </strong><a href="#ref3">[3]</a>.
   <br>
 
@@ -223,10 +223,10 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
 
   <br><br>
 
-  <b>Theorem 6 — Pontryagin Maximum Principle</b><blockquote><i> 
-    Assume the optimal control \(\mathbf{\gamma}^*\) is known and admissable (\(\mathbf{\gamma}^*\in\Gamma\)), 
-    which generates the associated optimal trajectory \(\mathbf{x}^*\). 
-    Then, there exists and adjoint trajectory \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\) 
+  <b>Theorem 6 — Pontryagin Maximum Principle</b><blockquote><i>
+    Assume the optimal control \(\mathbf{\gamma}^*\) is known and admissable (\(\mathbf{\gamma}^*\in\Gamma\)),
+    which generates the associated optimal trajectory \(\mathbf{x}^*\).
+    Then, there exists and adjoint trajectory \(\mathbf{p}^*\) conjugate to \(\mathbf{x}^*\)
     such that
     <div style="overflow-x: auto; overflow-y: hidden;">
     \begin{equation}
@@ -237,18 +237,18 @@ Show that a problem in the Mayer form can be turned into a Lagrange problem with
      H(\mathbf{x}^*, \mathbf{\gamma}^*, \lambda^*, t) &= 0 \quad \forall t \in [0,T]\\
      \lambda^*(T) &= - \nabla_\mathbf{x}\phi(\mathbf{x}^*(T)) \quad\quad\quad\quad\quad\quad \phantom{-} (\text{Transversality condition})
     \end{split}
-    \end{equation}     
+    \end{equation}
     </div>
 
   </blockquote></i>
   <br>
 
-  In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality: 
+  In other words, Pontryagin's Maximum Principle provides a necessary condition for optimality:
   an optimal control must globally optimise the Hamiltonian.
-  The state and co-state equations are also known as canonical equations and describe the system's dynamics. 
-  <!-- Finally, the transversality condition states that the vector \(\lambda^*(T)\) 
-  is orthogonal to the tangent space to \(\mathcal{S}\) at \(\mathbf{x}^*(T)\); 
-  as such it represents a set of boundary conditions. 
+  The state and co-state equations are also known as canonical equations and describe the system's dynamics.
+  <!-- Finally, the transversality condition states that the vector \(\lambda^*(T)\)
+  is orthogonal to the tangent space to \(\mathcal{S}\) at \(\mathbf{x}^*(T)\);
+  as such it represents a set of boundary conditions.
   In particular, notice that -->
 
 
@@ -266,18 +266,18 @@ The initial position and velocity of the particle are \(x_0\) and \(v_0\) respec
 
 The control is the force \(f(t)\) applied to the particle, such that \(|f(t)|\le 1\).
 <br>
-Therefore, the problem is to minimise the total time 
+Therefore, the problem is to minimise the total time
 \begin{equation}
 \mathcal{T} = \int_0^T 1 dt,
 \end{equation}
 where \(T\) is the time when the particle reaches the origin, subject to the law of motion which,
 recalling that \(v=\dot{x}\) and \(f=\dot{v}\), reads
 \begin{equation}
- \frac{d}{dt} \begin{bmatrix} x \\ v  \end{bmatrix} = 
+ \frac{d}{dt} \begin{bmatrix} x \\ v  \end{bmatrix} =
 \left(\begin{matrix}
      0 & 1 \\
-     0 & 0  
-   \end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
+     0 & 0
+   \end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix}
    + \begin{bmatrix} 0 \\ 1 \end{bmatrix} f.
 \end{equation}
 <br>
@@ -287,15 +287,15 @@ To start off, one finds the Hamiltonian to be
 \begin{equation}
 H = \mathbf{\lambda}^T\left(\begin{matrix}
 0 & 1 \\
-0 & 0  
-\end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix} 
+0 & 0
+\end{matrix}\right) \begin{bmatrix} x \\ v \end{bmatrix}
 + \mathbf{\lambda}^T \begin{bmatrix} 0 \\ 1 \end{bmatrix} f - 1
 = \lambda_1 v + \lambda_2 f - 1.
 \label{double_integrator_hamiltonian}
 \end{equation}
 </div>
 
-Because the term \(\lambda_2 f\) in the Hamiltonian is linear in \(f\), 
+Because the term \(\lambda_2 f\) in the Hamiltonian is linear in \(f\),
 the maximum with respect to the control is achieved at one of the endpoints of the interval \([-1, 1]\), depending on the sign of \(\lambda_2\).
 That is, the Hamiltonian is maximised by
 <div style="overflow-x: auto; overflow-y: hidden;">
@@ -312,12 +312,12 @@ The costate variables are given by
 
 \begin{equation}
 \begin{split}
-\dot{\lambda}_1 &= \partial_x H = 0, \\ 
+\dot{\lambda}_1 &= \partial_x H = 0, \\
 \dot{\lambda}_2 &= \partial_v H = -\lambda_1.
 \end{split}
 \end{equation}
 
-Denotining the values of the costate variables at termination by \(\bar{\lambda}_i = \lambda_i(t=T)\), 
+Denotining the values of the costate variables at termination by \(\bar{\lambda}_i = \lambda_i(t=T)\),
 we can therefore solve for the costate variables:
 
 \begin{equation}
@@ -327,9 +327,9 @@ we can therefore solve for the costate variables:
 \end{split}
 \end{equation}
 
-Here we observe that on the optimal trajectory, \(\lambda_2\) will switch sign at most once 
-before termination at \(t_s=-\bar{\lambda}_2/\bar{\lambda}_1\), 
-if \(\text{sgn}\left(\bar{\lambda}_1\right)\ne\text{sgn}\left(\bar{\lambda}_2\right)\). 
+Here we observe that on the optimal trajectory, \(\lambda_2\) will switch sign at most once
+before termination at \(t_s=-\bar{\lambda}_2/\bar{\lambda}_1\),
+if \(\text{sgn}\left(\bar{\lambda}_1\right)\ne\text{sgn}\left(\bar{\lambda}_2\right)\).
 This means that the optimal control strategy consists of switching between maximal accelaration in one direction
 to maximal acceleration in the opposite direction. This is therefore a bang-bang control.
 
@@ -349,7 +349,7 @@ thus
 \begin{equation}
 \begin{split}
 v &= \text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) t + v_0 \\
-x &= \frac{t^2}{2}\text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) + v_0t + x_0 
+x &= \frac{t^2}{2}\text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) + v_0t + x_0
 \end{split}\quad.
 \end{equation}
 
@@ -357,8 +357,8 @@ x &= \frac{t^2}{2}\text{sgn}(\bar{\lambda}_1 t+ \bar{\lambda}_2) + v_0t + x_0
 
 The terminal time \(T\) is free, therefore the transversality condition tells us \(H(t=T)=0\).
 Hence, we can conclude that \(|\bar{\lambda}_2| = 1\).
-<br>This allows one to find explicit solutions for \(x\) and \(v\). 
-However, notice that one can also get rid of the parametrisation in \(t\) to find the associated orbits in the \(x\)-\(v\) phase plane. 
+<br>This allows one to find explicit solutions for \(x\) and \(v\).
+However, notice that one can also get rid of the parametrisation in \(t\) to find the associated orbits in the \(x\)-\(v\) phase plane.
 For \(f=\pm 1\)
 
 
@@ -375,9 +375,9 @@ For \(f=\pm 1\)
   x   = \pm \frac{v^2}{2} +(x_0\mp\frac{v_0}{2}).
   \end{equation}
 
-  This family of parabulae intersects the origin only for \(v_0=\pm\sqrt{x_0}\) 
-  which determines the switching curve \(x = -\frac{1}{2}|v|v\) (blue curve in Figure 1). Therefore, the optimal strategy is to apply \(f=1\) (\(f=-1\)) 
-  if the initial condition lies below (above) the switching curve, follow the orbit up to the switching curve, 
+  This family of parabulae intersects the origin only for \(v_0=\pm\sqrt{x_0}\)
+  which determines the switching curve \(x = -\frac{1}{2}|v|v\) (blue curve in Figure 1). Therefore, the optimal strategy is to apply \(f=1\) (\(f=-1\))
+  if the initial condition lies below (above) the switching curve, follow the orbit up to the switching curve,
   then switching the control value to  \(f=-1\) (\(f=1\)) and following the switching curve to the origin.
 
 
@@ -393,92 +393,92 @@ For \(f=\pm 1\)
 <script src="./double_integrator.js"></script>
 
     The interested reader may find more details on this problem, also referred to as <i>double-integrator problem</i>, in <a href="#ref2">[2]</a>.
-    
+
     <h3 style="text-align: left;"><b>Dynamic Programming</b></h3>
 
-    A similar approach to the maximum principle developed during the cold war in the Soviet Union, 
-    was developed in the same period in the United States. 
-    However, while Pontryagin's maximum principle only yielded necessary conditions for optimality, 
+    A similar approach to the maximum principle developed during the cold war in the Soviet Union,
+    was developed in the same period in the United States.
+    However, while Pontryagin's maximum principle only yielded necessary conditions for optimality,
     the <i>dynamic programming</i> approach pioneered by Bellman at RAND would yield both necessary and sufficient conditions for optimality.
 
     <br><br>
     Dynamic programming is a general approach: let us start by considering
-    a discrete deterministic example. 
+    a discrete deterministic example.
     We shall then move on to consider the continuous and stochastic extensions.
 
     <br>
 
-    Consider a discrete system of the form 
+    Consider a discrete system of the form
     \begin{equation}
     x_{t+1} = f(x_t, \gamma_t), \quad t = 0, ..., T-1;
     \end{equation}
     here \(x_t\in X\subset\mathbb{N}\) and \(\gamma_t\in \Gamma \subset \mathbb{N}\).
-     Furthermore, to each discrete step forward in time \(t\) is associated 
-     the running payoff \(\ell(x_t, x_{t+1})\). Starting from \(x_0=0\), the objetive is to maximise 
+     Furthermore, to each discrete step forward in time \(t\) is associated
+     the running payoff \(\ell(x_t, x_{t+1})\). Starting from \(x_0=0\), the objetive is to maximise
      the total payoff.
     <br>
-    The naive approach to solve this problem consists of enumerating each possible trajectory 
-    starting from the initial state \(x_0\) up to time \(T\). 
-    It's straightforward to find this approach implies evaluating \(|X|^T\) trajectories. 
-    The evaluation of the payoff for each trajectory requires \(T\) operations, 
+    The naive approach to solve this problem consists of enumerating each possible trajectory
+    starting from the initial state \(x_0\) up to time \(T\).
+    It's straightforward to find this approach implies evaluating \(|X|^T\) trajectories.
+    The evaluation of the payoff for each trajectory requires \(T\) operations,
     so we denote by \(\mathcal{O}(T|X|^T)\) the computational complexity of this approach.
     <br>
     This is brute force search is depicted in Fig 2 left, where paths explored multiple times appear darker.
     <br>
     However, a better approach is possible. Let us first introduce an observation which will be crucial in the following.
     <br><br>
-    <b>Definition 8 — Bellman's Principle of Optimality</b><blockquote><i> 
+    <b>Definition 8 — Bellman's Principle of Optimality</b><blockquote><i>
 
-      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\), 
-      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal 
+      For any point \(\tau>0\) on an optimal trajectory \(\mathbf{x}(t)\),
+      the remaining trajectory \(\mathbf{x}(t>\tau)\) is optimal
       for the corresponding problem initiated at \(\tau\).
-    
+
     </blockquote></i>
     <br>
-    Or, in Bellman's own words <a href="#ref3">[3]</a>: 
-    "An optimal policy has the property that whatever 
-    the initial state and initial decision are, 
-    the remaining decisions must constitute an optimal policy 
+    Or, in Bellman's own words <a href="#ref3">[3]</a>:
+    "An optimal policy has the property that whatever
+    the initial state and initial decision are,
+    the remaining decisions must constitute an optimal policy
     with regard to the state resulting from the first decision."
     <br>
     Bellman's optimality principle therefore guarantees that from any point \(x_t\) on the optimal path,
-    one can discard paths going backwards in time being certain that they are not portions of optimal trajectories. 
+    one can discard paths going backwards in time being certain that they are not portions of optimal trajectories.
     <br>
-    In order to leverage this intuition, let us thus define 
+    In order to leverage this intuition, let us thus define
     at each time \(t\) the value function
      \begin{equation*}
      V(x_t) = \max\left(\sum_{s=t+1}^T \ell(x_s, x_s+1)\right).
      \end{equation*}
-    Clearly this represents the largest payoff attainable starting from \(x_t\). 
+    Clearly this represents the largest payoff attainable starting from \(x_t\).
     The introduction of \(V(x_t)\) is useful as it allows us to start at \(x_T\) and proceed backwards in time.
-    At \(t=T\) terminal costs are known for all possible choices of \(x_T \in X\). 
-    At \(t=T-1\), for each possible value \(x_{T-1} \in X\) we can compute the optimal payoff 
+    At \(t=T\) terminal costs are known for all possible choices of \(x_T \in X\).
+    At \(t=T-1\), for each possible value \(x_{T-1} \in X\) we can compute the optimal payoff
     as the sum of the one step running cost plus the terminal payoff, and record that.
-    Then, one can repeat this procedure for each \( t < T - 1 \) up to \(t=0\). 
+    Then, one can repeat this procedure for each \( t < T - 1 \) up to \(t=0\).
     Should one step involve two equivalent paths, either can be chosen at random.
     This process is depicted in Fig2, right.
 
      <figure style="text-align: center;justify-content: center;align-items: center;">
       <!-- Create a div where the graph will take place -->
       <div id="dp0_figure" style="width: 100%;"></div>
-      <figcaption><i><b>Fig.2:</b> Brute force forward scheme (left) versus dynmamics programming (backward scheme) approach (right). 
+      <figcaption><i><b>Fig.2:</b> Brute force forward scheme (left) versus dynmamics programming (backward scheme) approach (right).
         Darker paths are traversed more often.
         Here \(|X| = 3\) and \(T=5\).
       </i></figcaption>
     </figure>
-    
+
     <script src="./dp0.js"></script>
-    
+
     <br>
-    At this point, for every \(x_t\) we have an associated value function, which imply two major achievements. 
+    At this point, for every \(x_t\) we have an associated value function, which imply two major achievements.
     First, \(V(x_0)\)  represents the optimal payoff.
     Second, starting from \(x_0\) and proceeding greedily with respect to the value function we are therefore guaranteed
     to find the optimal path.
     <br>
-    This dynamic programming <a href="#ref4">[4]</a> approach requires to compute the cost of a transition 
-    and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\), 
-    and for each control. 
-    Hence, the computational complexity of the dynamic programming approach is \(\mathcal{O}(T|X||\Gamma|)\). 
+    This dynamic programming <a href="#ref4">[4]</a> approach requires to compute the cost of a transition
+    and add it to the cost-to-go previously computed for each time \(t\), for each possible state in \(X\),
+    and for each control.
+    Hence, the computational complexity of the dynamic programming approach is \(\mathcal{O}(T|X||\Gamma|)\).
     This is a major improvement compared to the naive forward scheme considered earlier!
 
     <br><br>
@@ -486,9 +486,9 @@ For \(f=\pm 1\)
     The notion of dynamic programming can be formalised with the following theorem.
     <br><br>
 
-    <b>Theorem 9 — Dynamic Programming</b><blockquote><i> 
+    <b>Theorem 9 — Dynamic Programming</b><blockquote><i>
 
-      Given a Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\) 
+      Given a Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\)
       and subject to the law of motion \(\dot{x}(t)=f(x(t), \gamma(t), t)\),
       define the <b>Value Function</b>
       \begin{equation}
@@ -533,11 +533,11 @@ For \(f=\pm 1\)
     \end{equation}
     Now, consider instead a policy \(\hat{\gamma}\) such that
     \begin{equation}
-      P_\tau + \epsilon \ge \int_s^\tau L(x(t), \hat{\gamma}, t)dt + V(x(\tau), \tau), 
+      P_\tau + \epsilon \ge \int_s^\tau L(x(t), \hat{\gamma}, t)dt + V(x(\tau), \tau),
     \end{equation}
     and a policy \(\check{\gamma}\) such that
     \begin{equation}
-     V(x(\tau), \tau) + \epsilon \ge \int_\tau^T L(x(t), \check{\gamma}, t)dt. 
+     V(x(\tau), \tau) + \epsilon \ge \int_\tau^T L(x(t), \check{\gamma}, t)dt.
     \end{equation}
 
     FINISH
@@ -564,8 +564,8 @@ A number triangle is a sequence of numbers starting from a 1-digit number, follo
 </div>
 <br>
 
-Write a function <code>Max_Path(T)</code> taking as input the number triangle 
-<code>T</code> as a list of integers representing each level. 
+Write a function <code>Max_Path(T)</code> taking as input the number triangle
+<code>T</code> as a list of integers representing each level.
 The function should compute the highest sum of digits on a specific path starting at the top and ending somewhere at the base, following the rule that each step can only go directly-down or down-right.
 In the example the maximising path is highlighted in red.
 
@@ -573,7 +573,7 @@ Test it on <code>T=[7,38,810,2744,45265]</code>: you should find <code>Max_Path(
 
 Then, use the following function to generate a triangle of length <code>L</code>:
 <pre><code class="lang-python">
-  def gen_T(L):         
+  def gen_T(L):
       from random import randint, seed
       seed(100)
       return [randint(10**(n) ,10**(n+1)-1) for n in range(L)]
@@ -587,7 +587,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
   <pre><code class="lang-python">
   # Sum lines from the bottom to the top and maximise sums
-  
+
   def Max_Path(A):
       A = [[int(d) for d in str(n)] for n in A]  # List becomes list of lists
       while len(A) > 1:
@@ -613,19 +613,19 @@ Then, use the following function to generate a triangle of length <code>L</code>
 
 <br><br>
 
-  In the field of economics it is often useful and convenient 
-  to consider time-discretised models 
-  where the objective function takes the form \(\beta^t u_t\), 
-  for some istantaneous utility function \(u_t\) and discount factor \(\beta\in(0,1)\). 
-  Let us therefore summarise two specialised results 
+  In the field of economics it is often useful and convenient
+  to consider time-discretised models
+  where the objective function takes the form \(\beta^t u_t\),
+  for some istantaneous utility function \(u_t\) and discount factor \(\beta\in(0,1)\).
+  Let us therefore summarise two specialised results
   for the cases of finite and infinite time horizon problems.
 
 
   <br><br>
-  <b>Theorem 10 — Discrete-time Finite-Horizon Dynamic Programming</b><blockquote><i> 
+  <b>Theorem 10 — Discrete-time Finite-Horizon Dynamic Programming</b><blockquote><i>
 
-   Consider the discrete-time finite-horizon problem 
-   
+   Consider the discrete-time finite-horizon problem
+
    \begin{equation}
    \begin{split}
    \max_{c_t}&{\sum_{t=0}^T\beta^t u(x_t, c_t)}\\
@@ -633,9 +633,9 @@ Then, use the following function to generate a triangle of length <code>L</code>
    x_{t+1} &= f(x_t, c_t)
    \end{split}
    \end{equation}
- 
-    where the istantaneous utility \(u(x_t, c_t)\) 
-    is a function of the state variable \(x_t\) and control variable \(c_t\). 
+
+    where the istantaneous utility \(u(x_t, c_t)\)
+    is a function of the state variable \(x_t\) and control variable \(c_t\).
     <br>
     Let the optimal value function be defined by
     \begin{equation}
@@ -648,17 +648,17 @@ Then, use the following function to generate a triangle of length <code>L</code>
     \begin{split}
     V_s(x) &= \max_{c}\left\{\beta^t u(x, c) + V_{s+1}(f(x, u))\right\},\\
     V_T(x) &= \max_{c}\left\{\beta^T u(x, c)\right\}.
-    \end{split}  
-    \end{equation}  
-      
+    \end{split}
+    \end{equation}
+
 
   </blockquote></i>
 
 
   <br><br>
-  <b>Theorem 11 — Discrete-time Infinite-Horizon Dynamic Programming</b><blockquote><i> 
+  <b>Theorem 11 — Discrete-time Infinite-Horizon Dynamic Programming</b><blockquote><i>
 
-   Consider the discrete-time infinite-horizon problem 
+   Consider the discrete-time infinite-horizon problem
 
    \begin{equation}
    \begin{split}
@@ -669,7 +669,7 @@ Then, use the following function to generate a triangle of length <code>L</code>
    \end{equation}
 
    Assume further that \(u\) is bounded in absolute value: this ensures convergence of the sum above.
-   
+
   The, the value function \(V(x)\) obeys the so called <i>Bellman equation</i>:
   \begin{equation}
     V(x) = \max_{c}\left\{u(x, t) + \beta V(f(x, c))\right\}.
@@ -679,11 +679,11 @@ Then, use the following function to generate a triangle of length <code>L</code>
   </blockquote></i>
 
 Solving the Bellman equation is a functional equation
-which may not be trivial to solve. 
-One has three main ways to approach its solution: 
-guessing the form of \(V(x)\) and veryfying it,  
-guessing a trivial form (e.g. \(V(x)=0\)) 
-and iterating the Bellman equation analytically, 
+which may not be trivial to solve.
+One has three main ways to approach its solution:
+guessing the form of \(V(x)\) and veryfying it,
+guessing a trivial form (e.g. \(V(x)=0\))
+and iterating the Bellman equation analytically,
 or using numerical methods.
 
 
@@ -728,7 +728,7 @@ with \(x_0=0\) and \(c_t\in \mathbb{R}\).
   \end{equation}
   so that \(c_2^* = \frac{1}{2}\) and \(V_2(x) = 2x + \frac{9}{4}\).
   <br>
-  Moving on, 
+  Moving on,
   \begin{equation}
   \begin{split}
   V_1(x) &= \max_{c}\left\{1+x_t-c^2_t+V_2(f(x, c, 2))\right\}\\
@@ -738,7 +738,7 @@ with \(x_0=0\) and \(c_t\in \mathbb{R}\).
   \end{equation}
   so that \(c_1^* = 1\) and \(V_1(x) = 3x + \frac{17}{4}\).
   <br>
-  Finally, 
+  Finally,
   \begin{equation}
   \begin{split}
   V_0(x) &= \max_{c}\left\{1+x_t-c^2_t+V_1(f(x, c, 2))\right\}\\
@@ -752,9 +752,9 @@ with \(x_0=0\) and \(c_t\in \mathbb{R}\).
   \begin{equation}
   \left\{c^*_t\right\}_{t=0}^3 = \left\{\frac{3}{2}, 1, \frac{1}{2}, 0 \right\}.
   \end{equation}
-  Consequently, the sequence of optimal states is 
+  Consequently, the sequence of optimal states is
   \begin{equation}
-  \left\{x^*_t\right\}_{t=0}^3 = \left\{x^*_{t-1}+c^*_{t-1}\right\}_{t=0}^3 
+  \left\{x^*_t\right\}_{t=0}^3 = \left\{x^*_{t-1}+c^*_{t-1}\right\}_{t=0}^3
    = \left\{0, \frac{3}{2}, \frac{5}{2}, 3 \right\}.
   \end{equation}
 
@@ -785,7 +785,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
   \label{eq:exercise5_BE}
   V(x) = \max_{c}\left\{-\frac{2}{3}x^2-c^2+\beta V(x+c)\right\}.
   \end{equation}
-  
+
   Let us start by iteration with the trivial guess \(V(x) = 0\). This is maximised for \(c=0\) at \(-\frac{2}{3}x^2\).
   Let us therefore guess the following functional form for the optimal value function: \(V(x) = -\alpha x^2\).
   Then, \eqref{eq:exercise5_BE} becomes
@@ -793,12 +793,12 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
   \label{eq:exercise5_BE2}
   -\alpha x^2 = \max_{c}\left\{-\frac{2}{3}x^2-c^2-\beta \alpha (x+c)^2\right\}.
   \end{equation}
-  
+
   The right hand side of \eqref{eq:exercise5_BE2} is maximised by
   \begin{equation}
   c^*(x) = -\frac{\alpha\beta}{1-\alpha\beta}x.
   \end{equation}
-  
+
   Therefore, \eqref{eq:exercise5_BE2} turns into
   \begin{equation}
   -\alpha  = -\frac{2}{3}-\frac{\alpha^2\beta^2}{(1-\alpha\beta)^2}-\alpha\beta(1-\frac{\alpha\beta}{1-\alpha\beta})^2.
@@ -807,7 +807,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
   \begin{equation}
   \alpha  = \frac{5\beta-3\pm\sqrt{25\beta^2-6\beta+9}}{6\beta}.
   \end{equation}
-  
+
 
 
 <p align="right"> ◻</p>
@@ -828,9 +828,9 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 
     <br><br>
 
-    <b>Theorem 12 — Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
-      Consider a value function defined by 
-      
+    <b>Theorem 12 — Hamilton-Jacobi-Bellman equation</b><blockquote><i>
+      Consider a value function defined by
+
       \begin{equation*}
       V(x, t) := \sup_{\gamma_{[t_0, T]}}  P[\gamma].
       \end{equation*}
@@ -839,7 +839,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 
       \begin{equation}
       \label{eq:HJB}
-      -\partial_t V(x, t)  = \max_{\gamma} \left\{ L(x, \gamma, t)       
+      -\partial_t V(x, t)  = \max_{\gamma} \left\{ L(x, \gamma, t)
         + \nabla_x V(x, t) \cdot f(x, \gamma, t)
         \right\},
       \end{equation}
@@ -849,12 +849,12 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 
     <br>
 
-    The Hamilton-Jacobi-Bellman (HJB) equation \eqref{eq:HJB} 
-    is the nonlinear partial differential equation providing necessary and sufficient conditions 
-    for optimality of the control \(\gamma\) 
+    The Hamilton-Jacobi-Bellman (HJB) equation \eqref{eq:HJB}
+    is the nonlinear partial differential equation providing necessary and sufficient conditions
+    for optimality of the control \(\gamma\)
     with respect to the payoff function.
     <br>
-    Notice that the terminal cost enters only the boundary condition 
+    Notice that the terminal cost enters only the boundary condition
     and does not explicitely appear in the HJB equation itself.
 <br>
 
@@ -883,24 +883,24 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
                     &= x(t) + f(x(t), \gamma(t), t) \delta t +\mathcal{O}(\delta t).
       \end{split}
       \end{equation}
-      Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\), 
+      Expanding further \eqref{eq:dpp_eq} to first order in \(\delta t\),
       and assuming sufficient regularity of \(V\), gives
       \begin{equation}
       \begin{split}
-      V(x, t) &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
-                             + V(x, t) +\partial_t V(x, t) \delta t 
-                             + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t 
+      V(x, t) &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t
+                             + V(x, t) +\partial_t V(x, t) \delta t
+                             + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
                              \right\}\\
-            0 &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t 
-                              +\partial_t V(x, t) \delta t 
+            0 &= \sup_{\gamma_{[t, t+\delta t]}} \left\{ L(x(t), \gamma(t), t)\delta t
+                              +\partial_t V(x, t) \delta t
                               + \nabla_x V(x, t) \cdot f(x(t), \gamma(t), t) \delta t
                               \right\},
       \end{split}
       \end{equation}
-  
+
       which after rearranging and taking the limit \(\delta t\rightarrow 0\) finally yields
       \begin{equation}
-      -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
+      -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)
                               + \nabla_x V(x, t) \cdot f(x, \gamma, t)
                               \right\}.
       \end{equation}
@@ -915,7 +915,7 @@ with \(x_0\) given and \(c_t\in \mathbb{R}\).
 <h3 style="text-align: left;"><b> Linear-Quadratic Regulator</b></h3>
 
 <h4 style="text-align: left;"><b> Finite-horizon LQR</b></h4>
-Let us now turn our attention to the specialised cased 
+Let us now turn our attention to the specialised cased
 of a finite-horizon linear system with quadratic payoff:
 
 
@@ -947,10 +947,10 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
 \end{equation}
 
 
-<b>Theorem 13 — LQR Linear State Feedback Law</b><blockquote><i> 
-  For the Linear Quadratic Regulator defined above, 
+<b>Theorem 13 — LQR Linear State Feedback Law</b><blockquote><i>
+  For the Linear Quadratic Regulator defined above,
   one has the following <i>linear state feedback law</i>
-  
+
   \begin{equation}
   \label{eq:lqr_lsfl}
   \gamma^{*}(t) = -R^{-1}(t)B(t)\chi(t) x^{*}(t),
@@ -976,52 +976,52 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   \begin{equation}
   \partial_\gamma H = B(t)\lambda-2R(t)\gamma,
   \end{equation}
-  
-  and \(\partial_\gamma^2H=-2R(t)<0\). 
+
+  and \(\partial_\gamma^2H=-2R(t)<0\).
   Therefore, an optimal control \(\gamma^*\) must satisfy
-  
+
   \begin{equation}
   \label{eq:lqr_costate_optimal_condition}
   \gamma^*= \frac{R^{-1}(t)}{2}B(t)\lambda^*,
   \end{equation}
-  
+
   while the co-state satisfies the adjoint equation
-  
+
   \begin{equation}
   \begin{split}
   \dot{\lambda}^* &= -\partial_x H = 2Q(t)x^*-A(t)\lambda^* ,\\
   \lambda^*(T) &= Mx^*(T).
   \end{split}
   \end{equation}
-  
+
   For the whole system we can therefore write the canonical equations
-  
+
   \begin{equation}
   \label{eq:lqr_canonical_equations}
   \begin{pmatrix}
       \dot{x}^*\\
       \dot{\lambda}^*
     \end{pmatrix} =
-    
+
   \mathcal{H}(t)
     \begin{pmatrix}
       x^*\\
       \lambda^*
     \end{pmatrix}
   \end{equation}
-  
+
   where the so called Hamiltonian matrix \(\mathcal{H}(t)\)
   is given by
   \begin{equation}
-    
-  \mathcal{H}(t) = 
+
+  \mathcal{H}(t) =
     \begin{pmatrix}
       A(t) & \frac{R^{-1}(t)}{2}B^2(t)\\
       2Q(t) & -A(t)
-    \end{pmatrix}. 
+    \end{pmatrix}.
   \end{equation}
-  
-  
+
+
   Consider now instead the transition matrix, or <i> propagator </i> \(P(t, t_0) = P^{-1}(t_0, t)\)
   such that
   \begin{equation}
@@ -1033,12 +1033,12 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   x^*(t_0)\\
   \lambda^*(t_0)
   \end{pmatrix}.
-  
+
   \end{equation}
-  
+
   The transversality condition \(\lambda^*(T) = Mx^*(T)\) then implies that \eqref{eq:propagated}
-  can be rewritten as 
-  
+  can be rewritten as
+
   \begin{equation}
   \label{eq:propagated2}
   \begin{pmatrix}
@@ -1050,17 +1050,17 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   \end{pmatrix},
   \end{equation}
   so that we can write
-  
+
   \begin{equation}
   \lambda^* = -2\chi x^*
   \end{equation}
-   
-  with 
-  
+
+  with
+
   \begin{equation}
   -2\chi = \frac{\bar{P}_{21}+\bar{P}_{22}}{\bar{P}_{11}+\bar{P}_{12}},
   \end{equation}
-  
+
   where \(\bar{P}_{ij}\) denotes the element \(i,j\) of \(\bar{P}\).
   This proves \eqref{eq:lqr_state_costate_linear_rel}.
   <br>
@@ -1079,31 +1079,31 @@ H(x, \gamma, \lambda, t) = A(t)\lambda x+B(t)\lambda\gamma-Q(t)x^2-R(t)\gamma^2,
   Further expanding \(\lambda^*\) via \eqref{eq:lqr_state_costate_linear_rel} yields
   the desired result.
   <br>
-  Finally, the boundary condition for the Riccati equation 
+  Finally, the boundary condition for the Riccati equation
   can be found by combining \eqref{eq:lqr_state_costate_linear_rel}
   with the boundary condition \(\lambda^*(T) = -2Mx^*(T)\) for the co-state variable.
-  
+
 <p align="right"> ◻</p>
 </div>
 
 <br><br>
 
 
-<b>Theorem 14 — Global optimality of the Linear State Feedback Law</b><blockquote><i> 
+<b>Theorem 14 — Global optimality of the Linear State Feedback Law</b><blockquote><i>
   The <i>linear state feedback law</i> \eqref{eq:lqr_lsfl}
   obtained by the maximum principle is globally optimal.
 
 </blockquote></i>
 
 <br>
-Theorem 14 can be proved by considering the HJB equation for the LQR problem, 
-and realising that the value function \(V(x, t)=\chi(t)x^2\) satisfies it, 
+Theorem 14 can be proved by considering the HJB equation for the LQR problem,
+and realising that the value function \(V(x, t)=\chi(t)x^2\) satisfies it,
 with \(\chi\) the solution to the differential Riccati equation.
 <br><br>
 
 Theorems 13 and 14 are remarkable results.
-They make the LQR problem substantially more tractable 
-than the general optimal control problem presented in Definition 4. 
+They make the LQR problem substantially more tractable
+than the general optimal control problem presented in Definition 4.
 Crucially, the task of solving the HJB partial differential equation
 is reduced to solving the Riccati differential equation wich is an ODE.
 
@@ -1113,7 +1113,7 @@ is reduced to solving the Riccati differential equation wich is an ODE.
 <hr class="w3-opacity">
 
 <h6>Exercise 8</h6>
-Consider the integrator \(\dot{x}=\gamma\) with payoff \(P(\gamma) = -\int_0^Tx^2(t)+\gamma^2(t) dt\). 
+Consider the integrator \(\dot{x}=\gamma\) with payoff \(P(\gamma) = -\int_0^Tx^2(t)+\gamma^2(t) dt\).
 Find the optimal feedback law for the control.
 <br>
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 8</button>
@@ -1149,23 +1149,23 @@ Find the optimal feedback law for the control.
 
 
 Let us now consider the special case of an infinite-horizon LQR problem.
-Starting from the finite-horizon LQR problem discussed above, 
-assume that controls and payoff functionals are time-invariant, 
-that is 
+Starting from the finite-horizon LQR problem discussed above,
+assume that controls and payoff functionals are time-invariant,
+that is
 \begin{equation}
 \label{eq:IH_static_conditions}
 \dot{A}=\dot{B}=\dot{Q}=\dot{R}=0
 \end{equation}
-and that there is no terminal cost \(M=0\). 
+and that there is no terminal cost \(M=0\).
 Then consider the limit \(T\rightarrow\infty\).
 
 <br>
 
-The main implication of the time-invariance conditions \eqref{eq:IH_static_conditions} 
-is that the  Riccati differential equation becomes time-invariant as well, 
+The main implication of the time-invariance conditions \eqref{eq:IH_static_conditions}
+is that the  Riccati differential equation becomes time-invariant as well,
 so that its solution \(\chi\) is now only a function of the terminal time \(T\).
-Passing to the limit \(T\rightarrow\infty\) turns into a constant, 
-so that \(\dot{\chi}=0\). Therefore, in the infinite-horizon problem, 
+Passing to the limit \(T\rightarrow\infty\) turns into a constant,
+so that \(\dot{\chi}=0\). Therefore, in the infinite-horizon problem,
 the Riccati differential equation is turned into the following
 <i>algebraic Riccati equation</i>
 \begin{equation}
@@ -1185,26 +1185,26 @@ R^{-1}B^2\chi^2-2A\chi-Q = 0.
 
     <h2 style="text-align: left;"><b> Stochastic Control</b></h2>
 
-    While so far we have discussed deterministic control problems, 
-    many real world applications require the control of noisy processes, 
-    ranging from the execution of optimal trading strategy, resources allocation, 
+    While so far we have discussed deterministic control problems,
+    many real world applications require the control of noisy processes,
+    ranging from the execution of optimal trading strategy, resources allocation,
     or the control of spacecrafts and robots.
 <br>
     Let us therefore introduce the stochastic extensions of the notions learnt above.
 
     <br><br>
-    <b>Definition 11 — Stochastic Optimal Control Problem</b><blockquote><i> 
+    <b>Definition 11 — Stochastic Optimal Control Problem</b><blockquote><i>
 
       Given a stochastic process defined by the SDE
       \begin{equation}
       \label{eq:canonical_sde}
       dX(t) = f(X(t), \gamma(t), t)dt+\sigma(X(t), \gamma(t), t)dW(t),
-      \end{equation} 
+      \end{equation}
       and the associated payoff
       \begin{equation}
       \mathbf{P}[\gamma] = \mathbb{E}\left[\int_0^T L(X(t), \gamma(t), t)dt +\phi(X(T))\right],
-      \end{equation} 
-      the stochastic Bolza problem is 
+      \end{equation}
+      the stochastic Bolza problem is
       \begin{equation}
       \sup_{\gamma\in\Gamma}\mathbf{P}[\gamma],
       \end{equation}
@@ -1212,11 +1212,11 @@ R^{-1}B^2\chi^2-2A\chi-Q = 0.
       being adapted to \(W\).
     </blockquote></i>
 Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
-    
+
 
 <br><br>
 
-<b>Theorem 15 — Stochastic Dynamic Programming</b><blockquote><i> 
+<b>Theorem 15 — Stochastic Dynamic Programming</b><blockquote><i>
 
   Given a stochastic Bolza problem over the time interval \([t, T]\), with payoff functional \(P[\gamma]\)
   define the <b>Value Function</b>
@@ -1237,12 +1237,12 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
 
 
 
-    <b>Theorem 16 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i> 
+    <b>Theorem 16 — Stochastic Hamilton-Jacobi-Bellman equation</b><blockquote><i>
 
     The value function is the unique viscosity solution to the stochastic Hamilton-Jacobi-Bellman equation
     \begin{equation}
-    -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)       
-      + \nabla_x V(x, t) \cdot f(x, \gamma, t) 
+    -\partial_t V(x, t)  = \sup_{\gamma} \left\{ L(x, \gamma, t)
+      + \nabla_x V(x, t) \cdot f(x, \gamma, t)
       + \frac{1}{2}\text{Tr}\left[\sigma^T(x, \gamma, t)\nabla_x^2V(x, t)\sigma(x, \gamma, t)\right]
       \right\},
     \end{equation}
@@ -1253,17 +1253,17 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
 
 
 
-  
+
 
 
     <hr class="w3-opacity">
 
     <h6>Exercise 9</h6>
-    Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 16. 
+    Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 16.
     <br>
 <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        
+
         <p>To start, consider an infinitesimal stochastic dynamic programming principle
         \begin{equation}
         \label{eq:sol9_dpp}
@@ -1304,17 +1304,17 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
         \right\},
         \end{equation}
         which is the Stochastic Hamilton-Jacobi-Bellman equation, with terminal condition \(V(x,T)=\phi(x(T))\) inherited from the definition of \(V\). Setting \(\sigma=0\) recovers the deterministic HJB equation of Theorem 12.</p>
-    
+
         <p align="right"> ◻</p>
-    </div>    
+    </div>
     <!-- <h6>Exercise 10</h6>
     Show that a p
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 10</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
-        Consider 
-    
-    
+        Consider
+
+
         <p align="right"> ◻</p>
     </div> -->
     <hr class="w3-opacity">
@@ -1326,13 +1326,13 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     <i>
     Consider the stochastic optimal control problem of adjusting consumption \(C_t\) and investments in an initial amount of wealth \(W_0\) in either a saving account with interest rate \(r\)
     or in a risky portfolio with average rate of return \(\mu\) and return variance \(\sigma^2\):
-    
+
     \begin{equation}
     \frac{d S_t}{S_t} = r dt,\quad\quad \frac{d P_t}{P_t} = \mu dt + \sigma dZ_t,
     \end{equation}
 
-    with \(dZ_t\) a standard Wiener process. 
-    
+    with \(dZ_t\) a standard Wiener process.
+
     The utility of consumption is \(U(c) = \log(c)\) and the rate of discount applied to consumption utility is \(\rho\).
     <br>
     Denoting by \(Q_t\) the fraction of wealth invested in the risky portfolio at time \(t\),
@@ -1340,26 +1340,118 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     \begin{equation}
     dW_t =  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt .
     \end{equation}
-    That is, the change in wealth is driven by the return on the risky portfolio, 
+    That is, the change in wealth is driven by the return on the risky portfolio,
     plus the return on the saving account, minus the amount of wealth consumed.
     <br>
-    Therefore, the optimal control problem is 
+    Therefore, the optimal control problem is
 
       \begin{equation}
       \begin{split}
-      \text{max}&\left\{\mathbb{E}\int_0^T e^{-\rho t}U(C_t) dt\right\} \\ 
+      \text{max}&\left\{\mathbb{E}\int_0^T e^{-\rho t}U(C_t) dt\right\} \\
       & \\
       & \text{subject to}\\
       & \\
       dW_t &=  Q_tW_t(\mu dt+\sigma dZ_t) + (1-Q_t)W_t r dt  - C_tdt\\
-      C_t &\ge 0      
+      C_t &\ge 0
       \end{split}
       \end{equation}
     </i>
 
+    <br>
+    The problem is in Lagrange form (\(\phi=0\)), with state \(W_t\),
+    two-dimensional control \(\gamma_t=(C_t, Q_t)\), drift and diffusion
+    \begin{equation}
+    f(W, \gamma, t) = Q W(\mu-r)+ rW - C, \quad\quad \sigma(W, \gamma, t) = Q W \sigma,
+    \end{equation}
+    and running payoff \(L(W, \gamma, t) = e^{-\rho t}\log C\).
+    The Stochastic Hamilton-Jacobi-Bellman equation of Theorem 16 therefore reads
+    \begin{equation}
+    \label{eq:merton_hjb}
+    -\partial_t V(w, t) = \sup_{C\ge0,\, Q}\left\{ e^{-\rho t}\log C
+      + \partial_w V \left[Qw(\mu-r)+rw-C\right]
+      + \frac{1}{2}\sigma^2Q^2w^2 \partial^2_w V \right\},
+    \end{equation}
+    with terminal condition \(V(w, T)=0\).
+    <br>
+    The maximisation over the controls is pointwise: the first order conditions are
+    \begin{equation}
+    \label{eq:merton_focs}
+    \begin{split}
+    \partial_C\{\cdot\} &= \frac{e^{-\rho t}}{C}-\partial_w V = 0
+    \quad\Rightarrow\quad C^* = \frac{e^{-\rho t}}{\partial_w V},\\
+    \partial_Q\{\cdot\} &= w(\mu-r)\partial_w V + \sigma^2Qw^2\partial^2_w V = 0
+    \quad\Rightarrow\quad Q^* = -\frac{(\mu-r)}{\sigma^2 w}\frac{\partial_w V}{\partial^2_w V},
+    \end{split}
+    \end{equation}
+    which are indeed maxima provided \(\partial_w V>0\) and \(\partial^2_w V<0\)
+    (to be verified ex post), since \(\partial^2_C\{\cdot\}=-e^{-\rho t}/C^2<0\)
+    and \(\partial^2_Q\{\cdot\}=\sigma^2w^2\partial_w^2 V<0\).
+    <br><br>
+    As suggested after Theorem 11, we proceed by guessing the functional form of \(V\)
+    and verifying it. Since \(\log(\kappa w) = \log \kappa + \log w\),
+    the log-utility suggests the separable ansatz
+    \begin{equation}
+    \label{eq:merton_ansatz}
+    V(w, t) = e^{-\rho t}\left(b(t)\log w + a(t)\right),
+    \end{equation}
+    with \(b(T)=a(T)=0\). Note that \(\partial_w V = e^{-\rho t}b/w > 0\)
+    and \(\partial^2_w V = -e^{-\rho t}b/w^2 < 0\) whenever \(b(t)>0\),
+    so the second order conditions hold. Substituting \eqref{eq:merton_ansatz}
+    into \eqref{eq:merton_focs} yields the candidate feedback laws
+    \begin{equation}
+    \label{eq:merton_feedback}
+    C^* = \frac{w}{b(t)}, \quad\quad Q^* = \frac{\mu-r}{\sigma^2}.
+    \end{equation}
+    Substituting \eqref{eq:merton_ansatz} and \eqref{eq:merton_feedback}
+    back into \eqref{eq:merton_hjb}, and denoting the Sharpe ratio by
+    \(\kappa := (\mu-r)/\sigma\), one finds after simplification
+    <div style="overflow-x: auto; overflow-y: hidden;">
+    \begin{equation}
+    0 = \underbrace{\left(\dot{b} - \rho b + 1\right)}_{=0}\log w
+      + \dot{a} - \rho a - \log b(t) - 1
+      + b(t)\left(r+\frac{\kappa^2}{2}\right).
+    \end{equation}
+    </div>
+    Since the equation must hold for all \(w>0\), the coefficient of \(\log w\)
+    and the constant term must vanish separately, yielding the two ODEs
+    \begin{equation}
+    \begin{split}
+    \dot{b} &= \rho b - 1, \quad\quad\quad\quad\quad\quad\quad\quad\quad \phantom{-} b(T)=0,\\
+    \dot{a} &= \rho a + \log b(t) + 1 - b(t)\left(r+\frac{\kappa^2}{2}\right), \quad a(T)=0.
+    \end{split}
+    \end{equation}
+    Notice how, just as in the LQR case of Theorem 13, the HJB partial differential
+    equation has been reduced to ordinary differential equations.
+    The first ODE is linear and gives
+    \begin{equation}
+    b(t) = \frac{1-e^{-\rho(T-t)}}{\rho} > 0,
+    \end{equation}
+    while the second is solved by quadrature:
+    \begin{equation}
+    a(t) = \int_t^T e^{-\rho(s-t)}\left[b(s)\left(r+\frac{\kappa^2}{2}\right)-\log b(s) - 1\right]ds.
+    \end{equation}
+    <br>
+    In summary, the optimal strategy \eqref{eq:merton_feedback} is remarkably simple:
+    \begin{equation}
+    Q^*_t = \frac{\mu-r}{\sigma^2}, \quad\quad
+    C^*_t = \frac{\rho}{1-e^{-\rho(T-t)}}W_t.
+    \end{equation}
+    The optimal fraction of wealth invested in the risky portfolio — the celebrated
+    <i>Merton fraction</i> <a href="#ref10">[10]</a> — is <i>constant</i> in time
+    and independent of wealth: it grows with the excess return \(\mu-r\)
+    and shrinks with the riskiness \(\sigma^2\).
+    Optimal consumption is instead proportional to current wealth,
+    with a rate that increases as the horizon approaches
+    (\(C^*_t/W_t \rightarrow \infty\) as \(t\rightarrow T\): with no bequest motive,
+    it is optimal to consume all remaining wealth).
+    Finally, in analogy with the infinite-horizon LQR discussed above,
+    taking the limit \(T\rightarrow\infty\) turns \(b\) into the constant \(1/\rho\),
+    and the consumption rule into the time-invariant feedback law
+    \begin{equation}
+    C^*_t = \rho W_t.
+    \end{equation}
+    </i>
 
-
-    
 
 
 
@@ -1372,55 +1464,55 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
   <br><br>
   [3] <a href="https://gwern.net/doc/statistics/decision/1957-bellman-dynamicprogramming.pdf" id="ref3">"Dynamic Programming", Richard Bellman, 1957, Chap. III.3. </a>
   <br><br>
-  [4] <normal id="ref4">Notice that while related, the Control Hamiltonian of optimal control theory is distinct from the Hamiltonian used in mechanics. 
-    In particular, the latter is used to derive the equation of motion of a dynamical system. 
-    The Hamiltonian of optimal control theory instead, is a concept developed by Lev Pontryagin, 
+  [4] <normal id="ref4">Notice that while related, the Control Hamiltonian of optimal control theory is distinct from the Hamiltonian used in mechanics.
+    In particular, the latter is used to derive the equation of motion of a dynamical system.
+    The Hamiltonian of optimal control theory instead, is a concept developed by Lev Pontryagin,
     with the purpose to provide conditions for extrimising a functional with respect to a control variable. <normal>
   <br><br>
   [5] <normal id="ref5">Why is this approach named <i>Dynamic Programming</i>?
-    The term was coined in the early 50s by Richard Bellman while working on his research on multistage decision processes 
-    at RAND Corporation, at that time fully funded by the US government. 
-    The justification for the label has a rather interesting story. 
-    From Bellman's autobiography <i>Eye of the Hurricane: An Autobiography</i> (1984, page 159): 
-    «<i>I spent the Fall quarter (of 1950) at RAND. 
-      My first task was to find a name for multistage decision processes. 
-      An interesting question is, 
-      "Where did the name, dynamic programming, come from?" 
-      The 1950s were not good years for mathematical research. 
+    The term was coined in the early 50s by Richard Bellman while working on his research on multistage decision processes
+    at RAND Corporation, at that time fully funded by the US government.
+    The justification for the label has a rather interesting story.
+    From Bellman's autobiography <i>Eye of the Hurricane: An Autobiography</i> (1984, page 159):
+    «<i>I spent the Fall quarter (of 1950) at RAND.
+      My first task was to find a name for multistage decision processes.
+      An interesting question is,
+      "Where did the name, dynamic programming, come from?"
+      The 1950s were not good years for mathematical research.
       We had a very interesting gentleman in Washington named Wilson.
-      He was Secretary of Defense, and he actually had a pathological fear and hatred of the word "research". 
-      I'm not using the term lightly; I'm using it precisely. 
-      His face would suffuse, he would turn red, 
-      and he would get violent if people used the term research in his presence. 
-      You can imagine how he felt, then, about the term mathematical. 
-      The RAND Corporation was employed by the Air Force, and the Air Force had Wilson as its boss, 
-      essentially. Hence, I felt I had to do something to shield Wilson and the Air Force 
-      from the fact that I was really doing mathematics inside the RAND Corporation. 
-      What title, what name, could I choose? 
-      In the first place I was interested in planning, in decision making, in thinking. 
-      But planning, is not a good word for various reasons. 
-      I decided therefore to use the word "programming". 
-      I wanted to get across the idea that this was dynamic, this was multistage, this was time-varying. 
-      I thought, let's kill two birds with one stone. 
-      Let's take a word that has an absolutely precise meaning, namely dynamic, 
-      in the classical physical sense. 
-      It also has a very interesting property as an adjective, 
-      and that is it's impossible to use the word dynamic in a pejorative sense. 
-      Try thinking of some combination that will possibly give it a pejorative meaning. 
-      It's impossible. Thus, I thought dynamic programming was a good name. 
-      It was something not even a Congressman could object to. 
+      He was Secretary of Defense, and he actually had a pathological fear and hatred of the word "research".
+      I'm not using the term lightly; I'm using it precisely.
+      His face would suffuse, he would turn red,
+      and he would get violent if people used the term research in his presence.
+      You can imagine how he felt, then, about the term mathematical.
+      The RAND Corporation was employed by the Air Force, and the Air Force had Wilson as its boss,
+      essentially. Hence, I felt I had to do something to shield Wilson and the Air Force
+      from the fact that I was really doing mathematics inside the RAND Corporation.
+      What title, what name, could I choose?
+      In the first place I was interested in planning, in decision making, in thinking.
+      But planning, is not a good word for various reasons.
+      I decided therefore to use the word "programming".
+      I wanted to get across the idea that this was dynamic, this was multistage, this was time-varying.
+      I thought, let's kill two birds with one stone.
+      Let's take a word that has an absolutely precise meaning, namely dynamic,
+      in the classical physical sense.
+      It also has a very interesting property as an adjective,
+      and that is it's impossible to use the word dynamic in a pejorative sense.
+      Try thinking of some combination that will possibly give it a pejorative meaning.
+      It's impossible. Thus, I thought dynamic programming was a good name.
+      It was something not even a Congressman could object to.
       So I used it as an umbrella for my activities.</i>»
     <normal>
       <br><br>
       [6] <normal id="ref6">Viscosity solutions are a class of weak solutions to non-linear PDEs,
-        which can be seen as the limit of solutions of the original PDE 
-        regularised with a diffusive term (from which the term "viscosity"). 
+        which can be seen as the limit of solutions of the original PDE
+        regularised with a diffusive term (from which the term "viscosity").
         A viscosity solution does not necessarily satisfy the PDE at every point like a classical solution.
         Instead, it satisfies certain inequalities that capture the essence of the PDE.
-        See e.g. <a href="#ref7">[7]</a>. 
+        See e.g. <a href="#ref7">[7]</a>.
         <normal>
           <br><br>
-      [7] <normal id="ref7"><a href="http://home.ustc.edu.cn/~wclw8181/wffc.files/Partial%20Differential%20Equations.Evans.pdf">L. C. Evans, Partial Differential Equations, AMS, 2010</a>. 
+      [7] <normal id="ref7"><a href="http://home.ustc.edu.cn/~wclw8181/wffc.files/Partial%20Differential%20Equations.Evans.pdf">L. C. Evans, Partial Differential Equations, AMS, 2010</a>.
         <normal>
           <br><br>
       [8] <normal id="ref8">"Calculus of Variations and Optimal Control Theory - A concise Introduction", D. Liberzon, 2009.
