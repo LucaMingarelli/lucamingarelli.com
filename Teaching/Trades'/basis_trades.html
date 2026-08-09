@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Oribi Analytics -->
+    <script type="application/javascript">
+        (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+    </script>
+    <!-- End Oribi Analytics -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NLJ2P23');</script>
+    <!-- End Google Tag Manager -->
+    <title>Luca Mingarelli</title>
+    <link rel="icon" href="../Icons/stork.png" type="image/png">
+    <style>
+        .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
+            border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
+        /*.active,*/
+        .collapsible:hover {  background-color: #555;}
+        .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+    </style>
+</head>
+
+<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+<script>window.MathJax = {tex: {tags: 'ams'}};</script>
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<link rel="stylesheet" href="prism/prism.css"> <!-- For code highlight -->
+<script src="prism/prism.js"></script>         <!-- For code highlight -->
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/w3.css">
+<link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/responsiveiframe.css">
+<script src="../js/style_preamble.js"></script>
+
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- NavigationBar -->
+<script src="js/Navbar.js"></script>
+<!-- _____________ -->
+<!-- PRE_CONTENT -->
+<script src="js/pre_content.js"></script>
+<!-- _____________ -->
+
+
+
+
+<div class="w3-content w3-justify" style="max-width:800px">
+
+    <h1 style="text-align: left;"><b>Correlation for binary variates</b></h1>
+
+
+While for continuous variates there exist numerous distinct correlation metrics, such as Pearson correlation \(\rho\), 
+Spearman's rho \(\rho_S\), and Kendall's tau \(\tau\), 
+all of these become equivalent when considering binary variates instead: 
+\(\rho(X, Y)=\rho_S(X, Y)=\tau(X, Y)\). 
+The Yule phi coefficient <a href="#ref1">[1]</a>
+(also known as the mean square contingency coefficient 
+or the Matthews correlation coefficient in the ML literature)
+    is a measure of the association of two binary variables, 
+    which is also equivalent to Pearson's correlation coefficient in the case of dichotomous variables.
+    
+    
+When considering two binary variates \(X,Y\in \{0,1\}\times\{0,1\}\), 
+the correlation coefficient \(\rho\) between the two cannot span the full range \([-1,1]\). 
+Instead, denoting by \(p_j=\mathbb{P}(j)\) and \(q_j = 1- p_j\), correlations are bounded as
+    \begin{equation}\label{eq:achievable_corrs}
+        \rho_{\text{min}} \le \rho \le \rho_{\text{max}},
+    \end{equation}
+    where 
+    \begin{equation}
+    \begin{split}
+    \rho_{\text{min}} &= \text{max}\left(-\sqrt{\frac{p_X p_Y}{ q_X q_Y}}, -\sqrt{\frac{q_X q_Y}{p_Xp_Y}}\right)\\
+    \rho_{\text{max}} &= \text{min}\left(\sqrt{\frac{p_X q_Y}{ p_Y q_X}}, \sqrt{\frac{p_Y q_X}{p_X q_Y}}\right).
+    \end{split}
+    \label{eq:correlation_bounds}
+    \end{equation}
+    
+    To see that, let us start by recalling that a Bernoulli random vector \((X, Y)\) 
+    takes values in the Cartesian product space \(\{0,1\}\times \{0,1\}\), with probability mass function given by:
+    
+    \begin{equation}\label{eq:bernoulli_bivariate}
+        f(x, y) = p_{11}^{xy}p_{10}^{x(1-y)}p_{01}^{(1-x)y}p_{00}^{(1-x)(1-y)}
+    \end{equation}
+    where \(p_{ij}=\mathbb{P}(X=i, Y=j)\), and \(p_{00}+p_{01}+p_{10}+p_{11}=1\). 
+    The marginal probabilities of \(X\) and \(Y\) are then clearly given by 
+    \begin{equation}
+        \begin{split}
+            p_X &= p_{10} + p_{11},\\
+            p_Y &= p_{01} + p_{11}.\\
+        \end{split}
+    \end{equation}
+    Obviously, \(\mathbb{E}(X) = p_X\) and \(\mathbb{E}(Y) = p_Y\).
+    Therefore, recalling that
+    
+    \begin{equation}
+    \begin{split}
+    \rho &= \frac{\text{cov}\left(X, Y\right)}{\sigma_X\sigma_Y}\\
+         &= \frac{\mathbb{E}\left[XY\right]-\mathbb{E}\left[X\right]\mathbb{E}\left[Y\right]}{\sqrt{p_Xq_Xp_Yq_Y}}\\
+         &= \frac{\mathbb{E}\left[XY\right]-p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}.
+    \end{split}
+    \end{equation}
+    and noticing that
+    $$
+    \mathbb{E}[XY] = \sum_{x,y}xyp_{xy}=p_{11},
+    $$
+    (since all terms where either \(x\) or \(y\) are zero, cancel out) one obtains
+    
+    \begin{equation}
+    \rho = \frac{p_{11}-p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}.
+    \end{equation}
+    At this point, notice that one must always have \(p_{11}\le \min\left(p_X, p_Y\right)\). Hence:
+    
+    \begin{equation}
+        \begin{split}
+            \rho\sqrt{p_Xq_Xp_Yq_Y}-p_Xp_Y &\le \min\left(p_X, p_Y\right)\\
+                \rho &\le \min\left(\frac{p_X+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Y+p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+    &= \min\left(\frac{p_Xq_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{p_Yq_X}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+    &= \min\left(\sqrt{\frac{p_Xq_Y}{q_Xp_Y}}, \sqrt{\frac{p_Yq_X}{p_Xq_Y}}\right)\\
+    &=\rho_{\text{max}}.
+        \end{split}
+    \end{equation}
+    This proves the second bound in \eqref{eq:correlation_bounds}.
+    To prove the lower bound instead, consider that every joint probability must be non-negative: \(p_{ij}\ge0\) for all \(i\) and \(j\). This means that 
+    \begin{equation}
+        \begin{split}
+            p_{00}&=1-p_{01}-p_{10}-p_{11}\\
+                  &=1-p_X-p_Y+p_{11}\ge0\\
+            p_{11}&\ge p_X+p_Y-1,
+        \end{split}
+    \end{equation}
+    
+    which implies 
+    \begin{equation}
+       p_{11} \ge \max\left(0, p_X+p_Y-1\right) .
+    \end{equation}
+    
+    As before, this results in:
+    \begin{equation}
+        \begin{split}
+            \rho\sqrt{p_Xq_Xp_Yq_Y}-p_Xp_Y &\ge \max\left(0, p_X+p_Y-1\right)\\
+            \rho &\ge \max\left(-\frac{p_Xp_Y}{\sqrt{p_Xq_Xp_Yq_Y}}, \frac{-p_Xp_Y+p_X+p_Y-1}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \frac{p_Xq_Y-q_Y}{\sqrt{p_Xq_Xp_Yq_Y}}\right)\\
+            &= \max\left(-\sqrt{\frac{p_Xp_Y}{q_Xq_Y}}, \sqrt{-\frac{q_Xq_Y}{p_Xp_Y}}\right)\\
+            &=\rho_{\text{min}}.
+        \end{split}
+    \end{equation}
+    
+    The bounds on the correlation \(\rho\) from \eqref{eq:correlation_bounds} are plotted in Figure 1.
+
+    Notice in particular, that \(|\rho_{\text{min}}|\) is maximal when \(p_X=q_Y\), 
+    while \(|\rho_{\text{max}}|\) is maximal when \(p_X=p_Y\). 
+    Conversely, the constraint on how negative correlations can get (\(\rho_{\text{min}}\)) 
+    is more binding when either both marginals are small \(p_X\approx p_Y\approx0\), 
+    or when both marginals are large \(p_X\approx p_Y\approx1\). 
+    Likewise, the constraint on how positive correlations can get (\(\rho_{\text{max}}\)) 
+    is more binding when \(|p_X-p_Y|\approx1\), that is when one is large and the other small. 
+    Finally, the full range of possible correlations \([-1,1]\) is achievable only for \(p_X=p_Y=\frac{1}{2}\).
+    
+    
+
+    <br><br>
+
+<figure>
+    <img class="center" alt="correlation_bounds"
+         src="img/Dependence/achievable_corrs.svg"
+         width="80%" >
+
+    <figcaption><i><b>Fig.1:</b> Correlation bounds (cf. equation \eqref{eq:achievable_corrs}) as a function of marginal probabilities. 
+        Negative correlations are increasingly limited when \(p_X\) and \(p_Y\) are both large or both small; 
+        conversely, positive correlations are limited when \(p_X\) is large and \(p_Y\) is small or vice versa.
+    </i></figcaption>
+</figure>
+
+<figure>
+    <!-- <svg width="300" height="300"></svg> -->
+    <div id="correlation_bounds_interactive" style="width: 80%;"></div>
+    <div>
+        <label for="p2-slider">Select \(p_Y\): </label>
+        <input type="range" id="p2-slider" min="0" max="1" step="0.01" value="0.3">
+        <span id="p2-value">0.5</span>
+    </div>
+    <script src="./js/correlation_bounds.js"></script>
+    <figcaption><i><b>Fig.2:</b> Correlation bounds.
+    </i></figcaption>
+</figure>
+
+
+
+    <hr class="w3-opacity">
+    <br>
+
+    <h4 id="REFERENCES"><i>References</i></h4>
+
+    [1] <a href="http://www.jstor.org/stable/2340126" id="ref1"> "On the Methods of Measuring Association Between Two Attributes", G. Udny Yule, 1912</a>
+    <br>
+    <!-- [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
+    <br>
+    [3] <a href="http://www.macs.hw.ac.uk/~cd134/2010/donemb.pdf" id="ref3"> "The devil is in the tails: actuarial mathematics and the subprime mortgage crisis", Catherine Donnelly and Paul Embrechts, 2010,  ASTIN Bulletin: The Journal of the IAA, 40(1), 1-33</a>
+    <br>
+    [4] <a href="http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/9c8e3fd4d8874d60c1257052003eced6/34e84cb615c8b4eac12575fe006a9759/$FILE/li.defaultcorrelation.pdf" id="ref4">  "On Default Correlation: A Copula Function Approach", David X. Li, April 2000, The RiskMetrics Group Working Paper Number 99-07</a>
+    <br>
+    [5] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref5"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a> -->
+    <br><br>
+
+
+<!--MORE INTERESTING LINKS-->
+<!--    http://samueldwatts.com/wp-content/uploads/2016/08/Watts-Gaussian-Copula_Financial_Crisis.pdf-->
+
+
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!--    <h7>-->
+    <!-- <span style="float:right;">
+   <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+   </span>
+   </h7>
+   <br> -->
+
+    <h5> <a href="../Teaching.html"><b><img src="../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
+
+
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../js/footer.js"></script>
+
+<!-- End page content -->
+</div>
+
+<script src="../js/OpenCloseSidebar.js"></script>
+<!--<script src="../js/ModalImageGallery.js"></script>-->
+<script src="../js/OpenCloseCollapsible.js"></script>
+
+</body>
+</html>fbody
