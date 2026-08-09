@@ -1261,14 +1261,53 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     <h6>Exercise 9</h6>
     Derive the Stochastic Hamilton-Jacobi-Bellman equation from Theorem 16. 
     <br>
-    <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
+<button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 9</button>
         <div class="content" style="background-color: rgba(85,203,253,0.12) ; padding: 20px; border: 2px solid #9cc5ff;">
         
+        <p>To start, consider an infinitesimal stochastic dynamic programming principle
+        \begin{equation}
+        \label{eq:sol9_dpp}
+        V(x, t) = \sup_{\gamma_{[t, t+\delta t]}} \mathbb{E}\left\{\int_t^{t+\delta t}L(X(t'), \gamma(t'), t') dt' + V(X(t+\delta t), t+\delta t)\right\}.
+        \end{equation}
+        Recall that the state follows the SDE
+        \begin{equation}
+        dX(t) = f(X(t), \gamma(t), t)dt+\sigma(X(t), \gamma(t), t)dW(t).
+        \end{equation}
+        Since \(X(t+\delta t)\) is now stochastic, an application of Itô's lemma, rather than a simple Taylor expansion, is required to expand \(V(X(t+\delta t), t+\delta t)\):
+        \begin{equation}
+        \begin{split}
+        dV = \partial_t V\,dt + \nabla_x V \cdot dX + \frac{1}{2}\text{Tr}\left[\sigma^T\nabla_x^2 V\,\sigma\right] dt,
+        \end{split}
+        \end{equation}
+        where the additional second order term arises because \((dW)^2 = dt\).
+        Substituting the dynamics of \(X\) gives
+        \begin{equation}
+        \begin{split}
+        V(X(t+\delta t), t+\delta t) = V(x, t) &+ \left(\partial_t V + \nabla_x V\cdot f + \frac{1}{2}\text{Tr}\left[\sigma^T\nabla_x^2 V\,\sigma\right]\right)\delta t\\
+        &+ \nabla_x V\cdot \sigma\,dW + o(\delta t).
+        \end{split}
+        \end{equation}
+        Taking the expectation, and noting that \(\mathbb{E}[dW]=0\), the stochastic term vanishes:
+        \begin{equation}
+        \mathbb{E}\left[V(X(t+\delta t), t+\delta t)\right] = V(x, t) + \left(\partial_t V + \nabla_x V\cdot f + \frac{1}{2}\text{Tr}\left[\sigma^T\nabla_x^2 V\,\sigma\right]\right)\delta t + o(\delta t).
+        \end{equation}
+        Substituting this back into \eqref{eq:sol9_dpp} and cancelling \(V(x,t)\) from both sides yields
+        \begin{equation}
+        0 = \sup_{\gamma}\left\{L(x, \gamma, t)\,\delta t + \partial_t V\,\delta t + \nabla_x V\cdot f\,\delta t + \frac{1}{2}\text{Tr}\left[\sigma^T\nabla_x^2 V\,\sigma\right]\delta t\right\} + o(\delta t),
+        \end{equation}
+        where \(\partial_t V\) was pulled out of the supremum since it does not depend on \(\gamma\).
+        Dividing by \(\delta t\) and taking the limit \(\delta t \rightarrow 0\) finally gives
+        \begin{equation}
+        -\partial_t V(x, t) = \sup_{\gamma} \left\{ L(x, \gamma, t)
+        + \nabla_x V(x, t) \cdot f(x, \gamma, t)
+        + \frac{1}{2}\text{Tr}\left[\sigma^T(x, \gamma, t)\nabla_x^2V(x, t)\sigma(x, \gamma, t)\right]
+        \right\},
+        \end{equation}
+        which is the Stochastic Hamilton-Jacobi-Bellman equation, with terminal condition \(V(x,T)=\phi(x(T))\) inherited from the definition of \(V\). Setting \(\sigma=0\) recovers the deterministic HJB equation of Theorem 12.</p>
     
         <p align="right"> ◻</p>
-    </div>
-    
-    <h6>Exercise 10</h6>
+    </div>    
+    <!-- <h6>Exercise 10</h6>
     Show that a p
     <br>
     <button class="collapsible" style="margin-bottom: 10px;margin-top: 10px">Solution 10</button>
@@ -1277,7 +1316,7 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     
     
         <p align="right"> ◻</p>
-    </div>
+    </div> -->
     <hr class="w3-opacity">
 
     <br>
