@@ -13,7 +13,6 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NLJ2P23');</script>
     <!-- End Google Tag Manager -->
-<meta charset="utf-8"/>
     <title>Luca Mingarelli</title>
     <link rel="icon" href="../Icons/stork.png" type="image/png">
     <style>
@@ -22,57 +21,185 @@
         /*.active,*/
         .collapsible:hover {  background-color: #555;}
         .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+  :root{
+    --bg:#FBFAF6;
+    --paper:#FFFFFF;
+    --border:#DEDACD;
+    --rule:#CFC9B8;
+    --text:#1C1B18;
+    --text-muted:#4B4A44;
+    --text-dim:#8A8879;
+    --link:#2A4D8F;
+    --accent:#7A3030;
+    --accent-soft:#F3EAE6;
+    --spot:#2F5F8A;
+    --future:#9C5A2E;
+    --basis:#7A3030;
+    --good:#3F6B3F;
+    --bad:#A13232;
+    --font-serif:'STIX Two Text', Georgia, 'Times New Roman', serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--bg);}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--font-serif); line-height:1.62; font-size:17px;
+  }
+  ::selection{background:var(--accent-soft); color:var(--accent);}
+  a{color:var(--link); text-decoration:underline; text-decoration-color:rgba(42,77,143,0.35); text-underline-offset:2px;}
+  a:hover{text-decoration-color:var(--link);}
+  .wrap{max-width:760px; margin:0 auto; padding:0 26px 100px;}
 
-      /* Palette & fonts used ONLY by the figures/simulator below.
-         Page chrome (background, links, headings, sidebar) now comes from the site's w3.css. */
-      :root{
-        --paper:#FFFFFF;
-        --border:#DEDACD;
-        --rule:#CFC9B8;
-        --text:#1C1B18;
-        --text-muted:#4B4A44;
-        --text-dim:#8A8879;
-        --accent:#7A3030;
-        --accent-soft:#F3EAE6;
-        --spot:#2F5F8A;
-        --future:#9C5A2E;
-        --basis:#7A3030;
-        --good:#3F6B3F;
-        --bad:#A13232;
-        --font-serif:Georgia, 'Times New Roman', serif;
-        --font-mono:'IBM Plex Mono', monospace;
-      }
-      .wrap{padding-bottom:40px;}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
+    color:var(--text-dim); margin:0 0 10px;
+  }
+  h1{
+    font-family:var(--font-serif); font-weight:600; font-size:clamp(30px,4.6vw,42px);
+    line-height:1.15; margin:0 0 16px; color:var(--text);
+  }
+  h2{
+    font-family:var(--font-serif); font-weight:600; font-size:clamp(21px,2.6vw,25px);
+    margin:0 0 4px; color:var(--text);
+  }
+  h2 em{font-style:italic; font-weight:400;}
+  .section-index{
+    font-family:var(--font-mono); font-size:12px; color:var(--text-dim); margin:0 0 6px;
+  }
+  .lede{
+    font-size:17.5px; color:var(--text-muted); margin:0 0 34px; max-width:620px;
+  }
+  p{color:var(--text-muted); max-width:620px;}
+  p.tight{max-width:none;}
+  strong{color:var(--text); font-weight:600;}
+  em.term{font-style:italic; color:var(--text);}
+  .spot-word{font-style:italic; color:var(--text);}
+  .future-word{font-style:italic; color:var(--text);}
+  .basis-word{font-style:italic; color:var(--accent);}
 
-      .eyebrow{
-        font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
-        color:var(--text-dim); margin:0 0 10px;
-      }
-      h2 em{font-style:italic; font-weight:400;}
-      .section-index{
-        font-family:var(--font-mono); font-size:12px; color:var(--text-dim); margin:0 0 6px;
-      }
-      .lede{
-        font-size:17.5px; color:var(--text-muted); margin:0 0 34px; max-width:620px;
-      }
-      .spot-word{font-style:italic; color:var(--text);}
-      .future-word{font-style:italic; color:var(--text);}
-      .basis-word{font-style:italic; color:var(--accent);}
+  section{padding:52px 0;}
+  section + section{border-top:1px solid var(--rule);}
 
-      section{padding:36px 0;}
-      section + section{border-top:1px solid var(--rule);}
+  hr.rule{border:none; border-top:1px solid var(--rule); margin:44px 0;}
 
-      header.hero{padding:24px 0 32px;}
+  header.hero{padding:64px 0 44px;}
 
-      .hero-figure{margin-top:30px;}
-      /* ... existing code ... */
-      .risk-list .yr{font-family:var(--font-mono); font-size:12px; color:var(--accent); margin-bottom:4px; display:block;}
-      .risk-list p{margin:0; font-size:15.5px;}
+  .hero-figure{margin-top:30px;}
+  .hero-legend{
+    display:flex; gap:20px; flex-wrap:wrap; margin-bottom:8px;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
+  }
+  .hero-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:9px;height:9px;border-radius:1px; display:inline-block;}
+  .fig-frame{
+    background:var(--paper); border:1px solid var(--border); padding:16px 16px 8px;
+  }
+  #heroCanvas{width:100%; height:250px; display:block;}
+  .fig-caption{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
+    padding:10px 2px 2px; border-top:1px solid var(--rule); margin-top:8px;
+    display:flex; justify-content:space-between;
+  }
+  .fig-caption b{color:var(--accent); font-weight:500;}
 
-      .wrap footer{
-        padding:32px 0 20px; border-top:1px solid var(--rule); margin-top:12px;
-        font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
-      }
+  /* ---------- definition-style formula blocks ---------- */
+  .def-box{margin:24px 0;}
+  .def-label{
+    font-family:var(--font-serif); font-weight:600; font-size:15.5px; color:var(--text);
+    margin-bottom:6px;
+  }
+  .def-label .n{color:var(--accent);}
+  .def-body{
+    border-left:2px solid var(--accent); padding:4px 0 4px 20px; margin:0;
+  }
+  .def-body .katex{font-size:1.02em; color:var(--text);}
+  .def-caption{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
+    padding-left:20px; margin-top:6px;
+  }
+
+  /* ---------- mechanics cards ---------- */
+  .legs{display:grid; grid-template-columns:1fr 1fr; gap:0; margin:26px 0; border:1px solid var(--border);}
+  .legs .leg-card + .leg-card{border-left:1px solid var(--border);}
+  @media(max-width:600px){.legs{grid-template-columns:1fr;} .legs .leg-card + .leg-card{border-left:none; border-top:1px solid var(--border);}}
+  .leg-card{background:var(--paper); padding:20px 22px;}
+  .leg-title{
+    font-family:var(--font-serif); font-weight:600; font-size:15px; margin-bottom:8px; color:var(--text);
+    font-style:italic;
+  }
+  .leg-card p{margin:0; font-size:15px; color:var(--text-muted); max-width:none;}
+  .leg-flow{font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule);}
+
+  /* ---------- simulator ---------- */
+  .sim-shell{
+    background:var(--paper); border:1px solid var(--border); padding:26px 26px 22px;
+    margin-top:24px;
+  }
+  .sim-heading{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--text-dim); margin:0 0 18px; padding-bottom:12px; border-bottom:1px solid var(--rule);
+  }
+  .controls{display:grid; grid-template-columns:1fr 1fr; gap:20px 30px; margin-bottom:6px;}
+  @media(max-width:600px){.controls{grid-template-columns:1fr;}}
+  .control label{
+    display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11.5px;
+    color:var(--text-muted); margin-bottom:8px;
+  }
+  .control label .val{color:var(--accent); font-weight:500;}
+  input[type=range]{
+    -webkit-appearance:none; width:100%; height:1px; background:var(--rule); outline:none; margin:10px 0;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:11px; height:11px; border-radius:50%;
+    background:var(--paper); cursor:pointer; border:1.5px solid var(--accent);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:9px; height:9px; border-radius:50%; background:var(--paper); cursor:pointer; border:1.5px solid var(--accent);
+  }
+
+  .resim-row{display:flex; align-items:center; gap:16px; margin:22px 0 4px; flex-wrap:wrap;}
+  button.resim{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.02em; color:var(--text);
+    background:var(--paper); border:1px solid var(--text); padding:9px 16px; cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  button.resim:hover{background:var(--text); color:var(--paper);}
+  .resim-hint{font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); line-height:1.5;}
+
+  #simChart{width:100%; height:270px; display:block; margin-top:18px;}
+  .sim-legend{display:flex; gap:18px; flex-wrap:wrap; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); margin-top:8px;}
+  .sim-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .line-sw{width:13px; height:1.5px; display:inline-block;}
+  .dot-sw{width:8px; height:8px; border-radius:50%; display:inline-block;}
+
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:24px; border:1px solid var(--border);}
+  @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr;}}
+  .stat{padding:15px 16px; border-left:1px solid var(--border);}
+  .stat:first-child{border-left:none;}
+  @media(max-width:600px){.stat:nth-child(3){border-left:none; border-top:1px solid var(--border);} .stat:nth-child(4){border-top:1px solid var(--border);}}
+  .stat .k{font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim); margin-bottom:8px;}
+  .stat .v{font-family:var(--font-serif); font-size:22px; font-weight:600; color:var(--text);}
+  .stat .v.good{color:var(--good);}
+  .stat .v.bad{color:var(--bad);}
+
+  #histChart{width:100%; height:210px; display:block; margin-top:14px;}
+
+  /* ---------- risk list ---------- */
+  .risk-list{list-style:none; padding:0; margin:24px 0 0; display:flex; flex-direction:column; gap:20px;}
+  .risk-list li{padding-left:18px; border-left:2px solid var(--accent); max-width:620px;}
+  .risk-list .yr{font-family:var(--font-mono); font-size:12px; color:var(--accent); margin-bottom:4px; display:block;}
+  .risk-list p{margin:0; font-size:15.5px;}
+
+  footer{
+    padding:48px 0 20px; border-top:1px solid var(--rule); margin-top:12px;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
+  }
+
+
+
+
+
     </style>
 </head>
 
@@ -81,12 +208,9 @@
 <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<!-- KaTeX (required by the formula rendering script on this page) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 
-<link rel="stylesheet" href="../PRISM/prism.css"> <!-- For code highlight -->
-<script src="../PRISM/prism.js"></script>         <!-- For code highlight -->
+<link rel="stylesheet" href="prism/prism.css"> <!-- For code highlight -->
+<script src="prism/prism.js"></script>         <!-- For code highlight -->
 
 
 <meta charset="UTF-8">
@@ -102,10 +226,10 @@
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <!-- NavigationBar -->
-<script src="../js/Navbar.js"></script>
+<script src="js/Navbar.js"></script>
 <!-- _____________ -->
 <!-- PRE_CONTENT -->
-<script src="../js/pre_content.js"></script>
+<script src="js/pre_content.js"></script>
 <!-- _____________ -->
 
 
@@ -331,7 +455,6 @@
 <script>
 /* ---------------- KaTeX formulas ---------------- */
 function K(id, tex){
-  if (typeof katex === 'undefined') return;  // CDN unavailable — skip formulas, keep the rest of the page alive
   katex.render(tex, document.getElementById(id), {throwOnError:false, displayMode:true});
 }
 K('f-basis-def', String.raw`B_t \;=\; F_t - S_t`);
