@@ -135,7 +135,11 @@
   const width = 400 - margin.left - margin.right;
   const height = 320 - margin.top - margin.bottom;
 
+  let panelCount = 0;
+
   function makePanel(title, yLabel) {
+    const clipId = 'merton_clip_' + (panelCount++);
+
     const svg = panelsDiv.append('div')
       .style('flex', '1 1 320px')
       .style('min-width', '280px')
@@ -145,6 +149,15 @@
       .style('width', '100%').style('height', 'auto')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Clip region: anything outside the plot area is hidden, so paths
+    // exceeding the y-limit exit through the top instead of being drawn
+    // flat along the axis.
+    svg.append('defs').append('clipPath')
+      .attr('id', clipId)
+      .append('rect')
+      .attr('x', 0).attr('y', 0)
+      .attr('width', width).attr('height', height);
 
     svg.append('text')
       .attr('x', width / 2).attr('y', -6)
@@ -159,15 +172,17 @@
       .attr('x', -height / 2).attr('y', -42)
       .attr('text-anchor', 'middle').style('font-size', '12px').text(yLabel);
 
+    const clipped = svg.append('g').attr('clip-path', `url(#${clipId})`);
+
     const panel = {
       xScale: d3.scaleLinear().range([0, width]),
       yScale: d3.scaleLinear().range([height, 0]),
       xAxisG: svg.append('g').attr('transform', `translate(0,${height})`),
       yAxisG: svg.append('g'),
-      pathsG: svg.append('g'),
-      mcMeanPath: svg.append('path')
+      pathsG: clipped.append('g'),
+      mcMeanPath: clipped.append('path')
         .attr('fill', 'none').attr('stroke', '#1a1a2e').attr('stroke-width', 2.5),
-      analyticPath: svg.append('path')
+      analyticPath: clipped.append('path')
         .attr('fill', 'none').attr('stroke', '#d62728')
         .attr('stroke-width', 2).attr('stroke-dasharray', '6,4'),
     };
@@ -188,9 +203,10 @@
     panel.xAxisG.call(d3.axisBottom(panel.xScale).ticks(6));
     panel.yAxisG.call(d3.axisLeft(panel.yScale).ticks(6));
 
+    // No clamping: out-of-range values are handled by the clipPath
     const line = d3.line()
       .x((d, k) => panel.xScale(times[k]))
-      .y(d => panel.yScale(Math.min(d, yMax)));
+      .y(d => panel.yScale(d));
 
     const sel = panel.pathsG.selectAll('path').data(data.paths);
     sel.enter().append('path')
