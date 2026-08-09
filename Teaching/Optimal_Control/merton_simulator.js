@@ -49,32 +49,40 @@
     const vol = Q * p.sigma * Math.sqrt(dt);
 
     const times = d3.range(N_STEPS + 1).map(k => k * dt);
+    const cRates = times.map(t => consumptionRate(t, p.rho, p.T, dt));
 
-    // Monte Carlo paths (exact lognormal step: wealth stays positive)
-    const paths = d3.range(p.N).map(i => {
+    // Monte Carlo wealth paths (exact lognormal step: wealth stays positive)
+    const wealthPaths = d3.range(p.N).map(i => {
       let W = W0;
       const path = [W];
       for (let k = 0; k < N_STEPS; k++) {
-        const c = consumptionRate(times[k], p.rho, p.T, dt);
-        W *= Math.exp((drift - c) * dt + vol * noise[i][k]);
+        W *= Math.exp((drift - cRates[k]) * dt + vol * noise[i][k]);
         path.push(W);
       }
       return path;
     });
 
-    // Monte Carlo mean
-    const mcMean = d3.range(N_STEPS + 1).map(k => d3.mean(paths, path => path[k]));
+    // Consumption flow paths: C*_t = c(t) W_t
+    const consPaths = wealthPaths.map(path => path.map((W, k) => cRates[k] * W));
 
-    // Analytic expectation: dm/dt = (r + kappa^2 - c(t)) m
+    // Monte Carlo means
+    const wealthMean = d3.range(N_STEPS + 1).map(k => d3.mean(wealthPaths, p_ => p_[k]));
+    const consMean = d3.range(N_STEPS + 1).map(k => d3.mean(consPaths, p_ => p_[k]));
+
+    // Analytic expectations: dm/dt = (r + kappa^2 - c(t)) m,  E[C_t] = c(t) m(t)
     let m = W0;
-    const analytic = [m];
+    const wealthAnalytic = [m];
     for (let k = 0; k < N_STEPS; k++) {
-      const c = consumptionRate(times[k], p.rho, p.T, dt);
-      m *= Math.exp((p.r + kappa * kappa - c) * dt);
-      analytic.push(m);
+      m *= Math.exp((p.r + kappa * kappa - cRates[k]) * dt);
+      wealthAnalytic.push(m);
     }
+    const consAnalytic = wealthAnalytic.map((mv, k) => cRates[k] * mv);
 
-    return { times, paths, mcMean, analytic, Q };
+    return {
+      times, Q,
+      wealth: { paths: wealthPaths, mcMean: wealthMean, analytic: wealthAnalytic },
+      cons:   { paths: consPaths,   mcMean: consMean,   analytic: consAnalytic },
+    };
   }
 
   // ------------------------- Layout --------------------------------------
@@ -116,75 +124,75 @@
     .style('cursor', 'pointer')
     .on('click', () => { resampleNoise(); render(); });
 
-  // Chart
-  const margin = { top: 15, right: 20, bottom: 35, left: 55 };
-  const width = 700 - margin.left - margin.right;
-  const height = 380 - margin.top - margin.bottom;
+  // Panels container (side by side, wrapping on narrow screens)
+  const panelsDiv = root.append('div')
+    .style('display', 'flex')
+    .style('flex-wrap', 'wrap')
+    .style('justify-content', 'center');
 
-  const svg = root.append('svg')
-    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-    .style('width', '100%').style('height', 'auto')
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+  // ------------------------- Chart factory -------------------------------
+  const margin = { top: 20, right: 15, bottom: 35, left: 55 };
+  const width = 400 - margin.left - margin.right;
+  const height = 320 - margin.top - margin.bottom;
 
-  const xScale = d3.scaleLinear().range([0, width]);
-  const yScale = d3.scaleLinear().range([height, 0]);
-  const xAxisG = svg.append('g').attr('transform', `translate(0,${height})`);
-  const yAxisG = svg.append('g');
+  function makePanel(title, yLabel) {
+    const svg = panelsDiv.append('div')
+      .style('flex', '1 1 320px')
+      .style('min-width', '280px')
+      .style('max-width', '420px')
+      .append('svg')
+      .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+      .style('width', '100%').style('height', 'auto')
+      .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  svg.append('text')                                   // axis labels
-    .attr('x', width / 2).attr('y', height + 32)
-    .attr('text-anchor', 'middle').style('font-size', '12px').text('t');
-  svg.append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('x', -height / 2).attr('y', -42)
-    .attr('text-anchor', 'middle').style('font-size', '12px').text('Wealth  Wₜ');
+    svg.append('text')
+      .attr('x', width / 2).attr('y', -6)
+      .attr('text-anchor', 'middle')
+      .style('font-size', '13px').style('font-weight', 'bold')
+      .text(title);
+    svg.append('text')
+      .attr('x', width / 2).attr('y', height + 32)
+      .attr('text-anchor', 'middle').style('font-size', '12px').text('t');
+    svg.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2).attr('y', -42)
+      .attr('text-anchor', 'middle').style('font-size', '12px').text(yLabel);
 
-  const pathsG = svg.append('g');
-  const mcMeanPath = svg.append('path')
-    .attr('fill', 'none').attr('stroke', '#1a1a2e').attr('stroke-width', 2.5);
-  const analyticPath = svg.append('path')
-    .attr('fill', 'none').attr('stroke', '#d62728')
-    .attr('stroke-width', 2).attr('stroke-dasharray', '6,4');
+    const panel = {
+      xScale: d3.scaleLinear().range([0, width]),
+      yScale: d3.scaleLinear().range([height, 0]),
+      xAxisG: svg.append('g').attr('transform', `translate(0,${height})`),
+      yAxisG: svg.append('g'),
+      pathsG: svg.append('g'),
+      mcMeanPath: svg.append('path')
+        .attr('fill', 'none').attr('stroke', '#1a1a2e').attr('stroke-width', 2.5),
+      analyticPath: svg.append('path')
+        .attr('fill', 'none').attr('stroke', '#d62728')
+        .attr('stroke-width', 2).attr('stroke-dasharray', '6,4'),
+    };
+    return panel;
+  }
 
-  // Legend
-  const legend = svg.append('g').attr('transform', 'translate(10,10)')
-    .style('font-size', '12px');
-  legend.append('line').attr('x1', 0).attr('x2', 25).attr('y1', 0).attr('y2', 0)
-    .attr('stroke', 'steelblue').attr('stroke-opacity', 0.5);
-  legend.append('text').attr('x', 30).attr('y', 4).text('Monte Carlo paths');
-  legend.append('line').attr('x1', 0).attr('x2', 25).attr('y1', 18).attr('y2', 18)
-    .attr('stroke', '#1a1a2e').attr('stroke-width', 2.5);
-  legend.append('text').attr('x', 30).attr('y', 22).text('Monte Carlo mean');
-  legend.append('line').attr('x1', 0).attr('x2', 25).attr('y1', 36).attr('y2', 36)
-    .attr('stroke', '#d62728').attr('stroke-width', 2).attr('stroke-dasharray', '6,4');
-  legend.append('text').attr('x', 30).attr('y', 40).text('Analytic 𝔼[Wₜ]');
-
-  // ------------------------- Render --------------------------------------
-  function render() {
-    const { times, paths, mcMean, analytic, Q } = simulate(params);
-
-    qLabel.text(`Merton fraction Q* = ${Q.toFixed(2)}`)
-      .style('color', Q > 1 ? '#d62728' : '#1a1a2e');
-
+  function updatePanel(panel, times, data, T) {
     // Robust y-domain: 99th percentile of all simulated values (leverage can explode)
     const allValues = [];
-    paths.forEach(p => p.forEach(v => allValues.push(v)));
+    data.paths.forEach(p_ => p_.forEach(v => allValues.push(v)));
     allValues.sort(d3.ascending);
     const yMax = Math.max(
       allValues[Math.floor(0.99 * (allValues.length - 1))],
-      d3.max(analytic), W0) * 1.05;
+      d3.max(data.analytic)) * 1.05;
 
-    xScale.domain([0, params.T]);
-    yScale.domain([0, yMax]);
-    xAxisG.call(d3.axisBottom(xScale));
-    yAxisG.call(d3.axisLeft(yScale));
+    panel.xScale.domain([0, T]);
+    panel.yScale.domain([0, yMax]);
+    panel.xAxisG.call(d3.axisBottom(panel.xScale).ticks(6));
+    panel.yAxisG.call(d3.axisLeft(panel.yScale).ticks(6));
 
     const line = d3.line()
-      .x((d, k) => xScale(times[k]))
-      .y(d => yScale(Math.min(d, yMax)));
+      .x((d, k) => panel.xScale(times[k]))
+      .y(d => panel.yScale(Math.min(d, yMax)));
 
-    const sel = pathsG.selectAll('path').data(paths);
+    const sel = panel.pathsG.selectAll('path').data(data.paths);
     sel.enter().append('path')
       .attr('fill', 'none').attr('stroke', 'steelblue')
       .attr('stroke-width', 1).attr('stroke-opacity', 0.35)
@@ -192,8 +200,31 @@
       .attr('d', line);
     sel.exit().remove();
 
-    mcMeanPath.attr('d', line(mcMean));
-    analyticPath.attr('d', line(analytic));
+    panel.mcMeanPath.attr('d', line(data.mcMean));
+    panel.analyticPath.attr('d', line(data.analytic));
+  }
+
+  const wealthPanel = makePanel('Wealth Wₜ', 'Wₜ');
+  const consPanel = makePanel('Consumption Cₜ* = c(t)Wₜ', 'Cₜ*');
+
+  // Shared legend
+  const legendDiv = root.append('div')
+    .style('font-size', '12px').style('padding', '2px');
+  legendDiv.html(
+    '<span style="color:steelblue;">━</span> Monte Carlo paths &nbsp;&nbsp; ' +
+    '<span style="color:#1a1a2e;">━</span> Monte Carlo mean &nbsp;&nbsp; ' +
+    '<span style="color:#d62728;">╍</span> Analytic expectation'
+  );
+
+  // ------------------------- Render --------------------------------------
+  function render() {
+    const { times, Q, wealth, cons } = simulate(params);
+
+    qLabel.text(`Merton fraction Q* = ${Q.toFixed(2)}`)
+      .style('color', Q > 1 ? '#d62728' : '#1a1a2e');
+
+    updatePanel(wealthPanel, times, wealth, params.T);
+    updatePanel(consPanel, times, cons, params.T);
   }
 
   render();

@@ -1465,9 +1465,26 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     Notice how the sample average converges to the analytic expectation
     \(\mathbb{E}[W_t] = W_0\, e^{\int_0^t (r+\kappa^2-c(s))ds}\) as the number of runs grows,
     how wealth is fully consumed as \(t\rightarrow T\) (no bequest motive),
-    and how the Merton fraction \(Q^*\) (and hence the volatility of the paths)
+    and how the Merton fraction \(Q^*\) — and hence the volatility of the paths —
     responds to \(\mu\), \(r\) and \(\sigma\).
 
+    The right panel shows the associated consumption flow \(C^*_t = c(t)W_t\)
+    (with analytic expectation \(\mathbb{E}[C_t] = c(t)\,\mathbb{E}[W_t]\)):
+    observe its typical hump shape — consumption first grows with wealth while
+    the consumption rate \(c(t)\) is low, and eventually spikes as the horizon approaches —
+    and how a larger \(\rho\) tilts consumption towards the present.
+
+    <figure style="text-align: center;justify-content: center;align-items: center;">
+      <!-- Create a div where the graph will take place -->
+      <div id="merton_figure" style="width: 100%;"></div>
+      <figcaption><i><b>Fig.3:</b> Monte Carlo simulation of the optimal consumption-investment problem.
+        Left: wealth \(W_t\); right: consumption flow \(C^*_t = c(t)W_t\).
+        Light blue lines are individual paths under the optimal policy \eqref{eq:merton_feedback};
+        solid dark lines are Monte Carlo means and dashed lines the analytic expectations.
+        Adjust the parameters with the sliders; note that \(Q^*>1\) corresponds to a leveraged position.
+      </i></figcaption>
+    </figure>
+    
     <figure style="text-align: center;justify-content: center;align-items: center;">
       <!-- Create a div where the graph will take place -->
       <div id="merton_figure" style="width: 100%;"></div>
