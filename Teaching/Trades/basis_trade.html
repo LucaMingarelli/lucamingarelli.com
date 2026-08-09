@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <!-- Oribi Analytics -->
     <script type="application/javascript">
@@ -13,193 +13,15 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NLJ2P23');</script>
     <!-- End Google Tag Manager -->
+    <meta charset="utf-8"/>
     <title>Luca Mingarelli</title>
-    <link rel="icon" href="../Icons/stork.png" type="image/png">
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
     <style>
         .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
             border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
         /*.active,*/
         .collapsible:hover {  background-color: #555;}
         .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
-  :root{
-    --bg:#FBFAF6;
-    --paper:#FFFFFF;
-    --border:#DEDACD;
-    --rule:#CFC9B8;
-    --text:#1C1B18;
-    --text-muted:#4B4A44;
-    --text-dim:#8A8879;
-    --link:#2A4D8F;
-    --accent:#7A3030;
-    --accent-soft:#F3EAE6;
-    --spot:#2F5F8A;
-    --future:#9C5A2E;
-    --basis:#7A3030;
-    --good:#3F6B3F;
-    --bad:#A13232;
-    --font-serif:'STIX Two Text', Georgia, 'Times New Roman', serif;
-    --font-mono:'IBM Plex Mono', monospace;
-  }
-  *{box-sizing:border-box;}
-  html{background:var(--bg);}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:var(--font-serif); line-height:1.62; font-size:17px;
-  }
-  ::selection{background:var(--accent-soft); color:var(--accent);}
-  a{color:var(--link); text-decoration:underline; text-decoration-color:rgba(42,77,143,0.35); text-underline-offset:2px;}
-  a:hover{text-decoration-color:var(--link);}
-  .wrap{max-width:760px; margin:0 auto; padding:0 26px 100px;}
-
-  .eyebrow{
-    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em;
-    color:var(--text-dim); margin:0 0 10px;
-  }
-  h1{
-    font-family:var(--font-serif); font-weight:600; font-size:clamp(30px,4.6vw,42px);
-    line-height:1.15; margin:0 0 16px; color:var(--text);
-  }
-  h2{
-    font-family:var(--font-serif); font-weight:600; font-size:clamp(21px,2.6vw,25px);
-    margin:0 0 4px; color:var(--text);
-  }
-  h2 em{font-style:italic; font-weight:400;}
-  .section-index{
-    font-family:var(--font-mono); font-size:12px; color:var(--text-dim); margin:0 0 6px;
-  }
-  .lede{
-    font-size:17.5px; color:var(--text-muted); margin:0 0 34px; max-width:620px;
-  }
-  p{color:var(--text-muted); max-width:620px;}
-  p.tight{max-width:none;}
-  strong{color:var(--text); font-weight:600;}
-  em.term{font-style:italic; color:var(--text);}
-  .spot-word{font-style:italic; color:var(--text);}
-  .future-word{font-style:italic; color:var(--text);}
-  .basis-word{font-style:italic; color:var(--accent);}
-
-  section{padding:52px 0;}
-  section + section{border-top:1px solid var(--rule);}
-
-  hr.rule{border:none; border-top:1px solid var(--rule); margin:44px 0;}
-
-  header.hero{padding:64px 0 44px;}
-
-  .hero-figure{margin-top:30px;}
-  .hero-legend{
-    display:flex; gap:20px; flex-wrap:wrap; margin-bottom:8px;
-    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
-  }
-  .hero-legend span{display:inline-flex; align-items:center; gap:6px;}
-  .swatch{width:9px;height:9px;border-radius:1px; display:inline-block;}
-  .fig-frame{
-    background:var(--paper); border:1px solid var(--border); padding:16px 16px 8px;
-  }
-  #heroCanvas{width:100%; height:250px; display:block;}
-  .fig-caption{
-    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
-    padding:10px 2px 2px; border-top:1px solid var(--rule); margin-top:8px;
-    display:flex; justify-content:space-between;
-  }
-  .fig-caption b{color:var(--accent); font-weight:500;}
-
-  /* ---------- definition-style formula blocks ---------- */
-  .def-box{margin:24px 0;}
-  .def-label{
-    font-family:var(--font-serif); font-weight:600; font-size:15.5px; color:var(--text);
-    margin-bottom:6px;
-  }
-  .def-label .n{color:var(--accent);}
-  .def-body{
-    border-left:2px solid var(--accent); padding:4px 0 4px 20px; margin:0;
-  }
-  .def-body .katex{font-size:1.02em; color:var(--text);}
-  .def-caption{
-    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
-    padding-left:20px; margin-top:6px;
-  }
-
-  /* ---------- mechanics cards ---------- */
-  .legs{display:grid; grid-template-columns:1fr 1fr; gap:0; margin:26px 0; border:1px solid var(--border);}
-  .legs .leg-card + .leg-card{border-left:1px solid var(--border);}
-  @media(max-width:600px){.legs{grid-template-columns:1fr;} .legs .leg-card + .leg-card{border-left:none; border-top:1px solid var(--border);}}
-  .leg-card{background:var(--paper); padding:20px 22px;}
-  .leg-title{
-    font-family:var(--font-serif); font-weight:600; font-size:15px; margin-bottom:8px; color:var(--text);
-    font-style:italic;
-  }
-  .leg-card p{margin:0; font-size:15px; color:var(--text-muted); max-width:none;}
-  .leg-flow{font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule);}
-
-  /* ---------- simulator ---------- */
-  .sim-shell{
-    background:var(--paper); border:1px solid var(--border); padding:26px 26px 22px;
-    margin-top:24px;
-  }
-  .sim-heading{
-    font-family:var(--font-mono); font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
-    color:var(--text-dim); margin:0 0 18px; padding-bottom:12px; border-bottom:1px solid var(--rule);
-  }
-  .controls{display:grid; grid-template-columns:1fr 1fr; gap:20px 30px; margin-bottom:6px;}
-  @media(max-width:600px){.controls{grid-template-columns:1fr;}}
-  .control label{
-    display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11.5px;
-    color:var(--text-muted); margin-bottom:8px;
-  }
-  .control label .val{color:var(--accent); font-weight:500;}
-  input[type=range]{
-    -webkit-appearance:none; width:100%; height:1px; background:var(--rule); outline:none; margin:10px 0;
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none; width:11px; height:11px; border-radius:50%;
-    background:var(--paper); cursor:pointer; border:1.5px solid var(--accent);
-  }
-  input[type=range]::-moz-range-thumb{
-    width:9px; height:9px; border-radius:50%; background:var(--paper); cursor:pointer; border:1.5px solid var(--accent);
-  }
-
-  .resim-row{display:flex; align-items:center; gap:16px; margin:22px 0 4px; flex-wrap:wrap;}
-  button.resim{
-    font-family:var(--font-mono); font-size:12px; letter-spacing:.02em; color:var(--text);
-    background:var(--paper); border:1px solid var(--text); padding:9px 16px; cursor:pointer;
-    transition:background .15s, color .15s;
-  }
-  button.resim:hover{background:var(--text); color:var(--paper);}
-  .resim-hint{font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); line-height:1.5;}
-
-  #simChart{width:100%; height:270px; display:block; margin-top:18px;}
-  .sim-legend{display:flex; gap:18px; flex-wrap:wrap; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); margin-top:8px;}
-  .sim-legend span{display:inline-flex; align-items:center; gap:6px;}
-  .line-sw{width:13px; height:1.5px; display:inline-block;}
-  .dot-sw{width:8px; height:8px; border-radius:50%; display:inline-block;}
-
-  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:24px; border:1px solid var(--border);}
-  @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr;}}
-  .stat{padding:15px 16px; border-left:1px solid var(--border);}
-  .stat:first-child{border-left:none;}
-  @media(max-width:600px){.stat:nth-child(3){border-left:none; border-top:1px solid var(--border);} .stat:nth-child(4){border-top:1px solid var(--border);}}
-  .stat .k{font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dim); margin-bottom:8px;}
-  .stat .v{font-family:var(--font-serif); font-size:22px; font-weight:600; color:var(--text);}
-  .stat .v.good{color:var(--good);}
-  .stat .v.bad{color:var(--bad);}
-
-  #histChart{width:100%; height:210px; display:block; margin-top:14px;}
-
-  /* ---------- risk list ---------- */
-  .risk-list{list-style:none; padding:0; margin:24px 0 0; display:flex; flex-direction:column; gap:20px;}
-  .risk-list li{padding-left:18px; border-left:2px solid var(--accent); max-width:620px;}
-  .risk-list .yr{font-family:var(--font-mono); font-size:12px; color:var(--accent); margin-bottom:4px; display:block;}
-  .risk-list p{margin:0; font-size:15.5px;}
-
-  footer{
-    padding:48px 0 20px; border-top:1px solid var(--rule); margin-top:12px;
-    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim);
-  }
-
-
-
-
-
     </style>
 </head>
 
@@ -207,18 +29,17 @@
 <script>window.MathJax = {tex: {tags: 'ams'}};</script>
 <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
-<script src="https://d3js.org/d3.v7.min.js"></script>
 
-<link rel="stylesheet" href="prism/prism.css"> <!-- For code highlight -->
-<script src="prism/prism.js"></script>         <!-- For code highlight -->
+<link rel="stylesheet" href="../../PRISM/prism.css"> <!-- For code highlight -->
+<script src="../../PRISM/prism.js"></script>         <!-- For code highlight -->
 
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../css/w3.css">
-<link rel="stylesheet" href="../css/font.css">
-<link rel="stylesheet" href="../css/responsiveiframe.css">
-<script src="../js/style_preamble.js"></script>
+<link rel="stylesheet" href="..//css/w3.css">
+<link rel="stylesheet" href="..//css/font.css">
+<link rel="stylesheet" href="..//css/responsiveiframe.css">
+<script src="..//js/style_preamble.js"></script>
 
 <body class="w3-light-grey w3-content" style="max-width:2600px">
 <!-- Google Tag Manager (noscript) -->
@@ -226,10 +47,10 @@
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <!-- NavigationBar -->
-<script src="js/Navbar.js"></script>
+<script src="../js/Navbar.js"></script>
 <!-- _____________ -->
 <!-- PRE_CONTENT -->
-<script src="js/pre_content.js"></script>
+<script src="../js/pre_content.js"></script>
 <!-- _____________ -->
 
 
@@ -237,566 +58,55 @@
 
 <div class="w3-content w3-justify" style="max-width:800px">
 
+    <h1 style="text-align: left;"><b>Useful Algorithms</b></h1>
 
-<div class="wrap">
+    <h2 style="text-align: left;"><b>Adjacency matrix for Square Lattice</b></h2>
+Given a \(n\times n\) square lattice with elements indexed by \((i,\ j)\) it is useful
+    to be able to quickly generate the associated adjacency matrix.
+    <br>
+First of all, notice that the adjacency matrix will be of size \(n^2\times n^2\).
 
-  <header class="hero">
-    <p class="eyebrow">spot · futures · convergence</p>
-    <h1>The basis trade</h1>
-    <p class="lede">Two prices for the same asset should agree by delivery day. When they don't, the gap between them &mdash; the <em class="term">basis</em> &mdash; is either free money or a very patient way to lose your shirt. Here is the arithmetic, and the risk hiding inside it.</p>
 
-    <div class="hero-figure">
-      <div class="hero-legend">
-        <span><i class="swatch" style="background:var(--future)"></i>futures price F(t)</span>
-        <span><i class="swatch" style="background:var(--spot)"></i>spot price S(t)</span>
-        <span><i class="swatch" style="background:var(--basis)"></i>basis B(t) = F(t) &minus; S(t)</span>
-      </div>
-      <div class="fig-frame">
-        <canvas id="heroCanvas"></canvas>
-        <div class="fig-caption">
-          <span>t = today &rarr; T = delivery</span>
-          <span><b id="heroDays">365</b> days to expiry</span>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <section id="s1">
-    <p class="section-index">§1</p>
-    <h2>Defining the <em>basis</em></h2>
-    <p>For any asset with a futures contract &mdash; a Treasury note, a barrel of oil, an equity index &mdash; two prices exist at once: the spot price you would pay to own it right now, and the futures price you would lock in today for delivery later. The basis is simply the difference.</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Definition 1</span> — Basis</div>
-      <div class="def-body" id="f-basis-def"></div>
-    </div>
-
-    <p>At the instant a futures contract expires, it converges to spot &mdash; delivery forces it to. So <strong>the basis is a number engineered to hit exactly zero on a known date.</strong> That is what makes basis trades feel like arbitrage: you are not betting on where the market goes, you are betting on a difference collapsing to a value you already know.</p>
-  </section>
-
-  <section id="s2">
-    <p class="section-index">§2</p>
-    <h2>Why the basis isn't zero <em>today</em></h2>
-    <p>If you could buy the asset now and hold it for free, spot and futures would already be equal. They aren't, because holding costs something (financing) and sometimes pays something back (dividends, coupons, convenience yield). This is the cost-of-carry model.</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Definition 2</span> — Cost of carry</div>
-      <div class="def-body" id="f-carry"></div>
-      <div class="def-caption">r = financing rate · q = yield earned while holding the asset · T&minus;t = time to delivery</div>
-    </div>
-
-    <p>Rearranged, the "fair" basis is just the net cost of carrying the asset to delivery.</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Corollary 2.1</span> — Fair basis</div>
-      <div class="def-body" id="f-fairbasis"></div>
-    </div>
-
-    <p>When the <em>market's</em> basis drifts away from this fair value, a mechanical trade appears: buy the cheap side, sell the expensive side, hold to delivery, collect the difference.</p>
-  </section>
-
-  <section id="s3">
-    <p class="section-index">§3</p>
-    <h2>The trade itself</h2>
-    <p>The classic version is <strong>cash-and-carry</strong>: the basis is "too wide," so you buy the underlying and sell the future against it, financing the purchase until delivery.</p>
-    <div class="legs">
-      <div class="leg-card">
-        <div class="leg-title">Long leg — buy spot</div>
-        <p>Borrow cash at rate r, buy the underlying asset today at S&#8320;. You now own it and owe the loan.</p>
-        <div class="leg-flow">t=0: &minus;S&#8320; (buy) · +S&#8320; (borrow)<br>t=T: repay S&#8320;e^{rT}, deliver the asset</div>
-      </div>
-      <div class="leg-card">
-        <div class="leg-title">Short leg — sell the future</div>
-        <p>Sell a futures contract at F&#8320;, obligating you to deliver the asset at T for a price fixed today.</p>
-        <div class="leg-flow">t=0: no cash (futures are margined)<br>t=T: receive F&#8320; on delivery</div>
-      </div>
-    </div>
-    <p>Net it out and the profit is locked in at inception, regardless of where the market goes in between.</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Proposition 3</span> — Locked-in profit</div>
-      <div class="def-body" id="f-pnl-lock"></div>
-    </div>
-
-    <p class="tight">That is the textbook version. In practice you do not hold to delivery in peace &mdash; you hold through a <em>path</em>, and the path is where the risk actually lives. That is what the simulator below is for.</p>
-  </section>
-
-  <section id="s4">
-    <p class="section-index">§4</p>
-    <h2>The path is stochastic — <em>simulate it</em></h2>
-    <p>Even though the basis is contractually pinned to zero at expiry, it can wander first. Model it as a mean-reverting process with an increasingly strong pull back to zero as delivery approaches &mdash; a rough but honest picture of how the market prices convergence risk.</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Model 4.1</span> — Basis dynamics</div>
-      <div class="def-body" id="f-sde"></div>
-      <div class="def-caption">κ = base reversion speed · γ(t/T)⁴ = extra pull as delivery nears (fixed γ = 6) · σ = basis volatility · dW = Brownian shock</div>
-    </div>
-
-    <p>Discretised for simulation (Euler&ndash;Maruyama, daily steps):</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Algorithm 4.2</span> — Discretisation</div>
-      <div class="def-body" id="f-euler"></div>
-    </div>
-
-    <p>But basis widening is not the only way you get forced out. The two legs of the trade are financed completely differently, and that matters.</p>
-
-    <div class="legs">
-      <div class="leg-card">
-        <div class="leg-title">Long bond — financed in repo</div>
-        <p>The bond secures its own financing: you repo it out, pledging the bond itself as collateral for the cash that bought it. You only need equity to cover the <strong>haircut</strong> &mdash; typically 1&ndash;3% of the bond's value.</p>
-      </div>
-      <div class="leg-card">
-        <div class="leg-title">Short future — margined in cash</div>
-        <p>The clearinghouse marks this leg to market daily and demands <strong>cash</strong> variation margin as the basis moves against you. This is the channel modelled by the margin-call threshold below.</p>
-      </div>
-    </div>
-
-    <p>The repo leg introduces a second, independent failure mode: the lender can raise the haircut or refuse to roll the loan at all &mdash; a <strong>funding shock</strong> &mdash; forcing you to post more equity or unwind, even if the basis itself hasn't moved. Model it as a Poisson-arriving shock with hazard rate h (expected shocks per year).</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Model 4.3</span> — Funding shocks</div>
-      <div class="def-body" id="f-hazard"></div>
-      <div class="def-caption">h = funding-stress rate you set below · a shock forces an immediate unwind at whatever the basis happens to be that day, independent of the margin-call channel</div>
-    </div>
-
-    <p class="tight">March 2020 was largely this second channel: repo funding for Treasuries got scarce and expensive all at once, forcing leveraged basis trades out on a <em>funding</em> shock rather than a pricing one. The simulator below runs both channels side by side so you can see which one is doing the damage.</p>
-
-    <div class="sim-shell">
-      <p class="sim-heading">Simulator — cash-and-carry, one-year horizon</p>
-      <div class="controls">
-        <div class="control">
-          <label for="kappa">Reversion speed κ <span class="val" id="kappaVal">0.80</span></label>
-          <input type="range" id="kappa" min="0.05" max="4" step="0.05" value="0.8">
-        </div>
-        <div class="control">
-          <label for="sigma">Basis volatility σ <span class="val" id="sigmaVal">0.020</span></label>
-          <input type="range" id="sigma" min="0.002" max="0.25" step="0.002" value="0.02">
-        </div>
-        <div class="control">
-          <label for="b0">Starting basis B&#8320; <span class="val" id="b0Val">1.20</span></label>
-          <input type="range" id="b0" min="-3" max="3" step="0.1" value="1.2">
-        </div>
-        <div class="control">
-          <label for="thresh">Margin-call threshold (distance from B&#8320;) <span class="val" id="threshVal">1.50</span></label>
-          <input type="range" id="thresh" min="0.2" max="4" step="0.1" value="1.5">
-        </div>
-        <div class="control">
-          <label for="hazard">Funding-stress rate h (shocks/yr) <span class="val" id="hazardVal">0.40</span></label>
-          <input type="range" id="hazard" min="0" max="5" step="0.1" value="0.4">
-        </div>
-      </div>
-
-      <div class="resim-row">
-        <button class="resim" id="resimBtn">resimulate 40 paths</button>
-        <span class="resim-hint">two independent ways out: a basis-driven margin call, or a repo funding shock that hits regardless of the basis level</span>
-      </div>
-
-      <div class="fig-frame">
-        <canvas id="simChart"></canvas>
-      </div>
-      <div class="sim-legend">
-        <span><i class="line-sw" style="background:var(--basis)"></i>your trade</span>
-        <span><i class="line-sw" style="background:rgba(28,27,24,0.22)"></i>other simulated paths</span>
-        <span><i class="line-sw" style="background:var(--bad); opacity:.7"></i>margin-call level</span>
-        <span><i class="line-sw" style="background:var(--text-dim)"></i>zero (delivery target)</span>
-        <span><i class="dot-sw" style="background:var(--bad)"></i>exit: basis breach</span>
-        <span><i class="dot-sw" style="background:var(--future)"></i>exit: funding shock</span>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat"><div class="k">Basis-breach prob.</div><div class="v" id="statProbMargin">—</div></div>
-        <div class="stat"><div class="k">Funding-shock prob.</div><div class="v" id="statProbFunding">—</div></div>
-        <div class="stat"><div class="k">Expected P&amp;L (pts)</div><div class="v" id="statPnl">—</div></div>
-        <div class="stat"><div class="k">Worst path</div><div class="v bad" id="statWorst">—</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="s5">
-    <p class="section-index">§5</p>
-    <h2>What "sure thing" actually looks like</h2>
-    <p>The payoff formula for one path of the trade, restated the way a margin desk sees it:</p>
-
-    <div class="def-box">
-      <div class="def-label"><span class="n">Proposition 5.1</span> — Realised P&amp;L</div>
-      <div class="def-body" id="f-pnl-trade"></div>
-      <div class="def-caption">m = your margin-call threshold · a breach forces you out before convergence, realising a loss even though the basis would eventually have gone to zero</div>
-    </div>
-
-    <p>The histogram below is the distribution of outcomes from the 40 paths above &mdash; the same "arbitrage" produces a spread of results once you account for the fact that you might not survive to delivery day.</p>
-    <div class="fig-frame">
-      <canvas id="histChart"></canvas>
-    </div>
-  </section>
-
-  <section id="s6">
-    <p class="section-index">§6</p>
-    <h2>When the "arbitrage" breaks</h2>
-    <p>Cash-and-carry only looks riskless if you can fund the position all the way to delivery. Two episodes show what happens when that assumption fails.</p>
-    <ul class="risk-list">
-      <li>
-        <span class="yr">1998</span>
-        <p>Long-Term Capital Management ran highly levered basis and relative-value trades across bond markets. When Russia defaulted and spreads widened instead of converging, margin calls forced the fund to unwind at the worst possible moment &mdash; turning positions that were "right" on paper into realised losses.</p>
-      </li>
-      <li>
-        <span class="yr">2020</span>
-        <p>Hedge funds running the Treasury cash-futures basis trade at high leverage were caught when the March COVID shock widened the basis sharply. Forced deleveraging amplified the sell-off in a market usually considered among the safest in the world.</p>
-      </li>
-    </ul>
-    <p>The lesson isn't that the math is wrong &mdash; convergence at delivery is close to certain. It's that <strong>leverage turns a small, temporary, adverse move into a forced exit</strong>, and forced exits happen before the "sure thing" gets to pay off.</p>
-  </section>
-
-  <footer>
-    basis trade primer &middot; spot, futures &amp; the arithmetic of convergence
-  </footer>
-</div>
-
-<script>
-/* ---------------- KaTeX formulas ---------------- */
-function K(id, tex){
-  katex.render(tex, document.getElementById(id), {throwOnError:false, displayMode:true});
-}
-K('f-basis-def', String.raw`B_t \;=\; F_t - S_t`);
-K('f-carry', String.raw`F_t \;=\; S_t \, e^{(r-q)(T-t)}`);
-K('f-fairbasis', String.raw`B_t^{\text{fair}} \;=\; S_t\left(e^{(r-q)(T-t)} - 1\right)`);
-K('f-pnl-lock', String.raw`\Pi_T \;=\; F_0 \;-\; S_0\, e^{rT}`);
-K('f-sde', String.raw`dB_t \;=\; \Big[\kappa + \gamma\big(\tfrac{t}{T}\big)^{4}\Big]\big(0 - B_t\big)\,dt \;+\; \sigma\, dW_t`);
-K('f-euler', String.raw`B_{i+1} \;=\; B_i + \Big[\kappa + \gamma\big(\tfrac{i\Delta t}{T}\big)^{4}\Big](0 - B_i)\,\Delta t \;+\; \sigma\sqrt{\Delta t}\;\varepsilon_i, \qquad \varepsilon_i \sim \mathcal{N}(0,1)`);
-K('f-pnl-trade', String.raw`\Pi \;=\; \begin{cases} B_0 - B_T & \text{no margin breach} \\[4pt] -\,\mathrm{sign}(B_0)\cdot m & \text{forced unwind at threshold } m \end{cases}`);
-K('f-hazard', String.raw`P\big(\text{funding shock in } [t, t+dt]\big) \;=\; 1 - e^{-h\,dt} \;\approx\; h\,dt`);
-
-/* ---------------- shared helpers ---------------- */
-function randn(){
-  let u=0, v=0;
-  while(u===0) u=Math.random();
-  while(v===0) v=Math.random();
-  return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
-}
-
-function setupCanvas(canvas){
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width || canvas.clientWidth || 600;
-  const h = canvas.clientHeight || parseInt(getComputedStyle(canvas).height) || 250;
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  return {ctx, w, h};
-}
-
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ================= HERO ANIMATION ================= */
-const heroCanvas = document.getElementById('heroCanvas');
-const heroDaysEl = document.getElementById('heroDays');
-const CYCLE_MS = 9000;
-
-function drawHero(progress){
-  const {ctx, w, h} = setupCanvas(heroCanvas);
-  ctx.clearRect(0,0,w,h);
-  const padL=8, padR=8, padT=18, padB=8;
-  const plotW = w - padL - padR, plotH = h - padT - padB;
-  const N = 120;
-
-  const S0 = plotH*0.62, F0 = plotH*0.20;
-  const spot = [], fut = [];
-  for(let i=0;i<=N;i++){
-    const x = i/N;
-    const wobble = Math.sin(x*11 + progress*6)*3 + Math.sin(x*23+1.3)*1.6;
-    const sY = S0 - x*6 + wobble*0.6;
-    const fY = F0 + x*(S0-F0) + wobble*(1-x);
-    spot.push(sY); fut.push(fY);
-  }
-
-  function pathFor(arr, upto){
-    ctx.beginPath();
-    for(let i=0;i<=upto;i++){
-      const px = padL + (i/N)*plotW;
-      const py = padT + arr[i];
-      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-    }
-  }
-
-  const upto = Math.max(1, Math.round(progress*N));
-
-  ctx.save();
-  ctx.beginPath();
-  for(let i=0;i<=upto;i++){
-    const px = padL + (i/N)*plotW;
-    ctx.lineTo(px, padT+fut[i]);
-  }
-  for(let i=upto;i>=0;i--){
-    const px = padL + (i/N)*plotW;
-    ctx.lineTo(px, padT+spot[i]);
-  }
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(122,48,48,0.07)';
-  ctx.fill();
-  ctx.restore();
-
-  ctx.lineWidth=1.4; ctx.strokeStyle='#2F5F8A';
-  pathFor(spot, upto); ctx.stroke();
-
-  ctx.lineWidth=1.4; ctx.strokeStyle='#9C5A2E';
-  pathFor(fut, upto); ctx.stroke();
-
-  const nx = padL + (upto/N)*plotW;
-  ctx.strokeStyle='rgba(28,27,24,0.18)'; ctx.setLineDash([3,3]); ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(nx,padT); ctx.lineTo(nx,padT+plotH); ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.fillStyle='#2F5F8A';
-  ctx.beginPath(); ctx.arc(nx, padT+spot[upto], 2.8, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle='#9C5A2E';
-  ctx.beginPath(); ctx.arc(nx, padT+fut[upto], 2.8, 0, Math.PI*2); ctx.fill();
-
-  const days = Math.max(0, Math.round(365*(1-progress)));
-  heroDaysEl.textContent = days;
-}
-
-let heroStart = null;
-function heroLoop(ts){
-  if(heroStart===null) heroStart = ts;
-  let progress = ((ts - heroStart) % CYCLE_MS) / CYCLE_MS;
-  drawHero(progress);
-  if(!reduceMotion) requestAnimationFrame(heroLoop);
-}
-if(reduceMotion){ drawHero(0.3); } else { requestAnimationFrame(heroLoop); }
-window.addEventListener('resize', ()=>drawHero(0.3));
-
-/* ================= SIMULATOR ================= */
-const STEPS = 252, T = 1, GAMMA = 6, N_PATHS = 40, N_DRAWN = 16;
-
-function simulateTrade(B0, kappa, sigma, threshold, hazard){
-  const dt = T/STEPS;
-  const path = new Float64Array(STEPS+1);
-  path[0] = B0;
-  const dir = B0 >= 0 ? 1 : -1;
-  let blown = false, blowStep = -1, reason = null;
-  for(let i=0;i<STEPS;i++){
-    const t = i*dt;
-    const pull = kappa + GAMMA*Math.pow(t/T,4);
-    const next = path[i] + pull*(0-path[i])*dt + sigma*Math.sqrt(dt)*randn();
-    path[i+1] = next;
-    if(!blown){
-      if(dir*(next - B0) > threshold){
-        blown = true; blowStep = i+1; reason = 'margin';
-      } else if(Math.random() < 1 - Math.exp(-hazard*dt)){
-        blown = true; blowStep = i+1; reason = 'funding';
-      }
-    }
-  }
-  if(!blown){ path[STEPS] = 0; }
-  const finalB = blown ? path[blowStep] : 0;
-  const pnl = B0 - finalB;
-  return {path, blown, blowStep, reason, pnl};
-}
-
-function runSim(){
-  const kappa = parseFloat(document.getElementById('kappa').value);
-  const sigma = parseFloat(document.getElementById('sigma').value);
-  const B0 = parseFloat(document.getElementById('b0').value);
-  const threshold = parseFloat(document.getElementById('thresh').value);
-  const hazard = parseFloat(document.getElementById('hazard').value);
-
-  const trades = [];
-  for(let n=0;n<N_PATHS;n++) trades.push(simulateTrade(B0, kappa, sigma, threshold, hazard));
-
-  drawSimChart(trades.slice(0,N_DRAWN), B0, threshold);
-  drawHistogram(trades.map(t=>t.pnl));
-
-  const marginCount = trades.filter(t=>t.reason==='margin').length;
-  const fundingCount = trades.filter(t=>t.reason==='funding').length;
-  const meanPnl = trades.reduce((a,t)=>a+t.pnl,0)/trades.length;
-  const worst = Math.min(...trades.map(t=>t.pnl));
-
-  document.getElementById('statProbMargin').textContent = Math.round(marginCount/trades.length*100) + '%';
-  document.getElementById('statProbFunding').textContent = Math.round(fundingCount/trades.length*100) + '%';
-  document.getElementById('statPnl').textContent = (meanPnl>=0?'+':'') + meanPnl.toFixed(2);
-  document.getElementById('statPnl').className = 'v ' + (meanPnl>=0?'good':'bad');
-  document.getElementById('statWorst').textContent = worst.toFixed(2);
-}
-
-function drawSimChart(trades, B0, threshold){
-  const canvas = document.getElementById('simChart');
-  const {ctx, w, h} = setupCanvas(canvas);
-  ctx.clearRect(0,0,w,h);
-
-  const padL=42, padR=14, padT=14, padB=26;
-  const plotW = w-padL-padR, plotH = h-padT-padB;
-
-  const dir = B0>=0?1:-1;
-  let vmax = Math.max(Math.abs(B0)+threshold, Math.abs(B0)) * 1.3;
-  vmax = Math.max(vmax, 0.5);
-  const vmin = -vmax;
-
-  function xOf(i){ return padL + (i/STEPS)*plotW; }
-  function yOf(v){ return padT + (1 - (v - vmin)/(vmax-vmin)) * plotH; }
-
-  ctx.strokeStyle = 'rgba(28,27,24,0.08)'; ctx.lineWidth=1;
-  ctx.font = '11px IBM Plex Mono, monospace';
-  ctx.fillStyle = '#8A8879';
-  const gridN = 4;
-  for(let g=0; g<=gridN; g++){
-    const v = vmin + (g/gridN)*(vmax-vmin);
-    const y = yOf(v);
-    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(w-padR,y); ctx.stroke();
-    ctx.fillText(v.toFixed(1), 4, y+3);
-  }
-
-  ctx.strokeStyle='rgba(60,58,52,0.4)'; ctx.setLineDash([2,3]); ctx.lineWidth=1;
-  const yZero = yOf(0);
-  ctx.beginPath(); ctx.moveTo(padL,yZero); ctx.lineTo(w-padR,yZero); ctx.stroke();
-
-  const marginLevel = B0 + dir*threshold;
-  ctx.strokeStyle='rgba(161,50,50,0.5)';
-  const yMargin = yOf(marginLevel);
-  ctx.beginPath(); ctx.moveTo(padL,yMargin); ctx.lineTo(w-padR,yMargin); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle='rgba(161,50,50,0.85)'; ctx.font='11px IBM Plex Mono, monospace';
-  ctx.fillText('margin call @ ' + marginLevel.toFixed(2) + '  (B\u2080 ' + (dir>0?'+':'\u2212') + ' ' + threshold.toFixed(2) + ')', padL+4, yMargin - 5);
-
-  trades.forEach((tr, idx)=>{
-    const isFocus = idx===0;
-    ctx.beginPath();
-    ctx.lineWidth = isFocus ? 1.8 : 1;
-    ctx.strokeStyle = isFocus ? '#7A3030' : 'rgba(28,27,24,0.16)';
-    const endStep = tr.blown ? tr.blowStep : STEPS;
-    for(let i=0;i<=endStep;i++){
-      const px = xOf(i), py = yOf(tr.path[i]);
-      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-    }
-    ctx.stroke();
-    if(tr.blown){
-      const dotColor = isFocus
-        ? (tr.reason==='funding' ? '#9C5A2E' : '#A13232')
-        : (tr.reason==='funding' ? 'rgba(156,90,46,0.55)' : 'rgba(161,50,50,0.55)');
-      ctx.fillStyle = dotColor;
-      ctx.beginPath();
-      ctx.arc(xOf(tr.blowStep), yOf(tr.path[tr.blowStep]), isFocus?3.6:2.2, 0, Math.PI*2);
-      ctx.fill();
-    }
-  });
-
-  ctx.fillStyle='#8A8879'; ctx.font='11px IBM Plex Mono, monospace';
-  ctx.fillText('t = 0', padL, h-8);
-  ctx.fillText('T (delivery)', w-padR-64, h-8);
-}
-
-function drawHistogram(pnls){
-  const canvas = document.getElementById('histChart');
-  const {ctx, w, h} = setupCanvas(canvas);
-  ctx.clearRect(0,0,w,h);
-
-  const padL=42, padR=14, padT=14, padB=26;
-  const plotW = w-padL-padR, plotH = h-padT-padB;
-
-  const minV = Math.min(...pnls, 0), maxV = Math.max(...pnls, 0.1);
-  const range = maxV - minV || 1;
-  const bins = 16;
-  const binW = range/bins;
-  const counts = new Array(bins).fill(0);
-  pnls.forEach(v=>{
-    let idx = Math.floor((v-minV)/binW);
-    if(idx>=bins) idx=bins-1;
-    if(idx<0) idx=0;
-    counts[idx]++;
-  });
-  const maxCount = Math.max(...counts, 1);
-
-  function xOf(v){ return padL + ((v-minV)/range)*plotW; }
-  function yOf(c){ return padT + (1-c/maxCount)*plotH; }
-
-  ctx.strokeStyle='rgba(28,27,24,0.08)'; ctx.lineWidth=1;
-  ctx.font='11px IBM Plex Mono, monospace'; ctx.fillStyle='#8A8879';
-  for(let g=0; g<=3; g++){
-    const c = (g/3)*maxCount;
-    const y = yOf(c);
-    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(w-padR,y); ctx.stroke();
-    ctx.fillText(Math.round(c), 4, y+3);
-  }
-
-  const barGap = 2;
-  const barW = plotW/bins - barGap;
-  counts.forEach((c,i)=>{
-    if(c===0) return;
-    const binStart = minV + i*binW;
-    const x = xOf(binStart) + barGap/2;
-    const y = yOf(c);
-    const isLoss = (binStart + binW/2) < 0;
-    ctx.fillStyle = isLoss ? 'rgba(161,50,50,0.72)' : 'rgba(63,107,63,0.72)';
-    ctx.fillRect(x, y, Math.max(barW,1), padT+plotH-y);
-  });
-
-  const zeroX = xOf(0);
-  if(zeroX>=padL && zeroX<=w-padR){
-    ctx.strokeStyle='rgba(28,27,24,0.35)'; ctx.setLineDash([3,3]); ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(zeroX,padT); ctx.lineTo(zeroX,padT+plotH); ctx.stroke();
-    ctx.setLineDash([]);
-  }
-  ctx.fillStyle='#8A8879'; ctx.font='11px IBM Plex Mono, monospace';
-  ctx.fillText('P&L (points) \u2192', padL, h-8);
-}
-
-/* ---- wire controls ---- */
-const kappaSlider = document.getElementById('kappa');
-const sigmaSlider = document.getElementById('sigma');
-const b0Slider = document.getElementById('b0');
-const threshSlider = document.getElementById('thresh');
-const hazardSlider = document.getElementById('hazard');
-
-function syncLabels(){
-  document.getElementById('kappaVal').textContent = parseFloat(kappaSlider.value).toFixed(2);
-  document.getElementById('sigmaVal').textContent = parseFloat(sigmaSlider.value).toFixed(3);
-  document.getElementById('b0Val').textContent = parseFloat(b0Slider.value).toFixed(2);
-  document.getElementById('threshVal').textContent = parseFloat(threshSlider.value).toFixed(2);
-  document.getElementById('hazardVal').textContent = parseFloat(hazardSlider.value).toFixed(2);
-}
-
-[kappaSlider, sigmaSlider, b0Slider, threshSlider, hazardSlider].forEach(s=>{
-  s.addEventListener('input', ()=>{ syncLabels(); runSim(); });
-});
-document.getElementById('resimBtn').addEventListener('click', runSim);
-window.addEventListener('resize', runSim);
-
-syncLabels();
-runSim();
-</script>
-
-
-    <hr class="w3-opacity">
     <br>
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1] <a href="http://www.jstor.org/stable/2340126" id="ref1"> "On the Methods of Measuring Association Between Two Attributes", G. Udny Yule, 1912</a>
+    [1] <a href="" id="ref1"> </a>
     <br>
-    <!-- [2] <a href="https://www.wired.com/2009/02/wp-quant/" id="ref2"> "Recipe for Disaster: The Formula That Killed Wall Street", Felix Salmon, February 2009, Wired Magazine</a>
+    [2] <a href="" id="ref2"> </a>
     <br>
-    [3] <a href="http://www.macs.hw.ac.uk/~cd134/2010/donemb.pdf" id="ref3"> "The devil is in the tails: actuarial mathematics and the subprime mortgage crisis", Catherine Donnelly and Paul Embrechts, 2010,  ASTIN Bulletin: The Journal of the IAA, 40(1), 1-33</a>
+    [3] <a href="" id="ref3"> </a>
     <br>
-    [4] <a href="http://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/9c8e3fd4d8874d60c1257052003eced6/34e84cb615c8b4eac12575fe006a9759/$FILE/li.defaultcorrelation.pdf" id="ref4">  "On Default Correlation: A Copula Function Approach", David X. Li, April 2000, The RiskMetrics Group Working Paper Number 99-07</a>
-    <br>
-    [5] <a href="https://web.archive.org/web/20091123165401/http://www.fsa.gov.uk/pubs/other/turner_review.pdf" id="ref5"> "The Turner Review", Turner, J. A., March 2009,  Financial Services Authority, UK </a> -->
+    [4] <a href="" id="ref4"> </a>
+
     <br><br>
 
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!-- ________________________________________________________________________________________________ -->
+    <!--    <h7>-->
+    <!-- <span style="float:right;">
+   <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
+   </span>
+   </h7>
+   <br> -->
 
-    <h5> <a href="../Teaching.html"><b><img src="../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+    <h5> <a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+
 
 
     <hr class="w3-opacity">
 </div>
 </div>
-<script type="text/javascript" src="../js/footer.js"></script>
+<script type="text/javascript" src="../../js/footer.js"></script>
 
 <!-- End page content -->
 </div>
 
-<script src="../js/OpenCloseSidebar.js"></script>
-<!--<script src="../js/ModalImageGallery.js"></script>-->
-<script src="../js/OpenCloseCollapsible.js"></script>
+<script src="../../js/OpenCloseSidebar.js"></script>
+<!--<script src="../../js/ModalImageGallery.js"></script>-->
+<script src="../../js/OpenCloseCollapsible.js"></script>
 
 </body>
 </html>
