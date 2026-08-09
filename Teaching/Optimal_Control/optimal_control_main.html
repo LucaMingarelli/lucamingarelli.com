@@ -1360,6 +1360,442 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
 
 
 
+
+
+
+
+
+
+
+
+
+    An investor splits wealth \(W_t\)
+between a safe account earning \(r\) and a risky asset with drift \(\mu\) and volatility \(\sigma\), consuming at
+rate \(C_t\) to maximise discounted log&#8209;utility
+ 
+\begin{equation*}
+\mathbb{E}\int_0^T e^{-\rho t}\log(C_t)\, dt.
+\end{equation*}
+ 
+Solving the Hamilton&ndash;Jacobi&ndash;Bellman equation of Theorem 12 with the ansatz \(V(W,t)=A(t)\log W + B(t)\)
+gives a closed&#8209;form feedback law:
+ 
+\begin{equation*}
+Q^*(t) = \frac{\mu-r}{\sigma^2}, \qquad\qquad
+C^*(t) = \frac{\rho}{1-e^{-\rho(T-t)}}\, W_t,
+\end{equation*}
+ 
+where \(Q_t\) is the fraction of wealth held in the risky asset. Both are Merton's classic results: the risky
+share is constant (myopic) and independent of wealth, while consumption is a time-varying fraction of wealth
+that accelerates towards the horizon \(T\), since the problem carries no bequest motive. The panel below
+simulates the resulting wealth process by Monte Carlo so the control can be seen in action, rather than only
+read as a formula.
+ 
+<button type="button" class="collapsible">Show the HJB derivation</button>
+<div class="content">
+<p style="padding:10px;">
+Guess \(V(W,t)=A(t)\log W+B(t)\) and substitute into the HJB equation. The first-order conditions with respect
+to \(C\) and \(Q\) give \(C^*=W/A(t)\) and \(Q^*=(\mu-r)/\sigma^2\). Substituting back yields an ODE for
+\(A(t)\) with terminal condition \(A(T)=0\) (no bequest), solved by
+\(A(t) = \big(1-e^{-\rho(T-t)}\big)/\rho\), which recovers \(C^*(t)=\rho W_t/\big(1-e^{-\rho(T-t)}\big)\)
+above. As \(\rho\to0\), \(A(t)\to T-t\) and \(C^*(t)\to W_t/(T-t)\).
+</p>
+</div>
+ 
+<br>
+ 
+<!-- ================= SIMULATOR ================= -->
+<div id="sim">
+ 
+<h3 style="text-align:left;"><b>Control deck</b></h3>
+<div class="w3-panel w3-white w3-border w3-round w3-padding">
+  <div class="w3-row-padding" id="controls"></div>
+  <div class="w3-bar" style="margin-top:10px;">
+    <button id="runBtn" class="w3-btn w3-dark-grey w3-round">Run simulation</button>
+    <label style="margin-left:16px;"><input type="checkbox" id="naiveToggle"> Compare to a naive fixed&#8209;mix strategy</label>
+    <label style="margin-left:16px;"><input type="checkbox" id="animToggle" checked> Animate the tape</label>
+  </div>
+</div>
+ 
+<div class="w3-panel w3-pale-yellow w3-border w3-round w3-padding">
+  <div style="font-size:12px;color:#777;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Live path &middot; sample trajectory #1</div>
+  <div class="w3-row-padding">
+    <div class="w3-col s6 m2 tape-cell"><div class="k">Time</div><div class="v" id="tapeT">0.00 y</div></div>
+    <div class="w3-col s6 m2 tape-cell"><div class="k">Wealth</div><div class="v" id="tapeW">&mdash;</div></div>
+    <div class="w3-col s6 m3 tape-cell"><div class="k">Consumption rate</div><div class="v" id="tapeC">&mdash;</div></div>
+    <div class="w3-col s6 m3 tape-cell"><div class="k">In risky asset</div><div class="v" id="tapeQ">&mdash;</div></div>
+    <div class="w3-col s6 m2 tape-cell"><div class="k">Status</div><div class="v" id="tapeStatus">idle</div></div>
+  </div>
+</div>
+ 
+<h3 style="text-align:left;"><b>Wealth process \(W_t\)</b></h3>
+<p>Thin lines are individual simulated paths; the shaded band spans the 10th&ndash;90th percentile across all paths.</p>
+<div class="w3-panel w3-white w3-border w3-round w3-padding">
+  <canvas id="wealthChart" height="300"></canvas>
+  <div class="legend">
+    <span><i class="swatch" style="background:#333"></i>Mean (optimal)</span>
+    <span><i class="swatch" style="background:#2196F3" id="naiveLegendW"></i>Mean (naive)</span>
+    <span><i class="swatch" style="background:#bbb"></i>10&ndash;90% band</span>
+  </div>
+</div>
+ 
+<h3 style="text-align:left;"><b>Consumption rate \(C_t\)</b></h3>
+<p>Because \(C^*(t)=k(t)\cdot W_t\), consumption tracks wealth but accelerates as \(t\to T\): optimal wealth is
+drawn down to zero exactly at the horizon.</p>
+<div class="w3-panel w3-white w3-border w3-round w3-padding">
+  <canvas id="consChart" height="260"></canvas>
+  <div class="legend">
+    <span><i class="swatch" style="background:#333"></i>Mean consumption (optimal)</span>
+    <span><i class="swatch" style="background:#2196F3" id="naiveLegendC"></i>Mean consumption (naive)</span>
+  </div>
+</div>
+ 
+<h3 style="text-align:left;"><b>Ledger</b></h3>
+<p>Monte Carlo estimates over all simulated paths.</p>
+<div class="w3-panel w3-white w3-border w3-round w3-padding">
+  <table class="w3-table w3-bordered" id="ledger">
+    <thead><tr><th>Metric</th><th>Optimal control</th><th id="naiveHeader" style="display:none">Naive fixed&#8209;mix</th></tr></thead>
+    <tbody id="ledgerBody"></tbody>
+  </table>
+</div>
+ 
+</div>
+<!-- ================= /SIMULATOR ================= -->
+ 
+<br><br>
+ 
+<h4 id="REFERENCES"><i>References and notes</i></h4>
+ 
+[1] <a href="https://www.jstor.org/stable/1926560" id="ref1">Merton, R.C., "Optimum consumption and portfolio rules in a continuous-time model", Journal of Economic Theory, (1971)</a>
+ 
+<br><br>
+ 
+<h5> <a href="https://lucamingarelli.com/Teaching/Optimal_Control/optimal_control_main.html"><b><img src="https://lucamingarelli.com/Icons/back.png" width="20px"> Back to Optimal Control Theory</b></a></h5>
+<hr class="w3-opacity">
+ 
+</div>
+</div>
+ 
+<script type="text/javascript" src="https://lucamingarelli.com/js/footer.js"></script>
+<!-- End page content -->
+</div>
+ 
+<script src="https://lucamingarelli.com/js/OpenCloseSidebar.js"></script>
+<!--<script src="../js/ModalImageGallery.js"></script>-->
+<script src="https://lucamingarelli.com/js/OpenCloseCollapsible.js"></script>
+ 
+<!-- ================= SIMULATOR LOGIC ================= -->
+<script>
+(function(){
+  "use strict";
+ 
+  var params = [
+    {id:'W0',    label:'Initial wealth W\u2080', min:10,  max:1000, step:10,  value:100,  fmt:function(v){return v.toFixed(0);}},
+    {id:'mu',    label:'Risky drift \u03bc',      min:0,   max:0.25, step:0.005,value:0.09, fmt:function(v){return (v*100).toFixed(1)+'%';}},
+    {id:'sigma', label:'Risky volatility \u03c3',  min:0.05,max:0.6,  step:0.005,value:0.20, fmt:function(v){return (v*100).toFixed(1)+'%';}},
+    {id:'r',     label:'Risk-free rate r',        min:0,   max:0.10, step:0.0025,value:0.03,fmt:function(v){return (v*100).toFixed(2)+'%';}},
+    {id:'rho',   label:'Discount rate \u03c1',     min:0,   max:0.15, step:0.005,value:0.04, fmt:function(v){return (v*100).toFixed(1)+'%';}},
+    {id:'T',     label:'Horizon T (years)',       min:1,   max:30,   step:1,   value:15,   fmt:function(v){return v.toFixed(0);}},
+    {id:'nPaths',label:'Simulated paths',         min:20,  max:300,  step:10,  value:120,  fmt:function(v){return v.toFixed(0);}},
+    {id:'steps', label:'Steps / year',            min:4,   max:52,   step:4,   value:24,   fmt:function(v){return v.toFixed(0);}}
+  ];
+ 
+  var controlsEl = document.getElementById('controls');
+  var state = {};
+  params.forEach(function(p){
+    state[p.id]=p.value;
+    var col = document.createElement('div');
+    col.className = 'w3-col s6 m3 field';
+    col.innerHTML =
+      '<label for="'+p.id+'">'+p.label+' <b id="'+p.id+'_val">'+p.fmt(p.value)+'</b></label>'+
+      '<input type="range" id="'+p.id+'" min="'+p.min+'" max="'+p.max+'" step="'+p.step+'" value="'+p.value+'">';
+    controlsEl.appendChild(col);
+    var input = col.querySelector('input');
+    input.addEventListener('input', function(){
+      state[p.id]=parseFloat(input.value);
+      document.getElementById(p.id+'_val').textContent=p.fmt(state[p.id]);
+    });
+  });
+ 
+  var seed = 42;
+  function rand(){ seed = (seed*1664525+1013904223) % 4294967296; return seed/4294967296; }
+  function randn(){
+    var u=0,v=0;
+    while(u===0) u=rand();
+    while(v===0) v=rand();
+    return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+  }
+ 
+  function kOptimal(t, rho, T){
+    var rem = Math.max(T-t, 1e-6);
+    return rho > 1e-9 ? rho/(1-Math.exp(-rho*rem)) : 1/rem;
+  }
+ 
+  function simulate(p){
+    seed = 42;
+    var dt = 1/p.steps;
+    var N = Math.round(p.T*p.steps);
+    var Qstar = (p.mu - p.r)/(p.sigma*p.sigma);
+    var Qnaive = 0.5;
+    var kNaive0 = kOptimal(0, p.rho, p.T);
+ 
+    var times = new Array(N+1);
+    var i;
+    for(i=0;i<=N;i++) times[i]=i*dt;
+ 
+    var wealthOpt = [], consOpt = [], wealthNaive = [], consNaive = [];
+ 
+    for(var path=0; path<p.nPaths; path++){
+      var wO = new Float64Array(N+1), cO = new Float64Array(N+1);
+      var wN = new Float64Array(N+1), cN = new Float64Array(N+1);
+      wO[0]=p.W0; wN[0]=p.W0;
+      var ruinedO=false, ruinedN=false;
+      for(i=0;i<N;i++){
+        var t = times[i];
+        var z = randn();
+ 
+        if(!ruinedO && wO[i]>1e-8){
+          var k = kOptimal(t, p.rho, p.T);
+          var c = Math.min(k*wO[i], wO[i]/dt);
+          cO[i]=c;
+          var drift = (Qstar*(p.mu-p.r)+p.r)*wO[i]*dt - c*dt;
+          var diff = Qstar*p.sigma*wO[i]*Math.sqrt(dt)*z;
+          var wNext = wO[i] + drift + diff;
+          if(wNext<=0){ wNext=0; ruinedO=true; }
+          wO[i+1]=wNext;
+        } else { wO[i+1]=0; cO[i]=0; ruinedO=true; }
+ 
+        if(!ruinedN && wN[i]>1e-8){
+          var c2 = Math.min(kNaive0*wN[i], wN[i]/dt);
+          cN[i]=c2;
+          var drift2 = (Qnaive*(p.mu-p.r)+p.r)*wN[i]*dt - c2*dt;
+          var diff2 = Qnaive*p.sigma*wN[i]*Math.sqrt(dt)*z;
+          var wNext2 = wN[i] + drift2 + diff2;
+          if(wNext2<=0){ wNext2=0; ruinedN=true; }
+          wN[i+1]=wNext2;
+        } else { wN[i+1]=0; cN[i]=0; ruinedN=true; }
+      }
+      cO[N]=0; cN[N]=0;
+      wealthOpt.push(wO); consOpt.push(cO);
+      wealthNaive.push(wN); consNaive.push(cN);
+    }
+ 
+    return {times:times, N:N, Qstar:Qstar, Qnaive:Qnaive, wealthOpt:wealthOpt, consOpt:consOpt, wealthNaive:wealthNaive, consNaive:consNaive};
+  }
+ 
+  function percentileAt(arrays, step, q){
+    var vals = arrays.map(function(a){return a[step];}).sort(function(a,b){return a-b;});
+    var idx = Math.min(vals.length-1, Math.max(0, Math.round(q*(vals.length-1))));
+    return vals[idx];
+  }
+  function meanAt(arrays, step){
+    var s=0; for(var i=0;i<arrays.length;i++) s+=arrays[i][step];
+    return s/arrays.length;
+  }
+ 
+  function setupCanvas(canvas){
+    var dpr = window.devicePixelRatio||1;
+    var rect = canvas.getBoundingClientRect();
+    var cssHeight = parseInt(canvas.getAttribute('height'),10) || 260;
+    canvas.width = rect.width*dpr;
+    canvas.height = cssHeight*dpr;
+    canvas.style.height = cssHeight+'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr,dpr);
+    return {ctx:ctx, w:rect.width, h:cssHeight};
+  }
+ 
+  function drawAxes(ctx,w,h,pad,xMax,yMax,yLabel){
+    ctx.strokeStyle = '#e0e0e0';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = '#777';
+    ctx.font = '11px Verdana, sans-serif';
+    var gridN = 4;
+    for(var i=0;i<=gridN;i++){
+      var y = pad.t + (h-pad.t-pad.b)*(1-i/gridN);
+      ctx.beginPath();
+      ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y);
+      ctx.stroke();
+      var val = yMax*i/gridN;
+      ctx.fillText(yLabel(val), 4, y+4);
+    }
+    var xTicks = 5;
+    for(var j=0;j<=xTicks;j++){
+      var x = pad.l + (w-pad.l-pad.r)*j/xTicks;
+      ctx.fillText((xMax*j/xTicks).toFixed(1)+'y', x-10, h-6);
+    }
+  }
+ 
+  function drawChart(canvas, times, sample, mean, p10, p90, naiveMean, color, naiveColor, yLabelFmt){
+    var setup = setupCanvas(canvas), ctx=setup.ctx, w=setup.w, h=setup.h;
+    ctx.clearRect(0,0,w,h);
+    var pad = {l:40,r:12,t:10,b:22};
+    var xMax = times[times.length-1];
+    var yMax = 0, i;
+    for(i=0;i<sample.length;i++) for(var j=0;j<sample[i].length;j++) if(sample[i][j]>yMax) yMax=sample[i][j];
+    for(i=0;i<p90.length;i++) if(p90[i]>yMax) yMax=p90[i];
+    if(naiveMean) for(i=0;i<naiveMean.length;i++) if(naiveMean[i]>yMax) yMax=naiveMean[i];
+    yMax = yMax*1.12 || 1;
+ 
+    function X(t){ return pad.l + (w-pad.l-pad.r)*(t/xMax); }
+    function Y(v){ return pad.t + (h-pad.t-pad.b)*(1-v/yMax); }
+ 
+    drawAxes(ctx,w,h,pad,xMax,yMax,yLabelFmt);
+ 
+    ctx.beginPath();
+    times.forEach(function(t,i){ var x=X(t), y=Y(p90[i]); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    for(i=times.length-1;i>=0;i--){ ctx.lineTo(X(times[i]), Y(p10[i])); }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fill();
+ 
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,0.10)';
+    sample.forEach(function(s){
+      ctx.beginPath();
+      s.forEach(function(v,i){ var x=X(times[i]), y=Y(v); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+      ctx.stroke();
+    });
+ 
+    if(naiveMean){
+      ctx.setLineDash([5,4]);
+      ctx.strokeStyle = naiveColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      naiveMean.forEach(function(v,i){ var x=X(times[i]), y=Y(v); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+ 
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    mean.forEach(function(v,i){ var x=X(times[i]), y=Y(v); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    ctx.stroke();
+  }
+ 
+  var fmtMoney = function(v){ return '$'+v.toFixed(0); };
+  var lastResult = null;
+ 
+  function render(){
+    var p = {};
+    for(var k in state) p[k]=state[k];
+    var showNaive = document.getElementById('naiveToggle').checked;
+    var res = simulate(p);
+    lastResult = res;
+ 
+    var times=res.times, wealthOpt=res.wealthOpt, consOpt=res.consOpt, wealthNaive=res.wealthNaive, consNaive=res.consNaive, Qstar=res.Qstar;
+    var nSample = Math.min(24, wealthOpt.length);
+    var sampleW = wealthOpt.slice(0,nSample);
+    var sampleC = consOpt.slice(0,nSample);
+ 
+    var meanW = times.map(function(_,i){return meanAt(wealthOpt,i);});
+    var p10W  = times.map(function(_,i){return percentileAt(wealthOpt,i,0.10);});
+    var p90W  = times.map(function(_,i){return percentileAt(wealthOpt,i,0.90);});
+    var meanC = times.map(function(_,i){return meanAt(consOpt,i);});
+    var p10C  = times.map(function(_,i){return percentileAt(consOpt,i,0.10);});
+    var p90C  = times.map(function(_,i){return percentileAt(consOpt,i,0.90);});
+ 
+    var meanWNaive = showNaive ? times.map(function(_,i){return meanAt(wealthNaive,i);}) : null;
+    var meanCNaive = showNaive ? times.map(function(_,i){return meanAt(consNaive,i);}) : null;
+ 
+    drawChart(document.getElementById('wealthChart'), times, sampleW, meanW, p10W, p90W, meanWNaive, '#333333', '#2196F3', function(v){return '$'+v.toFixed(0);});
+    drawChart(document.getElementById('consChart'), times, sampleC, meanC, p10C, p90C, meanCNaive, '#333333', '#2196F3', function(v){return v.toFixed(1);});
+ 
+    document.getElementById('naiveLegendW').style.display = showNaive?'inline-block':'none';
+    document.getElementById('naiveLegendC').style.display = showNaive?'inline-block':'none';
+ 
+    var terminalW = wealthOpt.map(function(w){return w[w.length-1];});
+    var meanTerm = terminalW.reduce(function(a,b){return a+b;},0)/terminalW.length;
+    var stdTerm = Math.sqrt(terminalW.reduce(function(a,b){return a+(b-meanTerm)*(b-meanTerm);},0)/terminalW.length);
+    var ruinCount = wealthOpt.filter(function(w){return w[w.length-1]<=1e-6;}).length;
+    var ruinRate = 100*ruinCount/wealthOpt.length;
+ 
+    function utilityOf(consArr, dt, rho){
+      var u=0;
+      for(var i=0;i<consArr.length-1;i++){
+        var c = consArr[i];
+        if(c>1e-9) u += Math.exp(-rho*i*dt)*Math.log(c)*dt;
+      }
+      return u;
+    }
+    var dt = 1/p.steps;
+    var meanUtilOpt = consOpt.reduce(function(a,c){return a+utilityOf(c,dt,p.rho);},0)/consOpt.length;
+ 
+    var naiveTermMean=0, naiveTermStd=0, naiveRuin=0, naiveUtil=0;
+    if(showNaive){
+      var tw = wealthNaive.map(function(w){return w[w.length-1];});
+      naiveTermMean = tw.reduce(function(a,b){return a+b;},0)/tw.length;
+      naiveTermStd = Math.sqrt(tw.reduce(function(a,b){return a+(b-naiveTermMean)*(b-naiveTermMean);},0)/tw.length);
+      naiveRuin = 100*wealthNaive.filter(function(w){return w[w.length-1]<=1e-6;}).length/wealthNaive.length;
+      naiveUtil = consNaive.reduce(function(a,c){return a+utilityOf(c,dt,p.rho);},0)/consNaive.length;
+    }
+ 
+    var rowsHtml =
+      '<tr><td>Optimal risky share Q*</td><td><b>'+(Qstar*100).toFixed(1)+'%</b></td>'+(showNaive?'<td>50.0% (fixed)</td>':'')+'</tr>'+
+      '<tr><td>Mean terminal wealth</td><td><b>'+fmtMoney(meanTerm)+'</b></td>'+(showNaive?'<td>'+fmtMoney(naiveTermMean)+'</td>':'')+'</tr>'+
+      '<tr><td>Std. dev. terminal wealth</td><td><b>'+fmtMoney(stdTerm)+'</b></td>'+(showNaive?'<td>'+fmtMoney(naiveTermStd)+'</td>':'')+'</tr>'+
+      '<tr><td>Ruin rate (W hits 0 before T)</td><td><b>'+ruinRate.toFixed(1)+'%</b></td>'+(showNaive?'<td>'+naiveRuin.toFixed(1)+'%</td>':'')+'</tr>'+
+      '<tr><td>Mean discounted log-utility</td><td><b>'+meanUtilOpt.toFixed(3)+'</b></td>'+(showNaive?'<td>'+naiveUtil.toFixed(3)+'</td>':'')+'</tr>';
+ 
+    document.getElementById('ledgerBody').innerHTML = rowsHtml;
+    document.getElementById('naiveHeader').style.display = showNaive?'table-cell':'none';
+ 
+    animateTape(res, p);
+  }
+ 
+  var tapeRAF = null;
+  function animateTape(res, p){
+    if(tapeRAF) cancelAnimationFrame(tapeRAF);
+    var animate = document.getElementById('animToggle').checked;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var w = res.wealthOpt[0], c = res.consOpt[0], times = res.times;
+    var tapeT = document.getElementById('tapeT');
+    var tapeW = document.getElementById('tapeW');
+    var tapeC = document.getElementById('tapeC');
+    var tapeQ = document.getElementById('tapeQ');
+    var tapeStatus = document.getElementById('tapeStatus');
+    tapeQ.textContent = (res.Qstar*100).toFixed(1)+'%';
+ 
+    if(!animate || reduceMotion){
+      var last = w.length-1;
+      tapeT.textContent = times[last].toFixed(2)+' y';
+      tapeW.textContent = fmtMoney(w[last]);
+      tapeC.textContent = fmtMoney(c[c.length-2]||0)+'/y';
+      tapeStatus.textContent = w[last]<=1e-6 ? 'ruined' : 'complete';
+      return;
+    }
+ 
+    var i=0;
+    var framesPerStep = Math.max(1, Math.floor(90/w.length));
+    var frame=0;
+    function step(){
+      tapeT.textContent = times[i].toFixed(2)+' y';
+      tapeW.textContent = fmtMoney(w[i]);
+      tapeC.textContent = fmtMoney(c[Math.min(i,c.length-2)])+'/y';
+      tapeStatus.textContent = w[i]<=1e-6 ? 'ruined' : 'running';
+      frame++;
+      if(frame>=framesPerStep){ frame=0; i++; }
+      if(i<w.length){
+        tapeRAF = requestAnimationFrame(step);
+      } else {
+        tapeStatus.textContent = w[w.length-1]<=1e-6 ? 'ruined' : 'complete';
+      }
+    }
+    tapeRAF = requestAnimationFrame(step);
+  }
+ 
+  document.getElementById('runBtn').addEventListener('click', render);
+  document.getElementById('naiveToggle').addEventListener('change', render);
+  window.addEventListener('resize', function(){ if(lastResult) render(); });
+ 
+  render();
+})();
+</script>
+ 
+
+
+
 <br><br>
   <h4 id="REFERENCES"><i>References and notes</i></h4>
 
