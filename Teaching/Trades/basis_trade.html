@@ -24,6 +24,7 @@
         .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
     </style>
 </head>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 
 <!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
 <script>window.MathJax = {tex: {tags: 'ams'}};</script>
@@ -60,20 +61,240 @@
 
     <h1 style="text-align: left;"><b>Basis Trade</b></h1>
 
-  ...
+    <!-- ... existing code ... -->
+    <h1 style="text-align: left;"><b>Basis Trade</b></h1>
+
+    <p>
+        The <b>basis</b> is the difference between the price of a futures contract and the price of the
+        underlying asset in the cash market:
+        \begin{equation}
+            B_t = F_t - S_t .
+        \end{equation}
+        Under the <b>cost-of-carry</b> model, absence of arbitrage pins the fair futures price to
+        \begin{equation}
+            F_t = S_t\, e^{(r - y)(T - t)},
+        \end{equation}
+        where \(r\) is the financing (repo) rate, \(y\) the yield earned by holding the asset
+        (coupon, dividend, convenience yield), and \(T\) the delivery date. The fair basis is therefore
+        \begin{equation}
+            B_t^{\text{fair}} = S_t\left(e^{(r - y)(T - t)} - 1\right),
+        \end{equation}
+        and, crucially, \(B_T = 0\): the basis <i>must converge to zero at expiry</i>, since at delivery
+        the futures and the cash asset are the same thing.
+    </p>
+
+    <h3><b>The trade</b></h3>
+    <p>
+        A <b>cash-and-carry basis trade</b> exploits deviations of the market basis from its fair value.
+        If futures are rich (\(B_0 > B_0^{\text{fair}}\)), one:
+    </p>
+    <ul>
+        <li><b>buys</b> the asset in the cash market (financing it via repo at rate \(r\)),</li>
+        <li><b>sells</b> the futures contract,</li>
+        <li>holds to delivery, where convergence locks in the profit.</li>
+    </ul>
+    <p>
+        The (per-unit) payoff at expiry is deterministic under the model:
+        \begin{equation}
+            \Pi = F_0 - S_0\, e^{(r - y)T},
+        \end{equation}
+        i.e. the initial <i>net</i> basis. Because \(\Pi\) is typically tiny relative to \(S_0\),
+        the trade is run with leverage \(L\), posting equity \(E = S_0 / L\). The levered return is
+        \begin{equation}
+            R = L\,\frac{\Pi}{S_0},
+        \end{equation}
+        but leverage cuts both ways: if the mark-to-market value \(V_t\) of the position falls below
+        \(-E\) before expiry, the position is stopped out (a <b>margin call</b>) and the loss is realised
+        <i>before</i> convergence can rescue it. This is exactly the mechanism behind famous basis-trade
+        blow-ups.
+    </p>
+
+    <h3><b>A small stochastic model</b></h3>
+    <p>
+        To visualise the risk, model the spot as a geometric Brownian motion and the basis
+        <i>mispricing</i> \(\varepsilon_t\) as a mean-reverting (Ornstein&ndash;Uhlenbeck) process forced
+        to vanish at expiry:
+        \begin{align}
+            dS_t &= \mu S_t\, dt + \sigma S_t\, dW_t, \\
+            d\varepsilon_t &= -\kappa\, \varepsilon_t\, dt + \sigma_b\, dZ_t, \\
+            F_t &= S_t\, e^{(r - y)(T - t)}\; e^{\varepsilon_t \frac{T-t}{T}} .
+        \end{align}
+        The factor \(\tfrac{T-t}{T}\) guarantees convergence \(F_T = S_T\) regardless of the noise.
+        Play with the parameters below: note how the <b>final P&amp;L barely changes</b> (convergence is a
+        near-certainty) while the <b>path</b> of the P&amp;L &mdash; and hence the probability of a margin
+        call &mdash; depends strongly on basis volatility \(\sigma_b\) and leverage \(L\).
+    </p>
+
+    <div class="w3-card w3-white w3-padding" style="margin: 12px 0;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
+            <label>Spot vol \(\sigma\): <span id="lbl_sigma">0.10</span>
+                <input type="range" id="in_sigma" min="0.01" max="0.40" step="0.01" value="0.10" style="width:100%"></label>
+            <label>Repo rate \(r\): <span id="lbl_r">0.04</span>
+                <input type="range" id="in_r" min="0.00" max="0.10" step="0.005" value="0.04" style="width:100%"></label>
+            <label>Carry yield \(y\): <span id="lbl_y">0.02</span>
+                <input type="range" id="in_y" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
+            <label>Basis vol \(\sigma_b\): <span id="lbl_sb">0.02</span>
+                <input type="range" id="in_sb" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
+            <label>Initial mispricing \(\varepsilon_0\): <span id="lbl_e0">0.010</span>
+                <input type="range" id="in_e0" min="0.000" max="0.030" step="0.001" value="0.010" style="width:100%"></label>
+            <label>Leverage \(L\): <span id="lbl_L">25</span>&times;
+                <input type="range" id="in_L" min="1" max="100" step="1" value="25" style="width:100%"></label>
+        </div>
+        <br>
+        <button class="w3-button w3-dark-grey w3-round" onclick="resamplePath()">&#8635; Resample path</button>
+        <button class="w3-button w3-grey w3-round" onclick="runMonteCarlo()">&#9654; Run Monte Carlo (2000 paths)</button>
+        <span id="mc_status" style="margin-left:10px; font-style:italic;"></span>
+    </div>
+
+    <div id="pathChart"  style="width:100%; height:340px;"></div>
+    <div id="basisChart" style="width:100%; height:280px;"></div>
+    <div id="pnlChart"   style="width:100%; height:280px;"></div>
+
+    <p>
+        The mark-to-market value of the (unit-notional) trade &mdash; long cash financed at repo, short
+        one future &mdash; is
+        \begin{equation}
+            V_t = \underbrace{S_t\,e^{y t} - S_0\, e^{r t}}_{\text{cash leg net of financing}}
+                \;+\; \underbrace{F_0 - F_t}_{\text{short futures leg}} ,
+        \end{equation}
+        and the position is knocked out the first time \(V_t < -S_0/L\).
+    </p>
+
+    <h3><b>Monte Carlo: the distribution of levered returns</b></h3>
+    <p>
+        Running many paths shows the classic basis-trade profile: a distribution with a sharp spike at the
+        small, near-deterministic convergence profit, and a <b>left tail of forced liquidations</b> whose
+        weight grows with \(\sigma_b\) and \(L\) &mdash; <i>&ldquo;picking up nickels in front of a
+        steamroller&rdquo;</i>.
+    </p>
+
+    <div id="histChart" style="width:100%; height:340px;"></div>
+
+    <script type="application/javascript">
+        (function(){
+            const T = 0.5, N = 126, dt = T / N, kappa = 8.0, mu = 0.02, S0 = 100.0;
+
+            function params(){
+                return {
+                    sigma: +document.getElementById('in_sigma').value,
+                    r:     +document.getElementById('in_r').value,
+                    y:     +document.getElementById('in_y').value,
+                    sb:    +document.getElementById('in_sb').value,
+                    e0:    +document.getElementById('in_e0').value,
+                    L:     +document.getElementById('in_L').value
+                };
+            }
+            function syncLabels(p){
+                document.getElementById('lbl_sigma').textContent = p.sigma.toFixed(2);
+                document.getElementById('lbl_r').textContent  = p.r.toFixed(3);
+                document.getElementById('lbl_y').textContent  = p.y.toFixed(3);
+                document.getElementById('lbl_sb').textContent = p.sb.toFixed(3);
+                document.getElementById('lbl_e0').textContent = p.e0.toFixed(3);
+                document.getElementById('lbl_L').textContent  = p.L;
+            }
+            function randn(){ // Box-Muller
+                let u = 0, v = 0;
+                while (u === 0) u = Math.random();
+                while (v === 0) v = Math.random();
+                return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+            }
+
+            // Simulate one path; returns arrays and trade outcome
+            function simulate(p){
+                const t = [], S = [S0], eps = [p.e0], F = [], B = [], V = [];
+                const equity = S0 / p.L;
+                let stopped = false, stopIdx = null;
+                for (let i = 0; i <= N; i++) t.push(i*dt);
+                F.push(S0 * Math.exp((p.r - p.y)*T) * Math.exp(p.e0));
+                B.push(F[0] - S0);
+                V.push(0);
+                for (let i = 1; i <= N; i++){
+                    const s  = S[i-1] * Math.exp((mu - 0.5*p.sigma*p.sigma)*dt + p.sigma*Math.sqrt(dt)*randn());
+                    const e  = eps[i-1] + (-kappa*eps[i-1])*dt + p.sb*Math.sqrt(dt)*randn();
+                    const tau = T - t[i];
+                    const f  = s * Math.exp((p.r - p.y)*tau) * Math.exp(e * tau/T);
+                    S.push(s); eps.push(e); F.push(f); B.push(f - s);
+                    const v = (s*Math.exp(p.y*t[i]) - S0*Math.exp(p.r*t[i])) + (F[0] - f);
+                    V.push(v);
+                    if (!stopped && v < -equity){ stopped = true; stopIdx = i; }
+                }
+                const pnl = stopped ? V[stopIdx] : V[N];
+                return {t, S, F, B, V, stopped, stopIdx, ret: p.L * pnl / S0, equity};
+            }
+
+            window.resamplePath = function(){
+                const p = params(); syncLabels(p);
+                const sim = simulate(p);
+                Plotly.newPlot('pathChart', [
+                    {x: sim.t, y: sim.S, name: 'Spot  S<sub>t</sub>',    line: {color: '#1f77b4'}},
+                    {x: sim.t, y: sim.F, name: 'Futures  F<sub>t</sub>', line: {color: '#d62728'}}
+                ], {title: 'Spot vs futures — convergence at expiry', margin: {t: 40},
+                    xaxis: {title: 't (years)'}, yaxis: {title: 'price'}, legend: {orientation: 'h'}},
+                    {responsive: true});
+                Plotly.newPlot('basisChart', [
+                    {x: sim.t, y: sim.B, name: 'B<sub>t</sub> = F<sub>t</sub> − S<sub>t</sub>',
+                     line: {color: '#2ca02c'}, fill: 'tozeroy'}
+                ], {title: 'The basis B<sub>t</sub> (→ 0 at T)', margin: {t: 40},
+                    xaxis: {title: 't (years)'}, yaxis: {title: 'basis'}},
+                    {responsive: true});
+                const shapes = [{type: 'line', x0: 0, x1: T, y0: -sim.equity, y1: -sim.equity,
+                                 line: {color: 'red', dash: 'dash'}}];
+                const annotations = [{x: T*0.02, y: -sim.equity, xanchor: 'left', yanchor: 'bottom',
+                                      text: 'margin-call level −S₀/L', showarrow: false, font: {color: 'red'}}];
+                if (sim.stopped){
+                    annotations.push({x: sim.t[sim.stopIdx], y: sim.V[sim.stopIdx],
+                                      text: '💥 stopped out', showarrow: true, arrowhead: 4});
+                }
+                Plotly.newPlot('pnlChart', [
+                    {x: sim.t, y: sim.V, name: 'V<sub>t</sub>', line: {color: '#9467bd'}}
+                ], {title: 'Mark-to-market P&L of the basis trade (per unit notional)', margin: {t: 40},
+                    xaxis: {title: 't (years)'}, yaxis: {title: 'V<sub>t</sub>'},
+                    shapes: shapes, annotations: annotations},
+                    {responsive: true});
+            };
+
+            window.runMonteCarlo = function(){
+                const p = params(); syncLabels(p);
+                const M = 2000, rets = [];
+                let nStopped = 0;
+                for (let m = 0; m < M; m++){
+                    const sim = simulate(p);
+                    rets.push(100 * sim.ret);
+                    if (sim.stopped) nStopped++;
+                }
+                document.getElementById('mc_status').textContent =
+                    'Margin calls: ' + (100*nStopped/M).toFixed(1) + '% of paths';
+                Plotly.newPlot('histChart', [
+                    {x: rets, type: 'histogram', nbinsx: 80, marker: {color: '#1f77b4'},
+                     name: 'levered return'}
+                ], {title: 'Distribution of levered returns  R = L·Π/S₀  (%, on equity)',
+                    margin: {t: 40}, xaxis: {title: 'return on equity (%)'},
+                    yaxis: {title: 'frequency'},
+                    shapes: [{type: 'line', x0: 0, x1: 0, yref: 'paper', y0: 0, y1: 1,
+                              line: {color: 'grey', dash: 'dot'}}]},
+                    {responsive: true});
+            };
+
+            ['in_sigma','in_r','in_y','in_sb','in_e0','in_L'].forEach(id =>
+                document.getElementById(id).addEventListener('input', () => window.resamplePath()));
+
+            window.addEventListener('load', () => { window.resamplePath(); window.runMonteCarlo(); });
+        })();
+    </script>
 
 
     <br>
 
     <h4 id="REFERENCES"><i>References</i></h4>
 
-    [1] <a href="" id="ref1"> </a>
+    [1] <a href="https://www.cmegroup.com/education/courses/introduction-to-treasuries/understanding-treasury-futures-basis.html" id="ref1">CME Group — Understanding the Treasury futures basis</a>
     <br>
-    [2] <a href="" id="ref2"> </a>
+    [2] <a href="https://en.wikipedia.org/wiki/Basis_trading" id="ref2">Wikipedia — Basis trading</a>
     <br>
-    [3] <a href="" id="ref3"> </a>
+    [3] <a href="https://www.bis.org/publ/qtrpdf/r_qt2003v.htm" id="ref3">BIS Quarterly Review — Leverage and margin spirals in fixed income markets (March 2020)</a>
     <br>
-    [4] <a href="" id="ref4"> </a>
+    [4] <a href="https://en.wikipedia.org/wiki/Cost_of_carry" id="ref4">Wikipedia — Cost of carry</a>
+
 
     <br><br>
 
