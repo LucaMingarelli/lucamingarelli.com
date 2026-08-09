@@ -1452,6 +1452,33 @@ Clearly this reduces to the deterministic Bolza problem for \(\sigma=0\).
     \end{equation}
     </i>
 
+<br><br>
+    The optimal strategy can be explored interactively below.
+    Wealth paths are simulated under the optimal feedback laws \eqref{eq:merton_feedback}
+    via the exact scheme
+    \begin{equation*}
+    W_{t+\delta t} = W_t\,
+    \exp\left[\left(r + Q^*(\mu-r) - c(t) - \tfrac{1}{2}(Q^*)^2\sigma^2\right)\delta t
+    + Q^*\sigma\sqrt{\delta t}\,\xi_t\right], \quad \xi_t\sim\mathcal{N}(0,1),
+    \end{equation*}
+    with \(c(t) := C^*_t/W_t = \rho/(1-e^{-\rho(T-t)})\).
+    Notice how the sample average converges to the analytic expectation
+    \(\mathbb{E}[W_t] = W_0\, e^{\int_0^t (r+\kappa^2-c(s))ds}\) as the number of runs grows,
+    how wealth is fully consumed as \(t\rightarrow T\) (no bequest motive),
+    and how the Merton fraction \(Q^*\) — and hence the volatility of the paths —
+    responds to \(\mu\), \(r\) and \(\sigma\).
+
+    <figure style="text-align: center;justify-content: center;align-items: center;">
+      <!-- Create a div where the graph will take place -->
+      <div id="merton_figure" style="width: 100%;"></div>
+      <figcaption><i><b>Fig.3:</b> Monte Carlo simulation of the optimal consumption-investment problem.
+        Light blue lines are individual wealth paths under the optimal policy \eqref{eq:merton_feedback};
+        the solid dark line is the Monte Carlo mean and the dashed line the analytic expectation \(\mathbb{E}[W_t]\).
+        Adjust the parameters with the sliders; note that \(Q^*>1\) corresponds to a leveraged position.
+      </i></figcaption>
+    </figure>
+
+    <script src="./merton_simulator.js"></script>
 
 
 
