@@ -37,9 +37,9 @@
         .content {display:none;overflow:hidden;background-color:#DCDCDC;}
 
         /* ================= basis-trade page, all scoped with bt- ================= */
-        .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc:#7a3030;
-                 --bt-spot:#1f4e79;--bt-fut:#8f4f26;--bt-basis:#2f5c2f;
-                 --bt-pnl:#5b3d84;--bt-bad:#9a2626;--bt-good:#2f5c2f;--bt-fund:#b0682a;}
+        .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc: #d6a82f;
+                 --bt-spot:#1f4e79;--bt-fut: #e61616;--bt-basis: #8e8e8e;
+                 --bt-pnl:#5b3d84;--bt-bad:#9a2626;--bt-good:#2f5c2f;--bt-fund:#1f4e79;}
 
         .bt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
         .bt-secno{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
@@ -145,8 +145,8 @@
     <h1 style="text-align:left;"><b>The Basis Trade</b></h1>
     <p class="bt-lede">
         Two prices for the same asset must agree by delivery day. When they don't, the gap between
-        them &mdash; the <i>basis</i> &mdash; is either free money or a very patient way to lose your
-        shirt. Here is the arithmetic, and the risk hiding inside it.
+        them, know as the <i>basis</i>, is either free money or a very patient way to lose it.
+<!--        Here is the arithmetic, and the risk hiding inside it.-->
     </p>
 
     <div class="bt-fig">
@@ -164,11 +164,11 @@
     </div>
 
     <!-- ============================ §1 ============================ -->
-    <p class="bt-secno">&sect;1</p>
+<!--    <p class="bt-secno">&sect;1</p>-->
     <h3><b>Defining the basis</b></h3>
     <p>
-        For any asset with a futures contract &mdash; a Treasury note, a barrel of oil, an equity index
-        &mdash; two prices exist at once: the <b>spot</b> price you would pay to own it right now, and
+        For any asset with a futures contract, such as a Treasury note, a barrel of oil, or an equity index,
+        two prices exist at once: the <b>spot</b> price you would pay to own it right now, and
         the <b>futures</b> price you can lock in today for delivery later. The basis is the difference.
     </p>
     <div class="bt-def">
@@ -180,17 +180,16 @@
     <p>
         At the instant the contract expires it converges to spot, because delivery forces it to.
         So \(B_T = 0\): <b>the basis is a number engineered to hit exactly zero on a known date</b>.
-        That is what makes basis trades feel like arbitrage. You are not betting on where the market
-        goes; you are betting on a difference collapsing to a value you already know.
+        That is what makes basis trades feel like arbitrage.
     </p>
 
     <!-- ============================ §2 ============================ -->
-    <p class="bt-secno">&sect;2</p>
+<!--    <p class="bt-secno">&sect;2</p>-->
     <h3><b>Why the basis isn't zero today</b></h3>
     <p>
         If you could buy the asset now and hold it for free, spot and futures would already be equal.
         They are not, because holding costs something (financing) and sometimes pays something back
-        (coupons, dividends, convenience yield). This is the <b>cost-of-carry</b> model.
+        (coupons, dividends, convenience yield). This is the <b>cost-of-carry</b>.
     </p>
     <div class="bt-def">
         <div class="bt-def-lab"><span class="n">Definition 2</span> &mdash; Cost of carry</div>
@@ -213,7 +212,7 @@
     </p>
 
     <!-- ============================ §3 ============================ -->
-    <p class="bt-secno">&sect;3</p>
+<!--    <p class="bt-secno">&sect;3</p>-->
     <h3><b>The Treasury vocabulary</b></h3>
     <p>
         The canonical basis trade is in Treasury futures, where the terminology is more specific.
@@ -236,8 +235,8 @@
         The bond with the highest implied repo rate is the <b>cheapest to deliver</b> (CTD), and the
         short's right to switch between issues is a genuine option with value. In the simplified model
         below there is a single underlying and no delivery option, so net basis and gross basis
-        coincide up to carry &mdash; a deliberate simplification, and one of the reasons the model's
-        payoff comes out cleaner than reality's.
+        coincide up to carry (this is a deliberate simplification, and one of the reasons the model's
+        payoff comes out cleaner than in reality).
     </p>
     <div class="bt-note">
         A standard approximation for the implied repo rate, ignoring intermediate coupons, is
@@ -247,7 +246,7 @@
     </div>
 
     <!-- ============================ §4 ============================ -->
-    <p class="bt-secno">&sect;4</p>
+<!--    <p class="bt-secno">&sect;4</p>-->
     <h3><b>The trade, leg by leg</b></h3>
     <p>
         The classic version is <b>cash-and-carry</b>: futures look rich relative to fair value, so you
@@ -280,8 +279,7 @@
         <div class="bt-def-cap">the initial <i>net</i> basis &mdash; deterministic under the model</div>
     </div>
     <p>
-        Because \(\Pi\) is tiny relative to \(S_0\) &mdash; basis mispricings are measured in basis
-        points &mdash; the trade only pays if it is run with leverage \(L\), posting equity
+        Because \(\Pi\) is tiny relative to \(S_0\) the trade only pays if it is run with leverage \(L\), posting equity
         \(E = S_0/L\). The return on that equity is
     </p>
     <div class="bt-def">
@@ -292,99 +290,109 @@
     </div>
 
     <!-- ============================ §5 ============================ -->
-    <p class="bt-secno">&sect;5</p>
-    <h3><b>The financing asymmetry</b></h3>
+<!--    <p class="bt-secno">&sect;5</p>-->
+    <h3><b>Financing asymmetries</b></h3>
     <p>
-        Everything dangerous about this trade follows from one fact: <b>the two legs are financed in
+        Everything risky about this trade follows from one fact: <b>the two legs are financed in
         completely different ways</b>.
     </p>
     <div class="bt-legs">
         <div class="bt-leg-card">
             <div class="bt-leg-t">Long bond &mdash; financed in repo</div>
             <p>The bond secures its own financing: you repo it out, pledging the bond as collateral for
-               the cash that bought it. You only fund the <b>haircut</b> &mdash; on Treasuries
-               historically on the order of 1&ndash;3% of face value, which is precisely what permits
-               leverage of 30&ndash;100&times;.</p>
+               the cash that bought it. You only fund the <b>haircut</b>. On Treasuries
+               historically on the order of 1-3% of face value, which is precisely what permits
+               leverage of 30-100&times;.</p>
         </div>
         <div class="bt-leg-card">
             <div class="bt-leg-t">Short future &mdash; margined in cash</div>
             <p>The clearing house marks this leg to market <b>daily</b> and demands cash variation
                margin whenever the basis moves against you. Paper losses become cash outflows
-               immediately, long before convergence arrives to vindicate you.</p>
+               immediately, potentially long before convergence.</p>
         </div>
     </div>
     <p>
-        This gives two independent ways to be forced out, and they are worth keeping separate in your
-        head:
+        This gives two independent ways to be forced out:
     </p>
     <ul>
-        <li><b>Margin channel.</b> The basis widens, variation margin exceeds your equity, and you are
-            stopped out at a loss. In the model: the first time \(V_t &lt; -S_0/L\).</li>
+        <li><b>Margin channel.</b> The basis widens, variation margin exceeds equity, and one is
+            stopped out at a loss.
+<!--            In the model: the first time \(V_t &lt; -S_0/L\).-->
+        </li>
         <li><b>Funding channel.</b> The repo lender raises the haircut or refuses to roll the loan at
-            all. You must unwind <i>even if the basis has not moved</i>. Modelled below as a Poisson
-            shock with hazard rate \(h\).</li>
+            all. As a consequence, the trade must be unwound <i>even if the basis has not moved</i>.
+<!--            This is modelled below as a Poisson shock with hazard rate \(h\).-->
+        </li>
     </ul>
     <p>
         March 2020 was largely the second channel. Repo funding for Treasuries became scarce and
         expensive very suddenly, and leveraged basis positions were unwound on a <i>funding</i> shock
-        rather than a pricing one. The simulator runs both channels side by side so you can see which
-        is doing the damage.
+        rather than a pricing one.
+<!--        The simulator runs both channels side by side so you can see which is doing the damage.-->
     </p>
 
     <!-- ============================ §6 ============================ -->
-    <p class="bt-secno">&sect;6</p>
+<!--    <p class="bt-secno">&sect;6</p>-->
     <h3><b>A small stochastic model</b></h3>
     <p>
         Model the spot as geometric Brownian motion and the basis <i>mispricing</i>
         \(\varepsilon_t\) as a mean-reverting Ornstein&ndash;Uhlenbeck process, damped so that it must
         vanish at expiry:
     </p>
-    <div class="bt-def">
-        <div class="bt-def-lab"><span class="n">Model 6.1</span> &mdash; Dynamics</div>
-        <div class="bt-def-body">
+<!--    <div class="bt-def">-->
+<!--        <div class="bt-def-lab"><span class="n">Model 6.1</span> &mdash; Dynamics</div>-->
+<!--        <div class="bt-def-body">-->
             \begin{align}
                 dS_t &= \mu S_t\, dt + \sigma S_t\, dW_t, \\
                 d\varepsilon_t &= -\kappa\, \varepsilon_t\, dt + \sigma_b\, dZ_t, \\
                 F_t &= S_t\, e^{(r-y)(T-t)}\; e^{\varepsilon_t \frac{T-t}{T}} .
             \end{align}
-        </div>
-        <div class="bt-def-cap">the factor (T&minus;t)/T forces F(T) = S(T) exactly, whatever the noise did</div>
-    </div>
+<!--        </div>-->
+<!--        <div class="bt-def-cap">the factor (T&minus;t)/T forces F(T) = S(T) exactly, whatever the noise did</div>-->
+<!--    </div>-->
+    Notice that the factor \((T&minus;t)/T\) forces \(F_T = S_T\) exactly, regardless of the noise process.
+
     <p>Discretised with an Euler&ndash;Maruyama scheme on a daily grid:</p>
-    <div class="bt-def">
-        <div class="bt-def-lab"><span class="n">Algorithm 6.2</span> &mdash; Discretisation</div>
-        <div class="bt-def-body">
+<!--    <div class="bt-def">-->
+<!--        <div class="bt-def-lab"><span class="n">Algorithm 6.2</span> &mdash; Discretisation</div>-->
+<!--        <div class="bt-def-body">-->
             \begin{equation}
                 \varepsilon_{i+1} = (1-\kappa\,\Delta t)\,\varepsilon_i
                     + \sigma_b\sqrt{\Delta t}\; z_i , \qquad z_i \sim \mathcal N(0,1).
             \end{equation}
-        </div>
-        <div class="bt-def-cap">linear in ε₀ and σ_b — which is what lets the sliders rescale a fixed
-            noise realisation instead of redrawing it</div>
-    </div>
-    <p>The mark-to-market value of the position is</p>
-    <div class="bt-def">
-        <div class="bt-def-lab"><span class="n">Proposition 6.3</span> &mdash; Mark to market</div>
-        <div class="bt-def-body">
+<!--        </div>-->
+<!--        <div class="bt-def-cap">linear in ε₀ and σ_b — which is what lets the sliders rescale a fixed-->
+<!--            noise realisation instead of redrawing it</div>-->
+<!--    </div>-->
+    <p>Then, the mark-to-market value of the position is</p>
+<!--    <div class="bt-def">-->
+<!--        <div class="bt-def-lab"><span class="n">Proposition 6.3</span> &mdash; Mark to market</div>-->
+<!--        <div class="bt-def-body">-->
             \begin{equation}
                 V_t = \underbrace{n\left(S_t\,e^{y t} - S_0\, e^{r t}\right)}_{\text{cash leg net of financing}}
                     \;+\; \underbrace{F_0 - F_t}_{\text{short futures leg}},
                 \qquad n = e^{-yT},
             \end{equation}
-        </div>
-        <div class="bt-def-cap">so that V(T) = F₀ − S₀e^{(r−y)T} = Π exactly, with no residual spot exposure</div>
-    </div>
-    <div class="bt-def">
-        <div class="bt-def-lab"><span class="n">Model 6.4</span> &mdash; Funding shocks</div>
-        <div class="bt-def-body">
+<!--        </div>-->
+<!--        <div class="bt-def-cap">so that V(T) = F₀ − S₀e^{(r−y)T} = Π exactly, with no residual spot exposure</div>-->
+<!--    </div>-->
+    so that \(V(T) = F_0 − S_0 e^{(r−y)T} = \Pi\) exactly, with no residual spot exposure
+<!--    <div class="bt-def">-->
+<!--        <div class="bt-def-lab"><span class="n">Model 6.4</span> &mdash; Funding shocks</div>-->
+<!--        <div class="bt-def-body">-->
+    <p>The funding shock is modelled as Poisson shock with hazard rate \(h\).</p>
             \begin{equation}
                 \mathbb{P}\big(\text{funding shock in } [t,\,t+dt]\big) = 1 - e^{-h\,dt} \approx h\,dt .
             \end{equation}
-        </div>
-        <div class="bt-def-cap">h = expected shocks per year &middot; a shock forces an immediate unwind
-            at the prevailing V, independent of the margin channel</div>
-    </div>
+<!--        </div>-->
+<!--        <div class="bt-def-cap">h = expected shocks per year &middot; a shock forces an immediate unwind-->
+<!--            at the prevailing V, independent of the margin channel</div>-->
+<!--    </div>-->
     <p>
+        Here, \(h\) is the expected shocks per year; a shock forces an immediate unwind
+        at the prevailing \(V\), independent of the margin channel.
+
+
         The position exits at whichever comes first: \(V_t &lt; -S_0/L\) (margin call), a funding shock,
         or delivery. Note that the margin barrier is by construction the total loss of your equity, so a
         margin call is a \(-100\%\) return on equity.
@@ -417,10 +425,10 @@
         </div>
         <p class="bt-hint" style="margin:2px 0 0;">
             The random shocks are held fixed, so moving a slider <i>transforms the same realisation</i>
-            rather than redrawing it &mdash; any change you see is caused by the parameter alone.
+            rather than redrawing it; this means that any resulting change is caused by the parameter change alone.
             \(\varepsilon_0\) and \(\sigma_b\) rescale the path, \(\kappa\) deforms it, \(r\) and \(y\)
             tilt the drift; only \(L\) leaves the path untouched and slides the barrier instead.
-            Press <b>New draws</b> for a fresh realisation.
+            Pressing <b>New draws</b> produces a fresh realisation.
         </p>
 
         <div class="bt-stats">
@@ -447,48 +455,47 @@
             <div class="bt-cap"><span>Mark-to-market P&amp;L per unit notional, with the margin-call barrier</span></div>
         </div>
         <div class="bt-leg2">
-            <span><i class="bt-sw" style="background:#5b3d84"></i>your path</span>
-            <span><i class="bt-sw" style="background:rgba(17,17,17,.22)"></i>other draws</span>
-            <span><i class="bt-sw" style="background:#9a2626"></i>margin level &minus;S&#8320;/L</span>
-            <span><i class="bt-dot" style="background:#9a2626"></i>margin call</span>
-            <span><i class="bt-dot" style="background:#b0682a"></i>funding shock</span>
+            <span><i class="bt-sw" style="background:#5b3d84"></i>Realised path</span>
+            <span><i class="bt-sw" style="background:rgba(17,17,17,.22)"></i>Other draws</span>
+            <span><i class="bt-sw" style="background:#9a2626"></i>Margin level \(-S_0/L\)<!--&minus;S&#8320;/L--></span>
+            <span><i class="bt-dot" style="background:#9a2626"></i>Margin call</span>
+            <span><i class="bt-dot" style="background:#b0682a"></i>Funding shock</span>
         </div>
     </div>
 
     <!-- ============================ §7 ============================ -->
-    <p class="bt-secno">&sect;7</p>
+<!--    <p class="bt-secno">&sect;7</p>-->
     <h3><b>The distribution of outcomes</b></h3>
     <p>
         Running 2000 paths on the same shock buffer gives the classic basis-trade profile: a spike at
         the small convergence profit, and a <b>left tail of forced liquidations</b> whose weight grows
         with \(\sigma_b\), \(h\) and \(L\) &mdash; <i>&ldquo;picking up nickels in front of a
-        steamroller&rdquo;</i>. The histogram morphs continuously as you drag the sliders above,
-        because the underlying randomness never changes.
+        steamroller&rdquo;</i>.
     </p>
     <div class="bt-fig">
         <canvas id="cvHist" width="800" height="300" role="img"
                 aria-label="Histogram of levered returns on equity"></canvas>
         <div class="bt-cap"><span>Distribution of levered returns <i>R</i> = <i>L</i>&middot;&Pi;/S&#8320; (% on equity)</span></div>
     </div>
-    <div class="bt-note">
-        <b>Why the survivor spike is a single bar.</b> Under this model the cash-and-carry is a genuine
-        static arbitrage: every path reaching delivery earns exactly
-        \(\Pi = S_0 e^{(r-y)T}(e^{\varepsilon_0}-1)\), with no dispersion at all. That is a property of
-        the model &mdash; perfect convergence, constant financing, no delivery option &mdash; not of
-        reality. For Treasury futures the CTD option and repo-rate variability would smear that spike
-        into a distribution. The bar is clipped so the tail stays visible; its true count is printed
-        above it.
-    </div>
+<!--    <div class="bt-note">-->
+<!--        <b>Why the survivor spike is a single bar.</b> Under this model the cash-and-carry is a genuine-->
+<!--        static arbitrage: every path reaching delivery earns exactly-->
+<!--        \(\Pi = S_0 e^{(r-y)T}(e^{\varepsilon_0}-1)\), with no dispersion at all. That is a property of-->
+<!--        the model &mdash; perfect convergence, constant financing, no delivery option &mdash; not of-->
+<!--        reality. For Treasury futures the CTD option and repo-rate variability would smear that spike-->
+<!--        into a distribution. The bar is clipped so the tail stays visible; its true count is printed-->
+<!--        above it.-->
+<!--    </div>-->
 
     <!-- ============================ §8 ============================ -->
-    <p class="bt-secno">&sect;8</p>
+<!--    <p class="bt-secno">&sect;8</p>-->
     <h3><b>How much leverage?</b></h3>
     <p>
-        Leverage does not change the path of \(V_t\) at all &mdash; it only moves the barrier. That
-        makes the whole leverage sweep computable from a single set of paths: for each path we record
-        the times at which \(V_t\) set a new running minimum, and that short list determines the
-        first-passage time for <i>every</i> barrier at once. The curves below are therefore exact, and
-        share the same random draws as everything above.
+        Leverage does not change the path of \(V_t\) at all: it only moves the barrier. That
+        makes the whole leverage sweep computable from a single set of paths: for each path
+        the times at which \(V_t\) set a new running minimum is recorded, and that short list determines the
+        first-passage time for <i>every</i> barrier at once.
+<!--        The curves below are therefore exact, and share the same random draws as everything above.-->
     </p>
     <div class="bt-fig">
         <canvas id="cvSweep" width="800" height="300" role="img"
@@ -510,14 +517,14 @@
         peak and you are taking more risk for less expected return.
     </p>
     <div class="bt-note">
-        Maximising <i>expected</i> return is a crude criterion &mdash; it is risk-neutral and ignores
-        the fact that a &minus;100% outcome ends the game. A log-utility or Kelly criterion would place
+        NOTE: Maximising <i>expected</i> return is a crude criterion: it is risk-neutral and ignores
+        the fact that a -100% outcome ends the game. A log-utility or Kelly criterion would place
         the optimum materially lower, and a real risk manager lower still. Read the peak as an upper
         bound on sensible leverage, not a target.
     </div>
 
     <!-- ============================ §9 ============================ -->
-    <p class="bt-secno">&sect;9</p>
+<!--    <p class="bt-secno">&sect;9</p>-->
     <h3><b>When the arbitrage breaks</b></h3>
     <p>
         Cash-and-carry only looks riskless if you can fund the position all the way to delivery. Two
@@ -1210,9 +1217,4 @@
 </body>
 </html>
 
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
+					
