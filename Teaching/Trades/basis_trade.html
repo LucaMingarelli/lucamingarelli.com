@@ -1,65 +1,101 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basis Trade — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+
     <!-- Oribi Analytics -->
     <script type="application/javascript">
         (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
     </script>
-    <!-- End Oribi Analytics -->
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NLJ2P23');</script>
-    <!-- End Google Tag Manager -->
-    <meta charset="utf-8"/>
-    <title>Luca Mingarelli</title>
-    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+
     <style>
-        .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
-            border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
-        /*.active,*/
-        .collapsible:hover {  background-color: #555;}
-        .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+
+        /* ---- simulator, scoped with bt- to avoid clashing with w3.css ---- */
+        .bt-sim{--bt-line:#d7d3c8;--bt-dim:#8a8879;--bt-ink:#1c1b18;
+                --bt-spot:#2f5f8a;--bt-fut:#9c5a2e;--bt-basis:#3f6b3f;
+                --bt-pnl:#6a4c93;--bt-bad:#a13232;--bt-good:#3f6b3f;
+                background:#fff;border:1px solid var(--bt-line);padding:16px;margin:14px 0;}
+        .bt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px 22px;}
+        .bt-ctl label{display:block;font-size:13px;color:#333;}
+        .bt-ctl .bt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--bt-bad);}
+        .bt-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .bt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .bt-hint{font-size:12px;color:var(--bt-dim);line-height:1.45;max-width:520px;}
+        .bt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#555;}
+        .bt-seed input{width:100px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--bt-line);}
+        .bt-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+                  border:1px solid var(--bt-line);margin-top:16px;}
+        @media(min-width:700px){.bt-stats{grid-template-columns:repeat(6,1fr);}}
+        .bt-stat{padding:10px 12px;border-left:1px solid var(--bt-line);}
+        .bt-stat:first-child{border-left:none;}
+        .bt-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--bt-dim);margin-bottom:5px;}
+        .bt-stat .v{font-size:18px;font-weight:600;color:var(--bt-ink);}
+        .bt-stat .v.bad{color:var(--bt-bad);} .bt-stat .v.good{color:var(--bt-good);}
+        .bt-stat .se{font-size:11px;color:var(--bt-dim);font-weight:400;}
+        .bt-fig{border:1px solid var(--bt-line);background:#fff;margin-top:14px;padding:6px;}
+        .bt-fig canvas{width:100%;display:block;}
+        .bt-cap{font-size:11.5px;color:var(--bt-dim);padding:6px 4px 2px;
+                border-top:1px solid #eee;margin-top:4px;}
+        .bt-leg{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;
+                color:var(--bt-dim);margin:6px 2px 0;}
+        .bt-leg span{display:inline-flex;align-items:center;gap:5px;}
+        .bt-sw{width:14px;height:2px;display:inline-block;}
+        .bt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .bt-note{font-size:12.5px;color:#555;background:#faf9f5;
+                 border-left:3px solid var(--bt-line);padding:8px 12px;margin:12px 0;}
     </style>
 </head>
-<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
-
-<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
-<script>window.MathJax = {tex: {tags: 'ams'}};</script>
-<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>-->
-
-<link rel="stylesheet" href="../../PRISM/prism.css"> <!-- For code highlight -->
-<script src="../../PRISM/prism.js"></script>         <!-- For code highlight -->
-
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../../css/w3.css">
-<link rel="stylesheet" href="../../css/font.css">
-<link rel="stylesheet" href="../../css/responsiveiframe.css">
-<script src="../../js/style_preamble.js"></script>
 
 <body class="w3-light-grey w3-content" style="max-width:2600px">
-<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<!-- NavigationBar -->
+
 <script src="../../js/Navbar.js"></script>
-<!-- _____________ -->
-<!-- PRE_CONTENT -->
 <script src="../../js/pre_content.js"></script>
-<!-- _____________ -->
-
-
-
 
 <div class="w3-content w3-justify" style="max-width:800px">
-
-    <h1 style="text-align: left;"><b>Basis Trade</b></h1>
+    <h1 style="text-align:left;"><b>Basis Trade</b></h1>
 
     <p>
         The <b>basis</b> is the difference between the price of a futures contract and the price of the
@@ -91,7 +127,9 @@
         <li>holds to delivery, where convergence locks in the profit.</li>
     </ul>
     <p>
-        The (per-unit) payoff at expiry is deterministic under the model:
+        To make the position deliver exactly one unit at expiry, buy \(n = e^{-yT}\) units at inception and
+        reinvest the income; holdings then grow to \(n\,e^{yT} = 1\). The per-unit payoff at expiry is
+        deterministic under the model:
         \begin{equation}
             \Pi = F_0 - S_0\, e^{(r - y)T},
         \end{equation}
@@ -100,10 +138,11 @@
         \begin{equation}
             R = L\,\frac{\Pi}{S_0},
         \end{equation}
-        but leverage cuts both ways: if the mark-to-market value \(V_t\) of the position falls below
-        \(-E\) before expiry, the position is stopped out (a <b>margin call</b>) and the loss is realised
-        <i>before</i> convergence can rescue it. This is exactly the mechanism behind famous basis-trade
-        blow-ups.
+        but leverage cuts both ways: if the mark-to-market value \(V_t\) falls below \(-E\) before expiry,
+        the position is stopped out (a <b>margin call</b>) and the loss is realised <i>before</i>
+        convergence can rescue it. Note that this barrier is, by construction, the total loss of your
+        equity: a forced exit is a \(-100\%\) return. This is exactly the mechanism behind famous
+        basis-trade blow-ups.
     </p>
 
     <h3><b>A small stochastic model</b></h3>
@@ -117,1044 +156,515 @@
             F_t &= S_t\, e^{(r - y)(T - t)}\; e^{\varepsilon_t \frac{T-t}{T}} .
         \end{align}
         The factor \(\tfrac{T-t}{T}\) guarantees convergence \(F_T = S_T\) regardless of the noise.
-        Play with the parameters below: note how the <b>final P&amp;L barely changes</b> (convergence is a
-        near-certainty) while the <b>path</b> of the P&amp;L &mdash; and hence the probability of a margin
-        call &mdash; depends strongly on basis volatility \(\sigma_b\) and leverage \(L\).
-    </p>
-
-    <div class="w3-card w3-white w3-padding" style="margin: 12px 0;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
-            <label>Spot vol \(\sigma\): <span id="lbl_sigma">0.10</span>
-                <input type="range" id="in_sigma" min="0.01" max="0.40" step="0.01" value="0.10" style="width:100%"></label>
-            <label>Repo rate \(r\): <span id="lbl_r">0.04</span>
-                <input type="range" id="in_r" min="0.00" max="0.10" step="0.005" value="0.04" style="width:100%"></label>
-            <label>Carry yield \(y\): <span id="lbl_y">0.02</span>
-                <input type="range" id="in_y" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
-            <label>Basis vol \(\sigma_b\): <span id="lbl_sb">0.02</span>
-                <input type="range" id="in_sb" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
-            <label>Initial mispricing \(\varepsilon_0\): <span id="lbl_e0">0.010</span>
-                <input type="range" id="in_e0" min="0.000" max="0.030" step="0.001" value="0.010" style="width:100%"></label>
-            <label>Leverage \(L\): <span id="lbl_L">25</span>&times;
-                <input type="range" id="in_L" min="1" max="100" step="1" value="25" style="width:100%"></label>
-        </div>
-        <br>
-        <button class="w3-button w3-dark-grey w3-round" onclick="resamplePath()">&#8635; Resample path</button>
-        <button class="w3-button w3-grey w3-round" onclick="runMonteCarlo()">&#9654; Run Monte Carlo (2000 paths)</button>
-        <span id="mc_status" style="margin-left:10px; font-style:italic;"></span>
-    </div>
-
-    <div id="pathChart"  style="width:100%; height:340px;"></div>
-    <div id="basisChart" style="width:100%; height:280px;"></div>
-    <div id="pnlChart"   style="width:100%; height:280px;"></div>
-
-    <p>
-        The mark-to-market value of the (unit-notional) trade &mdash; long cash financed at repo, short
-        one future &mdash; is
+        The mark-to-market value of the trade &mdash; \(n\) units of the asset financed at repo, short one
+        future &mdash; is
         \begin{equation}
-            V_t = \underbrace{S_t\,e^{y t} - S_0\, e^{r t}}_{\text{cash leg net of financing}}
+            V_t = \underbrace{n\left(S_t\,e^{y t} - S_0\, e^{r t}\right)}_{\text{cash leg net of financing}}
                 \;+\; \underbrace{F_0 - F_t}_{\text{short futures leg}} ,
+            \qquad n = e^{-yT},
         \end{equation}
-        and the position is knocked out the first time \(V_t < -S_0/L\).
+        so that \(V_T = F_0 - S_0 e^{(r-y)T} = \Pi\) <i>exactly</i>, and the position is knocked out the
+        first time \(V_t < -S_0/L\).
     </p>
+    <p>
+        Play with the parameters below: note how the <b>final P&amp;L does not change at all</b>
+        (convergence is a certainty in this model) while the <b>path</b> of the P&amp;L &mdash; and hence
+        the probability of a margin call &mdash; depends strongly on basis volatility \(\sigma_b\),
+        reversion speed \(\kappa\) and leverage \(L\).
+    </p>
+
+    <div class="bt-sim" id="btSim">
+        <div class="bt-grid">
+            <div class="bt-ctl"><label for="in_sigma">Spot vol \(\sigma\)<span class="bt-val" id="lbl_sigma">0.10</span>
+                <input type="range" id="in_sigma" min="0.01" max="0.40" step="0.01" value="0.10"></label></div>
+            <div class="bt-ctl"><label for="in_r">Repo rate \(r\)<span class="bt-val" id="lbl_r">0.040</span>
+                <input type="range" id="in_r" min="0.00" max="0.10" step="0.005" value="0.04"></label></div>
+            <div class="bt-ctl"><label for="in_y">Carry yield \(y\)<span class="bt-val" id="lbl_y">0.020</span>
+                <input type="range" id="in_y" min="0.00" max="0.10" step="0.005" value="0.02"></label></div>
+            <div class="bt-ctl"><label for="in_sb">Basis vol \(\sigma_b\)<span class="bt-val" id="lbl_sb">0.040</span>
+                <input type="range" id="in_sb" min="0.000" max="0.150" step="0.002" value="0.040"></label></div>
+            <div class="bt-ctl"><label for="in_kappa">Reversion \(\kappa\)<span class="bt-val" id="lbl_kappa">4.0</span>
+                <input type="range" id="in_kappa" min="0.5" max="20" step="0.5" value="4"></label></div>
+            <div class="bt-ctl"><label for="in_e0">Initial mispricing \(\varepsilon_0\)<span class="bt-val" id="lbl_e0">0.010</span>
+                <input type="range" id="in_e0" min="0.000" max="0.030" step="0.001" value="0.010"></label></div>
+            <div class="bt-ctl"><label for="in_L">Leverage \(L\)<span class="bt-val" id="lbl_L">50&times;</span>
+                <input type="range" id="in_L" min="1" max="150" step="1" value="50"></label></div>
+        </div>
+
+        <div class="bt-bar">
+            <button class="w3-button w3-dark-grey w3-round" id="btnDraws">&#8635; New draws</button>
+            <span class="bt-seed">seed <input type="number" id="in_seed" value="20240613" step="1"></span>
+            <span class="bt-hint" id="btPerf"></span>
+        </div>
+        <p class="bt-hint" style="margin:2px 0 0;">
+            The random shocks are held fixed: moving a slider <i>transforms the same realisation</i>
+            rather than redrawing it, so any change you see is caused by the parameter alone.
+            (\(\varepsilon_0\) and \(\sigma_b\) rescale the path, \(\kappa\) deforms it, \(r\) and \(y\)
+            tilt the drift &mdash; only \(L\) leaves the path untouched and moves the barrier instead.)
+            Press <b>New draws</b> for a fresh noise realisation.
+        </p>
+
+        <div class="bt-stats">
+            <div class="bt-stat"><div class="k">Margin calls</div><div class="v" id="st_mc">&mdash;</div></div>
+            <div class="bt-stat"><div class="k">Mean R</div><div class="v" id="st_mean">&mdash;</div></div>
+            <div class="bt-stat"><div class="k">Median R</div><div class="v" id="st_med">&mdash;</div></div>
+            <div class="bt-stat"><div class="k">5% VaR</div><div class="v" id="st_var">&mdash;</div></div>
+            <div class="bt-stat"><div class="k">Worst path</div><div class="v bad" id="st_worst">&mdash;</div></div>
+            <div class="bt-stat"><div class="k">Survivor R</div><div class="v good" id="st_pi">&mdash;</div></div>
+        </div>
+
+        <div class="bt-fig">
+            <canvas id="cvPath" height="300" role="img"
+                    aria-label="Spot and futures price paths converging at expiry"></canvas>
+            <div class="bt-cap">Spot vs futures — convergence at expiry</div>
+        </div>
+        <div class="bt-fig">
+            <canvas id="cvBasis" height="230" role="img"
+                    aria-label="The basis, futures minus spot, decaying to zero at expiry"></canvas>
+            <div class="bt-cap">The basis <i>B<sub>t</sub></i> = <i>F<sub>t</sub></i> − <i>S<sub>t</sub></i> → 0 at T</div>
+        </div>
+        <div class="bt-fig">
+            <canvas id="cvPnl" height="300" role="img"
+                    aria-label="Mark to market profit and loss with the margin call barrier"></canvas>
+            <div class="bt-cap">Mark-to-market P&amp;L per unit notional, with the margin-call barrier</div>
+        </div>
+        <div class="bt-leg">
+            <span><i class="bt-sw" style="background:#6a4c93"></i>your path</span>
+            <span><i class="bt-sw" style="background:rgba(28,27,24,.18)"></i>other draws</span>
+            <span><i class="bt-sw" style="background:#a13232"></i>margin-call level −S₀/L</span>
+            <span><i class="bt-dot" style="background:#a13232"></i>stopped out</span>
+        </div>
+    </div>
 
     <h3><b>Monte Carlo: the distribution of levered returns</b></h3>
     <p>
-        Running many paths shows the classic basis-trade profile: a distribution with a sharp spike at the
-        small, near-deterministic convergence profit, and a <b>left tail of forced liquidations</b> whose
-        weight grows with \(\sigma_b\) and \(L\) &mdash; <i>&ldquo;picking up nickels in front of a
-        steamroller&rdquo;</i>.
+        The histogram below runs continuously over 2000 paths sharing the same shock buffer, so it
+        <i>morphs</i> as you drag rather than jittering. It shows the classic basis-trade profile: a spike
+        at the convergence profit and a <b>left tail of forced liquidations</b> whose weight grows with
+        \(\sigma_b\) and \(L\) &mdash; <i>&ldquo;picking up nickels in front of a steamroller&rdquo;</i>.
     </p>
-
-    <div id="histChart" style="width:100%; height:340px;"></div>
+    <div class="bt-sim" style="padding:6px;">
+        <div class="bt-fig" style="border:none;margin:0;">
+            <canvas id="cvHist" height="300" role="img"
+                    aria-label="Histogram of levered returns on equity"></canvas>
+            <div class="bt-cap">Distribution of levered returns <i>R</i> = <i>L</i>·Π/S₀ (% on equity)</div>
+        </div>
+    </div>
+    <div class="bt-note">
+        <b>Why the survivor spike is a single bar.</b> Under this model the cash-and-carry is a genuine
+        static arbitrage: every path that reaches delivery earns exactly
+        \(\Pi = S_0 e^{(r-y)T}\left(e^{\varepsilon_0}-1\right)\), with no dispersion whatsoever. That is a
+        property of the model (perfect convergence, constant financing, no delivery option), not of
+        reality — for Treasury futures the cheapest-to-deliver option and repo-rate variability would
+        smear it out. The spike is clipped in the chart so the tail stays visible; its true count is
+        printed above it.
+    </div>
 
     <script type="application/javascript">
-        (function(){
-            const T = 0.5, N = 126, dt = T / N, kappa = 8.0, mu = 0.02, S0 = 100.0;
+    (function(){
+    'use strict';
 
-            function params(){
-                return {
-                    sigma: +document.getElementById('in_sigma').value,
-                    r:     +document.getElementById('in_r').value,
-                    y:     +document.getElementById('in_y').value,
-                    sb:    +document.getElementById('in_sb').value,
-                    e0:    +document.getElementById('in_e0').value,
-                    L:     +document.getElementById('in_L').value
-                };
+    /* ================= model constants ================= */
+    const T = 0.5, N = 126, dt = T / N, MU = 0.02, S0 = 100.0;
+    const M_MAX = 2000, SQDT = Math.sqrt(dt), ST = N + 1;
+
+    /* parameter-free time grids */
+    const Tt = new Float64Array(ST), TAU = new Float64Array(ST), TOT = new Float64Array(ST);
+    for (let i = 0; i <= N; i++){ Tt[i] = i*dt; TAU[i] = T - Tt[i]; TOT[i] = TAU[i]/T; }
+
+    /* ================= RNG ================= */
+    function mulberry32(a){
+        return function(){
+            a |= 0; a = a + 0x6D2B79F5 | 0;
+            let t = Math.imul(a ^ a >>> 15, 1 | a);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+    function randn(rng){                       // Box–Muller
+        let u = 0, v = 0;
+        while (u === 0) u = rng();
+        while (v === 0) v = rng();
+        return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+    }
+
+    /* ================= shock buffer (common random numbers) =================
+       Regenerated ONLY on "New draws". W is the cumulative Brownian for the spot
+       and is fully parameter-free. ZE drives the OU basis; G is rebuilt only when
+       kappa changes (a cheap multiply-add pass, no transcendentals). U holds
+       uniforms reserved for the Phase-2 funding-shock channel.                */
+    let SHK = null;
+    function makeShocks(seed){
+        const M = M_MAX, half = M >> 1, rng = mulberry32(seed >>> 0);
+        const W  = new Float32Array(M*ST);
+        const ZE = new Float32Array(M*N);
+        const U  = new Float32Array(M*N);
+        for (let m = 0; m < half; m++){
+            const ow = m*ST, oz = m*N;
+            let w = 0;
+            for (let i = 0; i < N; i++){
+                w += SQDT*randn(rng);  W[ow+i+1] = w;
+                ZE[oz+i] = randn(rng);
+                U[oz+i]  = rng();
             }
-            function syncLabels(p){
-                document.getElementById('lbl_sigma').textContent = p.sigma.toFixed(2);
-                document.getElementById('lbl_r').textContent  = p.r.toFixed(3);
-                document.getElementById('lbl_y').textContent  = p.y.toFixed(3);
-                document.getElementById('lbl_sb').textContent = p.sb.toFixed(3);
-                document.getElementById('lbl_e0').textContent = p.e0.toFixed(3);
-                document.getElementById('lbl_L').textContent  = p.L;
+        }
+        for (let m = half; m < M; m++){        // antithetic partners: free variance reduction
+            const ow = m*ST, pw = (m-half)*ST, oz = m*N, pz = (m-half)*N;
+            for (let i = 0; i < N; i++){
+                W[ow+i+1] = -W[pw+i+1];
+                ZE[oz+i]  = -ZE[pz+i];
+                U[oz+i]   = 1 - U[pz+i];
             }
-            function randn(){ // Box-Muller
-                let u = 0, v = 0;
-                while (u === 0) u = Math.random();
-                while (v === 0) v = Math.random();
-                return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+        }
+        return {W, ZE, U, G: new Float32Array(M*ST), D: new Float64Array(ST),
+                kappa: NaN, seed: seed >>> 0, M};
+    }
+    function buildOU(shk, kappa){
+        if (shk.kappa === kappa) return;
+        const dec = 1 - kappa*dt, D = shk.D, G = shk.G, ZE = shk.ZE, M = shk.M;
+        D[0] = 1;
+        for (let i = 0; i < N; i++) D[i+1] = D[i]*dec;
+        for (let m = 0; m < M; m++){
+            const og = m*ST, oz = m*N;
+            let g = 0;
+            for (let i = 0; i < N; i++){ g = g*dec + SQDT*ZE[oz+i]; G[og+i+1] = g; }
+        }
+        shk.kappa = kappa;
+    }
+
+    /* ================= per-parameter tables (functions of t only) ================= */
+    function buildTables(p){
+        const dS = new Float64Array(ST), ca = new Float64Array(ST),
+              di = new Float64Array(ST), gr = new Float64Array(ST);
+        const halfv = 0.5*p.sigma*p.sigma;
+        for (let i = 0; i <= N; i++){
+            dS[i] = (MU - halfv)*Tt[i];
+            ca[i] = Math.exp((p.r - p.y)*TAU[i]);
+            di[i] = Math.exp(p.r*Tt[i]);
+            gr[i] = Math.exp(p.y*Tt[i]);
+        }
+        p.dS = dS; p.ca = ca; p.di = di; p.gr = gr;
+        p.n  = Math.exp(-p.y*T);
+        p.F0 = S0*ca[0]*Math.exp(p.e0);
+        p.eq = S0/p.L;
+        p.pi = p.F0 - S0*Math.exp((p.r - p.y)*T);   // exact, deterministic
+        return p;
+    }
+
+    /* ================= pure simulation: no RNG inside ================= */
+    function simulate(p, shk, m, rec){
+        const o = m*ST, D = shk.D, G = shk.G, W = shk.W;
+        let stopIdx = -1, vStop = 0;
+        for (let i = 0; i <= N; i++){
+            const S   = S0*Math.exp(p.dS[i] + p.sigma*W[o+i]);
+            const eps = p.e0*D[i] + p.sb*G[o+i];
+            const F   = S*p.ca[i]*Math.exp(eps*TOT[i]);
+            const V   = p.n*(p.gr[i]*S - S0*p.di[i]) + (p.F0 - F);
+            if (stopIdx < 0 && V < -p.eq){ stopIdx = i; vStop = V; }
+            if (rec){ rec.S[i] = S; rec.F[i] = F; rec.B[i] = F - S; rec.V[i] = V; }
+        }
+        const pnl = stopIdx >= 0 ? vStop : p.pi;
+        return {stopIdx, pnl, ret: p.L*pnl/S0};
+    }
+
+    /* ================= canvas plumbing ================= */
+    function ctxOf(cv){
+        const dpr = window.devicePixelRatio || 1;
+        const w = cv.clientWidth || 600, h = cv.clientHeight || 260;
+        if (cv.width !== Math.round(w*dpr) || cv.height !== Math.round(h*dpr)){
+            cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+        }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        return {ctx, w, h};
+    }
+    function niceTicks(lo, hi, n){
+        const span = (hi - lo) || 1, raw = span/n;
+        const mag = Math.pow(10, Math.floor(Math.log10(raw))), q = raw/mag;
+        const step = (q < 1.5 ? 1 : q < 3 ? 2 : q < 7 ? 5 : 10)*mag;
+        const out = [];
+        for (let v = Math.ceil(lo/step)*step; v <= hi + step*1e-9; v += step) out.push(v);
+        return {ticks: out, step};
+    }
+    function fmt(v, step){
+        const d = Math.max(0, Math.min(6, -Math.floor(Math.log10(step)) + (step < 1 ? 0 : 0)));
+        return v.toFixed(isFinite(d) ? d : 2);
+    }
+    const PAD = {l: 56, r: 14, t: 12, b: 30};
+    const FONT = '11px ui-monospace, Menlo, Consolas, monospace';
+
+    function drawXY(cv, cfg){
+        const {ctx, w, h} = ctxOf(cv);
+        const x = cfg.x, pw = w - PAD.l - PAD.r, ph = h - PAD.t - PAD.b;
+        let lo = Infinity, hi = -Infinity;
+        cfg.series.forEach(s => { for (let i = 0; i < s.y.length; i++){
+            if (s.y[i] < lo) lo = s.y[i]; if (s.y[i] > hi) hi = s.y[i]; } });
+        (cfg.hlines || []).forEach(l => { if (l.y < lo) lo = l.y; if (l.y > hi) hi = l.y; });
+        if (!isFinite(lo)){ lo = 0; hi = 1; }
+        const pad = (hi - lo)*0.12 || 0.5; lo -= pad; hi += pad;
+        const X = v => PAD.l + (v/T)*pw;
+        const Y = v => PAD.t + (1 - (v - lo)/(hi - lo))*ph;
+
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const yt = niceTicks(lo, hi, 4);
+        ctx.strokeStyle = 'rgba(28,27,24,.08)'; ctx.fillStyle = '#8a8879'; ctx.lineWidth = 1;
+        yt.ticks.forEach(v => {
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
+            ctx.textAlign = 'right'; ctx.fillText(fmt(v, yt.step), PAD.l - 8, yy);
+        });
+        const xt = niceTicks(0, T, 5);
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => {
+            if (v < -1e-9 || v > T + 1e-9) return;
+            ctx.fillText(fmt(v, xt.step), X(v), h - PAD.b + 8);
+        });
+        ctx.textBaseline = 'middle';
+
+        (cfg.ghosts || []).forEach(g => {
+            ctx.beginPath(); ctx.strokeStyle = 'rgba(28,27,24,.16)'; ctx.lineWidth = 1;
+            const end = g.end === undefined ? N : g.end;
+            for (let i = 0; i <= end; i++){ const px = X(x[i]), py = Y(g.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        (cfg.hlines || []).forEach(l => {
+            const yy = Math.round(Y(l.y)) + .5;
+            ctx.save(); ctx.setLineDash(l.dash || [4, 4]);
+            ctx.strokeStyle = l.color; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
+            ctx.restore();
+            if (l.label){ ctx.fillStyle = l.color; ctx.textAlign = 'left';
+                ctx.fillText(l.label, PAD.l + 6, yy - 9); }
+        });
+        cfg.series.forEach(s => {
+            if (s.fill){
+                ctx.beginPath(); ctx.moveTo(X(x[0]), Y(0));
+                for (let i = 0; i < s.y.length; i++) ctx.lineTo(X(x[i]), Y(s.y[i]));
+                ctx.lineTo(X(x[s.y.length-1]), Y(0)); ctx.closePath();
+                ctx.fillStyle = s.fill; ctx.fill();
             }
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.6;
+            for (let i = 0; i < s.y.length; i++){ const px = X(x[i]), py = Y(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        (cfg.markers || []).forEach(mk => {
+            ctx.fillStyle = mk.color;
+            ctx.beginPath(); ctx.arc(X(mk.x), Y(mk.y), mk.r || 4, 0, Math.PI*2); ctx.fill();
+            if (mk.label){ ctx.textAlign = 'left';
+                ctx.fillText(mk.label, X(mk.x) + 8, Y(mk.y) - 8); }
+        });
+        if (cfg.legend){
+            ctx.textAlign = 'left'; let lx = PAD.l + 6;
+            cfg.legend.forEach(e => {
+                ctx.fillStyle = e.color; ctx.fillRect(lx, PAD.t + 4, 12, 2.5);
+                ctx.fillStyle = '#555'; ctx.fillText(e.name, lx + 17, PAD.t + 5);
+                lx += 30 + ctx.measureText(e.name).width;
+            });
+        }
+        ctx.fillStyle = '#8a8879'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('t (years)', w - PAD.r, h - 4);
+    }
 
-            // Simulate one path; returns arrays and trade outcome
-            function simulate(p){
-                const t = [], S = [S0], eps = [p.e0], F = [], B = [], V = [];
-                const equity = S0 / p.L;
-                let stopped = false, stopIdx = null;
-                for (let i = 0; i <= N; i++) t.push(i*dt);
-                F.push(S0 * Math.exp((p.r - p.y)*T) * Math.exp(p.e0));
-                B.push(F[0] - S0);
-                V.push(0);
-                for (let i = 1; i <= N; i++){
-                    const s  = S[i-1] * Math.exp((mu - 0.5*p.sigma*p.sigma)*dt + p.sigma*Math.sqrt(dt)*randn());
-                    const e  = eps[i-1] + (-kappa*eps[i-1])*dt + p.sb*Math.sqrt(dt)*randn();
-                    const tau = T - t[i];
-                    const f  = s * Math.exp((p.r - p.y)*tau) * Math.exp(e * tau/T);
-                    S.push(s); eps.push(e); F.push(f); B.push(f - s);
-                    const v = (s*Math.exp(p.y*t[i]) - S0*Math.exp(p.r*t[i])) + (F[0] - f);
-                    V.push(v);
-                    if (!stopped && v < -equity){ stopped = true; stopIdx = i; }
-                }
-                const pnl = stopped ? V[stopIdx] : V[N];
-                return {t, S, F, B, V, stopped, stopIdx, ret: p.L * pnl / S0, equity};
+    function drawHist(cv, vals, nStop){
+        const {ctx, w, h} = ctxOf(cv);
+        const pw = w - PAD.l - PAD.r, ph = h - PAD.t - PAD.b;
+        let lo = Infinity, hi = -Infinity;
+        for (let i = 0; i < vals.length; i++){
+            if (vals[i] < lo) lo = vals[i]; if (vals[i] > hi) hi = vals[i]; }
+        if (hi - lo < 1e-9){ lo -= 1; hi += 1; }
+        const nb = 64, bw = (hi - lo)/nb, counts = new Int32Array(nb);
+        for (let i = 0; i < vals.length; i++){
+            let k = Math.floor((vals[i] - lo)/bw); if (k >= nb) k = nb - 1; if (k < 0) k = 0;
+            counts[k]++;
+        }
+        const sorted = Array.from(counts).sort((a, b) => b - a);
+        const top = sorted[0], second = sorted[1] || 0;
+        let yMax = top, clipped = false;
+        if (top > 4*Math.max(second, 1)){ yMax = Math.max(second*1.6, top*0.08); clipped = true; }
+
+        const X = v => PAD.l + ((v - lo)/(hi - lo))*pw;
+        const Y = c => PAD.t + (1 - Math.min(c, yMax)/yMax)*ph;
+
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const yt = niceTicks(0, yMax, 4);
+        ctx.strokeStyle = 'rgba(28,27,24,.08)'; ctx.lineWidth = 1;
+        yt.ticks.forEach(v => {
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
+            ctx.fillStyle = '#8a8879'; ctx.textAlign = 'right';
+            ctx.fillText(String(Math.round(v)), PAD.l - 8, yy);
+        });
+        const bwPx = pw/nb;
+        for (let k = 0; k < nb; k++){
+            if (!counts[k]) continue;
+            const c0 = lo + k*bw, y0 = Y(counts[k]);
+            ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(161,50,50,.75)' : 'rgba(63,107,63,.75)';
+            ctx.fillRect(X(c0) + .5, y0, Math.max(bwPx - 1, 1), PAD.t + ph - y0);
+            if (clipped && counts[k] > yMax){
+                ctx.fillStyle = '#333'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                ctx.fillText(String(counts[k]), X(c0) + bwPx/2, PAD.t - 1);
+                ctx.textBaseline = 'middle';
             }
+        }
+        const zx = X(0);
+        if (zx >= PAD.l && zx <= w - PAD.r){
+            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(28,27,24,.4)';
+            ctx.beginPath(); ctx.moveTo(zx, PAD.t); ctx.lineTo(zx, PAD.t + ph); ctx.stroke();
+            ctx.restore();
+        }
+        const xt = niceTicks(lo, hi, 6);
+        ctx.fillStyle = '#8a8879'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => { if (v >= lo && v <= hi) ctx.fillText(fmt(v, xt.step), X(v), h - PAD.b + 8); });
+        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('return on equity (%)', w - PAD.r, h - 4);
+    }
 
-            window.resamplePath = function(){
-                const p = params(); syncLabels(p);
-                const sim = simulate(p);
-                Plotly.newPlot('pathChart', [
-                    {x: sim.t, y: sim.S, name: 'Spot  S<sub>t</sub>',    line: {color: '#1f77b4'}},
-                    {x: sim.t, y: sim.F, name: 'Futures  F<sub>t</sub>', line: {color: '#d62728'}}
-                ], {title: 'Spot vs futures — convergence at expiry', margin: {t: 40},
-                    xaxis: {title: 't (years)'}, yaxis: {title: 'price'}, legend: {orientation: 'h'}},
-                    {responsive: true});
-                Plotly.newPlot('basisChart', [
-                    {x: sim.t, y: sim.B, name: 'B<sub>t</sub> = F<sub>t</sub> − S<sub>t</sub>',
-                     line: {color: '#2ca02c'}, fill: 'tozeroy'}
-                ], {title: 'The basis B<sub>t</sub> (→ 0 at T)', margin: {t: 40},
-                    xaxis: {title: 't (years)'}, yaxis: {title: 'basis'}},
-                    {responsive: true});
-                const shapes = [{type: 'line', x0: 0, x1: T, y0: -sim.equity, y1: -sim.equity,
-                                 line: {color: 'red', dash: 'dash'}}];
-                const annotations = [{x: T*0.02, y: -sim.equity, xanchor: 'left', yanchor: 'bottom',
-                                      text: 'margin-call level −S₀/L', showarrow: false, font: {color: 'red'}}];
-                if (sim.stopped){
-                    annotations.push({x: sim.t[sim.stopIdx], y: sim.V[sim.stopIdx],
-                                      text: '💥 stopped out', showarrow: true, arrowhead: 4});
-                }
-                Plotly.newPlot('pnlChart', [
-                    {x: sim.t, y: sim.V, name: 'V<sub>t</sub>', line: {color: '#9467bd'}}
-                ], {title: 'Mark-to-market P&L of the basis trade (per unit notional)', margin: {t: 40},
-                    xaxis: {title: 't (years)'}, yaxis: {title: 'V<sub>t</sub>'},
-                    shapes: shapes, annotations: annotations},
-                    {responsive: true});
-            };
+    /* ================= wiring ================= */
+    const ids = ['in_sigma','in_r','in_y','in_sb','in_kappa','in_e0','in_L'];
+    const el = id => document.getElementById(id);
+    const NGHOST = 18;
+    const rec  = {S: new Float64Array(ST), F: new Float64Array(ST),
+                  B: new Float64Array(ST), V: new Float64Array(ST)};
+    const ghostV = []; for (let k = 0; k < NGHOST; k++) ghostV.push(new Float64Array(ST));
+    const ghostRec = {S: new Float64Array(ST), F: new Float64Array(ST),
+                      B: new Float64Array(ST), V: new Float64Array(ST)};
+    const rets = new Float64Array(M_MAX);
 
-            window.runMonteCarlo = function(){
-                const p = params(); syncLabels(p);
-                const M = 2000, rets = [];
-                let nStopped = 0;
-                for (let m = 0; m < M; m++){
-                    const sim = simulate(p);
-                    rets.push(100 * sim.ret);
-                    if (sim.stopped) nStopped++;
-                }
-                document.getElementById('mc_status').textContent =
-                    'Margin calls: ' + (100*nStopped/M).toFixed(1) + '% of paths';
-                Plotly.newPlot('histChart', [
-                    {x: rets, type: 'histogram', nbinsx: 80, marker: {color: '#1f77b4'},
-                     name: 'levered return'}
-                ], {title: 'Distribution of levered returns  R = L·Π/S₀  (%, on equity)',
-                    margin: {t: 40}, xaxis: {title: 'return on equity (%)'},
-                    yaxis: {title: 'frequency'},
-                    shapes: [{type: 'line', x0: 0, x1: 0, yref: 'paper', y0: 0, y1: 1,
-                              line: {color: 'grey', dash: 'dot'}}]},
-                    {responsive: true});
-            };
+    let MC_N = M_MAX, timed = false, pending = false;
 
-            ['in_sigma','in_r','in_y','in_sb','in_e0','in_L'].forEach(id =>
-                document.getElementById(id).addEventListener('input', () => window.resamplePath()));
+    function params(){
+        return {sigma:+el('in_sigma').value, r:+el('in_r').value, y:+el('in_y').value,
+                sb:+el('in_sb').value, kappa:+el('in_kappa').value,
+                e0:+el('in_e0').value, L:+el('in_L').value};
+    }
+    function syncLabels(p){
+        el('lbl_sigma').textContent = p.sigma.toFixed(2);
+        el('lbl_r').textContent     = p.r.toFixed(3);
+        el('lbl_y').textContent     = p.y.toFixed(3);
+        el('lbl_sb').textContent    = p.sb.toFixed(3);
+        el('lbl_kappa').textContent = p.kappa.toFixed(1);
+        el('lbl_e0').textContent    = p.e0.toFixed(3);
+        el('lbl_L').textContent     = p.L + '\u00d7';
+    }
 
-            window.addEventListener('load', () => { window.resamplePath(); window.runMonteCarlo(); });
-        })();
+    function render(full){
+        const t0 = performance.now();
+        const p = buildTables(params());
+        syncLabels(p);
+        buildOU(SHK, p.kappa);
+
+        /* --- highlighted path + ghosts --- */
+        const s0 = simulate(p, SHK, 0, rec);
+        const ghosts = [];
+        for (let k = 1; k <= NGHOST; k++){
+            const g = simulate(p, SHK, k, ghostRec);
+            ghostV[k-1].set(ghostRec.V);
+            ghosts.push({y: ghostV[k-1], end: g.stopIdx >= 0 ? g.stopIdx : N});
+        }
+
+        drawXY(el('cvPath'), {x: Tt,
+            series: [{y: rec.S, color: '#2f5f8a'}, {y: rec.F, color: '#9c5a2e'}],
+            legend: [{name: 'spot S(t)', color: '#2f5f8a'}, {name: 'futures F(t)', color: '#9c5a2e'}]});
+
+        drawXY(el('cvBasis'), {x: Tt,
+            series: [{y: rec.B, color: '#3f6b3f', fill: 'rgba(63,107,63,.10)'}],
+            hlines: [{y: 0, color: 'rgba(28,27,24,.35)', dash: [2, 3]}]});
+
+        const mk = [];
+        if (s0.stopIdx >= 0) mk.push({x: Tt[s0.stopIdx], y: rec.V[s0.stopIdx],
+                                      color: '#a13232', r: 4.5, label: 'stopped out'});
+        drawXY(el('cvPnl'), {x: Tt, ghosts: ghosts,
+            series: [{y: rec.V.subarray(0, (s0.stopIdx >= 0 ? s0.stopIdx : N) + 1),
+                      color: '#6a4c93', w: 2}],
+            hlines: [{y: -p.eq, color: '#a13232', label: 'margin call  \u2212S\u2080/L = ' + (-p.eq).toFixed(2)},
+                     {y: 0, color: 'rgba(28,27,24,.3)', dash: [2, 3]},
+                     {y: p.pi, color: 'rgba(63,107,63,.7)', dash: [5, 4],
+                      label: '\u03a0 = ' + p.pi.toFixed(3)}],
+            markers: mk});
+
+        /* --- Monte Carlo --- */
+        const M = full ? M_MAX : MC_N;
+        let nStop = 0, sum = 0;
+        for (let m = 0; m < M; m++){
+            const s = simulate(p, SHK, m, null);
+            const R = 100*s.ret;
+            rets[m] = R; sum += R;
+            if (s.stopIdx >= 0) nStop++;
+        }
+        const view = rets.subarray(0, M);
+        drawHist(el('cvHist'), view, nStop);
+
+        const srt = Float64Array.from(view).sort();
+        const q = f => srt[Math.min(M - 1, Math.max(0, Math.floor(f*M)))];
+        const pr = nStop/M, se = 100*Math.sqrt(pr*(1 - pr)/M);
+        el('st_mc').innerHTML = (100*pr).toFixed(1) + '%' +
+            ' <span class="se">\u00b1' + se.toFixed(1) + '</span>';
+        el('st_mean').textContent  = (sum/M).toFixed(1) + '%';
+        el('st_med').textContent   = q(0.5).toFixed(1) + '%';
+        el('st_var').textContent   = q(0.05).toFixed(1) + '%';
+        el('st_worst').textContent = srt[0].toFixed(1) + '%';
+        el('st_pi').textContent    = (100*p.L*p.pi/S0).toFixed(1) + '%';
+
+        const ms = performance.now() - t0;
+        if (!timed){ timed = true; if (ms > 25) MC_N = 500; }
+        el('btPerf').textContent = M + ' paths \u00b7 ' + ms.toFixed(0) + ' ms';
+    }
+
+    function schedule(full){
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(() => { pending = false; render(full); });
+    }
+
+    ids.forEach(id => {
+        el(id).addEventListener('input',  () => schedule(false));
+        el(id).addEventListener('change', () => schedule(true));
+    });
+    el('btnDraws').addEventListener('click', () => {
+        const s = (Math.random()*2147483647) >>> 0;
+        el('in_seed').value = s;
+        SHK = makeShocks(s);
+        schedule(true);
+    });
+    el('in_seed').addEventListener('change', () => {
+        SHK = makeShocks((+el('in_seed').value) >>> 0);
+        schedule(true);
+    });
+    let rt = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(rt); rt = setTimeout(() => schedule(true), 120);
+    });
+
+    SHK = makeShocks((+el('in_seed').value) >>> 0);
+    render(true);
+    })();
     </script>
 
-
     <br>
-
     <h4 id="REFERENCES"><i>References</i></h4>
-
     [1] <a href="https://www.cmegroup.com/education/courses/introduction-to-treasuries/understanding-treasury-futures-basis.html" id="ref1">CME Group — Understanding the Treasury futures basis</a>
     <br>
     [2] <a href="https://www.bis.org/publ/qtrpdf/r_qt2003v.htm" id="ref3">BIS Quarterly Review — Leverage and margin spirals in fixed income markets (March 2020)</a>
-
-
-
     <br><br>
 
-    <!-- ________________________________________________________________________________________________ -->
-    <!-- ________________________________________________________________________________________________ -->
-    <!-- ________________________________________________________________________________________________ -->
-    <!--    <h7>-->
-    <!-- <span style="float:right;">
-   <a href="./L2.html"><b><img src="../Icons/next.png" width="20px" align="right">Next</b></a>
-   </span>
-   </h7>
-   <br> -->
-
-    <h5> <a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
-
-
-
+    <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
     <hr class="w3-opacity">
 </div>
 </div>
 <script type="text/javascript" src="../../js/footer.js"></script>
-
 <!-- End page content -->
 </div>
-
-<script src="../../js/OpenCloseSidebar.js"></script>
-<!--<script src="../../js/ModalImageGallery.js"></script>-->
-<script src="../../js/OpenCloseCollapsible.js"></script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Oribi Analytics -->
-    <script type="application/javascript">
-        (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
-    </script>
-    <!-- End Oribi Analytics -->
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NLJ2P23');</script>
-    <!-- End Google Tag Manager -->
-
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Luca Mingarelli</title>
-    <link rel="icon" href="../../Icons/stork.png" type="image/png">
-
-    <!-- MathJax -->
-    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
-    <!-- Code highlight -->
-    <link rel="stylesheet" href="../../PRISM/prism.css">
-    <script src="../../PRISM/prism.js"></script>
-
-    <!-- Site styles -->
-    <link rel="stylesheet" href="../../css/w3.css">
-    <link rel="stylesheet" href="../../css/font.css">
-    <link rel="stylesheet" href="../../css/responsiveiframe.css">
-    <script src="../../js/style_preamble.js"></script>
-
-    <style>
-        .collapsible {background-color: #777;color: white;cursor: pointer;  padding: 2px;width: 100%;
-            border: none;  text-align: left;  outline: none;  font-size: 15px; border-radius: 2px;}
-        .collapsible:hover {  background-color: #555;}
-        .content {display: none;  overflow: hidden;  background-color: #DCDCDC;}
-
-        /* ---- Section numbering (light editorial layer) ---- */
-        .sec-idx { font-size: 12px; letter-spacing: .06em; color: #9c5a2e;
-            font-family: monospace; margin: 0 0 2px; }
-        .sec-h { margin: 2px 0 8px; }
-
-        /* ---- Definition / Proposition / Model boxes ---- */
-        .def-box { border-left: 3px solid #9c5a2e; background: #faf7f2;
-            padding: 8px 14px 10px; margin: 16px 0; border-radius: 0 3px 3px 0; }
-        .def-label { font-weight: 700; font-size: 13.5px; color: #333; margin-bottom: 2px; }
-        .def-label .n { color: #9c5a2e; }
-        .def-caption { font-size: 12px; color: #777; margin-top: 4px; }
-
-        /* ---- Hero convergence figure ---- */
-        .hero-figure { margin: 10px 0 6px; }
-        .hero-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 4px;
-            font-size: 11.5px; color: #666; }
-        .hero-legend span { display: inline-flex; align-items: center; gap: 6px; }
-        .hero-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-        .hero-frame { background: #fff; border: 1px solid #e0e0e0; border-radius: 3px; padding: 8px; }
-        .hero-frame canvas { width: 100%; display: block; }
-        .hero-cap { display: flex; justify-content: space-between; font-size: 11.5px;
-            color: #888; border-top: 1px solid #eee; margin-top: 6px; padding-top: 6px; }
-        .hero-cap b { color: #9c5a2e; }
-
-        /* ---- Canvas chart frames (Plotly replacement) ---- */
-        .chart-frame { width: 100%; background: #fff; border: 1px solid #e0e0e0;
-            border-radius: 3px; margin: 6px 0; padding: 6px 6px 2px; }
-        .chart-frame canvas { width: 100%; display: block; }
-        .chart-title { font-size: 13px; color: #333; margin: 2px 4px 4px; font-weight: 600; }
-        .chart-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 4px 6px 8px;
-            font-size: 11.5px; color: #666; }
-        .chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
-        .chart-legend i.line { width: 14px; height: 2px; display: inline-block; }
-        .chart-legend i.dot  { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-
-        /* ---- Monte Carlo stat row ---- */
-        .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
-            border: 1px solid #e0e0e0; border-radius: 3px; margin: 8px 0; background: #fff; }
-        .stat-row .stat { padding: 10px 12px; border-left: 1px solid #eee; }
-        .stat-row .stat:first-child { border-left: none; }
-        .stat-row .k { font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em;
-            color: #999; margin-bottom: 5px; }
-        .stat-row .v { font-size: 20px; font-weight: 600; color: #333; }
-        .stat-row .v.good { color: #3f6b3f; }
-        .stat-row .v.bad  { color: #a13232; }
-        .stat-row .v.warn { color: #9c5a2e; }
-        @media (max-width: 600px){ .stat-row { grid-template-columns: 1fr 1fr; }
-            .stat-row .stat:nth-child(3){ border-left:none; border-top:1px solid #eee; }
-            .stat-row .stat:nth-child(4){ border-top:1px solid #eee; } }
-
-        /* ---- Financing-asymmetry explainer cards ---- */
-        .legs { display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-            border: 1px solid #e0e0e0; border-radius: 3px; margin: 16px 0; background: #fff; }
-        .legs .leg-card + .leg-card { border-left: 1px solid #e0e0e0; }
-        @media (max-width: 600px){ .legs { grid-template-columns: 1fr; }
-            .legs .leg-card + .leg-card { border-left: none; border-top: 1px solid #e0e0e0; } }
-        .leg-card { padding: 14px 16px; }
-        .leg-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #333; font-style: italic; }
-        .leg-card p { margin: 0; font-size: 14px; color: #555; }
-    </style>
-</head>
-
-<body class="w3-light-grey w3-content" style="max-width:2600px">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<!-- NavigationBar -->
-<script src="../../js/Navbar.js"></script>
-<!-- PRE_CONTENT -->
-<script src="../../js/pre_content.js"></script>
-
-
-<div class="w3-content w3-justify" style="max-width:800px">
-
-    <h1 style="text-align: left;"><b>Basis Trade</b></h1>
-    <p style="color:#555;">
-        Two prices for the same asset should agree by delivery day. When they don&rsquo;t, the gap between
-        them &mdash; the <i>basis</i> &mdash; is either free money or a very patient way to lose your
-        shirt. Here is the arithmetic, and the risk hiding inside it.
-    </p>
-
-    <!-- ---------- Hero convergence figure ---------- -->
-    <div class="hero-figure">
-        <div class="hero-legend">
-            <span><i style="background:#d62728"></i>futures F<sub>t</sub></span>
-            <span><i style="background:#1f77b4"></i>spot S<sub>t</sub></span>
-            <span><i style="background:#2ca02c"></i>basis B<sub>t</sub> = F<sub>t</sub> &minus; S<sub>t</sub></span>
-        </div>
-        <div class="hero-frame">
-            <canvas id="heroCanvas" height="230"></canvas>
-            <div class="hero-cap">
-                <span>t = today &rarr; T = delivery</span>
-                <span><b id="heroDays">182</b> days to expiry</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================= §1 ============================= -->
-    <p class="sec-idx">&sect;1</p>
-    <h3 class="sec-h"><b>Defining the basis</b></h3>
-    <p>
-        For any asset with a futures contract &mdash; a Treasury note, a barrel of oil, an equity index
-        &mdash; two prices exist at once: the spot price you would pay to own it now, and the futures
-        price you lock in today for delivery later. The <b>basis</b> is simply the difference.
-    </p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Definition 1</span> &mdash; Basis</div>
-        \begin{equation}
-            B_t = F_t - S_t .
-        \end{equation}
-    </div>
-    <p>
-        At the instant a futures contract expires it converges to spot &mdash; delivery forces it to. So
-        <b>the basis is a number engineered to hit exactly zero on a known date</b>. That is what makes
-        basis trades feel like arbitrage: you are not betting on where the market goes, but on a difference
-        collapsing to a value you already know.
-    </p>
-
-    <!-- ============================= §2 ============================= -->
-    <p class="sec-idx">&sect;2</p>
-    <h3 class="sec-h"><b>Why the basis isn&rsquo;t zero today</b></h3>
-    <p>
-        If you could buy the asset now and hold it for free, spot and futures would already be equal. They
-        aren&rsquo;t, because holding costs something (financing) and sometimes pays something back
-        (dividends, coupons, convenience yield). This is the <b>cost-of-carry</b> model.
-    </p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Definition 2</span> &mdash; Cost of carry</div>
-        \begin{equation}
-            F_t = S_t\, e^{(r - y)(T - t)} .
-        \end{equation}
-        <div class="def-caption">\(r\) = financing (repo) rate &middot; \(y\) = yield earned while holding
-            the asset &middot; \(T-t\) = time to delivery.</div>
-    </div>
-    <p>Rearranged, the &ldquo;fair&rdquo; basis is just the net cost of carrying the asset to delivery.</p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Corollary 2.1</span> &mdash; Fair basis</div>
-        \begin{equation}
-            B_t^{\text{fair}} = S_t\left(e^{(r - y)(T - t)} - 1\right),
-        \end{equation}
-        <div class="def-caption">and crucially \(B_T = 0\): at delivery the futures and the cash asset are
-            the same thing.</div>
-    </div>
-    <p>
-        When the <i>market&rsquo;s</i> basis drifts away from this fair value, a mechanical trade appears:
-        buy the cheap side, sell the expensive side, hold to delivery, collect the difference.
-    </p>
-
-    <!-- ============================= §3 ============================= -->
-    <p class="sec-idx">&sect;3</p>
-    <h3 class="sec-h"><b>The trade itself</b></h3>
-    <p>
-        The classic version is <b>cash-and-carry</b>: futures are rich
-        (\(B_0 > B_0^{\text{fair}}\)), so you buy the underlying and sell the future against it, financing
-        the purchase until delivery.
-    </p>
-    <div class="legs">
-        <div class="leg-card">
-            <div class="leg-title">Long leg &mdash; buy spot</div>
-            <p>Borrow cash at rate \(r\), buy the asset today at \(S_0\). You own it and owe the loan;
-               at \(T\) you repay \(S_0 e^{rT}\) and deliver the asset.</p>
-        </div>
-        <div class="leg-card">
-            <div class="leg-title">Short leg &mdash; sell the future</div>
-            <p>Sell a futures contract at \(F_0\), obligating you to deliver the asset at \(T\) for a
-               price fixed today. No cash up front &mdash; futures are margined.</p>
-        </div>
-    </div>
-    <p>Net it out and the profit is locked in at inception, regardless of where the market goes between.</p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Proposition 3</span> &mdash; Locked-in profit</div>
-        \begin{equation}
-            \Pi = F_0 - S_0\, e^{(r - y)T},
-        \end{equation}
-        <div class="def-caption">the initial <i>net</i> basis. Because \(\Pi\) is tiny relative to
-            \(S_0\), the trade is run with leverage \(L\), posting equity \(E = S_0/L\); the levered
-            return is \(R = L\,\Pi/S_0\).</div>
-    </div>
-    <p>
-        That is the textbook version. In practice you do not hold to delivery in peace &mdash; you hold
-        through a <i>path</i>, and the path is where the risk actually lives.
-    </p>
-
-    <!-- ============================= §4 ============================= -->
-    <p class="sec-idx">&sect;4</p>
-    <h3 class="sec-h"><b>Two legs, two ways to be forced out</b></h3>
-    <p>
-        The two legs are financed in completely different ways, and that asymmetry is the source of a
-        <i>second</i>, independent failure mode that the margin-call story alone misses.
-    </p>
-    <div class="legs">
-        <div class="leg-card">
-            <div class="leg-title">Long asset &mdash; financed in repo</div>
-            <p>The bond secures its own financing: you repo it out, pledging the bond as collateral for
-               the cash that bought it. You post equity only to cover the <b>haircut</b> &mdash; typically
-               1&ndash;3% of value. But the lender can raise that haircut or refuse to roll: a
-               <b>funding shock</b>.</p>
-        </div>
-        <div class="leg-card">
-            <div class="leg-title">Short future &mdash; margined in cash</div>
-            <p>The clearing house marks this leg to market daily and demands <b>cash</b> variation margin
-               as the position moves against you. This is the channel behind the mark-to-market knockout
-               \(V_t < -S_0/L\).</p>
-        </div>
-    </div>
-    <p>
-        So there are two distinct ways the trade dies before convergence can rescue it: a
-        <b>basis-driven margin call</b> (the mark falls past your equity), and a <b>repo funding shock</b>
-        (the lender pulls financing regardless of where the basis is). <b>March 2020 was largely the
-        second channel</b>: repo funding for Treasuries became scarce all at once, forcing leveraged basis
-        trades out on a <i>funding</i> event rather than a pricing one.
-    </p>
-
-    <!-- ============================= §5 ============================= -->
-    <p class="sec-idx">&sect;5</p>
-    <h3 class="sec-h"><b>The path is stochastic &mdash; simulate it</b></h3>
-    <p>
-        Model the spot as a geometric Brownian motion and the basis <i>mispricing</i>
-        \(\varepsilon_t\) as a mean-reverting (Ornstein&ndash;Uhlenbeck) process forced to vanish at
-        expiry:
-    </p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Model 5.1</span> &mdash; Price &amp; basis dynamics</div>
-        \begin{align}
-            dS_t &= \mu S_t\, dt + \sigma S_t\, dW_t, \\
-            d\varepsilon_t &= -\kappa\, \varepsilon_t\, dt + \sigma_b\, dZ_t, \\
-            F_t &= S_t\, e^{(r - y)(T - t)}\; e^{\varepsilon_t \frac{T-t}{T}} .
-        \end{align}
-        <div class="def-caption">The damping factor \(\tfrac{T-t}{T}\) guarantees convergence
-            \(F_T = S_T\) regardless of the noise.</div>
-    </div>
-    <p>
-        On top of this pricing dynamics we overlay an <i>independent</i> funding-shock channel: in each
-        step of length \(dt\), the repo lender pulls financing &mdash; forcing an immediate unwind at the
-        prevailing mark \(V_t\) &mdash; with probability
-    </p>
-    <div class="def-box">
-        <div class="def-label"><span class="n">Model 5.2</span> &mdash; Funding shocks</div>
-        \begin{equation}
-            \mathbb{P}(\text{funding shock in } [t, t+dt]) = 1 - e^{-h\,dt} \approx h\,dt,
-        \end{equation}
-        <div class="def-caption">\(h\) = funding-stress rate (expected shocks/yr). This event is
-            <i>independent of the basis level</i> &mdash; it can fire even when the trade is in profit.</div>
-    </div>
-    <p>
-        Play with the parameters below: note how the <b>final P&amp;L barely changes</b> (convergence is a
-        near-certainty) while the <b>path</b> &mdash; and hence the probability of being forced out through
-        <i>either</i> channel &mdash; depends strongly on \(\sigma_b\), \(L\), and \(h\).
-    </p>
-
-    <div class="w3-card w3-white w3-padding" style="margin: 12px 0;">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
-            <label>Spot vol \(\sigma\): <span id="lbl_sigma">0.10</span>
-                <input type="range" id="in_sigma" min="0.01" max="0.40" step="0.01" value="0.10" style="width:100%"></label>
-            <label>Repo rate \(r\): <span id="lbl_r">0.04</span>
-                <input type="range" id="in_r" min="0.00" max="0.10" step="0.005" value="0.04" style="width:100%"></label>
-            <label>Carry yield \(y\): <span id="lbl_y">0.02</span>
-                <input type="range" id="in_y" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
-            <label>Basis vol \(\sigma_b\): <span id="lbl_sb">0.02</span>
-                <input type="range" id="in_sb" min="0.00" max="0.10" step="0.005" value="0.02" style="width:100%"></label>
-            <label>Initial mispricing \(\varepsilon_0\): <span id="lbl_e0">0.010</span>
-                <input type="range" id="in_e0" min="0.000" max="0.030" step="0.001" value="0.010" style="width:100%"></label>
-            <label>Leverage \(L\): <span id="lbl_L">25</span>&times;
-                <input type="range" id="in_L" min="1" max="100" step="1" value="25" style="width:100%"></label>
-            <label>Funding-stress rate \(h\) (shocks/yr): <span id="lbl_h">0.40</span>
-                <input type="range" id="in_h" min="0.00" max="5.00" step="0.10" value="0.40" style="width:100%"></label>
-        </div>
-        <br>
-        <button class="w3-button w3-dark-grey w3-round" onclick="resamplePath()">&#8635; Resample path</button>
-        <button class="w3-button w3-grey w3-round" onclick="runMonteCarlo()">&#9654; Run Monte Carlo (2000 paths)</button>
-        <span id="mc_status" style="margin-left:10px; font-style:italic;"></span>
-    </div>
-
-    <div class="chart-frame">
-        <div class="chart-title">Spot vs futures &mdash; convergence at expiry</div>
-        <canvas id="pathChart" height="320"></canvas>
-        <div class="chart-legend">
-            <span><i class="line" style="background:#1f77b4"></i>Spot S<sub>t</sub></span>
-            <span><i class="line" style="background:#d62728"></i>Futures F<sub>t</sub></span>
-        </div>
-    </div>
-
-    <div class="chart-frame">
-        <div class="chart-title">The basis B<sub>t</sub> = F<sub>t</sub> &minus; S<sub>t</sub> (&rarr; 0 at T)</div>
-        <canvas id="basisChart" height="240"></canvas>
-    </div>
-
-    <div class="chart-frame">
-        <div class="chart-title">Mark-to-market P&amp;L V<sub>t</sub> (highlighted path + sample paths)</div>
-        <canvas id="pnlChart" height="300"></canvas>
-        <div class="chart-legend">
-            <span><i class="line" style="background:#9467bd"></i>your trade</span>
-            <span><i class="line" style="background:#cccccc"></i>other paths</span>
-            <span><i class="line" style="background:#d62728"></i>margin level &minus;S&#8320;/L</span>
-            <span><i class="dot" style="background:#d62728"></i>margin call</span>
-            <span><i class="dot" style="background:#9c5a2e"></i>funding shock</span>
-        </div>
-    </div>
-
-    <div class="def-box">
-        <div class="def-label"><span class="n">Proposition 5.3</span> &mdash; Mark-to-market value</div>
-        \begin{equation}
-            V_t = \underbrace{S_t\,e^{y t} - S_0\, e^{r t}}_{\text{cash leg net of financing}}
-                \;+\; \underbrace{F_0 - F_t}_{\text{short futures leg}} ,
-        \end{equation}
-        <div class="def-caption">the position is knocked out the first time <i>either</i>
-            \(V_t < -S_0/L\) (margin call) <i>or</i> the funding shock fires (repo pulled) &mdash;
-            whichever comes first. In both cases the loss is realised at the prevailing \(V_t\).</div>
-    </div>
-
-    <!-- ============================= §6 ============================= -->
-    <p class="sec-idx">&sect;6</p>
-    <h3 class="sec-h"><b>The distribution of levered returns</b></h3>
-    <p>
-        Running many paths shows the classic basis-trade profile: a sharp spike at the small,
-        near-deterministic convergence profit, and a <b>left tail of forced liquidations</b> whose weight
-        grows with \(\sigma_b\), \(L\) and \(h\) &mdash; <i>&ldquo;picking up nickels in front of a
-        steamroller&rdquo;</i>. The stat row separates the two exit channels. Adjusting a slider auto-runs
-        a quick 300-path batch; the button runs the full 2000.
-    </p>
-
-    <div class="stat-row">
-        <div class="stat"><div class="k">Margin calls</div><div class="v bad" id="stat_mc">&mdash;</div></div>
-        <div class="stat"><div class="k">Funding shocks</div><div class="v warn" id="stat_fund">&mdash;</div></div>
-        <div class="stat"><div class="k">Mean return</div><div class="v" id="stat_mean">&mdash;</div></div>
-        <div class="stat"><div class="k">Worst path</div><div class="v bad" id="stat_worst">&mdash;</div></div>
-    </div>
-
-    <div class="chart-frame">
-        <div class="chart-title">Distribution of levered returns R = L&middot;&Pi;/S&#8320; (%, on equity)</div>
-        <canvas id="histChart" height="320"></canvas>
-    </div>
-
-    <script type="application/javascript">
-        (function(){
-            const T = 0.5, N = 126, dt = T / N, kappa = 8.0, mu = 0.02, S0 = 100.0;
-
-            function params(){
-                return {
-                    sigma: +document.getElementById('in_sigma').value,
-                    r:     +document.getElementById('in_r').value,
-                    y:     +document.getElementById('in_y').value,
-                    sb:    +document.getElementById('in_sb').value,
-                    e0:    +document.getElementById('in_e0').value,
-                    L:     +document.getElementById('in_L').value,
-                    h:     +document.getElementById('in_h').value
-                };
-            }
-            function syncLabels(p){
-                document.getElementById('lbl_sigma').textContent = p.sigma.toFixed(2);
-                document.getElementById('lbl_r').textContent  = p.r.toFixed(3);
-                document.getElementById('lbl_y').textContent  = p.y.toFixed(3);
-                document.getElementById('lbl_sb').textContent = p.sb.toFixed(3);
-                document.getElementById('lbl_e0').textContent = p.e0.toFixed(3);
-                document.getElementById('lbl_L').textContent  = p.L;
-                document.getElementById('lbl_h').textContent  = p.h.toFixed(2);
-            }
-            function randn(){ // Box-Muller
-                let u = 0, v = 0;
-                while (u === 0) u = Math.random();
-                while (v === 0) v = Math.random();
-                return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
-            }
-
-            // Simulate one path; two independent exit channels:
-            //   'margin'  -> V_t < -equity (basis-driven)
-            //   'funding' -> Poisson shock (repo pulled, independent of basis)
-            //   null      -> held to expiry
-            function simulate(p){
-                const t = [], S = [S0], eps = [p.e0], F = [], B = [], V = [];
-                const equity = S0 / p.L;
-                const pShock = 1 - Math.exp(-p.h * dt);
-                let stopped = false, stopIdx = null, reason = null;
-                for (let i = 0; i <= N; i++) t.push(i*dt);
-                F.push(S0 * Math.exp((p.r - p.y)*T) * Math.exp(p.e0));
-                B.push(F[0] - S0);
-                V.push(0);
-                for (let i = 1; i <= N; i++){
-                    const s  = S[i-1] * Math.exp((mu - 0.5*p.sigma*p.sigma)*dt + p.sigma*Math.sqrt(dt)*randn());
-                    const e  = eps[i-1] + (-kappa*eps[i-1])*dt + p.sb*Math.sqrt(dt)*randn();
-                    const tau = T - t[i];
-                    const f  = s * Math.exp((p.r - p.y)*tau) * Math.exp(e * tau/T);
-                    S.push(s); eps.push(e); F.push(f); B.push(f - s);
-                    const v = (s*Math.exp(p.y*t[i]) - S0*Math.exp(p.r*t[i])) + (F[0] - f);
-                    V.push(v);
-                    if (!stopped){
-                        if (v < -equity){ stopped = true; stopIdx = i; reason = 'margin'; }
-                        else if (Math.random() < pShock){ stopped = true; stopIdx = i; reason = 'funding'; }
-                    }
-                }
-                const pnl = stopped ? V[stopIdx] : V[N];
-                return {t, S, F, B, V, stopped, stopIdx, reason, ret: p.L * pnl / S0, equity};
-            }
-
-            /* ---------------- Canvas plotting helpers ---------------- */
-            function setupCanvas(canvas){
-                const dpr = window.devicePixelRatio || 1;
-                const rect = canvas.getBoundingClientRect();
-                const w = rect.width || canvas.clientWidth || 600;
-                const h = canvas.clientHeight || parseInt(getComputedStyle(canvas).height) || 260;
-                canvas.width  = Math.round(w * dpr);
-                canvas.height = Math.round(h * dpr);
-                const ctx = canvas.getContext('2d');
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                ctx.clearRect(0, 0, w, h);
-                return {ctx, w, h};
-            }
-            const GRID = 'rgba(0,0,0,0.07)', TXT = '#666';
-            const FONT = '11px -apple-system, Segoe UI, Roboto, sans-serif';
-
-            function niceExtent(min, max){
-                if (min === max){ min -= 1; max += 1; }
-                const pad = (max - min) * 0.08;
-                return [min - pad, max + pad];
-            }
-
-            // Generic line plot. series: [{x,y,color,width,fill}]
-            // opts.bgPaths: [{x,y,color,dot:{x,y,color}}] drawn faintly BEHIND series.
-            function linePlot(canvas, series, opts){
-                opts = opts || {};
-                const {ctx, w, h} = setupCanvas(canvas);
-                const padL = 52, padR = 12, padT = 10, padB = 26;
-                const plotW = w - padL - padR, plotH = h - padT - padB;
-
-                let xmin = opts.xmin, xmax = opts.xmax, ymin = opts.ymin, ymax = opts.ymax;
-                if (xmin == null){ xmin = Infinity; xmax = -Infinity;
-                    series.forEach(s => s.x.forEach(v => { if(v<xmin)xmin=v; if(v>xmax)xmax=v; })); }
-                if (ymin == null){ ymin = Infinity; ymax = -Infinity;
-                    series.forEach(s => s.y.forEach(v => { if(v<ymin)ymin=v; if(v>ymax)ymax=v; }));
-                    if (opts.extraY) opts.extraY.forEach(v => { if(v<ymin)ymin=v; if(v>ymax)ymax=v; });
-                    [ymin, ymax] = niceExtent(ymin, ymax); }
-
-                const xOf = x => padL + (x - xmin)/(xmax - xmin) * plotW;
-                const yOf = y => padT + (1 - (y - ymin)/(ymax - ymin)) * plotH;
-
-                // grid + y labels
-                ctx.font = FONT; ctx.strokeStyle = GRID; ctx.lineWidth = 1; ctx.fillStyle = TXT;
-                const gN = 4;
-                for (let g = 0; g <= gN; g++){
-                    const yv = ymin + g/gN * (ymax - ymin);
-                    const y = yOf(yv);
-                    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-                    ctx.fillText(yv.toFixed(opts.yDec != null ? opts.yDec : 2), 4, y + 3);
-                }
-                ctx.textAlign = 'center';
-                for (let g = 0; g <= 4; g++){
-                    const xv = xmin + g/4 * (xmax - xmin);
-                    ctx.fillText(xv.toFixed(2), xOf(xv), h - 8);
-                }
-                ctx.textAlign = 'start';
-
-                if (ymin < 0 && ymax > 0){
-                    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.setLineDash([3,3]);
-                    ctx.beginPath(); ctx.moveTo(padL, yOf(0)); ctx.lineTo(w - padR, yOf(0)); ctx.stroke();
-                    ctx.setLineDash([]);
-                }
-
-                (opts.hlines || []).forEach(hl => {
-                    ctx.strokeStyle = hl.color; ctx.setLineDash([5,4]); ctx.lineWidth = 1;
-                    ctx.beginPath(); ctx.moveTo(padL, yOf(hl.y)); ctx.lineTo(w - padR, yOf(hl.y)); ctx.stroke();
-                    ctx.setLineDash([]);
-                    if (hl.label){ ctx.fillStyle = hl.color; ctx.font = FONT;
-                        ctx.fillText(hl.label, padL + 4, yOf(hl.y) - 4); }
-                });
-
-                // faint background paths (drawn first, behind everything)
-                (opts.bgPaths || []).forEach(bp => {
-                    ctx.beginPath(); ctx.lineWidth = 1; ctx.strokeStyle = bp.color;
-                    for (let i = 0; i < bp.x.length; i++){
-                        const px = xOf(bp.x[i]), py = yOf(bp.y[i]);
-                        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-                    }
-                    ctx.stroke();
-                    if (bp.dot){ ctx.fillStyle = bp.dot.color;
-                        ctx.beginPath(); ctx.arc(xOf(bp.dot.x), yOf(bp.dot.y), 2.2, 0, Math.PI*2); ctx.fill(); }
-                });
-
-                // main series
-                series.forEach(s => {
-                    if (s.fill){
-                        ctx.beginPath();
-                        ctx.moveTo(xOf(s.x[0]), yOf(0));
-                        for (let i = 0; i < s.x.length; i++) ctx.lineTo(xOf(s.x[i]), yOf(s.y[i]));
-                        ctx.lineTo(xOf(s.x[s.x.length-1]), yOf(0));
-                        ctx.closePath();
-                        ctx.fillStyle = s.fill; ctx.fill();
-                    }
-                    ctx.beginPath();
-                    ctx.lineWidth = s.width || 1.6; ctx.strokeStyle = s.color;
-                    for (let i = 0; i < s.x.length; i++){
-                        const px = xOf(s.x[i]), py = yOf(s.y[i]);
-                        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-                    }
-                    ctx.stroke();
-                });
-
-                (opts.markers || []).forEach(m => {
-                    ctx.fillStyle = m.color;
-                    ctx.beginPath(); ctx.arc(xOf(m.x), yOf(m.y), m.r || 4, 0, Math.PI*2); ctx.fill();
-                });
-
-                if (opts.xTitle){ ctx.fillStyle = TXT; ctx.font = FONT; ctx.textAlign = 'end';
-                    ctx.fillText(opts.xTitle, w - padR, h - 8); ctx.textAlign = 'start'; }
-            }
-
-            function histPlot(canvas, values, opts){
-                opts = opts || {};
-                const {ctx, w, h} = setupCanvas(canvas);
-                const padL = 52, padR = 12, padT = 10, padB = 26;
-                const plotW = w - padL - padR, plotH = h - padT - padB;
-                if (!values.length) return;
-
-                let minV = Math.min(...values), maxV = Math.max(...values);
-                minV = Math.min(minV, 0); maxV = Math.max(maxV, 0);
-                if (minV === maxV){ minV -= 1; maxV += 1; }
-                const range = maxV - minV;
-                const bins = opts.bins || 60;
-                const bw = range / bins;
-                const counts = new Array(bins).fill(0);
-                values.forEach(v => { let i = Math.floor((v - minV)/bw); if(i>=bins)i=bins-1; if(i<0)i=0; counts[i]++; });
-                const maxC = Math.max(...counts, 1);
-
-                const xOf = v => padL + (v - minV)/range * plotW;
-                const yOf = c => padT + (1 - c/maxC) * plotH;
-
-                ctx.font = FONT; ctx.strokeStyle = GRID; ctx.fillStyle = TXT;
-                for (let g = 0; g <= 4; g++){
-                    const c = g/4 * maxC, y = yOf(c);
-                    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-                    ctx.fillText(Math.round(c), 4, y + 3);
-                }
-                ctx.textAlign = 'center';
-                for (let g = 0; g <= 4; g++){
-                    const xv = minV + g/4 * range;
-                    ctx.fillText(xv.toFixed(0), xOf(xv), h - 8);
-                }
-                ctx.textAlign = 'start';
-
-                for (let i = 0; i < bins; i++){
-                    if (!counts[i]) continue;
-                    const x0 = xOf(minV + i*bw), x1 = xOf(minV + (i+1)*bw);
-                    const center = minV + (i + 0.5)*bw;
-                    ctx.fillStyle = center < 0 ? 'rgba(161,50,50,0.75)' : 'rgba(31,119,180,0.8)';
-                    const y = yOf(counts[i]);
-                    ctx.fillRect(x0, y, Math.max(x1 - x0 - 1, 1), padT + plotH - y);
-                }
-
-                const zx = xOf(0);
-                if (zx >= padL && zx <= w - padR){
-                    ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.setLineDash([3,3]);
-                    ctx.beginPath(); ctx.moveTo(zx, padT); ctx.lineTo(zx, padT + plotH); ctx.stroke();
-                    ctx.setLineDash([]);
-                }
-                if (opts.xTitle){ ctx.fillStyle = TXT; ctx.textAlign = 'end';
-                    ctx.fillText(opts.xTitle, w - padR, h - 8); ctx.textAlign = 'start'; }
-            }
-
-            /* ---------------- render single path (+ background sample paths) ---------------- */
-            let lastSim = null, bgSims = [];
-
-            // Build a truncated {x,y,dot} descriptor for a V_t path
-            function vDescriptor(sim, color, dimDots){
-                const end = sim.stopped ? sim.stopIdx : N;
-                const x = sim.t.slice(0, end + 1);
-                const y = sim.V.slice(0, end + 1);
-                let dot = null;
-                if (sim.stopped){
-                    const marginCol = dimDots ? 'rgba(214,39,40,0.5)'  : '#d62728';
-                    const fundCol   = dimDots ? 'rgba(156,90,46,0.5)'  : '#9c5a2e';
-                    dot = {x: sim.t[sim.stopIdx], y: sim.V[sim.stopIdx],
-                           color: sim.reason === 'funding' ? fundCol : marginCol};
-                }
-                return {x, y, color, dot};
-            }
-
-            function renderPath(sim){
-                lastSim = sim;
-                linePlot(document.getElementById('pathChart'), [
-                    {x: sim.t, y: sim.S, color: '#1f77b4'},
-                    {x: sim.t, y: sim.F, color: '#d62728'}
-                ], {xTitle: 't (years)', yDec: 1});
-
-                linePlot(document.getElementById('basisChart'), [
-                    {x: sim.t, y: sim.B, color: '#2ca02c', fill: 'rgba(44,160,44,0.15)'}
-                ], {xTitle: 't (years)', yDec: 2});
-
-                // faint background V_t paths behind the highlighted one
-                const bg = bgSims.map(s => vDescriptor(s, 'rgba(0,0,0,0.13)', true));
-                const main = vDescriptor(sim, '#9467bd', false);
-                const markers = main.dot ? [{x: main.dot.x, y: main.dot.y, color: main.dot.color, r: 5}] : [];
-
-                // stable y-extent from all drawn paths + margin line
-                const extraY = [-sim.equity];
-                bgSims.forEach(s => s.V.forEach(v => extraY.push(v)));
-                sim.V.forEach(v => extraY.push(v));
-
-                linePlot(document.getElementById('pnlChart'),
-                    [{x: main.x, y: main.y, color: '#9467bd', width: 1.9}],
-                    {xmin: 0, xmax: T, xTitle: 't (years)', yDec: 2, extraY,
-                     bgPaths: bg,
-                     hlines: [{y: -sim.equity, color: '#d62728', label: 'margin level −S₀/L'}],
-                     markers});
-            }
-
-            window.resamplePath = function(){
-                const p = params(); syncLabels(p);
-                // fresh set of faint background paths for context
-                bgSims = [];
-                for (let i = 0; i < 18; i++) bgSims.push(simulate(p));
-                renderPath(simulate(p));
-            };
-
-            /* ---------------- Monte Carlo ---------------- */
-            let lastRets = null;
-
-            function monteCarlo(M){
-                const p = params(); syncLabels(p);
-                const rets = new Array(M);
-                let nMargin = 0, nFunding = 0, worst = Infinity, sum = 0;
-                for (let m = 0; m < M; m++){
-                    const sim = simulate(p);
-                    const r = 100 * sim.ret;
-                    rets[m] = r; sum += r;
-                    if (r < worst) worst = r;
-                    if (sim.reason === 'margin')  nMargin++;
-                    if (sim.reason === 'funding') nFunding++;
-                }
-                const mean = sum / M;
-                document.getElementById('mc_status').textContent =
-                    'Forced out: ' + (100*(nMargin+nFunding)/M).toFixed(1) + '% of ' + M + ' paths';
-                document.getElementById('stat_mc').textContent   = (100*nMargin/M).toFixed(1) + '%';
-                document.getElementById('stat_fund').textContent = (100*nFunding/M).toFixed(1) + '%';
-                const meanEl = document.getElementById('stat_mean');
-                meanEl.textContent = (mean>=0?'+':'') + mean.toFixed(2) + '%';
-                meanEl.className = 'v ' + (mean>=0?'good':'bad');
-                document.getElementById('stat_worst').textContent = worst.toFixed(1) + '%';
-
-                histPlot(document.getElementById('histChart'), rets,
-                    {bins: 60, xTitle: 'return on equity (%)'});
-                lastRets = rets;
-            }
-
-            window.runMonteCarlo = function(){ monteCarlo(2000); };
-
-            /* ---------------- slider wiring (debounced 300-path) ---------------- */
-            let debounceTimer = null;
-            function onSliderInput(){
-                const p = params(); syncLabels(p);
-                bgSims = [];
-                for (let i = 0; i < 18; i++) bgSims.push(simulate(p));
-                renderPath(simulate(p));
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => monteCarlo(300), 120);
-            }
-            ['in_sigma','in_r','in_y','in_sb','in_e0','in_L','in_h'].forEach(id =>
-                document.getElementById(id).addEventListener('input', onSliderInput));
-
-            /* ================= HERO ANIMATION ================= */
-            const heroCanvas = document.getElementById('heroCanvas');
-            const heroDaysEl = document.getElementById('heroDays');
-            const CYCLE_MS = 9000;
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            function drawHero(progress){
-                const {ctx, w, h} = setupCanvas(heroCanvas);
-                const padL = 8, padR = 8, padT = 16, padB = 8;
-                const plotW = w - padL - padR, plotH = h - padT - padB;
-                const M = 120;
-                const S0y = plotH*0.62, F0y = plotH*0.20;
-                const spot = [], fut = [];
-                for (let i = 0; i <= M; i++){
-                    const x = i/M;
-                    const wob = Math.sin(x*11 + progress*6)*3 + Math.sin(x*23 + 1.3)*1.6;
-                    spot.push(S0y - x*6 + wob*0.6);
-                    fut.push(F0y + x*(S0y - F0y) + wob*(1-x));
-                }
-                const upto = Math.max(1, Math.round(progress*M));
-
-                // basis shading between the two lines up to the cursor
-                ctx.beginPath();
-                for (let i = 0; i <= upto; i++) ctx.lineTo(padL + (i/M)*plotW, padT + fut[i]);
-                for (let i = upto; i >= 0; i--) ctx.lineTo(padL + (i/M)*plotW, padT + spot[i]);
-                ctx.closePath(); ctx.fillStyle = 'rgba(44,160,44,0.10)'; ctx.fill();
-
-                function stroke(arr, color){
-                    ctx.beginPath(); ctx.lineWidth = 1.5; ctx.strokeStyle = color;
-                    for (let i = 0; i <= upto; i++){
-                        const px = padL + (i/M)*plotW, py = padT + arr[i];
-                        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-                    }
-                    ctx.stroke();
-                }
-                stroke(spot, '#1f77b4');
-                stroke(fut,  '#d62728');
-
-                const nx = padL + (upto/M)*plotW;
-                ctx.strokeStyle = 'rgba(0,0,0,0.15)'; ctx.setLineDash([3,3]); ctx.lineWidth = 1;
-                ctx.beginPath(); ctx.moveTo(nx, padT); ctx.lineTo(nx, padT + plotH); ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.fillStyle = '#1f77b4'; ctx.beginPath(); ctx.arc(nx, padT+spot[upto], 2.8, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#d62728'; ctx.beginPath(); ctx.arc(nx, padT+fut[upto], 2.8, 0, Math.PI*2); ctx.fill();
-
-                heroDaysEl.textContent = Math.max(0, Math.round(182*(1 - progress)));
-            }
-
-            let heroStart = null;
-            function heroLoop(ts){
-                if (heroStart === null) heroStart = ts;
-                const progress = ((ts - heroStart) % CYCLE_MS) / CYCLE_MS;
-                drawHero(progress);
-                if (!reduceMotion) requestAnimationFrame(heroLoop);
-            }
-
-            /* ---------------- resize re-render ---------------- */
-            let resizeTimer = null;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    if (lastSim) renderPath(lastSim);
-                    if (lastRets) histPlot(document.getElementById('histChart'), lastRets,
-                        {bins: 60, xTitle: 'return on equity (%)'});
-                    if (reduceMotion) drawHero(0.3);
-                }, 100);
-            });
-
-            /* ---------------- init ---------------- */
-            window.addEventListener('load', () => {
-                window.resamplePath();
-                window.runMonteCarlo();
-                if (reduceMotion) drawHero(0.3); else requestAnimationFrame(heroLoop);
-            });
-        })();
-    </script>
-
-
-    <br>
-
-    <!-- ============================= §7 ============================= -->
-    <p class="sec-idx">&sect;7</p>
-    <h3 class="sec-h"><b>When the &ldquo;arbitrage&rdquo; breaks</b></h3>
-    <p>
-        Cash-and-carry only looks riskless if you can fund the position all the way to delivery. Two
-        episodes show what happens when that assumption fails &mdash; one dominated by each channel above.
-    </p>
-    <ul>
-        <li>
-            <b>LTCM, 1998.</b> Long-Term Capital Management ran highly levered basis and relative-value
-            trades across bond markets. When Russia defaulted and spreads widened <i>instead</i> of
-            converging, mark-to-market margin calls forced the fund to unwind at the worst possible moment
-            &mdash; turning positions that were &ldquo;right&rdquo; on paper into realised losses. This is
-            the <i>basis-driven margin-call</i> channel.
-        </li>
-        <li>
-            <b>Treasury basis, March 2020.</b> Hedge funds running the cash&ndash;futures basis trade at
-            high leverage were caught when the COVID shock hit. Crucially, the binding constraint was
-            largely <i>funding</i>: repo financing for Treasuries became scarce and dealer balance sheets
-            filled, so the <i>repo</i> leg &mdash; not the pricing leg &mdash; forced deleveraging,
-            amplifying the sell-off in a market usually considered among the safest in the world. This is
-            the <i>funding-shock</i> channel [2], [3].
-        </li>
-    </ul>
-    <p>
-        The lesson isn&rsquo;t that the math is wrong &mdash; convergence at delivery is close to certain.
-        It&rsquo;s that <b>leverage turns a small, temporary, adverse move &mdash; or a purely mechanical
-        loss of financing &mdash; into a forced exit</b>, and forced exits happen before the
-        &ldquo;sure thing&rdquo; gets to pay off.
-    </p>
-
-    <h4 id="REFERENCES"><i>References</i></h4>
-
-    [1] <a href="https://www.cmegroup.com/education/courses/introduction-to-treasuries/understanding-treasury-futures-basis.html" id="ref1">CME Group — Understanding the Treasury futures basis</a>
-    <br>
-    [2] <a href="https://www.bis.org/publ/qtrpdf/r_qt2003v.htm" id="ref2">BIS Quarterly Review — Leverage and margin spirals in fixed income markets (March 2020)</a>
-    <br>
-    [3] <a href="https://www.financialresearch.gov/" id="ref3">Office of Financial Research — notes on the Treasury cash-futures basis trade and hedge-fund leverage</a>
-
-
-
-    <br><br>
-
-    <h5> <a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
-
-
-
-    <hr class="w3-opacity">
-</div>
-
-<script type="text/javascript" src="../../js/footer.js"></script>
-
-<!-- End page content -->
-
 <script src="../../js/OpenCloseSidebar.js"></script>
 <script src="../../js/OpenCloseCollapsible.js"></script>
-
 </body>
 </html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
