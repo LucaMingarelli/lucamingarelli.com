@@ -37,11 +37,11 @@
         .content {display:none;overflow:hidden;background-color:#DCDCDC;}
 
         /* ================= basis-trade page, all scoped with bt- ================= */
-        .bt-wrap{--bt-line:#d7d3c8;--bt-dim:#8a8879;--bt-ink:#1c1b18;--bt-acc:#7a3030;
-                 --bt-spot:#2f5f8a;--bt-fut:#9c5a2e;--bt-basis:#3f6b3f;
-                 --bt-pnl:#6a4c93;--bt-bad:#a13232;--bt-good:#3f6b3f;}
+        .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc:#7a3030;
+                 --bt-spot:#1f4e79;--bt-fut:#8f4f26;--bt-basis:#2f5c2f;
+                 --bt-pnl:#5b3d84;--bt-bad:#9a2626;--bt-good:#2f5c2f;--bt-fund:#b0682a;}
 
-        .bt-lede{font-size:17px;color:#4b4a44;line-height:1.6;}
+        .bt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
         .bt-secno{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
                   color:var(--bt-dim);margin:0 0 2px;letter-spacing:.05em;}
         .bt-wrap h3{margin-bottom:2px;}
@@ -55,32 +55,32 @@
         .bt-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
                     color:var(--bt-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
 
-        /* two-column cards */
+        /* two-column cards — transparent, grouped by border only */
         .bt-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bt-line);
-                 margin:20px 0;background:#fff;}
+                 margin:20px 0;background:none;}
         @media(max-width:640px){.bt-legs{grid-template-columns:1fr;}}
         .bt-leg-card{padding:16px 18px;text-align:left;}
         .bt-leg-card + .bt-leg-card{border-left:1px solid var(--bt-line);}
         @media(max-width:640px){.bt-leg-card + .bt-leg-card{border-left:none;
                  border-top:1px solid var(--bt-line);}}
         .bt-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
-        .bt-leg-card p{margin:0;font-size:14.5px;color:#4b4a44;}
+        .bt-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
         .bt-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
                  color:var(--bt-dim);margin-top:10px;padding-top:9px;
                  border-top:1px dashed var(--bt-line);line-height:1.6;}
 
-        /* simulator */
-        .bt-sim{background:#fff;border:1px solid var(--bt-line);padding:16px;margin:14px 0;
+        /* simulator — transparent shell so the charts sit on the page */
+        .bt-sim{background:none;border:1px solid var(--bt-line);padding:16px;margin:14px 0;
                 text-align:left;}
         .bt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;}
-        .bt-ctl label{display:block;font-size:13px;color:#333;}
-        .bt-ctl .bt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--bt-bad);}
+        .bt-ctl label{display:block;font-size:13px;color:#222;}
+        .bt-ctl .bt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--bt-acc);}
         .bt-ctl input[type=range]{width:100%;margin:4px 0 0;}
         .bt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
         .bt-hint{font-size:12px;color:var(--bt-dim);line-height:1.45;}
-        .bt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#555;}
+        .bt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
         .bt-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
-                       border:1px solid var(--bt-line);}
+                       border:1px solid var(--bt-line);background:rgba(255,255,255,.5);}
         .bt-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
                   border:1px solid var(--bt-line);margin-top:16px;}
         @media(min-width:560px){.bt-stats{grid-template-columns:repeat(4,1fr);}}
@@ -91,30 +91,31 @@
         .bt-stat .v{font-size:18px;font-weight:600;color:var(--bt-ink);}
         .bt-stat .v.bad{color:var(--bt-bad);}
         .bt-stat .v.good{color:var(--bt-good);}
-        .bt-stat .v.fund{color:var(--bt-fut);}
+        .bt-stat .v.fund{color:var(--bt-fund);}
         .bt-stat .se{font-size:11px;color:var(--bt-dim);font-weight:400;}
 
-        .bt-fig{border:1px solid var(--bt-line);background:#fff;margin-top:14px;padding:6px;}
-        .bt-fig canvas{width:100%;display:block;}
+        /* figures: fully transparent, no frame — canvases blend into the page */
+        .bt-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .bt-fig canvas{width:100%;display:block;background:none;}
         /* explicit CSS heights: without these the canvas intrinsic ratio takes over
            and each chart renders as tall as the column is wide */
         #cvHero{height:240px;}
-        #cvPath,#cvPnl,#cvHist,#cvSweep{height:300px;}
-        #cvBasis{height:230px;}
+        #cvPath{height:340px;}
+        #cvPnl,#cvHist,#cvSweep{height:300px;}
         @media(max-width:600px){
             #cvHero{height:190px;}
-            #cvPath,#cvPnl,#cvHist,#cvSweep{height:230px;}
-            #cvBasis{height:180px;}
+            #cvPath{height:270px;}
+            #cvPnl,#cvHist,#cvSweep{height:230px;}
         }
-        .bt-cap{font-size:11.5px;color:var(--bt-dim);padding:6px 4px 2px;
-                border-top:1px solid #eee;margin-top:4px;display:flex;
+        .bt-cap{font-size:11.5px;color:var(--bt-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--bt-line);margin-top:6px;display:flex;
                 justify-content:space-between;gap:10px;}
         .bt-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
                  color:var(--bt-dim);margin:6px 2px 0;}
         .bt-leg2 span{display:inline-flex;align-items:center;gap:5px;}
         .bt-sw{width:14px;height:2px;display:inline-block;}
         .bt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-        .bt-note{font-size:12.5px;color:#555;background:#faf9f5;
+        .bt-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
                  border-left:3px solid var(--bt-line);padding:9px 13px;margin:12px 0;
                  text-align:left;line-height:1.55;}
 
@@ -125,9 +126,9 @@
                color:var(--bt-acc);display:block;margin-bottom:3px;}
         .bt-risk p{margin:0;font-size:15px;}
 
-        .bt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:#fff;}
+        .bt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
         .bt-tbl th,.bt-tbl td{border:1px solid var(--bt-line);padding:7px 10px;text-align:left;}
-        .bt-tbl th{background:#faf9f5;font-weight:600;}
+        .bt-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
         .bt-tbl code{background:none;padding:0;}
     </style>
 </head>
@@ -157,9 +158,9 @@
         </div>
     </div>
     <div class="bt-leg2">
-        <span><i class="bt-sw" style="background:#2f5f8a"></i>spot <i>S</i>(t)</span>
-        <span><i class="bt-sw" style="background:#9c5a2e"></i>futures <i>F</i>(t)</span>
-        <span><i class="bt-sw" style="background:rgba(122,48,48,.35);height:8px"></i>basis <i>B</i>(t)</span>
+        <span><i class="bt-sw" style="background:#1f4e79"></i>spot <i>S</i>(t)</span>
+        <span><i class="bt-sw" style="background:#8f4f26"></i>futures <i>F</i>(t)</span>
+        <span><i class="bt-sw" style="background:rgba(122,48,48,.4);height:8px"></i>basis <i>B</i>(t)</span>
     </div>
 
     <!-- ============================ §1 ============================ -->
@@ -434,14 +435,11 @@
         </div>
 
         <div class="bt-fig">
-            <canvas id="cvPath" width="800" height="300" role="img"
-                    aria-label="Spot and futures price paths converging at expiry"></canvas>
-            <div class="bt-cap"><span>Spot vs futures &mdash; convergence at expiry</span></div>
-        </div>
-        <div class="bt-fig">
-            <canvas id="cvBasis" width="800" height="230" role="img"
-                    aria-label="The basis, futures minus spot, decaying to zero at expiry"></canvas>
-            <div class="bt-cap"><span>The basis <i>B</i>(t) = <i>F</i>(t) &minus; <i>S</i>(t) &rarr; 0 at T</span></div>
+            <canvas id="cvPath" width="800" height="340" role="img"
+                    aria-label="Spot and futures prices on the left axis with the basis on the right axis, converging at expiry"></canvas>
+            <div class="bt-cap">
+                <span>Spot and futures (left axis) with the basis (right axis) &mdash; all three meet at T</span>
+            </div>
         </div>
         <div class="bt-fig">
             <canvas id="cvPnl" width="800" height="300" role="img"
@@ -449,11 +447,11 @@
             <div class="bt-cap"><span>Mark-to-market P&amp;L per unit notional, with the margin-call barrier</span></div>
         </div>
         <div class="bt-leg2">
-            <span><i class="bt-sw" style="background:#6a4c93"></i>your path</span>
-            <span><i class="bt-sw" style="background:rgba(28,27,24,.18)"></i>other draws</span>
-            <span><i class="bt-sw" style="background:#a13232"></i>margin level &minus;S&#8320;/L</span>
-            <span><i class="bt-dot" style="background:#a13232"></i>margin call</span>
-            <span><i class="bt-dot" style="background:#9c5a2e"></i>funding shock</span>
+            <span><i class="bt-sw" style="background:#5b3d84"></i>your path</span>
+            <span><i class="bt-sw" style="background:rgba(17,17,17,.22)"></i>other draws</span>
+            <span><i class="bt-sw" style="background:#9a2626"></i>margin level &minus;S&#8320;/L</span>
+            <span><i class="bt-dot" style="background:#9a2626"></i>margin call</span>
+            <span><i class="bt-dot" style="background:#b0682a"></i>funding shock</span>
         </div>
     </div>
 
@@ -501,9 +499,9 @@
         </div>
     </div>
     <div class="bt-leg2">
-        <span><i class="bt-sw" style="background:#a13232"></i>P(forced exit), left axis</span>
-        <span><i class="bt-sw" style="background:#2f5f8a"></i>E[R], right axis</span>
-        <span><i class="bt-sw" style="background:rgba(28,27,24,.35)"></i>your current L</span>
+        <span><i class="bt-sw" style="background:#9a2626"></i>P(forced exit), left axis</span>
+        <span><i class="bt-sw" style="background:#1f4e79"></i>E[R], right axis</span>
+        <span><i class="bt-sw" style="background:rgba(17,17,17,.4)"></i>your current L</span>
     </div>
     <p>
         The shape is the whole argument. Expected return rises linearly in \(L\) while the trade
@@ -551,6 +549,18 @@
     <script type="application/javascript">
     (function(){
     'use strict';
+
+    /* ================= palette =================
+       Tuned for transparent canvases sitting on the light-grey page background:
+       near-black labels, darker series, slightly stronger grid. */
+    const C = {
+        ink:  '#111111',   label:'#111111',  axis: '#333333',
+        grid: 'rgba(0,0,0,.13)',
+        spot: '#1f4e79',   fut:  '#8f4f26',  basis:'#2f5c2f',
+        pnl:  '#5b3d84',   bad:  '#9a2626',  fund: '#b0682a',
+        ghost:'rgba(17,17,17,.20)',
+        basisFill:'rgba(47,92,47,.13)'
+    };
 
     /* ================= model constants ================= */
     const T = 0.5, N = 126, dt = T / N, MU = 0.02, S0 = 100.0;
@@ -642,7 +652,7 @@
     const FVAL = new Float32Array(M_MAX);
 
     /* ================= pure simulation: no RNG inside ================= */
-    /* EXIT_* : 0 survived, 1 margin call, 2 funding shock */
+    /* reason: 0 survived, 1 margin call, 2 funding shock */
     function simulate(p, shk, m, rec, keepRec){
         const o = m*ST, oz = m*N, D = shk.D, G = shk.G, W = shk.W, U = shk.U;
         const base = m*MAXREC;
@@ -666,8 +676,7 @@
             /* uniform consumed unconditionally: RNG use never depends on outcome */
             if (i < N){ const u = U[oz+i]; if (fIdx < 0 && u < p.pFund) fIdx = i + 1; }
         }
-        if (keepRec) RCNT[m] = nrec;
-        if (keepRec){ FIDX[m] = fIdx; FVAL[m] = fVal; }
+        if (keepRec){ RCNT[m] = nrec; FIDX[m] = fIdx; FVAL[m] = fVal; }
         let idx, val, reason;
         if (mIdx >= 0 && (fIdx < 0 || mIdx <= fIdx)){ idx = mIdx; val = mVal; reason = 1; }
         else if (fIdx >= 0){ idx = fIdx; val = fVal; reason = 2; }
@@ -697,7 +706,7 @@
         }
         const ctx = cv.getContext('2d');
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, w, h);
+        ctx.clearRect(0, 0, w, h);          /* stays transparent: no fill */
         return {ctx, w, h};
     }
     function niceTicks(lo, hi, n){
@@ -712,66 +721,106 @@
         const d = Math.max(0, Math.min(6, -Math.floor(Math.log10(step))));
         return v.toFixed(isFinite(d) ? d : 2);
     }
-    const PAD = {l: 56, r: 14, t: 12, b: 30};
     const FONT = '11px ui-monospace, Menlo, Consolas, monospace';
 
+    function span(arrs, extra){
+        let lo = Infinity, hi = -Infinity;
+        arrs.forEach(a => { const n = a.n === undefined ? a.y.length : a.n + 1;
+            for (let i = 0; i < n; i++){ if (a.y[i] < lo) lo = a.y[i]; if (a.y[i] > hi) hi = a.y[i]; } });
+        (extra || []).forEach(v => { if (v < lo) lo = v; if (v > hi) hi = v; });
+        if (!isFinite(lo)){ lo = 0; hi = 1; }
+        const pad = (hi - lo)*0.12 || 0.5;
+        return {lo: lo - pad, hi: hi + pad};
+    }
+
+    /* dual-axis time-series chart. cfg.series → left, cfg.series2 → right. */
     function drawXY(cv, cfg){
         const {ctx, w, h} = ctxOf(cv);
-        const x = cfg.x, pw = w - PAD.l - PAD.r, ph = h - PAD.t - PAD.b;
-        let lo = Infinity, hi = -Infinity;
-        cfg.series.forEach(s => { for (let i = 0; i < s.y.length; i++){
-            if (s.y[i] < lo) lo = s.y[i]; if (s.y[i] > hi) hi = s.y[i]; } });
-        (cfg.ghosts || []).forEach(g => { const e = g.end === undefined ? N : g.end;
-            for (let i = 0; i <= e; i++){ if (g.y[i] < lo) lo = g.y[i]; if (g.y[i] > hi) hi = g.y[i]; } });
-        (cfg.hlines || []).forEach(l => { if (l.y < lo) lo = l.y; if (l.y > hi) hi = l.y; });
-        if (!isFinite(lo)){ lo = 0; hi = 1; }
-        const pad = (hi - lo)*0.12 || 0.5; lo -= pad; hi += pad;
-        const X = v => PAD.l + (v/T)*pw;
-        const Y = v => PAD.t + (1 - (v - lo)/(hi - lo))*ph;
+        const x = cfg.x, dual = !!(cfg.series2 && cfg.series2.length);
+        const P = {l: 54, r: dual ? 56 : 16, t: cfg.legend ? 26 : 12, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+
+        const ex = (cfg.hlines || []).map(l => l.y);
+        const A = span(cfg.series.concat(cfg.ghosts || []), ex);
+        const X  = v => P.l + (v/T)*pw;
+        const Y  = v => P.t + (1 - (v - A.lo)/(A.hi - A.lo))*ph;
+        let B = null, Y2 = null;
+        if (dual){
+            B = span(cfg.series2, cfg.zero2 ? [0] : []);
+            Y2 = v => P.t + (1 - (v - B.lo)/(B.hi - B.lo))*ph;
+        }
 
         ctx.font = FONT; ctx.textBaseline = 'middle';
-        const yt = niceTicks(lo, hi, 4);
-        ctx.strokeStyle = 'rgba(28,27,24,.08)'; ctx.fillStyle = '#8a8879'; ctx.lineWidth = 1;
+
+        /* horizontal grid + left tick labels */
+        const yt = niceTicks(A.lo, A.hi, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
         yt.ticks.forEach(v => {
             const yy = Math.round(Y(v)) + .5;
-            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
-            ctx.textAlign = 'right'; ctx.fillText(fmt(v, yt.step), PAD.l - 8, yy);
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(fmt(v, yt.step), P.l - 8, yy);
         });
+        /* right tick labels, coloured to match the right-hand series */
+        if (dual){
+            const rt = niceTicks(B.lo, B.hi, 4);
+            ctx.fillStyle = C.basis; ctx.textAlign = 'left';
+            rt.ticks.forEach(v => ctx.fillText(fmt(v, rt.step), w - P.r + 8, Y2(v)));
+            if (B.lo < 0 && B.hi > 0){
+                ctx.save(); ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(47,92,47,.45)';
+                const zy = Math.round(Y2(0)) + .5;
+                ctx.beginPath(); ctx.moveTo(P.l, zy); ctx.lineTo(w - P.r, zy); ctx.stroke();
+                ctx.restore();
+            }
+        }
+        /* x tick labels */
         const xt = niceTicks(0, T, 5);
-        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
         xt.ticks.forEach(v => { if (v >= -1e-9 && v <= T + 1e-9)
-            ctx.fillText(fmt(v, xt.step), X(v), h - PAD.b + 8); });
+            ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
         ctx.textBaseline = 'middle';
 
+        /* ghosts (left axis) */
         (cfg.ghosts || []).forEach(g => {
-            const end = g.end === undefined ? N : g.end;
-            ctx.beginPath(); ctx.strokeStyle = 'rgba(28,27,24,.16)'; ctx.lineWidth = 1;
+            const end = g.n === undefined ? N : g.n;
+            ctx.beginPath(); ctx.strokeStyle = C.ghost; ctx.lineWidth = 1;
             for (let i = 0; i <= end; i++){ const px = X(x[i]), py = Y(g.y[i]);
                 i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
             ctx.stroke();
             if (g.reason){
-                ctx.fillStyle = g.reason === 1 ? 'rgba(161,50,50,.55)' : 'rgba(156,90,46,.55)';
+                ctx.fillStyle = g.reason === 1 ? 'rgba(154,38,38,.6)' : 'rgba(176,104,42,.6)';
                 ctx.beginPath(); ctx.arc(X(x[end]), Y(g.y[end]), 2.4, 0, Math.PI*2); ctx.fill();
             }
         });
+        /* reference lines (left axis) */
         (cfg.hlines || []).forEach(l => {
             const yy = Math.round(Y(l.y)) + .5;
             ctx.save(); ctx.setLineDash(l.dash || [4, 4]);
             ctx.strokeStyle = l.color; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
             ctx.restore();
             if (l.label){ ctx.fillStyle = l.color; ctx.textAlign = 'left';
-                ctx.fillText(l.label, PAD.l + 6, yy - 9); }
+                ctx.fillText(l.label, P.l + 6, yy - 9); }
         });
-        cfg.series.forEach(s => {
+        /* right-axis series first, so the price lines sit on top */
+        if (dual) cfg.series2.forEach(s => {
+            const n = s.n === undefined ? N : s.n;
             if (s.fill){
-                ctx.beginPath(); ctx.moveTo(X(x[0]), Y(0));
-                for (let i = 0; i < s.y.length; i++) ctx.lineTo(X(x[i]), Y(s.y[i]));
-                ctx.lineTo(X(x[s.y.length-1]), Y(0)); ctx.closePath();
+                ctx.beginPath(); ctx.moveTo(X(x[0]), Y2(0));
+                for (let i = 0; i <= n; i++) ctx.lineTo(X(x[i]), Y2(s.y[i]));
+                ctx.lineTo(X(x[n]), Y2(0)); ctx.closePath();
                 ctx.fillStyle = s.fill; ctx.fill();
             }
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.5;
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y2(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        /* left-axis series */
+        cfg.series.forEach(s => {
+            const n = s.n === undefined ? s.y.length - 1 : s.n;
             ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.6;
-            for (let i = 0; i < s.y.length; i++){ const px = X(x[i]), py = Y(s.y[i]);
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y(s.y[i]);
                 i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
             ctx.stroke();
         });
@@ -782,20 +831,21 @@
                 ctx.fillText(mk.label, X(mk.x) + 8, Y(mk.y) - 8); }
         });
         if (cfg.legend){
-            ctx.textAlign = 'left'; let lx = PAD.l + 6;
+            ctx.textAlign = 'left'; let lx = P.l;
             cfg.legend.forEach(e => {
-                ctx.fillStyle = e.color; ctx.fillRect(lx, PAD.t + 4, 12, 2.5);
-                ctx.fillStyle = '#555'; ctx.fillText(e.name, lx + 17, PAD.t + 5);
-                lx += 30 + ctx.measureText(e.name).width;
+                ctx.fillStyle = e.color; ctx.fillRect(lx, 10, 13, 2.5);
+                ctx.fillStyle = C.axis; ctx.fillText(e.name, lx + 18, 11);
+                lx += 32 + ctx.measureText(e.name).width;
             });
         }
-        ctx.fillStyle = '#8a8879'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-        ctx.fillText('t (years)', w - PAD.r, h - 4);
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('t (years)', w - P.r, h - 3);
     }
 
     function drawHist(cv, vals){
         const {ctx, w, h} = ctxOf(cv);
-        const pw = w - PAD.l - PAD.r, ph = h - PAD.t - PAD.b;
+        const P = {l: 54, r: 16, t: 14, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
         let lo = Infinity, hi = -Infinity;
         for (let i = 0; i < vals.length; i++){
             if (vals[i] < lo) lo = vals[i]; if (vals[i] > hi) hi = vals[i]; }
@@ -809,97 +859,97 @@
         const top = sorted[0], second = sorted[1] || 0;
         let yMax = top, clipped = false;
         if (top > 4*Math.max(second, 1)){ yMax = Math.max(second*1.6, top*0.08); clipped = true; }
-        const X = v => PAD.l + ((v - lo)/(hi - lo))*pw;
-        const Y = c => PAD.t + (1 - Math.min(c, yMax)/yMax)*ph;
+        const X = v => P.l + ((v - lo)/(hi - lo))*pw;
+        const Y = c => P.t + (1 - Math.min(c, yMax)/yMax)*ph;
 
         ctx.font = FONT; ctx.textBaseline = 'middle';
         const yt = niceTicks(0, yMax, 4);
-        ctx.strokeStyle = 'rgba(28,27,24,.08)'; ctx.lineWidth = 1;
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
         yt.ticks.forEach(v => {
             const yy = Math.round(Y(v)) + .5;
-            ctx.beginPath(); ctx.moveTo(PAD.l, yy); ctx.lineTo(w - PAD.r, yy); ctx.stroke();
-            ctx.fillStyle = '#8a8879'; ctx.textAlign = 'right';
-            ctx.fillText(String(Math.round(v)), PAD.l - 8, yy);
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(String(Math.round(v)), P.l - 8, yy);
         });
         const bwPx = pw/nb;
         for (let k = 0; k < nb; k++){
             if (!counts[k]) continue;
             const c0 = lo + k*bw, y0 = Y(counts[k]);
-            ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(161,50,50,.75)' : 'rgba(63,107,63,.75)';
-            ctx.fillRect(X(c0) + .5, y0, Math.max(bwPx - 1, 1), PAD.t + ph - y0);
+            ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(154,38,38,.8)' : 'rgba(47,92,47,.8)';
+            ctx.fillRect(X(c0) + .5, y0, Math.max(bwPx - 1, 1), P.t + ph - y0);
             if (clipped && counts[k] > yMax){
-                ctx.fillStyle = '#333'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-                ctx.fillText(String(counts[k]), X(c0) + bwPx/2, PAD.t - 1);
+                ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                ctx.fillText(String(counts[k]), X(c0) + bwPx/2, P.t - 1);
                 ctx.textBaseline = 'middle';
             }
         }
         const zx = X(0);
-        if (zx >= PAD.l && zx <= w - PAD.r){
-            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(28,27,24,.4)';
-            ctx.beginPath(); ctx.moveTo(zx, PAD.t); ctx.lineTo(zx, PAD.t + ph); ctx.stroke();
+        if (zx >= P.l && zx <= w - P.r){
+            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.45)';
+            ctx.beginPath(); ctx.moveTo(zx, P.t); ctx.lineTo(zx, P.t + ph); ctx.stroke();
             ctx.restore();
         }
         const xt = niceTicks(lo, hi, 6);
-        ctx.fillStyle = '#8a8879'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-        xt.ticks.forEach(v => { if (v >= lo && v <= hi) ctx.fillText(fmt(v, xt.step), X(v), h - PAD.b + 8); });
-        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-        ctx.fillText('return on equity (%)', w - PAD.r, h - 4);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => { if (v >= lo && v <= hi) ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('return on equity (%)', w - P.r, h - 3);
     }
 
     function drawSweep(cv, sw, curL){
         const {ctx, w, h} = ctxOf(cv);
-        const PR = {l: 50, r: 52, t: 14, b: 30};
-        const pw = w - PR.l - PR.r, ph = h - PR.t - PR.b;
+        const P = {l: 50, r: 54, t: 14, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
         const Lmin = sw.L[0], Lmax = sw.L[sw.L.length-1];
         let rlo = Infinity, rhi = -Infinity;
         for (let i = 0; i < sw.er.length; i++){
             if (sw.er[i] < rlo) rlo = sw.er[i]; if (sw.er[i] > rhi) rhi = sw.er[i]; }
         if (rhi - rlo < 1e-9){ rlo -= 1; rhi += 1; }
         const rpad = (rhi - rlo)*0.12; rlo -= rpad; rhi += rpad;
-        const X  = v => PR.l + ((v - Lmin)/(Lmax - Lmin))*pw;
-        const YL = v => PR.t + (1 - v/100)*ph;
-        const YR = v => PR.t + (1 - (v - rlo)/(rhi - rlo))*ph;
+        const X  = v => P.l + ((v - Lmin)/(Lmax - Lmin))*pw;
+        const YL = v => P.t + (1 - v/100)*ph;
+        const YR = v => P.t + (1 - (v - rlo)/(rhi - rlo))*ph;
 
         ctx.font = FONT; ctx.textBaseline = 'middle';
-        ctx.strokeStyle = 'rgba(28,27,24,.08)'; ctx.lineWidth = 1;
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
         for (let g = 0; g <= 4; g++){
             const v = g*25, yy = Math.round(YL(v)) + .5;
-            ctx.beginPath(); ctx.moveTo(PR.l, yy); ctx.lineTo(w - PR.r, yy); ctx.stroke();
-            ctx.fillStyle = '#a13232'; ctx.textAlign = 'right';
-            ctx.fillText(v + '%', PR.l - 8, yy);
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.bad; ctx.textAlign = 'right';
+            ctx.fillText(v + '%', P.l - 8, yy);
         }
         const rt = niceTicks(rlo, rhi, 4);
-        ctx.fillStyle = '#2f5f8a'; ctx.textAlign = 'left';
-        rt.ticks.forEach(v => ctx.fillText(fmt(v, rt.step) + '%', w - PR.r + 7, YR(v)));
+        ctx.fillStyle = C.spot; ctx.textAlign = 'left';
+        rt.ticks.forEach(v => ctx.fillText(fmt(v, rt.step) + '%', w - P.r + 8, YR(v)));
 
         if (curL >= Lmin && curL <= Lmax){
-            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(28,27,24,.35)';
-            ctx.beginPath(); ctx.moveTo(X(curL), PR.t); ctx.lineTo(X(curL), PR.t + ph); ctx.stroke();
+            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.4)';
+            ctx.beginPath(); ctx.moveTo(X(curL), P.t); ctx.lineTo(X(curL), P.t + ph); ctx.stroke();
             ctx.restore();
         }
         if (rlo < 0 && rhi > 0){
-            ctx.save(); ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(47,95,138,.35)';
-            ctx.beginPath(); ctx.moveTo(PR.l, YR(0)); ctx.lineTo(w - PR.r, YR(0)); ctx.stroke();
+            ctx.save(); ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(31,78,121,.4)';
+            ctx.beginPath(); ctx.moveTo(P.l, YR(0)); ctx.lineTo(w - P.r, YR(0)); ctx.stroke();
             ctx.restore();
         }
-        ctx.beginPath(); ctx.strokeStyle = '#a13232'; ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.strokeStyle = C.bad; ctx.lineWidth = 1.8;
         sw.L.forEach((L, i) => { const px = X(L), py = YL(sw.pe[i]);
             i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
         ctx.stroke();
-        ctx.beginPath(); ctx.strokeStyle = '#2f5f8a'; ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.strokeStyle = C.spot; ctx.lineWidth = 1.8;
         sw.L.forEach((L, i) => { const px = X(L), py = YR(sw.er[i]);
             i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
         ctx.stroke();
         if (sw.optL != null){
-            ctx.fillStyle = '#2f5f8a';
+            ctx.fillStyle = C.spot;
             ctx.beginPath(); ctx.arc(X(sw.optL), YR(sw.optR), 4, 0, Math.PI*2); ctx.fill();
         }
         const xt = niceTicks(Lmin, Lmax, 6);
-        ctx.fillStyle = '#8a8879'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
         xt.ticks.forEach(v => { if (v >= Lmin && v <= Lmax)
-            ctx.fillText(String(Math.round(v)), X(v), h - PR.b + 8); });
-        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-        ctx.fillText('leverage L \u00d7', w - PR.r, h - 4);
+            ctx.fillText(String(Math.round(v)), X(v), h - P.b + 8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('leverage L \u00d7', w - P.r, h - 3);
     }
 
     /* ================= hero animation ================= */
@@ -932,26 +982,26 @@
         ctx.beginPath();
         for (let i = 0; i <= upto; i++) ctx.lineTo(X(i), Y(heroRec.F[i]));
         for (let i = upto; i >= 0; i--) ctx.lineTo(X(i), Y(heroRec.S[i]));
-        ctx.closePath(); ctx.fillStyle = 'rgba(122,48,48,.10)'; ctx.fill();
+        ctx.closePath(); ctx.fillStyle = 'rgba(122,48,48,.13)'; ctx.fill();
 
-        ctx.lineWidth = 1.5; ctx.strokeStyle = '#2f5f8a';
+        ctx.lineWidth = 1.6; ctx.strokeStyle = C.spot;
         ctx.beginPath();
         for (let i = 0; i <= upto; i++){ const px = X(i), py = Y(heroRec.S[i]);
             i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
         ctx.stroke();
-        ctx.strokeStyle = '#9c5a2e';
+        ctx.strokeStyle = C.fut;
         ctx.beginPath();
         for (let i = 0; i <= upto; i++){ const px = X(i), py = Y(heroRec.F[i]);
             i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
         ctx.stroke();
 
-        ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(28,27,24,.18)';
+        ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.22)';
         ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(X(upto), pt); ctx.lineTo(X(upto), pt + ph); ctx.stroke();
         ctx.restore();
-        ctx.fillStyle = '#2f5f8a';
+        ctx.fillStyle = C.spot;
         ctx.beginPath(); ctx.arc(X(upto), Y(heroRec.S[upto]), 2.8, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#9c5a2e';
+        ctx.fillStyle = C.fut;
         ctx.beginPath(); ctx.arc(X(upto), Y(heroRec.F[upto]), 2.8, 0, Math.PI*2); ctx.fill();
 
         if (heroDaysEl) heroDaysEl.textContent = Math.max(0, N - upto);
@@ -976,6 +1026,7 @@
     const ghostRec = {S:new Float64Array(ST), F:new Float64Array(ST),
                       B:new Float64Array(ST), V:new Float64Array(ST)};
     const rets = new Float64Array(M_MAX);
+    const sortBuf = new Float64Array(M_MAX);
 
     let SHK = null, MC_N = M_MAX, timed = false, pending = false, pendingFull = false;
     let lastSig = '', sweepCache = null, sweepSig = '';
@@ -1016,25 +1067,28 @@
         for (let k = 1; k <= NGHOST; k++){
             const g = simulate(p, SHK, k, ghostRec, false);
             ghostV[k-1].set(ghostRec.V);
-            ghosts.push({y: ghostV[k-1], end: g.idx, reason: g.reason});
+            ghosts.push({y: ghostV[k-1], n: g.idx, reason: g.reason});
         }
 
+        /* merged chart: prices on the left axis, basis on the right */
         drawXY(el('cvPath'), {x: Tt,
-            series: [{y: rec.S, color: '#2f5f8a'}, {y: rec.F, color: '#9c5a2e'}],
-            legend: [{name:'spot S(t)', color:'#2f5f8a'}, {name:'futures F(t)', color:'#9c5a2e'}]});
-        drawXY(el('cvBasis'), {x: Tt,
-            series: [{y: rec.B, color: '#3f6b3f', fill: 'rgba(63,107,63,.10)'}],
-            hlines: [{y: 0, color: 'rgba(28,27,24,.35)', dash: [2, 3]}]});
+            series:  [{y: rec.S, color: C.spot}, {y: rec.F, color: C.fut}],
+            series2: [{y: rec.B, color: C.basis, fill: C.basisFill}],
+            zero2: true,
+            legend: [{name:'spot S(t)  ·L', color:C.spot},
+                     {name:'futures F(t)  ·L', color:C.fut},
+                     {name:'basis B(t)  ·R', color:C.basis}]});
+
         const mk = [];
         if (s0.reason) mk.push({x: Tt[s0.idx], y: rec.V[s0.idx],
-            color: s0.reason === 1 ? '#a13232' : '#9c5a2e', r: 4.5,
+            color: s0.reason === 1 ? C.bad : C.fund, r: 4.5,
             label: s0.reason === 1 ? 'margin call' : 'funding shock'});
         drawXY(el('cvPnl'), {x: Tt, ghosts: ghosts,
-            series: [{y: rec.V.subarray(0, s0.idx + 1), color: '#6a4c93', w: 2}],
-            hlines: [{y: -p.eq, color: '#a13232',
+            series: [{y: rec.V, n: s0.idx, color: C.pnl, w: 2}],
+            hlines: [{y: -p.eq, color: C.bad,
                       label: 'margin call  \u2212S\u2080/L = ' + (-p.eq).toFixed(2)},
-                     {y: 0, color: 'rgba(28,27,24,.3)', dash: [2, 3]},
-                     {y: p.pi, color: 'rgba(63,107,63,.7)', dash: [5, 4],
+                     {y: 0, color: 'rgba(17,17,17,.35)', dash: [2, 3]},
+                     {y: p.pi, color: 'rgba(47,92,47,.8)', dash: [5, 4],
                       label: '\u03a0 = ' + p.pi.toFixed(3)}],
             markers: mk});
 
@@ -1057,7 +1111,8 @@
         const view = rets.subarray(0, M);
         drawHist(el('cvHist'), view);
 
-        const srt = Float64Array.from(view).sort();
+        const srt = sortBuf.subarray(0, M);
+        srt.set(view); srt.sort();
         const q = f => srt[Math.min(M - 1, Math.max(0, Math.floor(f*M)))];
         const pm = nMargin/M, pf = nFund/M;
         const se = 100*Math.sqrt((pm + pf)*(1 - pm - pf)/M);
@@ -1071,8 +1126,7 @@
         el('st_worst').textContent = srt[0].toFixed(1) + '%';
 
         /* ---- leverage sweep: exact, from records, independent of L ---- */
-        const ssig = sig;
-        if (sweepSig !== ssig || !sweepCache){
+        if (sweepSig !== sig || !sweepCache){
             const pe = new Float64Array(LGRID.length), er = new Float64Array(LGRID.length);
             for (let j = 0; j < LGRID.length; j++){
                 const L = LGRID[j], eq = S0/L;
@@ -1086,7 +1140,7 @@
             }
             let bi = 0; for (let j = 1; j < er.length; j++) if (er[j] > er[bi]) bi = j;
             sweepCache = {L: LGRID, pe, er, optL: LGRID[bi], optR: er[bi]};
-            sweepSig = ssig;
+            sweepSig = sig;
         }
         drawSweep(el('cvSweep'), sweepCache, p.L);
         el('sweepOpt').innerHTML = 'peak E[R] at L \u2248 <b>' + sweepCache.optL +
@@ -1156,8 +1210,9 @@
 </body>
 </html>
 
-<script>
-                            
-</script>
+							<script>
+                            	
+							</script>
                         </body>
                         </html>
+                    
