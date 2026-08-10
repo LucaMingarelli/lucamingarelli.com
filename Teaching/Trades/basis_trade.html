@@ -38,9 +38,9 @@
 
         /* ================= basis-trade page, all scoped with bt- ================= */
         .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc:#7a3030;
-                 --bt-spot:#1f4e79;--bt-fut:#8f4f26;--bt-basis:#2f5c2f;
-                 --bt-pnl:#5b3d84;--bt-bad:#9a2626;--bt-good:#2f5c2f;--bt-fund:#b0682a;}
-        
+                 --bt-spot:#000000;--bt-fut: #286ca3;--bt-basis: rgb(179 179 179 / 0.38);
+                 --bt-pnl:#5b3d84;--bt-bad:#9a2626;--bt-good:rgb(179 179 179 / 0.38);--bt-fund: #e61616;}
+
         .bt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
         .bt-secno{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
                   color:var(--bt-dim);margin:0 0 2px;letter-spacing:.05em;}
@@ -158,9 +158,9 @@
         </div>
     </div>
     <div class="bt-leg2">
-        <span><i class="bt-sw" style="background:#1f4e79"></i>spot <i>S</i>(t)</span>
-        <span><i class="bt-sw" style="background:#8f4f26"></i>futures <i>F</i>(t)</span>
-        <span><i class="bt-sw" style="background:rgba(122,48,48,.4);height:8px"></i>basis <i>B</i>(t)</span>
+        <span><i class="bt-sw" style="background:#000000"></i>spot <i>S</i>(t)</span>
+        <span><i class="bt-sw" style="background:#286ca3"></i>futures <i>F</i>(t)</span>
+        <span><i class="bt-sw" style="background:rgb(179 179 179);height:8px"></i>basis <i>B</i>(t)</span>
     </div>
 
     <!-- ============================ §1 ============================ -->
@@ -201,7 +201,7 @@
     </div>
     <p>Rearranged, the &ldquo;fair&rdquo; basis is just the net cost of carrying the asset to delivery.</p>
     <div class="bt-def">
-        <div class="bt-def-lab"><span class="n">Corollary 2.1</span> &mdash; Fair basis</div>
+        <div class="bt-def-lab"><span class="n">Definition 3</span> &mdash; Fair basis</div>
         <div class="bt-def-body">
             \begin{equation} B_t^{\text{fair}} = S_t\left(e^{(r-y)(T-t)} - 1\right). \end{equation}
         </div>
@@ -457,9 +457,9 @@
         <div class="bt-leg2">
             <span><i class="bt-sw" style="background:#5b3d84"></i>Realised path</span>
             <span><i class="bt-sw" style="background:rgba(17,17,17,.22)"></i>Other draws</span>
-            <span><i class="bt-sw" style="background:#9a2626"></i>Margin level \(-S_0/L\)<!--&minus;S&#8320;/L--></span>
-            <span><i class="bt-dot" style="background:#9a2626"></i>Margin call</span>
-            <span><i class="bt-dot" style="background:#b0682a"></i>Funding shock</span>
+            <span><i class="bt-sw" style="background:red"></i>Margin level \(-S_0/L\)<!--&minus;S&#8320;/L--></span>
+            <span><i class="bt-dot" style="background:#e61616"></i>Margin call</span>
+            <span><i class="bt-dot" style="background:#d6a82f"></i>Funding shock</span>
         </div>
     </div>
 
@@ -506,9 +506,9 @@
         </div>
     </div>
     <div class="bt-leg2">
-        <span><i class="bt-sw" style="background:#9a2626"></i>P(forced exit), left axis</span>
-        <span><i class="bt-sw" style="background:#1f4e79"></i>E[R], right axis</span>
-        <span><i class="bt-sw" style="background:rgba(17,17,17,.4)"></i>your current L</span>
+        <span><i class="bt-sw" style="background:red"></i>P(forced exit), left axis</span>
+        <span><i class="bt-sw" style="background:#000000"></i>E[R], right axis</span>
+        <span><i class="bt-sw" style="background:rgba(17,17,17,.4)"></i>current L</span>
     </div>
     <p>
         The shape is the whole argument. Expected return rises linearly in \(L\) while the trade
@@ -563,10 +563,10 @@
     const C = {
         ink:  '#111111',   label:'#111111',  axis: '#333333',
         grid: 'rgba(0,0,0,.13)',
-        spot: '#1f4e79',   fut:  '#8f4f26',  basis:'#2f5c2f',
-        pnl:  '#5b3d84',   bad:  '#9a2626',  fund: '#b0682a',
+        spot: '#000000',   fut:  '#286ca3',  basis:'rgb(179 179 179 / 0.38)',
+        pnl:  '#5b3d84',   bad:  '#e61616',  fund: '#e61616',
         ghost:'rgba(17,17,17,.20)',
-        basisFill:'rgba(47,92,47,.13)'
+        basisFill:'rgb(179 179 179 / 0.38)'
     };
 
     /* ================= model constants ================= */
@@ -795,7 +795,7 @@
                 i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
             ctx.stroke();
             if (g.reason){
-                ctx.fillStyle = g.reason === 1 ? 'rgba(154,38,38,.6)' : 'rgba(176,104,42,.6)';
+                ctx.fillStyle = g.reason === 1 ? 'rgb(230 22 22)' : 'rgb(214 168 47)';
                 ctx.beginPath(); ctx.arc(X(x[end]), Y(g.y[end]), 2.4, 0, Math.PI*2); ctx.fill();
             }
         });
@@ -882,6 +882,7 @@
         for (let k = 0; k < nb; k++){
             if (!counts[k]) continue;
             const c0 = lo + k*bw, y0 = Y(counts[k]);
+            // P&L
             ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(154,38,38,.8)' : 'rgba(47,92,47,.8)';
             ctx.fillRect(X(c0) + .5, y0, Math.max(bwPx - 1, 1), P.t + ph - y0);
             if (clipped && counts[k] > yMax){
@@ -989,7 +990,7 @@
         ctx.beginPath();
         for (let i = 0; i <= upto; i++) ctx.lineTo(X(i), Y(heroRec.F[i]));
         for (let i = upto; i >= 0; i--) ctx.lineTo(X(i), Y(heroRec.S[i]));
-        ctx.closePath(); ctx.fillStyle = 'rgba(122,48,48,.13)'; ctx.fill();
+        ctx.closePath(); ctx.fillStyle = 'rgb(179 179 179 / 0.38)'; ctx.fill();
 
         ctx.lineWidth = 1.6; ctx.strokeStyle = C.spot;
         ctx.beginPath();
@@ -1093,7 +1094,7 @@
         drawXY(el('cvPnl'), {x: Tt, ghosts: ghosts,
             series: [{y: rec.V, n: s0.idx, color: C.pnl, w: 2}],
             hlines: [{y: -p.eq, color: C.bad,
-                      label: 'margin call  \u2212S\u2080/L = ' + (-p.eq).toFixed(2)},
+                      label: 'margin call  \(-S_0/L\) = ' + (-p.eq).toFixed(2)},
                      {y: 0, color: 'rgba(17,17,17,.35)', dash: [2, 3]},
                      {y: p.pi, color: 'rgba(47,92,47,.8)', dash: [5, 4],
                       label: '\u03a0 = ' + p.pi.toFixed(3)}],
