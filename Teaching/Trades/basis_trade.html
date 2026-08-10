@@ -256,14 +256,14 @@
         <div class="bt-leg-card">
             <div class="bt-leg-t">Long leg &mdash; buy spot</div>
             <p>Borrow cash at the repo rate \(r\) and buy the asset. You own it, and you owe the loan.</p>
-            <div class="bt-flow">t = 0: &minus;S&#8320; (buy) &middot; +S&#8320; (borrow)<br>
-                                t = T: repay financing, deliver the asset</div>
+            <div class="bt-flow">\(t = 0\): \(-S_0\) (buy) &middot; \(+S_0\) (borrow)<br>
+                                \(t = T\): repay financing, deliver the asset</div>
         </div>
         <div class="bt-leg-card">
             <div class="bt-leg-t">Short leg &mdash; sell the future</div>
             <p>Sell a futures contract at \(F_0\), obliging you to deliver at a price fixed today.</p>
-            <div class="bt-flow">t = 0: no cash (futures are margined)<br>
-                                t = T: receive F&#8320; on delivery</div>
+            <div class="bt-flow">\(t = 0\): no cash (futures are margined)<br>
+                                \(t = T\): receive F&#8320; on delivery</div>
         </div>
     </div>
     <p>
@@ -475,7 +475,7 @@
     <div class="bt-fig">
         <canvas id="cvHist" width="800" height="300" role="img"
                 aria-label="Histogram of levered returns on equity"></canvas>
-        <div class="bt-cap"><span>Distribution of levered returns <i>R</i> = <i>L</i>&middot;&Pi;/S&#8320; (% on equity)</span></div>
+        <div class="bt-cap"><span>Distribution of levered returns \(R=L\cdot\Pi/S_0\) (% on equity)</span></div>
     </div>
 <!--    <div class="bt-note">-->
 <!--        <b>Why the survivor spike is a single bar.</b> Under this model the cash-and-carry is a genuine-->
