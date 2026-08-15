@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pairs Trading &amp; Cointegration — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+    <script type="application/javascript">
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+            /* Oribi Analytics */
+            (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+            /* Google Tag Manager */
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NLJ2P23');
+        }
+    </script>
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+    <style>
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+        /* ================= pairs-trading page, all scoped with pt- ================= */
+        .pt-wrap{--pt-line:#c9c4b6;--pt-dim:#55534c;--pt-ink:#111111;--pt-acc:#7a3030;
+                 --pt-a:#000000;--pt-b:#286ca3;--pt-sp:rgb(179 179 179 / 0.38);
+                 --pt-eq:#5b3d84;--pt-bad:#e61616;--pt-good:#2f5c2f;--pt-warn:#d6a82f;}
+        .pt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .pt-wrap h3{margin-bottom:2px;}
+        .pt-def{margin:20px 0;text-align:left;}
+        .pt-def-lab{font-weight:600;font-size:15px;color:var(--pt-ink);margin-bottom:4px;}
+        .pt-def-lab .n{color:var(--pt-acc);}
+        .pt-def-body{border-left:2px solid var(--pt-acc);padding:2px 0 2px 18px;
+                     overflow-x:auto;overflow-y:hidden;}
+        .pt-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                    color:var(--pt-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
+        .pt-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--pt-line);
+                 margin:20px 0;background:none;}
+        @media(max-width:640px){.pt-legs{grid-template-columns:1fr;}}
+        .pt-leg-card{padding:16px 18px;text-align:left;}
+        .pt-leg-card + .pt-leg-card{border-left:1px solid var(--pt-line);}
+        @media(max-width:640px){.pt-leg-card + .pt-leg-card{border-left:none;
+                 border-top:1px solid var(--pt-line);}}
+        .pt-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
+        .pt-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
+        .pt-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                 color:var(--pt-dim);margin-top:10px;padding-top:9px;
+                 border-top:1px dashed var(--pt-line);line-height:1.6;}
+        .pt-sim{background:none;border:1px solid var(--pt-line);padding:16px;margin:14px 0;
+                text-align:left;}
+        .pt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 22px;}
+        .pt-ctl label{display:block;font-size:13px;color:#222;}
+        .pt-ctl .pt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--pt-acc);}
+        .pt-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .pt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .pt-hint{font-size:12px;color:var(--pt-dim);line-height:1.45;}
+        .pt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
+        .pt-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--pt-line);background:rgba(255,255,255,.5);}
+        .pt-chk{font-size:13px;color:#222;display:inline-flex;align-items:center;gap:6px;}
+        .pt-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+                  border:1px solid var(--pt-line);margin-top:16px;}
+        @media(min-width:560px){.pt-stats{grid-template-columns:repeat(4,1fr);}}
+        .pt-stat{padding:10px 12px;border-left:1px solid var(--pt-line);
+                 border-top:1px solid var(--pt-line);}
+        .pt-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--pt-dim);margin-bottom:5px;}
+        .pt-stat .v{font-size:18px;font-weight:600;color:var(--pt-ink);}
+        .pt-stat .v.bad{color:var(--pt-bad);}
+        .pt-stat .v.good{color:var(--pt-good);}
+        .pt-stat .v.warn{color:#a8801f;}
+        .pt-stat .se{font-size:11px;color:var(--pt-dim);font-weight:400;}
+        .pt-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .pt-fig canvas{width:100%;display:block;background:none;}
+        .pt-two{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:16px;}
+        @media(max-width:640px){.pt-two{grid-template-columns:1fr;}}
+        #cvHero{height:250px;}
+        #cvCorr,#cvCoint{height:200px;}
+        #cvSpur,#cvDF{height:215px;}
+        #cvPair{height:330px;}
+        #cvZ{height:300px;}
+        #cvEq,#cvHist,#cvSweep{height:280px;}
+        @media(max-width:600px){
+            #cvHero{height:195px;}
+            #cvPair{height:265px;}
+            #cvZ{height:240px;}
+            #cvEq,#cvHist,#cvSweep{height:225px;}
+        }
+        .pt-cap{font-size:11.5px;color:var(--pt-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--pt-line);margin-top:6px;display:flex;
+                justify-content:space-between;gap:10px;}
+        .pt-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
+                 color:var(--pt-dim);margin:6px 2px 0;}
+        .pt-leg2 span{display:inline-flex;align-items:center;gap:5px;}
+        .pt-sw{width:14px;height:2px;display:inline-block;}
+        .pt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .pt-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--pt-line);padding:9px 13px;margin:12px 0;
+                 text-align:left;line-height:1.55;}
+        .pt-risk{list-style:none;padding:0;margin:18px 0 0;}
+        .pt-risk li{padding-left:16px;border-left:2px solid var(--pt-acc);margin-bottom:18px;}
+        .pt-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+               color:var(--pt-acc);display:block;margin-bottom:3px;}
+        .pt-risk p{margin:0;font-size:15px;}
+        .pt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
+        .pt-tbl th,.pt-tbl td{border:1px solid var(--pt-line);padding:7px 10px;text-align:left;
+                              vertical-align:top;}
+        .pt-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
+        .pt-tbl code{background:none;padding:0;}
+    </style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script src="../../js/Navbar.js"></script>
+<script src="../../js/pre_content.js"></script>
+<div class="w3-content w3-justify pt-wrap" style="max-width:800px">
+    <h1 style="text-align:left;"><b>Pairs Trading &amp; Cointegration</b></h1>
+    <p class="pt-lede">
+        Two assets that move together are not the same thing as two assets that must
+        <i>come back</i> together. The first is correlation, and it is nearly useless. The second is
+        cointegration, and it is the entire trade.
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvHero" width="800" height="250" role="img"
+                aria-label="Animated pair of cointegrated prices with the shaded spread between them"></canvas>
+        <div class="pt-cap">
+            <span>a cointegrated pair &mdash; the gap wanders but is tethered</span>
+            <span>z = <b id="heroZ">0.00</b></span>
+        </div>
+    </div>
+    <div class="pt-leg2">
+        <span><i class="pt-sw" style="background:#000000"></i>asset <i>A</i></span>
+        <span><i class="pt-sw" style="background:#286ca3"></i>synthetic <i>A</i> from <i>B</i></span>
+        <span><i class="pt-sw" style="background:rgb(179 179 179);height:8px"></i>spread</span>
+        <span><i class="pt-sw" style="background:rgb(154 38 38 / .5);height:8px"></i>|z| &gt; 2 &mdash; signal</span>
+    </div>
+
+    <!-- ============================ §1 ============================ -->
+    <h3><b>The idea</b></h3>
+    <p>
+        A pairs trade is a bet on a <b>relative</b> price, not an absolute one. You find two assets
+        whose prices are tied together by something economic &mdash; the same cash flows, the same
+        commodity, the same balance sheet, the same index &mdash; and when the tie stretches you sell
+        the expensive one, buy the cheap one, and wait for the tie to pull them back.
+    </p>
+    <div class="pt-legs">
+        <div class="pt-leg-card">
+            <div class="pt-leg-t">Short leg &mdash; the rich asset</div>
+            <p>Sell \(\$1\) of \(A\). You need to borrow it, which costs a fee and can be recalled.</p>
+            <div class="pt-flow">entry: \(+\$1\) cash, short 1 unit of \(A\)<br>
+                                exit: buy back at (hopefully) a lower relative price</div>
+        </div>
+        <div class="pt-leg-card">
+            <div class="pt-leg-t">Long leg &mdash; the cheap asset</div>
+            <p>Buy \(\$\beta\) of \(B\), where \(\beta\) is the hedge ratio that removes the common
+               factor. Gross notional is \(1+\beta\); net market exposure is (approximately) zero.</p>
+            <div class="pt-flow">entry: \(-\$\beta\) cash, long \(\beta\) units of \(B\)<br>
+                                P&amp;L: \(\;\theta\,(\Delta p^A - \beta\,\Delta p^B)\)</div>
+        </div>
+    </div>
+    <p>
+        Everything hard about this is in the phrase <i>&ldquo;pull them back&rdquo;</i>. The market
+        owes you nothing. What you need is a statistical statement strong enough to justify the word
+        <i>must</i>, and correlation is not that statement.
+    </p>
+
+    <!-- ============================ §2 ============================ -->
+    <h3><b>Why correlation is the wrong tool</b></h3>
+    <p>
+        The default screen is the correlation of returns.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 1</span> &mdash; Return correlation</div>
+        <div class="pt-def-body">
+            \begin{equation}
+              \rho \;=\; \frac{\operatorname{Cov}\!\left(\Delta p^A_t,\ \Delta p^B_t\right)}
+                              {\sqrt{\operatorname{Var}\Delta p^A_t\ \operatorname{Var}\Delta p^B_t}},
+              \qquad \Delta p_t = p_t - p_{t-1},\quad p=\log P .
+            \end{equation}
+        </div>
+        <div class="pt-def-cap">a statement about <i>differences</i>, over one period, contemporaneously</div>
+    </div>
+    <p>
+        Note what the definition throws away: <b>the level</b>. Correlation is computed on returns
+        precisely because returns are (approximately) stationary, and that differencing step destroys
+        exactly the information a pairs trader needs. Two random walks can have a return correlation
+        of \(0.99\) and still see their price gap diverge without bound &mdash; the gap is itself a
+        random walk, with variance growing linearly in \(t\). Conversely, a pair can be firmly tethered
+        in levels while its daily returns look almost unrelated, if the tether is fast relative to the
+        common factor.
+    </p>
+    <div class="pt-two">
+        <div>
+            <canvas id="cvCorr" width="420" height="200" role="img"
+                    aria-label="Two highly correlated random walks whose gap diverges"></canvas>
+            <div class="pt-cap"><span>\(\rho(\Delta)=\) <b id="rhoA">&mdash;</b>, <b>not</b> cointegrated</span></div>
+        </div>
+        <div>
+            <canvas id="cvCoint" width="420" height="200" role="img"
+                    aria-label="Two weakly correlated but cointegrated prices"></canvas>
+            <div class="pt-cap"><span>\(\rho(\Delta)=\) <b id="rhoB">&mdash;</b>, <b>cointegrated</b></span></div>
+        </div>
+    </div>
+    <p class="pt-hint" style="margin-top:8px">
+        Same vertical scale in both panels. Left: near-identical daily moves, an unbounded gap.
+        Right: noisy daily moves, a gap that keeps being dragged back. Only the right-hand pair is
+        tradable.
+    </p>
+    <table class="pt-tbl">
+        <tr><th></th><th>Correlation</th><th>Cointegration</th></tr>
+        <tr><td><b>Object</b></td><td>returns \(\Delta p_t\)</td><td>levels \(p_t\)</td></tr>
+        <tr><td><b>Horizon</b></td><td>contemporaneous, short</td><td>long-run equilibrium</td></tr>
+        <tr><td><b>Parameters</b></td><td>one number, scale-free, symmetric</td>
+            <td>a hedge ratio \(\beta\) and an intercept, estimator-dependent</td></tr>
+        <tr><td><b>Says</b></td><td>&ldquo;they wiggle together&rdquo;</td>
+            <td>&ldquo;a linear combination is stationary, so deviations are temporary&rdquo;</td></tr>
+        <tr><td><b>Implies mean reversion?</b></td><td>No</td><td>Yes, by construction</td></tr>
+        <tr><td><b>Stability</b></td><td>notoriously unstable, rises in crises</td>
+            <td>stable if the economic tie is real; breaks discretely when it is not</td></tr>
+    </table>
+
+    <!-- ============================ §3 ============================ -->
+    <h3><b>The spurious regression trap</b></h3>
+    <p>
+        Suppose you skip correlation and regress one price level on another,
+        \(p^A_t = \alpha + \beta\,p^B_t + e_t\), then look at \(R^2\) and the \(t\)-statistic on
+        \(\hat\beta\). This is worse. Granger and Newbold (1974) showed that regressing one
+        <i>independent</i> random walk on another produces high \(R^2\) and enormous \(t\)-statistics
+        essentially at will: the usual asymptotics fail because the regression error inherits a unit
+        root, so \(t\) diverges like \(\sqrt{n}\) instead of converging to \(\mathcal N(0,1)\).
+    </p>
+    <div class="pt-two">
+        <div>
+            <canvas id="cvSpur" width="420" height="215" role="img"
+                    aria-label="Distribution of OLS t-statistics for two independent random walks"></canvas>
+            <div class="pt-cap"><span>\(t(\hat\beta)\), two <i>independent</i> walks</span>
+                <span><b id="spurRej">&mdash;</b> reject at 5%</span></div>
+        </div>
+        <div>
+            <canvas id="cvDF" width="420" height="215" role="img"
+                    aria-label="Distribution of Engle-Granger Dickey-Fuller statistics on the residuals"></canvas>
+            <div class="pt-cap"><span>EG&ndash;DF statistic on \(\hat e_t\)</span>
+                <span><b id="dfRej">&mdash;</b> vs <b id="dfRejC">&mdash;</b></span></div>
+        </div>
+    </div>
+    <p class="pt-hint" style="margin-top:8px">
+        Left: the nominal 5% test rejects &ldquo;no relationship&rdquo; far more often than 5% of the
+        time; the dashed lines are \(\pm1.96\). Right: the correct test, run on the residuals, is not
+        fooled &mdash; grey is the independent pair, purple a genuinely cointegrated one, dashed line
+        at the Engle&ndash;Granger 5% value \(-3.34\). Both panels: 1500 simulated pairs of 250 days.
+    </p>
+    <div class="pt-note">
+        The practical form of this trap is <b>pair mining</b>. Screening 500 stocks means testing
+        \(\binom{500}{2}=124{,}750\) pairs; a test with 5% size hands you roughly 6,200 false
+        &ldquo;cointegrated&rdquo; pairs before a single one of them is economically real. Multiple-testing
+        corrections, or better, an economic prior (dual listings, share classes, index members and
+        their ETF, producer&ndash;refiner, issuer curves) is not optional.
+    </div>
+
+    <!-- ============================ §4 ============================ -->
+    <h3><b>Cointegration</b></h3>
+    <p>
+        The right object was formalised by Engle and Granger (1987). Begin with the order of
+        integration.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 2</span> &mdash; Order of integration</div>
+        <div class="pt-def-body">
+            <p style="margin:0">A series \(x_t\) is \(I(d)\) if \(\Delta^d x_t\) is stationary while
+            \(\Delta^{d-1}x_t\) is not. Log prices are typically \(I(1)\); log returns are \(I(0)\).</p>
+        </div>
+    </div>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 3</span> &mdash; Cointegration</div>
+        <div class="pt-def-body">
+            <p style="margin:0 0 6px">Let \(p_t\in\mathbb R^n\) with every component \(I(1)\). The
+            components are <b>cointegrated</b> if there exists \(b\neq 0\) with</p>
+            \begin{equation}
+                b'p_t \;\sim\; I(0).
+            \end{equation}
+            <p style="margin:6px 0 0">\(b\) is a <i>cointegrating vector</i>; the number of linearly
+            independent such vectors is the <i>cointegration rank</i> \(r\).</p>
+        </div>
+        <div class="pt-def-cap">for a pair, \(b=(1,-\beta)'\) and \(\;e_t=p^A_t-\alpha-\beta p^B_t\)
+            is the tradable spread</div>
+    </div>
+    <p>
+        Generically, a linear combination of \(I(1)\) series is \(I(1)\); cointegration is a knife-edge
+        cancellation of the stochastic trends, and it is exactly this cancellation that makes the
+        spread forecastable. The economic content is delivered by the representation theorem.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Theorem 4</span> &mdash; Granger representation</div>
+        <div class="pt-def-body">
+            <p style="margin:0 0 6px">\(p_t\) is cointegrated <i>if and only if</i> it admits a vector
+            error-correction representation. For a pair,</p>
+            \begin{align}
+                \Delta p^A_t &= c_A + \phi_A\, e_{t-1} + \textstyle\sum_j \gamma^A_j \Delta p_{t-j} + \eta^A_t,\\
+                \Delta p^B_t &= c_B + \phi_B\, e_{t-1} + \textstyle\sum_j \gamma^B_j \Delta p_{t-j} + \eta^B_t,
+            \end{align}
+            <p style="margin:6px 0 0">with \(e_{t-1}=p^A_{t-1}-\alpha-\beta p^B_{t-1}\) and
+            \((\phi_A,\phi_B)\neq(0,0)\).</p>
+        </div>
+        <div class="pt-def-cap">\(\phi\) = adjustment speed / loading &middot; at least one asset
+            <i>must</i> respond to the disequilibrium</div>
+    </div>
+    <p>
+        This is the sentence that justifies the trade: <b>if a pair is cointegrated, then yesterday's
+        spread predicts today's returns</b>, and somebody has to do the correcting. The signs tell you
+        who: \(\phi_A<0\) means \(A\) falls back when the spread is too wide, \(\phi_B>0\) means \(B\)
+        rises to meet it. If \(\phi_A=0\) and only \(\phi_B\neq 0\), then \(A\) is the price leader and
+        \(B\) does all the adjusting &mdash; useful to know before deciding which leg is the
+        &ldquo;mispriced&rdquo; one. Equivalently (Stock&ndash;Watson), \(n\) cointegrated series with
+        rank \(r\) are driven by only \(n-r\) common stochastic trends: a cointegrated pair is one
+        common trend plus one stationary residual.
+    </p>
+
+    <!-- ============================ §5 ============================ -->
+    <h3><b>Building the pair in practice</b></h3>
+    <p>
+        The Engle&ndash;Granger two-step is the workhorse for \(n=2\):
+    </p>
+    <ol>
+        <li>Regress \(p^A_t\) on \(p^B_t\) (with a constant) over a <b>formation window</b> to obtain
+            \(\hat\alpha,\hat\beta\) and residuals \(\hat e_t\). Because the regressors are \(I(1)\),
+            \(\hat\beta\) is <i>super-consistent</i>: it converges at rate \(n\) rather than
+            \(\sqrt n\), which is the one piece of good news in this literature.</li>
+        <li>Test \(\hat e_t\) for a unit root with an augmented Dickey&ndash;Fuller regression
+            \(\Delta\hat e_t=\rho\,\hat e_{t-1}+\sum_j\psi_j\Delta \hat e_{t-j}+\nu_t\) and reject
+            \(H_0:\rho=0\) only against <b>Engle&ndash;Granger</b> critical values &mdash; not standard
+            DF ones, because \(\hat e_t\) is a fitted residual and OLS has already worked to make it
+            look stationary. For two variables with a constant, the 5% value is about \(-3.34\).</li>
+    </ol>
+    <p>Four warnings that matter more than the algebra:</p>
+    <ul>
+        <li><b>The regression is not symmetric.</b> Regressing \(A\) on \(B\) and \(B\) on \(A\) gives
+            hedge ratios that are not reciprocals; the difference is an attenuation factor \(R^2\).
+            Total least squares, or the Johansen estimate, avoids having to nominate a dependent
+            variable.</li>
+        <li><b>Power is low.</b> Unit-root tests need long samples to distinguish a slow mean-reverter
+            from a random walk. A half-life of six months in two years of data is essentially
+            untestable.</li>
+        <li><b>Breaks masquerade as unit roots.</b> A one-off level shift in a stationary spread makes
+            ADF fail to reject (Perron). The converse also happens: a de-cointegrating drift looks
+            fine in-sample right up to the point it doesn't.</li>
+        <li><b>\(\beta\) is not constant.</b> Capital structure, index weights and betas move. Rolling
+            windows or a Kalman filter with \(\beta_t\) as a random-walk state are the standard fixes,
+            at the price of tracking your own noise.</li>
+    </ul>
+    <div class="pt-note">
+        For \(n>2\) assets use <b>Johansen's</b> procedure: estimate the VECM
+        \(\Delta p_t = \Pi p_{t-1}+\dots\) by reduced-rank regression and read the cointegration rank
+        off the trace or maximum-eigenvalue statistic, with \(\Pi=\phi\, b'\), \(\operatorname{rank}\Pi=r\).
+        This handles baskets (a stock against a sector ETF, a bond against a curve), tests rank rather
+        than assuming it, and treats all series symmetrically. Avellaneda and Lee's PCA-residual
+        construction is the large-\(n\) cousin: regress on principal-component factors and trade the
+        residual.
+    </div>
+
+    <!-- ============================ §6 ============================ -->
+    <h3><b>The spread as an Ornstein&ndash;Uhlenbeck process</b></h3>
+    <p>
+        Cointegration says the spread is stationary; to size and time a trade you need a model of
+        <i>how</i> it reverts. The continuous-time counterpart of the error-correction term is the OU
+        process,
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Model 5</span> &mdash; The spread</div>
+        <div class="pt-def-body">
+            \begin{equation}
+                de_t = -\kappa\,(e_t-\bar e)\,dt + \sigma_s\, dZ_t ,
+            \end{equation}
+        </div>
+        <div class="pt-def-cap">discretely, an AR(1): \(e_{t+\Delta}= \bar e+ e^{-\kappa\Delta}(e_t-\bar e)+\text{noise}\)</div>
+    </div>
+    <p>with the three numbers that decide whether the pair is worth trading:</p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Proposition 6</span> &mdash; Half-life, equilibrium
+            scale, z-score</div>
+        <div class="pt-def-body">
+            \begin{equation}
+                t_{1/2}=\frac{\ln 2}{\kappa},\qquad
+                e_\infty\sim\mathcal N\!\left(\bar e,\ \frac{\sigma_s^{2}}{2\kappa}\right),\qquad
+                z_t=\frac{p^A_t-\hat\alpha-\hat\beta p^B_t}{\hat\sigma_e}.
+            \end{equation}
+        </div>
+        <div class="pt-def-cap">from an AR(1) fit with coefficient \(\hat\rho\):
+            \(\;t_{1/2}=-\ln 2/\ln\hat\rho\)</div>
+    </div>
+    <p>
+        The half-life is the single most useful diagnostic. It sets the holding period, hence the
+        number of independent bets per year, hence how much turnover cost you can absorb; and it must
+        be short relative to your formation window or the estimate is meaningless. The trading rule is
+        then a threshold policy on \(z\):
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 7</span> &mdash; Threshold rule and trade P&amp;L</div>
+        <div class="pt-def-body">
+            <p style="margin:0 0 6px">Enter \(\theta=-1\) (short the spread) when \(z_t>z_{\rm in}\),
+            \(\theta=+1\) when \(z_t<-z_{\rm in}\); exit when \(|z_t|\le z_{\rm out}\); stop out when
+            \(|z_t|\ge z_{\rm stop}\); flatten at the horizon. Per round trip, as a fraction of gross
+            notional,</p>
+            \begin{equation}
+                \pi \;=\; \frac{\theta\,\bigl(e_{\rm exit}-e_{\rm entry}\bigr)}{1+\hat\beta}\;-\;2c ,
+            \end{equation}
+            <p style="margin:6px 0 0">and the return on equity at gross leverage \(L\) is
+            \(R=L\sum_{\rm trades}\pi\).</p>
+        </div>
+        <div class="pt-def-cap">c = one-way cost per unit notional (spread + fees + borrow), charged
+            on both legs, in and out</div>
+    </div>
+    <p>
+        There is an analytic literature on choosing \(z_{\rm in}\) optimally for an OU spread
+        (Bertram, 2010; Elliott, van der Hoek and Malcolm, 2005), maximising expected return per unit
+        time or a Sharpe-like objective. The qualitative answer is the one the simulator below
+        reproduces: the optimum is <b>interior</b>, and it moves outward as costs rise.
+    </p>
+
+    <!-- ============================ §7 ============================ -->
+    <h3><b>A small stochastic model</b></h3>
+    <p>
+        One common stochastic trend \(f_t\), one stationary spread \(s_t\), and &mdash; crucially
+        &mdash; one knob that <i>breaks</i> the cointegration:
+    </p>
+    \begin{align}
+        df_t &= \mu\,dt + \sigma_f\,dW_t, &&\text{common trend, } I(1)\\
+        ds_t &= -\kappa\,s_t\,dt + \sigma_s\,dZ_t, &&\text{tether, } I(0)\\
+        du_t &= \sigma_u\,dB_t, &&\text{divergence, } I(1)\\
+        p^B_t &= p^B_0 + f_t, \qquad p^A_t = p^A_0 + \beta f_t + \underbrace{s_t+u_t+J\,\mathbf 1_{\{t\ge\tau\}}}_{e_t}. &&
+    \end{align}
+    <p>
+        When \(\sigma_u=0\) the pair is exactly cointegrated with vector \((1,-\beta)\), and in
+        error-correction form \(\phi_A=-\kappa\), \(\phi_B=0\): all adjustment is done by \(A\).
+        Switching on \(\sigma_u\) injects an idiosyncratic random walk into the spread, so
+        \(e_t\) becomes \(I(1)\) and the relationship is <b>no longer a relationship</b>, only a slow
+        one. That is the pairs-trading analogue of funding risk: the mechanism you were relying on
+        quietly stops existing. Separately, a Poisson break with hazard \(h\) shifts the spread level
+        permanently by \(J=4\,\sigma_s/\sqrt{2\kappa}\) &mdash; four equilibrium standard deviations,
+        the merger that doesn't close, the index reconstitution, the profit warning.
+    </p>
+    <p>
+        The trader does not observe any of this. They see 252 days of prices (the <b>formation
+        window</b>), run the Engle&ndash;Granger regression, form \(z_t\), and trade the next 126 days
+        out of sample. Optionally, they refuse to trade the pair at all unless the ADF statistic
+        rejects at 5%.
+    </p>
+
+    <div class="pt-sim" id="ptSim">
+        <div class="pt-grid">
+            <div class="pt-ctl"><label for="in_beta">True hedge ratio \(\beta\)<span class="pt-val" id="lbl_beta">1.20</span>
+                <input type="range" id="in_beta" min="0.40" max="2.00" step="0.05" value="1.20"></label></div>
+            <div class="pt-ctl"><label for="in_ss">Spread vol \(\sigma_s\)<span class="pt-val" id="lbl_ss">0.120</span>
+                <input type="range" id="in_ss" min="0.00" max="0.40" step="0.005" value="0.120"></label></div>
+            <div class="pt-ctl"><label for="in_kappa">Reversion \(\kappa\)<span class="pt-val" id="lbl_kappa">12.0</span>
+                <input type="range" id="in_kappa" min="1" max="40" step="0.5" value="12"></label></div>
+            <div class="pt-ctl"><label for="in_su">Divergence \(\sigma_u\)<span class="pt-val" id="lbl_su">0.000</span>
+                <input type="range" id="in_su" min="0.000" max="0.150" step="0.002" value="0.000"></label></div>
+            <div class="pt-ctl"><label for="in_h">Break hazard \(h\) /yr<span class="pt-val" id="lbl_h">0.30</span>
+                <input type="range" id="in_h" min="0" max="3" step="0.05" value="0.30"></label></div>
+            <div class="pt-ctl"><label for="in_zin">Entry \(z_{\rm in}\)<span class="pt-val" id="lbl_zin">2.00</span>
+                <input type="range" id="in_zin" min="0.50" max="4.00" step="0.05" value="2.00"></label></div>
+            <div class="pt-ctl"><label for="in_zout">Exit \(z_{\rm out}\)<span class="pt-val" id="lbl_zout">0.50</span>
+                <input type="range" id="in_zout" min="0.00" max="2.00" step="0.05" value="0.50"></label></div>
+            <div class="pt-ctl"><label for="in_zstop">Stop \(z_{\rm stop}\)<span class="pt-val" id="lbl_zstop">3.50</span>
+                <input type="range" id="in_zstop" min="1.50" max="8.00" step="0.10" value="3.50"></label></div>
+            <div class="pt-ctl"><label for="in_c">Cost \(c\) (bp/leg)<span class="pt-val" id="lbl_c">10</span>
+                <input type="range" id="in_c" min="0" max="60" step="1" value="10"></label></div>
+            <div class="pt-ctl"><label for="in_L">Gross leverage \(L\)<span class="pt-val" id="lbl_L">3.0&times;</span>
+                <input type="range" id="in_L" min="1" max="10" step="0.5" value="3"></label></div>
+        </div>
+        <div class="pt-bar">
+            <button class="w3-button w3-dark-grey w3-round" id="btnDraws">&#8635; New draws</button>
+            <span class="pt-seed">seed <input type="number" id="in_seed" value="19870301" step="1"></span>
+            <label class="pt-chk"><input type="checkbox" id="in_filter"> trade only if EG&ndash;ADF rejects at 5%</label>
+            <span class="pt-hint" id="ptPerf"></span>
+        </div>
+        <p class="pt-hint" style="margin:2px 0 0;">
+            The shocks are held fixed, so a slider <i>transforms the same realisation</i> rather than
+            redrawing it. \(\sigma_s\) and \(\sigma_u\) rescale the spread, \(\kappa\) deforms it,
+            \(\beta\) tilts the pair; the four trading parameters and \(L\) leave every path untouched
+            and only change what you do with it. <b>New draws</b> gives a fresh realisation.
+        </p>
+        <div class="pt-stats">
+            <div class="pt-stat"><div class="k">Trades / path</div><div class="v" id="st_ntr">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Win rate</div><div class="v good" id="st_win">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Stopped out</div><div class="v bad" id="st_stop">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">ADF rejects \(H_0\)</div><div class="v warn" id="st_adf">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Mean R</div><div class="v" id="st_mean">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Median R</div><div class="v" id="st_med">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">5% VaR</div><div class="v" id="st_var">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Worst path</div><div class="v bad" id="st_worst">&mdash;</div></div>
+        </div>
+        <div class="pt-fig">
+            <canvas id="cvPair" width="800" height="330" role="img"
+                    aria-label="Asset A and the synthetic replica built from B, with the spread on the right axis"></canvas>
+            <div class="pt-cap">
+                <span>\(P^A\) and the synthetic \(e^{\hat\alpha+\hat\beta p^B}\) (left) with the spread \(e_t\) (right)</span>
+                <span id="fitInfo"></span>
+            </div>
+        </div>
+        <div class="pt-fig">
+            <canvas id="cvZ" width="800" height="300" role="img"
+                    aria-label="Out of sample z-score with entry, exit and stop bands and trade markers"></canvas>
+            <div class="pt-cap"><span>Out-of-sample \(z_t\), with the position shaded</span></div>
+        </div>
+        <div class="pt-fig">
+            <canvas id="cvEq" width="800" height="280" role="img"
+                    aria-label="Mark to market equity curves"></canvas>
+            <div class="pt-cap"><span>Mark-to-market return on equity, highlighted path and 18 others</span></div>
+        </div>
+        <div class="pt-leg2">
+            <span><i class="pt-sw" style="background:#5b3d84"></i>realised path</span>
+            <span><i class="pt-sw" style="background:rgba(17,17,17,.22)"></i>other draws</span>
+            <span><i class="pt-sw" style="background:rgba(47,92,47,.28);height:8px"></i>long spread</span>
+            <span><i class="pt-sw" style="background:rgba(154,38,38,.28);height:8px"></i>short spread</span>
+            <span><i class="pt-dot" style="background:#2f5c2f"></i>entry</span>
+            <span><i class="pt-dot" style="background:#286ca3"></i>exit at target</span>
+            <span><i class="pt-dot" style="background:#e61616"></i>stop-out</span>
+            <span><i class="pt-dot" style="background:#d6a82f"></i>forced close</span>
+        </div>
+    </div>
+
+    <!-- ============================ §8 ============================ -->
+    <h3><b>The distribution of outcomes</b></h3>
+    <p>
+        Two thousand paths on the same shock buffer. With \(\sigma_u=0\) the profile is a tidy hump of
+        small gains: many small winners, a few losers where the spread simply failed to revert before
+        the horizon. Turn up \(\sigma_u\) or \(h\) and the left tail thickens fast, because a spread
+        that does not revert is not a position you exit &mdash; it is a position that keeps growing
+        against you until the stop fires. <b>The trade is short a small amount of convergence and long
+        a large amount of regime stability.</b>
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvHist" width="800" height="280" role="img"
+                aria-label="Histogram of per path returns on equity"></canvas>
+        <div class="pt-cap"><span>Distribution of \(R=L\sum\pi\) over the 126-day trading window (% on equity)</span></div>
+    </div>
+    <div class="pt-note">
+        Switch on the <b>ADF filter</b> and watch two things at once: the mean improves and the tail
+        shortens, but the number of traded paths collapses. That trade-off &mdash; power against
+        selectivity &mdash; is the real content of a cointegration test in a trading system. It is a
+        gate, not an oracle: at \(\sigma_u>0\) a comfortable fraction of non-cointegrated pairs still
+        pass, which is exactly how portfolios fill up with broken pairs.
+    </div>
+
+    <!-- ============================ §9 ============================ -->
+    <h3><b>Choosing the entry threshold</b></h3>
+    <p>
+        Where you set \(z_{\rm in}\) is the pairs-trading equivalent of choosing leverage. Enter too
+        early and you trade constantly, capturing a few basis points per round trip and paying the
+        full cost twice; enter too late and the spread rarely gets there, so capital sits idle and the
+        few trades you do get are disproportionately the ones where something is genuinely wrong with
+        the pair.
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvSweep" width="800" height="280" role="img"
+                aria-label="Trades per path and expected return as functions of the entry threshold"></canvas>
+        <div class="pt-cap">
+            <span>Trades per path and \(\mathbb E[R]\) versus entry threshold</span>
+            <span id="sweepOpt"></span>
+        </div>
+    </div>
+    <div class="pt-leg2">
+        <span><i class="pt-sw" style="background:#e61616"></i>trades / path, left axis</span>
+        <span><i class="pt-sw" style="background:#000000"></i>E[R], right axis</span>
+        <span><i class="pt-sw" style="background:rgba(17,17,17,.4)"></i>current \(z_{\rm in}\)</span>
+    </div>
+    <p>
+        Drag the cost slider and the whole curve pivots: at \(c=0\) the optimum sits low, because every
+        wiggle is worth harvesting; at 40&ndash;60 bp per leg the peak marches out past \(z=2\) and the
+        achievable return shrinks toward zero. This is why stat-arb capacity is a function of execution
+        quality rather than of ideas, and why the same signal can be profitable for one desk and
+        unprofitable for another.
+    </p>
+    <div class="pt-note">
+        NOTE: maximising \(\mathbb E[R]\) ignores the shape of the distribution. A wider stop nearly
+        always improves the mean in this model &mdash; it converts realised losses into unrealised ones
+        and lets more of them revert &mdash; while making the tail much worse. Read the peak as a
+        diagnostic, not a target, and look at the histogram beside it.
+    </div>
+
+    <!-- ============================ §10 ============================ -->
+    <h3><b>When the pair breaks</b></h3>
+    <p>
+        Every failure mode of a pairs trade is a version of the same sentence: <i>the relationship you
+        estimated was not the relationship that governed the future</i>.
+    </p>
+    <ul class="pt-risk">
+        <li>
+            <span class="pt-yr">1907&ndash;2005</span>
+            <p><b>Royal Dutch / Shell.</b> Two listings on a fixed 60:40 split of the same group cash
+               flows &mdash; about as close to a mechanical cointegrating relation as public equity
+               offers. The ratio nonetheless deviated from parity by tens of percent and stayed there
+               for years at a time. Froot and Dabora used it as evidence that location of trade matters;
+               LTCM used it as a position, and had to fund the deviation getting worse before it got
+               better.</p>
+        </li>
+        <li>
+            <span class="pt-yr">1998</span>
+            <p><b>LTCM.</b> A book of relative-value convergence trades, individually sound and
+               collectively one bet: that dislocations narrow. When Russia defaulted they widened
+               together, correlations across supposedly independent spreads went to one, and margin
+               calls forced liquidation into the very market the positions needed to be patient with.</p>
+        </li>
+        <li>
+            <span class="pt-yr">Aug 2007</span>
+            <p><b>The Quant Quake.</b> Khandani and Lo documented several days in which long/short
+               equity statistical arbitrage books lost heavily and then recovered most of it within a
+               week. No relationship broke: the strategies were crowded, one large participant
+               deleveraged, and everyone else's positions were the same positions. Cointegration says
+               nothing about who else is in the trade.</p>
+        </li>
+        <li>
+            <span class="pt-yr">Oct 2008</span>
+            <p><b>Volkswagen / Porsche.</b> A textbook cointegrated pair &mdash; ordinary and preference
+               shares, holding company and subsidiary &mdash; annihilated by a disclosed option
+               position that left a vanishing free float. The short leg went up fivefold in two days.
+               Borrow recall and squeeze risk are not in the spread model, and they only ever hurt the
+               leg you are short.</p>
+        </li>
+    </ul>
+    <p>
+        The common structure is worth stating plainly. A pairs trade is <b>short a straddle on the
+        relationship</b>: bounded profit if the spread behaves, unbounded loss if it does not, and the
+        premium is collected in small increments over many trades. Cointegration testing is how you
+        try to make sure you are selling that option on something real. It never tells you what you are
+        paid for the ones that are not.
+    </p>
+
+    <!-- ============================ §11 ============================ -->
+    <h3><b>A short checklist</b></h3>
+    <table class="pt-tbl">
+        <tr><th>Question</th><th>Why it decides the trade</th></tr>
+        <tr><td>Is there an <i>economic</i> reason these two prices are tied?</td>
+            <td>Without one, the test is a data-mining artefact and the half-life is fiction.</td></tr>
+        <tr><td>What is the half-life?</td>
+            <td>Sets holding period, number of independent bets, and cost tolerance. Longer than a
+                quarter is usually untradable.</td></tr>
+        <tr><td>How stable is \(\hat\beta\) across sub-samples?</td>
+            <td>An unstable hedge ratio means the residual contains factor exposure, not mispricing.</td></tr>
+        <tr><td>What does the spread do out of sample?</td>
+            <td>In-sample stationarity is guaranteed by OLS; only the holdout is evidence.</td></tr>
+        <tr><td>What is the round-trip cost against the expected capture?</td>
+            <td>Half of published pairs profitability disappears at realistic spreads and borrow fees.</td></tr>
+        <tr><td>What kills this pair?</td>
+            <td>Merger, delisting, index change, capital raise, squeeze. Name it before you size it.</td></tr>
+        <tr><td>Who else owns it?</td>
+            <td>Crowding turns a diversified book into a single position on liquidation days.</td></tr>
+    </table>
+
+    <script type="application/javascript">
+    (function(){
+    'use strict';
+    /* ================= palette ================= */
+    const C = {
+        ink:'#111111', label:'#111111', axis:'#333333',
+        grid:'rgba(0,0,0,.13)',
+        a:'#000000', b:'#286ca3',
+        spread:'rgb(179 179 179 / 0.55)', spreadFill:'rgb(179 179 179 / 0.38)',
+        eq:'#5b3d84', bad:'#e61616', good:'#2f5c2f', warn:'#d6a82f',
+        ghost:'rgba(17,17,17,.20)',
+        longSh:'rgba(47,92,47,.10)', shortSh:'rgba(154,38,38,.10)'
+    };
+    /* ================= model constants ================= */
+    const NF = 252, NTR = 126, N = NF + NTR, ST = N + 1;
+    const DT = 1/252, T = N*DT, TF = NF*DT, SQDT = Math.sqrt(DT);
+    const MU = 0.06, SIGF = 0.25, PA0 = Math.log(100), PB0 = Math.log(40);
+    const M_MAX = 2000, NGHOST = 18, ADF_CRIT = -3.34, BREAK_SD = 4.0;
+    const Tt = new Float64Array(ST);   for (let i=0;i<=N;i++) Tt[i] = i*DT;
+    const Tz = new Float64Array(NTR+1); for (let i=0;i<=NTR;i++) Tz[i] = Tt[NF+i];
+    /* ================= RNG ================= */
+    function mulberry32(a){
+        return function(){
+            a |= 0; a = a + 0x6D2B79F5 | 0;
+            let t = Math.imul(a ^ a >>> 15, 1 | a);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+    let nSpare = null;
+    function randn(rng){
+        if (nSpare !== null){ const s = nSpare; nSpare = null; return s; }
+        let u = 0, v = 0;
+        while (u === 0) u = rng();
+        while (v === 0) v = rng();
+        const rr = Math.sqrt(-2*Math.log(u)), th = 2*Math.PI*v;
+        nSpare = rr*Math.sin(th);
+        return rr*Math.cos(th);
+    }
+    /* ================= shock buffer (common random numbers) ================= */
+    function makeShocks(seed, M){
+        nSpare = null;
+        const half = M >> 1, rng = mulberry32(seed >>> 0);
+        const Wf = new Float32Array(M*ST), Wu = new Float32Array(M*ST);
+        const Zs = new Float32Array(M*N),  Ub = new Float32Array(M*N);
+        const Sg = new Float32Array(M);
+        for (let m = 0; m < half; m++){
+            const ow = m*ST, oz = m*N;
+            let wf = 0, wu = 0;
+            for (let i = 0; i < N; i++){
+                wf += SQDT*randn(rng); Wf[ow+i+1] = wf;
+                wu += SQDT*randn(rng); Wu[ow+i+1] = wu;
+                Zs[oz+i] = randn(rng);
+                Ub[oz+i] = rng();
+            }
+            Sg[m] = rng();
+        }
+        for (let m = half; m < M; m++){          /* antithetic partners */
+            const ow = m*ST, pw = (m-half)*ST, oz = m*N, pz = (m-half)*N;
+            for (let i = 0; i < N; i++){
+                Wf[ow+i+1] = -Wf[pw+i+1];
+                Wu[ow+i+1] = -Wu[pw+i+1];
+                Zs[oz+i]   = -Zs[pz+i];
+                Ub[oz+i]   = 1 - Ub[pz+i];
+            }
+            Sg[m] = 1 - Sg[m-half];
+        }
+        return {Wf, Wu, Zs, Ub, Sg, G: new Float32Array(M*ST),
+                kappa: NaN, seed: seed >>> 0, M};
+    }
+    /* OU basis: s_i = sigma_s * G_i, rebuilt only when kappa changes */
+    function buildOU(shk, kappa){
+        if (shk.kappa === kappa) return;
+        const dec = 1 - kappa*DT, G = shk.G, Zs = shk.Zs, M = shk.M;
+        for (let m = 0; m < M; m++){
+            const og = m*ST, oz = m*N;
+            let g = 0;
+            for (let i = 0; i < N; i++){ g = g*dec + SQDT*Zs[oz+i]; G[og+i+1] = g; }
+        }
+        shk.kappa = kappa;
+    }
+    /* ================= path construction ================= */
+    function buildPath(p, shk, m, out){
+        const ow = m*ST, oz = m*N;
+        let brk = -1;
+        for (let i = 0; i < N; i++){ if (shk.Ub[oz+i] < p.pBrk){ brk = i+1; break; } }
+        const jump = (shk.Sg[m] < 0.5 ? -1 : 1)*p.J;
+        for (let i = 0; i <= N; i++){
+            const f = MU*Tt[i] + SIGF*shk.Wf[ow+i];
+            let e = p.ss*shk.G[ow+i] + p.su*shk.Wu[ow+i];
+            if (brk >= 0 && i >= brk) e += jump;
+            out.pB[i] = PB0 + f;
+            out.pA[i] = PA0 + p.beta*f + e;
+        }
+        out.brk = brk;
+        return brk;
+    }
+    /* ================= Engle-Granger step 1 + DF on residuals ================= */
+    const RES = new Float64Array(NF+1);
+    function fitFormation(pA, pB){
+        const n = NF + 1;
+        let sx = 0, sy = 0, sxx = 0, sxy = 0;
+        for (let i = 0; i <= NF; i++){ const x = pB[i], y = pA[i];
+            sx += x; sy += y; sxx += x*x; sxy += x*y; }
+        const mx = sx/n, my = sy/n;
+        const vxx = sxx - n*mx*mx, vxy = sxy - n*mx*my;
+        const b = (Math.abs(vxx) < 1e-14) ? 0 : vxy/vxx;
+        const a = my - b*mx;
+        let s2 = 0;
+        for (let i = 0; i <= NF; i++){ const r = pA[i] - a - b*pB[i]; RES[i] = r; s2 += r*r; }
+        const sd = Math.max(Math.sqrt(s2/(n-1)), 1e-7);
+        let num = 0, den = 0;
+        for (let i = 1; i <= NF; i++){ const l = RES[i-1]; num += l*(RES[i]-l); den += l*l; }
+        const rho = den > 1e-18 ? num/den : 0;
+        let rss = 0;
+        for (let i = 1; i <= NF; i++){ const d = RES[i]-RES[i-1]-rho*RES[i-1]; rss += d*d; }
+        const se = Math.sqrt(Math.max(rss/(NF-1), 1e-24)/Math.max(den, 1e-18));
+        return {a: a, b: b, sd: sd, t: rho/se};
+    }
+    /* ================= the trading rule ================= */
+    function runTrades(p, E, off, sd, beta, tstat, out){
+        const zin = p.zin;
+        const zout  = Math.min(p.zout,  zin - 0.10);
+        const zstop = Math.max(p.zstop, zin + 0.25);
+        const k = 1/(1+Math.max(beta, 0.05)), c = p.cost;
+        const skip = p.filter && !(tstat < ADF_CRIT);
+        let pos = 0, ent = 0, real = 0, ntr = 0, nwin = 0, nstop = 0, armed = true;
+        if (!skip) for (let i = 0; i <= NTR; i++){
+            const e = E[off+i], z = e/sd;
+            if (pos !== 0){
+                const stop = (pos === -1) ? (z >=  zstop) : (z <= -zstop);
+                const hit  = (pos === -1) ? (z <=  zout ) : (z >= -zout );
+                if (hit || stop || i === NTR){
+                    const pnl = pos*(e - ent)*k - 2*c;
+                    real += pnl; ntr++; if (pnl > 0) nwin++;
+                    let type = 1;
+                    if (stop && !hit){ nstop++; armed = false; type = 2; }
+                    else if (!hit && i === NTR) type = 3;
+                    if (out && out.mk) out.mk.push({i: i, z: z, type: type});
+                    pos = 0;
+                }
+            }
+            if (pos === 0 && i < NTR){
+                if (!armed && Math.abs(z) <= zout) armed = true;
+                if (armed){
+                    if (z > zin){ pos = -1; ent = e;
+                        if (out && out.mk) out.mk.push({i: i, z: z, type: 0}); }
+                    else if (z < -zin){ pos = 1; ent = e;
+                        if (out && out.mk) out.mk.push({i: i, z: z, type: 0}); }
+                }
+            }
+            if (out){
+                out.curve[i] = 100*p.L*(real + (pos ? pos*(e-ent)*k - c : 0));
+                out.pos[i] = pos;
+            }
+        }
+        else if (out){ for (let i = 0; i <= NTR; i++){ out.curve[i] = 0; out.pos[i] = 0; } }
+        return {ret: real, ntr: ntr, nwin: nwin, nstop: nstop, skip: skip};
+    }
+    /* ================= canvas plumbing ================= */
+    function ctxOf(cv){
+        const dpr = window.devicePixelRatio || 1;
+        const w = cv.clientWidth || 600, h = cv.clientHeight || 260;
+        if (cv.width !== Math.round(w*dpr) || cv.height !== Math.round(h*dpr)){
+            cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+        }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        return {ctx: ctx, w: w, h: h};
+    }
+    function niceTicks(lo, hi, n){
+        const spanv = (hi - lo) || 1, raw = spanv/n;
+        const mag = Math.pow(10, Math.floor(Math.log10(raw))), q = raw/mag;
+        const step = (q < 1.5 ? 1 : q < 3 ? 2 : q < 7 ? 5 : 10)*mag;
+        const out = [];
+        for (let v = Math.ceil(lo/step)*step; v <= hi + step*1e-9; v += step) out.push(v);
+        return {ticks: out, step: step};
+    }
+    function fmt(v, step){
+        const d = Math.max(0, Math.min(6, -Math.floor(Math.log10(step))));
+        return v.toFixed(isFinite(d) ? d : 2);
+    }
+    const FONT = '11px ui-monospace, Menlo, Consolas, monospace';
+    function span(arrs, extra){
+        let lo = Infinity, hi = -Infinity;
+        arrs.forEach(function(a){
+            const n = a.n === undefined ? a.y.length : a.n + 1;
+            for (let i = 0; i < n; i++){ if (a.y[i] < lo) lo = a.y[i]; if (a.y[i] > hi) hi = a.y[i]; }
+        });
+        (extra || []).forEach(function(v){ if (v < lo) lo = v; if (v > hi) hi = v; });
+        if (!isFinite(lo)){ lo = 0; hi = 1; }
+        const pad = (hi - lo)*0.12 || 0.5;
+        return {lo: lo - pad, hi: hi + pad};
+    }
+    /* dual-axis time-series chart */
+    function drawXY(cv, cfg){
+        const o = ctxOf(cv), ctx = o.ctx, w = o.w, h = o.h;
+        const x = cfg.x;
+        const x0 = cfg.x0 === undefined ? x[0] : cfg.x0;
+        const x1 = cfg.x1 === undefined ? x[x.length-1] : cfg.x1;
+        const dual = !!(cfg.series2 && cfg.series2.length);
+        const P = {l: 56, r: dual ? 58 : 18, t: cfg.legend ? 26 : 12, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        const ex = (cfg.hlines || []).map(function(l){ return l.y; });
+        const A = span(cfg.series.concat(cfg.ghosts || []), ex);
+        const X = function(v){ return P.l + ((v-x0)/(x1-x0))*pw; };
+        const Y = function(v){ return P.t + (1 - (v-A.lo)/(A.hi-A.lo))*ph; };
+        let B = null, Y2 = null;
+        if (dual){
+            B = span(cfg.series2, cfg.zero2 ? [0] : []);
+            Y2 = function(v){ return P.t + (1 - (v-B.lo)/(B.hi-B.lo))*ph; };
+        }
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        /* background shading */
+        (cfg.shade || []).forEach(function(s){
+            const xa = X(s.xa), xb = X(s.xb);
+            ctx.fillStyle = s.color; ctx.fillRect(xa, P.t, Math.max(xb-xa, 1), ph);
+            if (s.label){ ctx.fillStyle = 'rgba(17,17,17,.45)'; ctx.textAlign = 'left';
+                ctx.fillText(s.label, xa + 6, P.t + 10); }
+        });
+        (cfg.bands || []).forEach(function(bd){
+            const xa = X(x[bd.i0]), xb = X(x[bd.i1]);
+            ctx.fillStyle = bd.color; ctx.fillRect(xa, P.t, Math.max(xb-xa, 1), ph);
+        });
+        /* horizontal grid */
+        const yt = niceTicks(A.lo, A.hi, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        yt.ticks.forEach(function(v){
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w-P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(fmt(v, yt.step), P.l - 8, yy);
+        });
+        if (dual){
+            const rt = niceTicks(B.lo, B.hi, 4);
+            ctx.fillStyle = 'rgb(140 140 140)'; ctx.textAlign = 'left';
+            rt.ticks.forEach(function(v){ ctx.fillText(fmt(v, rt.step), w-P.r+8, Y2(v)); });
+            if (B.lo < 0 && B.hi > 0){
+                ctx.save(); ctx.setLineDash([2,4]); ctx.strokeStyle = 'rgba(70,70,70,.4)';
+                const zy = Math.round(Y2(0)) + .5;
+                ctx.beginPath(); ctx.moveTo(P.l, zy); ctx.lineTo(w-P.r, zy); ctx.stroke();
+                ctx.restore();
+            }
+        }
+        const xt = niceTicks(x0, x1, 5);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(function(v){ if (v >= x0-1e-9 && v <= x1+1e-9)
+            ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
+        ctx.textBaseline = 'middle';
+        (cfg.ghosts || []).forEach(function(g){
+            const end = g.n === undefined ? g.y.length-1 : g.n;
+            ctx.beginPath(); ctx.strokeStyle = C.ghost; ctx.lineWidth = 1;
+            for (let i = 0; i <= end; i++){ const px = X(x[i]), py = Y(g.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        (cfg.hlines || []).forEach(function(l){
+            const yy = Math.round(Y(l.y)) + .5;
+            ctx.save(); ctx.setLineDash(l.dash || [4,4]);
+            ctx.strokeStyle = l.color; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w-P.r, yy); ctx.stroke();
+            ctx.restore();
+            if (l.label){ ctx.fillStyle = l.color; ctx.textAlign = 'left';
+                ctx.fillText(l.label, P.l + 6, yy - 9); }
+        });
+        (cfg.vlines || []).forEach(function(l){
+            const xx = Math.round(X(l.x)) + .5;
+            ctx.save(); ctx.setLineDash(l.dash || [3,3]);
+            ctx.strokeStyle = l.color; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(xx, P.t); ctx.lineTo(xx, P.t+ph); ctx.stroke();
+            ctx.restore();
+        });
+        if (dual) cfg.series2.forEach(function(s){
+            const n = s.n === undefined ? s.y.length-1 : s.n;
+            if (s.fill){
+                ctx.beginPath(); ctx.moveTo(X(x[0]), Y2(0));
+                for (let i = 0; i <= n; i++) ctx.lineTo(X(x[i]), Y2(s.y[i]));
+                ctx.lineTo(X(x[n]), Y2(0)); ctx.closePath();
+                ctx.fillStyle = s.fill; ctx.fill();
+            }
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.4;
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y2(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        cfg.series.forEach(function(s){
+            const n = s.n === undefined ? s.y.length-1 : s.n;
+            ctx.save();
+            if (s.dash) ctx.setLineDash(s.dash);
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.6;
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke(); ctx.restore();
+        });
+        (cfg.markers || []).forEach(function(mk){
+            ctx.fillStyle = mk.color;
+            ctx.beginPath(); ctx.arc(X(mk.x), Y(mk.y), mk.r || 3.6, 0, Math.PI*2); ctx.fill();
+        });
+        if (cfg.legend){
+            ctx.textAlign = 'left'; let lx = P.l;
+            cfg.legend.forEach(function(e){
+                ctx.fillStyle = e.color; ctx.fillRect(lx, 10, 13, 2.5);
+                ctx.fillStyle = C.axis; ctx.fillText(e.name, lx+18, 11);
+                lx += 32 + ctx.measureText(e.name).width;
+            });
+        }
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText(cfg.xlabel || 't (years)', w - P.r, h - 3);
+    }
+    /* histogram, one or two overlaid sets */
+    function drawHist(cv, sets, opts){
+        opts = opts || {};
+        const o = ctxOf(cv), ctx = o.ctx, w = o.w, h = o.h;
+        const P = {l: 48, r: 14, t: 16, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        let lo = Infinity, hi = -Infinity;
+        sets.forEach(function(s){ for (let i = 0; i < s.vals.length; i++){
+            const v = s.vals[i]; if (v < lo) lo = v; if (v > hi) hi = v; } });
+        (opts.vlines || []).forEach(function(l){ if (l.x < lo) lo = l.x; if (l.x > hi) hi = l.x; });
+        if (opts.lo !== undefined) lo = opts.lo;
+        if (opts.hi !== undefined) hi = opts.hi;
+        if (!(hi - lo > 1e-9)){ lo -= 1; hi += 1; }
+        const nb = opts.bins || 56, bw = (hi-lo)/nb;
+        const counts = sets.map(function(){ return new Int32Array(nb); });
+        sets.forEach(function(s, si){
+            for (let i = 0; i < s.vals.length; i++){
+                let k = Math.floor((s.vals[i]-lo)/bw);
+                if (k < 0) k = 0; if (k >= nb) k = nb-1; counts[si][k]++;
+            }
+        });
+        const flat = [];
+        counts.forEach(function(c){ for (let k = 0; k < nb; k++) flat.push(c[k]); });
+        flat.sort(function(a,b){ return b-a; });
+        const top = flat[0] || 1, second = flat[1] || 0;
+        let yMax = top, clipped = false;
+        if (opts.clip !== false && top > 4*Math.max(second,1)){
+            yMax = Math.max(second*1.6, top*0.08); clipped = true;
+        }
+        if (yMax <= 0) yMax = 1;
+        const X = function(v){ return P.l + ((v-lo)/(hi-lo))*pw; };
+        const Y = function(c){ return P.t + (1 - Math.min(c,yMax)/yMax)*ph; };
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const yt = niceTicks(0, yMax, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        yt.ticks.forEach(function(v){
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w-P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(String(Math.round(v)), P.l-8, yy);
+        });
+        const bwPx = pw/nb;
+        counts.forEach(function(c, si){
+            for (let k = 0; k < nb; k++){
+                if (!c[k]) continue;
+                const c0 = lo + k*bw, y0 = Y(c[k]);
+                ctx.fillStyle = sets[si].color ||
+                    ((c0 + bw/2) < 0 ? 'rgba(154,38,38,.8)' : 'rgba(47,92,47,.8)');
+                if (sets[si].auto)
+                    ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(154,38,38,.8)' : 'rgba(47,92,47,.8)';
+                ctx.fillRect(X(c0)+.5, y0, Math.max(bwPx-1,1), P.t+ph-y0);
+                if (clipped && c[k] > yMax){
+                    ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                    ctx.fillText(String(c[k]), X(c0)+bwPx/2, P.t-2);
+                    ctx.textBaseline = 'middle';
+                }
+            }
+        });
+        (opts.vlines || []).forEach(function(l){
+            const xx = X(l.x);
+            if (xx < P.l || xx > w-P.r) return;
+            ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle = l.color || 'rgba(17,17,17,.55)';
+            ctx.beginPath(); ctx.moveTo(xx, P.t); ctx.lineTo(xx, P.t+ph); ctx.stroke(); ctx.restore();
+            if (l.label){ ctx.fillStyle = l.color || 'rgba(17,17,17,.7)'; ctx.textAlign = 'center';
+                ctx.textBaseline = 'top'; ctx.fillText(l.label, xx, P.t+2); ctx.textBaseline='middle'; }
+        });
+        const xt = niceTicks(lo, hi, 6);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(function(v){ if (v >= lo && v <= hi)
+            ctx.fillText(fmt(v, xt.step), X(v), h-P.b+8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText(opts.xlabel || '', w-P.r, h-3);
+    }
+    /* threshold sweep */
+    function drawSweep(cv, sw, cur){
+        const o = ctxOf(cv), ctx = o.ctx, w = o.w, h = o.h;
+        const P = {l: 46, r: 56, t: 14, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        const z0 = sw.z[0], z1 = sw.z[sw.z.length-1];
+        let nmax = 0; for (let i = 0; i < sw.nt.length; i++) if (sw.nt[i] > nmax) nmax = sw.nt[i];
+        nmax = Math.max(nmax*1.15, 1);
+        let rlo = Infinity, rhi = -Infinity;
+        for (let i = 0; i < sw.er.length; i++){
+            if (sw.er[i] < rlo) rlo = sw.er[i]; if (sw.er[i] > rhi) rhi = sw.er[i]; }
+        if (rhi - rlo < 1e-9){ rlo -= 1; rhi += 1; }
+        const rp = (rhi-rlo)*0.14; rlo -= rp; rhi += rp;
+        const X  = function(v){ return P.l + ((v-z0)/(z1-z0))*pw; };
+        const YL = function(v){ return P.t + (1 - v/nmax)*ph; };
+        const YR = function(v){ return P.t + (1 - (v-rlo)/(rhi-rlo))*ph; };
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const lt = niceTicks(0, nmax, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        lt.ticks.forEach(function(v){
+            const yy = Math.round(YL(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w-P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.bad; ctx.textAlign = 'right';
+            ctx.fillText(fmt(v, lt.step), P.l-8, yy);
+        });
+        const rt = niceTicks(rlo, rhi, 4);
+        ctx.fillStyle = C.a; ctx.textAlign = 'left';
+        rt.ticks.forEach(function(v){ ctx.fillText(fmt(v, rt.step)+'%', w-P.r+8, YR(v)); });
+        if (cur >= z0 && cur <= z1){
+            ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle = 'rgba(17,17,17,.4)';
+            ctx.beginPath(); ctx.moveTo(X(cur), P.t); ctx.lineTo(X(cur), P.t+ph); ctx.stroke();
+            ctx.restore();
+        }
+        if (rlo < 0 && rhi > 0){
+            ctx.save(); ctx.setLineDash([2,4]); ctx.strokeStyle = 'rgba(31,78,121,.4)';
+            ctx.beginPath(); ctx.moveTo(P.l, YR(0)); ctx.lineTo(w-P.r, YR(0)); ctx.stroke();
+            ctx.restore();
+        }
+        ctx.beginPath(); ctx.strokeStyle = C.bad; ctx.lineWidth = 1.8;
+        sw.z.forEach(function(z, i){ const px = X(z), py = YL(sw.nt[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+        ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = C.a; ctx.lineWidth = 1.8;
+        sw.z.forEach(function(z, i){ const px = X(z), py = YR(sw.er[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+        ctx.stroke();
+        if (sw.optZ != null){
+            ctx.fillStyle = C.a;
+            ctx.beginPath(); ctx.arc(X(sw.optZ), YR(sw.optR), 4, 0, Math.PI*2); ctx.fill();
+        }
+        const xt = niceTicks(z0, z1, 6);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(function(v){ if (v >= z0 && v <= z1)
+            ctx.fillText(fmt(v, xt.step), X(v), h-P.b+8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('entry threshold z', w-P.r, h-3);
+    }
+    /* minimal two-line figure for the static illustrations */
+    function drawMini(cv, a, b){
+        const o = ctxOf(cv), ctx = o.ctx, w = o.w, h = o.h;
+        const P = {l: 34, r: 8, t: 12, b: 14};
+        const pw = w-P.l-P.r, ph = h-P.t-P.b, n = a.length-1;
+        let lo = Infinity, hi = -Infinity;
+        for (let i = 0; i <= n; i++){
+            lo = Math.min(lo, a[i], b[i]); hi = Math.max(hi, a[i], b[i]); }
+        const pad = (hi-lo)*0.14 || 1; lo -= pad; hi += pad;
+        const X = function(i){ return P.l + (i/n)*pw; };
+        const Y = function(v){ return P.t + (1-(v-lo)/(hi-lo))*ph; };
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const yt = niceTicks(lo, hi, 3);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        yt.ticks.forEach(function(v){
+            const yy = Math.round(Y(v))+.5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w-P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(fmt(v, yt.step), P.l-6, yy);
+        });
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) ctx.lineTo(X(i), Y(a[i]));
+        for (let i = n; i >= 0; i--) ctx.lineTo(X(i), Y(b[i]));
+        ctx.closePath(); ctx.fillStyle = C.spreadFill; ctx.fill();
+        ctx.lineWidth = 1.4; ctx.strokeStyle = C.a;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++){ const px = X(i), py = Y(a[i]); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+        ctx.stroke();
+        ctx.strokeStyle = C.b;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++){ const px = X(i), py = Y(b[i]); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+        ctx.stroke();
+    }
+    /* ================= static illustration: correlation vs cointegration ============ */
+    const MINI_N = 504;
+    const miniA1 = new Float64Array(MINI_N+1), miniB1 = new Float64Array(MINI_N+1);
+    const miniA2 = new Float64Array(MINI_N+1), miniB2 = new Float64Array(MINI_N+1);
+    let rhoA = 0, rhoB = 0;
+    (function buildMini(){
+        nSpare = null;
+        const rng = mulberry32(24681357), sd = 0.22*Math.sqrt(DT), rho = 0.95;
+        let xa = 0, xb = 0, sa = 0, sb = 0, saa = 0, sbb = 0, sab = 0;
+        miniA1[0] = 100; miniB1[0] = 100;
+        for (let i = 1; i <= MINI_N; i++){
+            const z1 = randn(rng), z2 = randn(rng);
+            const da = sd*z1, db = sd*(rho*z1 + Math.sqrt(1-rho*rho)*z2);
+            xa += 0.06*DT + da; xb += 0.02*DT + db;
+            miniA1[i] = 100*Math.exp(xa); miniB1[i] = 100*Math.exp(xb);
+            sa += da; sb += db; saa += da*da; sbb += db*db; sab += da*db;
+        }
+        rhoA = (sab - sa*sb/MINI_N) /
+               Math.sqrt((saa - sa*sa/MINI_N)*(sbb - sb*sb/MINI_N));
+        const sf = 0.18*Math.sqrt(DT), ssd = 0.45*Math.sqrt(DT), dec = 1 - 25*DT;
+        let f = 0, s = 0;
+        sa = sb = saa = sbb = sab = 0;
+        let pa = 0, pb = 0;
+        miniA2[0] = 100; miniB2[0] = 100;
+        for (let i = 1; i <= MINI_N; i++){
+            const df = sf*randn(rng);
+            f += 0.06*DT + df;
+            s = dec*s + ssd*randn(rng);
+            const na = f + s, nb = f;
+            const da = na - pa, db = nb - pb; pa = na; pb = nb;
+            miniA2[i] = 100*Math.exp(na); miniB2[i] = 100*Math.exp(nb);
+            sa += da; sb += db; saa += da*da; sbb += db*db; sab += da*db;
+        }
+        rhoB = (sab - sa*sb/MINI_N) /
+               Math.sqrt((saa - sa*sa/MINI_N)*(sbb - sb*sb/MINI_N));
+    })();
+    /* ================= static illustration: spurious regression ================= */
+    const spurT = new Float64Array(1500), spurDF = new Float64Array(1500),
+          cointDF = new Float64Array(1500);
+    let spurRej = 0, dfRej = 0, dfRejC = 0;
+    (function buildSpur(){
+        nSpare = null;
+        const rng = mulberry32(1123581321), n = 250, M = 1500, sg = 0.02;
+        const x = new Float64Array(n+1), y = new Float64Array(n+1), r = new Float64Array(n+1);
+        function reg(x, y, n, r){
+            const m = n+1;
+            let sx=0, sy=0, sxx=0, sxy=0;
+            for (let i = 0; i <= n; i++){ sx+=x[i]; sy+=y[i]; sxx+=x[i]*x[i]; sxy+=x[i]*y[i]; }
+            const mx = sx/m, my = sy/m;
+            const vxx = sxx - m*mx*mx, vxy = sxy - m*mx*my;
+            const b = vxy/vxx, a = my - b*mx;
+            let rss = 0;
+            for (let i = 0; i <= n; i++){ r[i] = y[i]-a-b*x[i]; rss += r[i]*r[i]; }
+            const s2 = rss/(m-2);
+            const tb = b/Math.sqrt(s2/vxx);
+            let num=0, den=0;
+            for (let i = 1; i <= n; i++){ num += r[i-1]*(r[i]-r[i-1]); den += r[i-1]*r[i-1]; }
+            const rho = num/den;
+            let rs = 0;
+            for (let i = 1; i <= n; i++){ const d = r[i]-r[i-1]-rho*r[i-1]; rs += d*d; }
+            const se = Math.sqrt((rs/(n-1))/den);
+            return {t: tb, df: rho/se};
+        }
+        let c1 = 0, c2 = 0, c3 = 0;
+        for (let m = 0; m < M; m++){
+            let xv = 0, yv = 0;
+            x[0] = 0; y[0] = 0;
+            for (let i = 1; i <= n; i++){ xv += sg*randn(rng); yv += sg*randn(rng);
+                x[i] = xv; y[i] = yv; }
+            const o1 = reg(x, y, n, r);
+            spurT[m] = Math.max(-40, Math.min(40, o1.t));
+            spurDF[m] = Math.max(-7, Math.min(3, o1.df));
+            if (Math.abs(o1.t) > 1.96) c1++;
+            if (o1.df < ADF_CRIT) c2++;
+            let s = 0;
+            for (let i = 1; i <= n; i++){ s = 0.94*s + 0.02*randn(rng); y[i] = x[i] + s; }
+            y[0] = x[0];
+            const o2 = reg(x, y, n, r);
+            cointDF[m] = Math.max(-9, Math.min(3, o2.df));
+            if (o2.df < ADF_CRIT) c3++;
+        }
+        spurRej = c1/M; dfRej = c2/M; dfRejC = c3/M;
+    })();
+    /* ================= hero animation ================= */
+    const HERO_MS = 13000;
+    const heroShk = makeShocks;
+
+    
