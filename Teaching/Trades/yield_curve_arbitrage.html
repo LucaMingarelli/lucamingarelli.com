@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yield Curve Arbitrage — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+    <script type="application/javascript">
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+            /* Oribi Analytics */
+            (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+            /* Google Tag Manager */
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NLJ2P23');
+        }
+    </script>
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+    <style>
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+        /* ================= yield-curve page, all scoped with yc- ================= */
+        .yc-wrap{--yc-line:#c9c4b6;--yc-dim:#55534c;--yc-ink:#111111;--yc-acc:#7a3030;
+                 --yc-crv:#000000;--yc-rich:#286ca3;--yc-cheap:#7a3030;
+                 --yc-pnl:#5b3d84;--yc-bad:#e61616;--yc-good:#2f5c2f;--yc-warn:#d6a82f;}
+        .yc-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .yc-wrap h3{margin-bottom:2px;}
+        .yc-def{margin:20px 0;text-align:left;}
+        .yc-def-lab{font-weight:600;font-size:15px;color:var(--yc-ink);margin-bottom:4px;}
+        .yc-def-lab .n{color:var(--yc-acc);}
+        .yc-def-body{border-left:2px solid var(--yc-acc);padding:2px 0 2px 18px;
+                     overflow-x:auto;overflow-y:hidden;}
+        .yc-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                    color:var(--yc-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
+        .yc-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--yc-line);
+                 margin:20px 0;background:none;}
+        @media(max-width:640px){.yc-legs{grid-template-columns:1fr;}}
+        .yc-leg-card{padding:16px 18px;text-align:left;}
+        .yc-leg-card + .yc-leg-card{border-left:1px solid var(--yc-line);}
+        @media(max-width:640px){.yc-leg-card + .yc-leg-card{border-left:none;
+                 border-top:1px solid var(--yc-line);}}
+        .yc-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
+        .yc-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
+        .yc-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                 color:var(--yc-dim);margin-top:10px;padding-top:9px;
+                 border-top:1px dashed var(--yc-line);line-height:1.6;}
+        .yc-sim{background:none;border:1px solid var(--yc-line);padding:16px;margin:14px 0;
+                text-align:left;}
+        .yc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 22px;}
+        .yc-ctl label{display:block;font-size:13px;color:#222;}
+        .yc-ctl .yc-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--yc-acc);}
+        .yc-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .yc-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .yc-hint{font-size:12px;color:var(--yc-dim);line-height:1.45;}
+        .yc-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
+        .yc-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--yc-line);background:rgba(255,255,255,.5);}
+        .yc-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+                  border:1px solid var(--yc-line);margin-top:16px;}
+        @media(min-width:560px){.yc-stats{grid-template-columns:repeat(4,1fr);}}
+        .yc-stat{padding:10px 12px;border-left:1px solid var(--yc-line);
+                 border-top:1px solid var(--yc-line);}
+        .yc-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--yc-dim);margin-bottom:5px;}
+        .yc-stat .v{font-size:18px;font-weight:600;color:var(--yc-ink);}
+        .yc-stat .v.bad{color:var(--yc-bad);}
+        .yc-stat .v.good{color:var(--yc-good);}
+        .yc-stat .v.warn{color:var(--yc-warn);}
+        .yc-stat .se{font-size:11px;color:var(--yc-dim);font-weight:400;}
+        .yc-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .yc-fig canvas{width:100%;display:block;background:none;}
+        #cvHero{height:270px;}
+        #cvPath{height:330px;}
+        #cvPnl,#cvHist,#cvSweep{height:300px;}
+        #cvHedge{height:320px;}
+        @media(max-width:600px){
+            #cvHero{height:230px;} #cvPath{height:270px;}
+            #cvPnl,#cvHist,#cvSweep,#cvHedge{height:240px;}
+        }
+        .yc-cap{font-size:11.5px;color:var(--yc-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--yc-line);margin-top:6px;display:flex;
+                justify-content:space-between;gap:10px;}
+        .yc-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
+                 color:var(--yc-dim);margin:6px 2px 0;}
+        .yc-leg2 span{display:inline-flex;align-items:center;gap:5px;}
+        .yc-sw{width:14px;height:2px;display:inline-block;}
+        .yc-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .yc-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--yc-line);padding:9px 13px;margin:12px 0;
+                 text-align:left;line-height:1.55;}
+        .yc-risk{list-style:none;padding:0;margin:18px 0 0;}
+        .yc-risk li{padding-left:16px;border-left:2px solid var(--yc-acc);margin-bottom:18px;}
+        .yc-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+               color:var(--yc-acc);display:block;margin-bottom:3px;}
+        .yc-risk p{margin:0;font-size:15px;}
+        .yc-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
+        .yc-tbl th,.yc-tbl td{border:1px solid var(--yc-line);padding:7px 10px;text-align:left;}
+        .yc-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
+        .yc-tbl code{background:none;padding:0;}
+    </style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script src="../../js/Navbar.js"></script>
+<script src="../../js/pre_content.js"></script>
+<div class="w3-content w3-justify yc-wrap" style="max-width:800px">
+    <h1 style="text-align:left;"><b>Yield Curve Arbitrage</b></h1>
+    <p class="yc-lede">
+        A government bond is not a bet on interest rates. It is a bet on one point of a curve
+        <i>relative to</i> its neighbours &mdash; and essentially all of the difficulty in this trade
+        lives in the words &ldquo;relative to&rdquo;.
+    </p>
+    <div class="yc-fig">
+        <canvas id="cvHero" width="800" height="270" role="img"
+                aria-label="An animated yield curve deforming through level, slope and curvature moves, with individual bonds shown as dots above and below the fitted curve"></canvas>
+        <div class="yc-cap">
+            <span>fitted curve &middot; observed bonds &middot; residual = rich / cheap</span>
+            <span>largest residual <b id="heroRes">0.0</b> bp at <b id="heroMat">7</b>y</span>
+        </div>
+    </div>
+    <div class="yc-leg2">
+        <span><i class="yc-sw" style="background:#000000"></i>fitted curve \(\hat y(\tau)\)</span>
+        <span><i class="yc-dot" style="background:#7a3030"></i>cheap (yield above fit)</span>
+        <span><i class="yc-dot" style="background:#286ca3"></i>rich (yield below fit)</span>
+    </div>
+
+    <!-- ============================ §1 ============================ -->
+    <h3><b>One object, many prices</b></h3>
+    <p>
+        At any instant a sovereign issuer has dozens or hundreds of bonds outstanding, each with its
+        own coupon, maturity and liquidity. They are not independent securities: they are all claims on
+        the same discount function, and the entire market can in principle be summarised by a single
+        curve.
+    </p>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Definition 1</span> &mdash; Discount function and zero curve</div>
+        <div class="yc-def-body">
+            \begin{equation}
+                P_j=\sum_{k} c_{jk}\,D(t_k),\qquad D(\tau)=e^{-y(\tau)\,\tau},
+            \end{equation}
+            with \(P_j\) the dirty price of bond \(j\), \(c_{jk}\) its cash flows and \(y(\tau)\) the
+            continuously-compounded zero rate.
+        </div>
+        <div class="yc-def-cap">every bond is a portfolio of the same primitives &mdash; the curve is
+            over-determined by the market</div>
+    </div>
+    <p>
+        Because there are far more bonds than there are degrees of freedom in a smooth curve, the system
+        is <b>over-determined</b>: no smooth \(D(\tau)\) prices every bond exactly. The mismatch is not
+        an error to be minimised away. It is the raw material of the trade.
+    </p>
+
+    <!-- ============================ §2 ============================ -->
+    <h3><b>Where the risk actually lives</b></h3>
+    <p>
+        Before asking what is cheap, ask what moves. Apply a principal-component decomposition to daily
+        changes in zero rates across maturities and the answer is famously concentrated: three
+        components account for nearly all of the variance, and they have stable, interpretable shapes.
+    </p>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Definition 2</span> &mdash; Factor representation</div>
+        <div class="yc-def-body">
+            \begin{equation}
+                \Delta y(\tau_i,t)=\sum_{k=1}^{K}\ell_k(\tau_i)\,\Delta F_k(t)+\Delta u_i(t),
+                \qquad K=3 ,
+            \end{equation}
+            with \(\ell_1\approx\) const (<b>level</b>), \(\ell_2\) monotone in \(\tau\) (<b>slope</b>),
+            \(\ell_3\) humped (<b>curvature</b>).
+        </div>
+        <div class="yc-def-cap">\(u_i\) = the idiosyncratic residual of bond \(i\) &mdash; the only part
+            a curve arbitrageur wants to own</div>
+    </div>
+    <table class="yc-tbl">
+        <tr><th>Component</th><th>Shape</th><th>Typical share of variance</th><th>What it is</th></tr>
+        <tr><td><b>Level</b></td><td>flat</td><td>the large majority, commonly reported near 90%</td>
+            <td>Parallel shifts; policy expectations and inflation risk premia.</td></tr>
+        <tr><td><b>Slope</b></td><td>monotone</td><td>most of the remainder, order 5&ndash;10%</td>
+            <td>Steepening/flattening; the cycle, and the path of policy.</td></tr>
+        <tr><td><b>Curvature</b></td><td>humped</td><td>a few per cent</td>
+            <td>Belly vs. wings; supply, convexity demand, hedging flows.</td></tr>
+        <tr><td><b>Residual</b> \(u_i\)</td><td>bond-specific</td><td>the small leftover</td>
+            <td>Liquidity, specialness, index membership, ownership. <i>The alpha.</i></td></tr>
+    </table>
+    <div class="yc-note">
+        Those percentages are indicative, not constants of nature: they are estimated from a particular
+        market over a particular window and they move around considerably &mdash; in a policy-driven
+        regime the level share rises, at the zero lower bound the slope share does. Litterman and
+        Scheinkman (1991) is the canonical reference; re-run it on your own data before quoting a number.
+    </div>
+    <p>
+        The strategic point is a ratio. The residual \(u_i\) is worth a handful of basis points and
+        mean-reverts over weeks. The level factor moves that much <i>before lunch</i>. Unhedged, the
+        signal is invisible beneath the noise, and the trade is not a trade at all &mdash; it is a
+        rates position with a story attached.
+    </p>
+
+    <!-- ============================ §3 ============================ -->
+    <h3><b>Fitting fair value</b></h3>
+    <p>
+        &ldquo;Cheap&rdquo; only means anything relative to a fitted curve, so the fitting method is
+        part of the strategy, not a preliminary to it. Two families dominate: parsimonious parametric
+        forms, and splines.
+    </p>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Definition 3</span> &mdash; Nelson&ndash;Siegel(&ndash;Svensson)</div>
+        <div class="yc-def-body">
+            \begin{equation}
+                \hat y(\tau)=\beta_0+\beta_1\frac{1-e^{-\lambda\tau}}{\lambda\tau}
+                +\beta_2\!\left(\frac{1-e^{-\lambda\tau}}{\lambda\tau}-e^{-\lambda\tau}\right)
+                \;(+\;\beta_3\,\text{second hump}) .
+            \end{equation}
+        </div>
+        <div class="yc-def-cap">the three loadings <i>are</i> level, slope and curvature &mdash; the
+            factor model and the fitting model are the same object</div>
+    </div>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Definition 4</span> &mdash; Rich / cheap residual</div>
+        <div class="yc-def-body">
+            \begin{equation}
+                u_i = y_i - \hat y(\tau_i),\qquad
+                z_i = \frac{u_i}{\sigma_{\rm eq}},\qquad
+                \sigma_{\rm eq}=\frac{\sigma_u}{\sqrt{2\kappa_u}} .
+            \end{equation}
+            \(u_i>0\): the bond yields more than the curve says it should &mdash; its price is low &mdash;
+            it is <b>cheap</b>.
+        </div>
+    </div>
+    <div class="yc-legs">
+        <div class="yc-leg-card">
+            <div class="yc-leg-t">Parametric &mdash; few parameters, strong prior</div>
+            <p>Nelson&ndash;Siegel cannot bend enough to chase individual bonds, so residuals are large
+               and persistent. Good: they are stable. Bad: a genuine structural kink in the curve is
+               reported as a whole cluster of &ldquo;mispriced&rdquo; bonds.</p>
+        </div>
+        <div class="yc-leg-card">
+            <div class="yc-leg-t">Spline &mdash; many parameters, weak prior</div>
+            <p>A cubic or B-spline with enough knots will fit almost anything, which means residuals are
+               small and unstable. Move a knot and a bond flips from rich to cheap. Roughness penalties
+               (Fisher&ndash;Nychka&ndash;Zervos, Waggoner) exist precisely to arbitrate this.</p>
+        </div>
+    </div>
+    <p>
+        This is the structural difference from a pairs trade. There, the hedge ratio \(\beta\) is one
+        estimated number and you can worry about it directly. Here <b>the entire notion of fair value is
+        a modelling choice</b>, and two desks looking at the same prices with different knot placements
+        will disagree about the sign of the signal. Any curve arbitrageur who has not tested how their
+        residuals behave under a change of fitting method does not know what they are trading.
+    </p>
+
+    <!-- ============================ §4 ============================ -->
+    <h3><b>Hedging the factors away</b></h3>
+    <p>
+        Sensitivity is measured in DV01: the money change in value for a one-basis-point yield move.
+        A position is a vector of DV01s \(q\) across bonds, and its exposure to factor \(k\) is
+        \(a_k=\sum_i q_i\,\ell_k(\tau_i)\).
+    </p>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Definition 5</span> &mdash; Factor-neutral hedge</div>
+        <div class="yc-def-body">
+            Hold one unit of DV01 in the target bond \(i_0\) and choose hedge DV01s \(h_j\),
+            \(j=1,\dots,n\), solving
+            \begin{equation}
+                \sum_{j=1}^{n} \ell_k(\tau_j)\,h_j = -\,\ell_k(\tau_{i_0}),
+                \qquad k=1,\dots,n .
+            \end{equation}
+        </div>
+        <div class="yc-def-cap">square system: \(n\) hedge instruments neutralise exactly \(n\) factors</div>
+    </div>
+    <p>
+        With \(n=1\) this is the familiar DV01-neutral pair. With \(n=2\) it is a <b>butterfly</b>: body
+        against two wings, neutral to level and slope. With \(n=3\) you add a fourth instrument and
+        neutralise curvature as well, which is what most systematic curve books actually run.
+    </p>
+    <div class="yc-def">
+        <div class="yc-def-lab"><span class="n">Proposition 6</span> &mdash; What is left</div>
+        <div class="yc-def-body">
+            \begin{equation}
+                \mathrm d\Pi = -\Big[\underbrace{\textstyle\sum_{k>n} a_k\,\mathrm dF_k}_{\text{unhedged factors}}
+                \;+\;\underbrace{\textstyle\sum_i q_i\,\mathrm du_i}_{\text{residual basket}}\Big]
+                \;+\;\underbrace{\theta\,\mathrm dt}_{\text{carry \& roll}} .
+            \end{equation}
+        </div>
+    </div>
+    <p>
+        Read the second term carefully, because it is the one people forget. The hedges have residuals
+        too. Neutralising the level factor by shorting a 10y does not give you a clean bet on the 7y's
+        cheapness; it gives you a bet on the 7y's cheapness <i>minus</i> the 10y's. <b>Hedging removes
+        factor risk and adds idiosyncratic risk</b>, and there is a floor below which no amount of
+        further hedging helps.
+    </p>
+    <div class="yc-note">
+        <b>DV01-neutral is not risk-neutral.</b> Three things break the equivalence: convexity (a large
+        parallel move makes money for the longer-duration leg regardless of direction, so a
+        DV01-neutral barbell is not P&amp;L-neutral); non-parallel moves within a factor, which is
+        exactly what \(u\) is; and the fact that \(\ell_k\) are <i>estimated</i> loadings whose sampling
+        error propagates straight into \(h\).
+    </div>
+
+    <!-- ============================ §5 ============================ -->
+    <h3><b>The trade, leg by leg</b></h3>
+    <div class="yc-legs">
+        <div class="yc-leg-card">
+            <div class="yc-leg-t">Long the cheap bond &mdash; financed in repo</div>
+            <p>Buy it, repo it out, fund only the haircut. Cheap bonds are usually cheap for a reason:
+               off-the-run, poorly indexed, awkward size. They finance at or near general collateral,
+               which is the good news.</p>
+            <div class="yc-flow">earn coupon &middot; pay GC repo &middot; roll down the curve</div>
+        </div>
+        <div class="yc-leg-card">
+            <div class="yc-leg-t">Short the rich bonds &mdash; borrowed in reverse repo</div>
+            <p>To short you must borrow the bond. Rich bonds are frequently rich <i>because</i> everyone
+               wants them: on-the-run issues trade <b>special</b>, and you lend cash below GC to get
+               them. That spread is a daily bleed, and it can widen without warning.</p>
+            <div class="yc-flow">pay coupon &middot; earn special repo &lt; GC &middot; fail risk</div>
+        </div>
+    </div>
+    <p>
+        The financing asymmetry is the mirror image of the Treasury basis trade: there the risk was
+        losing the repo on your long, here it is the cost of borrowing your short. And note the
+        uncomfortable structural fact &mdash; <b>the specialness that makes a bond rich is also the
+        carry cost of being short it</b>. A large part of the apparent mispricing is a fee, not a free
+        lunch, which is why net carry has to be modelled explicitly rather than assumed to be zero.
+    </p>
+
+    <!-- ============================ §6 ============================ -->
+    <h3><b>A small stochastic model</b></h3>
+    <p>
+        Four bonds &mdash; 2y, 7y, 10y, 30y &mdash; on a Nelson&ndash;Siegel curve with three
+        mean-reverting factors and one idiosyncratic residual per bond, all in basis points:
+    </p>
+    \begin{align}
+        \mathrm dF_k &= -\kappa_F F_k\,\mathrm dt+\sigma_k\,\mathrm dW_k, \qquad k=1,2,3,\\
+        \mathrm du_i &= -\kappa_u u_i\,\mathrm dt+\sigma_u\,\mathrm dZ_i, \qquad i=1,\dots,4,\\
+        y_i(t) &= \bar y(\tau_i)+\textstyle\sum_k \ell_k(\tau_i)F_k(t)+u_i(t).
+    \end{align}
+    <p>
+        The target is the 7y; hedges are drawn in the order 10y, 2y, 30y as \(n\) increases. Because
+        the position is a fixed vector of DV01s, the whole P&amp;L collapses to a single scalar path
+    </p>
+    \begin{equation}
+        G_t=\sum_{k} a_k F_k(t)+\sum_i q_i u_i(t),
+        \qquad \Pi = s\,(G_{t_{\rm in}}-G_t)+s\,\theta\,(t-t_{\rm in})-c ,
+    \end{equation}
+    <p>
+        with \(s=\pm1\) the direction. Everything is linear in the \(\sigma\)s, so the sliders rescale a
+        fixed noise realisation rather than redrawing it, exactly as before.
+    </p>
+    <p>
+        Two frictions are made explicit. The <b>hedge error</b> \(\epsilon\) multiplies every hedge DV01
+        by \((1+\epsilon)\), so factor exposure leaks back in proportionally &mdash; this stands in for
+        loading estimation error, stale betas and integer-lot rounding. And <b>leverage</b>: equity is
+        set at \(100/L\) basis points of the target leg's DV01, so the book is wiped out if cumulative
+        P&amp;L breaches \(-100/L\) bp. With \(L=10\) you survive a 10 bp adverse move on the hedged
+        spread, and no more.
+    </p>
+<pre><code class="language-python">import numpy as np
+from scipy.optimize import least_squares
+
+def ns_loadings(tau, lam=0.6):
+    x = lam * np.asarray(tau, float)
+    a = (1 - np.exp(-x)) / x
+    return np.vstack([np.ones_like(x), a, a - np.exp(-x)]).T   # (n_tau, 3)
+
+# --- fair value: fit NS to observed zero yields, residual = rich/cheap -------
+L      = ns_loadings(mats)
+beta,*_= np.linalg.lstsq(L, y_obs, rcond=None)
+resid  = y_obs - L @ beta                     # in bp;  >0 = cheap
+
+# --- hedge: neutralise the first n factors ----------------------------------
+def hedge(i0, hedge_idx, n, lam=0.6):
+    """DV01 weights hedging factors 1..n for a unit DV01 in bond i0."""
+    A = ns_loadings(mats[hedge_idx], lam)[:, :n].T      # (n, n)
+    b = -ns_loadings([mats[i0]], lam)[0, :n]            # (n,)
+    return np.linalg.solve(A, b)
+
+# --- sanity: the empirical loadings, not the assumed ones -------------------
+dy      = np.diff(y_hist, axis=0)             # daily changes, (T, n_tau)
+_, s, Vt= np.linalg.svd(dy - dy.mean(0), full_matrices=False)
+print((s**2 / (s**2).sum())[:4])              # variance shares
+# Vt[:3] should look like level / slope / curvature.  If it does not,
+# the curve is telling you something the parametric model is hiding.
+</code></pre>
+
+    <div class="yc-sim" id="ycSim">
+        <div class="yc-grid">
+            <div class="yc-ctl"><label for="in_n">Factors hedged \(n\)<span class="yc-val" id="lbl_n">2</span>
+                <input type="range" id="in_n" min="0" max="3" step="1" value="2"></label></div>
+            <div class="yc-ctl"><label for="in_eps">Hedge error \(\epsilon\)<span class="yc-val" id="lbl_eps">0%</span>
+                <input type="range" id="in_eps" min="-0.20" max="0.20" step="0.01" value="0"></label></div>
+            <div class="yc-ctl"><label for="in_ku">Residual reversion \(\kappa_u\)<span class="yc-val" id="lbl_ku">6.0</span>
+                <input type="range" id="in_ku" min="0.5" max="26" step="0.5" value="6"></label></div>
+            <div class="yc-ctl"><label for="in_su">Residual vol \(\sigma_u\) bp<span class="yc-val" id="lbl_su">18</span>
+                <input type="range" id="in_su" min="2" max="60" step="1" value="18"></label></div>
+            <div class="yc-ctl"><label for="in_s1">Level vol \(\sigma_1\) bp<span class="yc-val" id="lbl_s1">90</span>
+                <input type="range" id="in_s1" min="0" max="200" step="5" value="90"></label></div>
+            <div class="yc-ctl"><label for="in_s2">Slope vol \(\sigma_2\) bp<span class="yc-val" id="lbl_s2">55</span>
+                <input type="range" id="in_s2" min="0" max="150" step="5" value="55"></label></div>
+            <div class="yc-ctl"><label for="in_s3">Curvature vol \(\sigma_3\) bp<span class="yc-val" id="lbl_s3">35</span>
+                <input type="range" id="in_s3" min="0" max="120" step="5" value="35"></label></div>
+            <div class="yc-ctl"><label for="in_zin">Entry \(z_{\rm in}\)<span class="yc-val" id="lbl_zin">1.75</span>
+                <input type="range" id="in_zin" min="0.25" max="4" step="0.05" value="1.75"></label></div>
+            <div class="yc-ctl"><label for="in_zstop">Stop \(z_{\rm stop}\)<span class="yc-val" id="lbl_zstop">3.50</span>
+                <input type="range" id="in_zstop" min="1" max="8" step="0.25" value="3.5"></label></div>
+            <div class="yc-ctl"><label for="in_carry">Net carry bp/yr<span class="yc-val" id="lbl_carry">-6</span>
+                <input type="range" id="in_carry" min="-40" max="40" step="1" value="-6"></label></div>
+            <div class="yc-ctl"><label for="in_cost">Round-trip cost bp<span class="yc-val" id="lbl_cost">1.0</span>
+                <input type="range" id="in_cost" min="0" max="6" step="0.25" value="1"></label></div>
+            <div class="yc-ctl"><label for="in_L">Leverage \(L\)<span class="yc-val" id="lbl_L">10&times;</span>
+                <input type="range" id="in_L" min="1" max="40" step="1" value="10"></label></div>
+        </div>
+        <div class="yc-bar">
+            <button class="w3-button w3-dark-grey w3-round" id="btnDraws">&#8635; New draws</button>
+            <span class="yc-seed">seed <input type="number" id="in_seed" value="20240613" step="1"></span>
+            <span class="yc-hint" id="ycPerf"></span>
+        </div>
+        <p class="yc-hint" id="yc_hl" style="margin:2px 0 0;"></p>
+        <p class="yc-hint" style="margin:6px 0 0;">
+            Shocks are held fixed: a slider transforms the same realisation. \(n\) rebuilds the hedge
+            weights, \(\epsilon\) leaks factor risk back in, the \(\sigma\)s rescale their own
+            components, and \(z_{\rm in},z_{\rm stop},\theta,c,L\) only change what is done with an
+            unchanged path. Exit at \(|z|\le0.25\), at the stop, at the equity barrier, or at the
+            one-year horizon.
+        </p>
+        <div class="yc-stats">
+            <div class="yc-stat"><div class="k">Round trips / yr</div><div class="v" id="st_tr">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">Win rate</div><div class="v good" id="st_win">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">P(stopped out)</div><div class="v warn" id="st_stop">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">P(wiped out)</div><div class="v bad" id="st_wipe">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">Mean R</div><div class="v" id="st_mean">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">Median R</div><div class="v" id="st_med">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">5% VaR</div><div class="v bad" id="st_var">&mdash;</div></div>
+            <div class="yc-stat"><div class="k">Sharpe</div><div class="v" id="st_sr">&mdash;</div></div>
+        </div>
+        <div class="yc-fig">
+            <canvas id="cvPath" width="800" height="330" role="img"
+                    aria-label="The hedged spread in basis points on the left axis against the raw target yield on the right axis, with entry and stop bands"></canvas>
+            <div class="yc-cap">
+                <span>hedged residual \(z\)-score with bands (left) &middot; raw 7y yield change, bp (right)</span>
+            </div>
+        </div>
+        <div class="yc-leg2">
+            <span><i class="yc-sw" style="background:#7a3030"></i>residual \(z\)</span>
+            <span><i class="yc-sw" style="background:rgba(40,108,163,.55)"></i>unhedged 7y yield</span>
+            <span><i class="yc-dot" style="background:#5b3d84"></i>entry</span>
+            <span><i class="yc-dot" style="background:#2f5c2f"></i>converged</span>
+            <span><i class="yc-dot" style="background:#d6a82f"></i>stopped</span>
+            <span><i class="yc-dot" style="background:#e61616"></i>wiped out</span>
+        </div>
+        <div class="yc-fig">
+            <canvas id="cvPnl" width="800" height="300" role="img"
+                    aria-label="Cumulative profit and loss with the equity barrier"></canvas>
+            <div class="yc-cap"><span>Cumulative P&amp;L, % of equity, with the wipeout barrier at &minus;100%</span></div>
+        </div>
+    </div>
+
+    <!-- ============================ §7 ============================ -->
+    <h3><b>What hedging actually buys you</b></h3>
+    <p>
+        The same signal, the same draws, the same trading rule &mdash; changing only how many factors
+        are neutralised. This is the single most important picture on the page.
+    </p>
+    <div class="yc-fig">
+        <canvas id="cvHedge" width="800" height="320" role="img"
+                aria-label="Bars showing the dispersion of returns for zero, one, two and three factors hedged, with mean return and information ratio overlaid"></canvas>
+        <div class="yc-cap">
+            <span>bars: dispersion \(\sigma(R)\) &middot; dots: mean \(R\) &middot; labels: \(\mathrm{E}[R]/\sigma(R)\)</span>
+            <span id="hedgeNote"></span>
+        </div>
+    </div>
+    <p>
+        Unhedged, the residual signal is a rounding error on a rates position and the ratio is
+        indistinguishable from zero. Each factor neutralised removes a large block of variance while
+        leaving the mean essentially untouched, which is the entire economic argument for the strategy:
+        <b>hedging does not create the return, it reveals it</b>. But the improvement stops. Push
+        \(\epsilon\) away from zero and watch the ordering degrade from the right &mdash; a
+        three-factor hedge with a 10% weight error can be <i>worse</i> than a clean one-factor hedge,
+        because you have added three noisy legs to remove risk you did not fully remove.
+    </p>
+    <div class="yc-note">
+        Note also what does <i>not</i> improve: the wipeout probability falls much more slowly than the
+        variance, because forced exits are driven by the worst few days rather than by average
+        dispersion, and the worst few days are exactly when factor loadings stop behaving. Hedging is
+        a claim about the covariance structure, and covariance structures are least reliable precisely
+        when you are relying on them.
+    </div>
+
+    <!-- ============================ §8 ============================ -->
+    <h3><b>The distribution of outcomes</b></h3>
+    <div class="yc-fig">
+        <canvas id="cvHist" width="800" height="300" role="img"
+                aria-label="Histogram of annual returns on equity"></canvas>
+        <div class="yc-cap"><span>Distribution of \(R = L\cdot\Pi\) over one year (% on equity)</span></div>
+    </div>
+    <p>
+        The familiar shape: a tight, high-frequency cluster of small gains and a thin, long left tail.
+        Duarte, Longstaff and Yu (2007) examined precisely this question across fixed-income arbitrage
+        strategies and found that yield-curve and swap-spread strategies do exhibit significant
+        negative skew &mdash; but also that, unlike some of their neighbours, the returns are not
+        <i>purely</i> a premium for tail risk. There is genuine intellectual value added in the
+        fitting and the hedging. The nickels are real; so is the steamroller.
+    </p>
+
+    <!-- ============================ §9 ============================ -->
+    <h3><b>How much leverage?</b></h3>
+    <p>
+        A hedged spread worth a few basis points is not a business at 1&times;. Since leverage moves the
+        barrier without touching the path, the sweep is exact on the same draws.
+    </p>
+    <div class="yc-fig">
+        <canvas id="cvSweep" width="800" height="300" role="img"
+                aria-label="Wipeout probability and expected return as functions of leverage"></canvas>
+        <div class="yc-cap">
+            <span>Wipeout probability and expected return vs leverage</span>
+            <span id="sweepOpt"></span>
+        </div>
+    </div>
+    <div class="yc-leg2">
+        <span><i class="yc-sw" style="background:#e61616"></i>P(wipeout), left axis</span>
+        <span><i class="yc-sw" style="background:#000000"></i>E[R], right axis</span>
+        <span><i class="yc-sw" style="background:rgba(17,17,17,.4)"></i>current \(L\)</span>
+    </div>
+    <p>
+        Same shape as every other levered convergence trade, with one addition worth noticing: the
+        optimum here is a function of \(n\). A better hedge shrinks the distribution, which pushes the
+        peak to higher leverage &mdash; and that is how a risk-reducing innovation reliably ends up
+        increasing systemic risk. Nobody uses a better hedge to run the same position more safely; they
+        use it to run a bigger position at the same measured risk.
+    </p>
+
+    <!-- ============================ §10 ============================ -->
+    <h3><b>When the curve stops behaving</b></h3>
+    <ul class="yc-risk">
+        <li>
+            <span class="yc-yr">1998</span>
+            <p>LTCM's on-the-run / off-the-run Treasury trade was the archetype: buy the cheap seasoned
+               bond, short the rich benchmark, collect the liquidity premium as the benchmark seasons.
+               In the flight to quality after the Russian default the premium <i>widened</i> instead.
+               The relationship was not wrong, and it did eventually converge &mdash; for whoever bought
+               the positions.</p>
+        </li>
+        <li>
+            <span class="yc-yr">2008&ndash;09</span>
+            <p>Long-dated swap spreads turned negative, an outcome many models had treated as close to
+               impossible since it appears to imply the government funding above the swap curve. It was
+               a balance-sheet phenomenon, not a credit one. Any fair-value model that hard-codes a sign
+               constraint will report an infinitely attractive trade at exactly the moment it should be
+               reporting that its assumptions have failed.</p>
+        </li>
+        <li>
+            <span class="yc-yr">Mar 2020</span>
+            <p>Off-the-run Treasuries cheapened dramatically against both on-the-runs and futures as
+               relative-value books were unwound into a market with no balance sheet to absorb them.
+               Dealers hit intermediation limits, and the &ldquo;convergence&rdquo; leg of every curve
+               trade became a funding problem instead of a pricing one.</p>
+        </li>
+        <li>
+            <span class="yc-yr">Recurrent</span>
+            <p>Specialness squeezes and settlement fails on individual issues; index-rebalancing and
+               auction-cycle flows that make a bond persistently rich for structural reasons; central
+               bank purchase programmes that remove a maturity bucket from free float entirely. Each
+               produces a large, stable, entirely genuine residual that will never converge, because
+               it is not a mispricing &mdash; it is a price.</p>
+        </li>
+    </ul>
+    <p>
+        Which is the standing discipline of the trade: before putting on a position because a bond is
+        cheap, be able to say <b>who is making it cheap and why they will stop</b>. A residual with no
+        story behind it is a fitting error, and fitting errors do not mean-revert on any schedule you
+        can finance.
+    </p>
+
+    <script type="application/javascript">
+    (function(){
+    'use strict';
+    const C = {ink:'#111', label:'#111', axis:'#333', grid:'rgba(0,0,0,.13)',
+        crv:'#000000', res:'#7a3030', raw:'rgba(40,108,163,.55)',
+        pnl:'#5b3d84', bad:'#e61616', good:'#2f5c2f', warn:'#d6a82f',
+        ghost:'rgba(17,17,17,.18)', fill:'rgb(179 179 179 / 0.38)'};
+    /* ================= model constants ================= */
+    const T=1.0, N=252, dt=T/N, ST=N+1, SQDT=Math.sqrt(dt), M_MAX=2000;
+    const LAM=0.6, MATS=[2,7,10,30], NM=4, IT=1, NS=7;      /* 3 factors + 4 residuals */
+    const HSET=[[],[2],[2,0],[2,0,3]];   /* hedge instruments added in order 10y,2y,30y */
+    const KF=0.6, Z_OUT=0.25;
+    const Tt=new Float64Array(ST); for(let i=0;i<=N;i++) Tt[i]=i*dt;
+    function nsL(tau){const x=LAM*tau,e=Math.exp(-x),a=(1-e)/x;return [1,a,a-e];}
+    const LMAT=MATS.map(nsL);
+    /* ================= RNG ================= */
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+        let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+        return ((t^t>>>14)>>>0)/4294967296;};}
+    function randn(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();
+        return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+    /* ================= shock buffer (common random numbers) ================= */
+    function makeShocks(seed,M){
+        const half=M>>1,rng=mulberry32(seed>>>0);
+        const Z=new Float32Array(M*N*NS), Z0=new Float32Array(M*NS);
+        for(let m=0;m<half;m++){
+            for(let s=0;s<NS;s++) Z0[m*NS+s]=randn(rng);
+            const o=m*N*NS;
+            for(let i=0;i<N*NS;i++) Z[o+i]=randn(rng);
+        }
+        for(let m=half;m<M;m++){
+            const p=m-half;
+            for(let s=0;s<NS;s++) Z0[m*NS+s]=-Z0[p*NS+s];
+            const o=m*N*NS,op=p*N*NS;
+            for(let i=0;i<N*NS;i++) Z[o+i]=-Z[op+i];
+        }
+        return {Z,Z0,seed:seed>>>0,M};
+    }
+    /* ================= hedge weights ================= */
+    function solveLin(A,b,n){
+        const M=[];for(let i=0;i<n;i++)M.push(A[i].slice().concat([b[i]]));
+        for(let c=0;c<n;c++){
+            let p=c;for(let r=c+1;r<n;r++) if(Math.abs(M[r][c])>Math.abs(M[p][c])) p=r;
+            const t=M[c];M[c]=M[p];M[p]=t;
+            const pv=M[c][c]||1e-12;
+            for(let r=0;r<n;r++){ if(r===c) continue;
+                const f=M[r][c]/pv; for(let k=c;k<=n;k++) M[r][k]-=f*M[c][k]; }
+        }
+        const x=new Float64Array(n);
+        for(let i=0;i<n;i++) x[i]=M[i][n]/(M[i][i]||1e-12);
+        return x;
+    }
+    function hedgeQ(n,eps){
+        const q=new Float64Array(NM); q[IT]=1;
+        if(n>0){
+            const H=HSET[n],A=[],b=[];
+            for(let k=0;k<n;k++){ A.push(H.map(j=>LMAT[j][k])); b.push(-LMAT[IT][k]); }
+            const x=solveLin(A,b,n);
+            H.forEach((j,idx)=>{ q[j]+=x[idx]*(1+eps); });
+        }
+        const a=[0,0,0];
+        for(let k=0;k<3;k++) for(let i=0;i<NM;i++) a[k]+=q[i]*LMAT[i][k];
+        return {q,a};
+    }
+    /* ================= path buffers ================= */
+    const SPR=new Float32Array(M_MAX*ST);   /* hedged spread G_t, bp        */
+    const SIG=new Float32Array(M_MAX*ST);   /* target residual u_0, bp      */
+    const RAW=new Float64Array(ST);         /* display only: raw 7y yield   */
+    function buildTables(p){
+        const hq=hedgeQ(p.n,p.eps);
+        p.q=hq.q; p.a=hq.a;
+        p.equ=p.su/Math.sqrt(2*p.ku);
+        p.hlDays=Math.log(2)/p.ku*252;
+        /* stationary sd of the hedged spread, analytic — a useful readout */
+        let v=0; const sf=[p.s1,p.s2,p.s3];
+        for(let k=0;k<3;k++) v+=p.a[k]*p.a[k]*sf[k]*sf[k]/(2*KF);
+        for(let i=0;i<NM;i++) v+=p.q[i]*p.q[i]*p.su*p.su/(2*p.ku);
+        p.sdG=Math.sqrt(v);
+        return p;
+    }
+    const Fv=new Float64Array(3), Uv=new Float64Array(NM);
+    function buildPaths(p,shk,M,keepRaw){
+        const Z=shk.Z,Z0=shk.Z0,df=1-KF*dt,du=1-p.ku*dt;
+        const sf=[p.s1,p.s2,p.s3];
+        const eqf=[sf[0]/Math.sqrt(2*KF),sf[1]/Math.sqrt(2*KF),sf[2]/Math.sqrt(2*KF)];
+        const equ=p.su/Math.sqrt(2*p.ku), q=p.q, a=p.a;
+        for(let m=0;m<M;m++){
+            const o0=m*NS, oz=m*N*NS, os=m*ST;
+            for(let k=0;k<3;k++) Fv[k]=eqf[k]*Z0[o0+k];
+            for(let i=0;i<NM;i++) Uv[i]=equ*Z0[o0+3+i];
+            for(let i=0;i<=N;i++){
+                if(i>0){
+                    const b=oz+(i-1)*NS;
+                    for(let k=0;k<3;k++) Fv[k]=df*Fv[k]+sf[k]*SQDT*Z[b+k];
+                    for(let j=0;j<NM;j++) Uv[j]=du*Uv[j]+p.su*SQDT*Z[b+3+j];
+                }
+                let g=0;
+                for(let k=0;k<3;k++) g+=a[k]*Fv[k];
+                for(let j=0;j<NM;j++) g+=q[j]*Uv[j];
+                SPR[os+i]=g; SIG[os+i]=Uv[IT];
+                if(keepRaw && m===0){
+                    let y=0; for(let k=0;k<3;k++) y+=LMAT[IT][k]*Fv[k];
+                    RAW[i]=y+Uv[IT];
+                }
+            }
+        }
+    }
+    /* ================= trading rule: pure post-processing ================= */
+    let R_pnl=0,R_tr=0,R_win=0,R_stop=0,R_wipe=0;
+    let A_sd=0,A_sd2=0;
+    function tradePath(m,p,L,out,marks){
+        const os=m*ST, bar=-100/L, hc=0.5*p.cost;
+        let pos=0,gE=0,tE=0,real=0,tr=0,win=0,stp=0,wipe=0,mtm=0,prev=0;
+        for(let i=0;i<=N;i++){
+            const z=SIG[os+i]/p.equ, g=SPR[os+i];
+            mtm = real + (pos ? pos*(gE-g)+pos*p.carry*(Tt[i]-tE) : 0);
+            if(mtm<=bar){
+                mtm=bar; wipe=1; pos=0; real=bar;
+                if(marks) marks.push({i:i,z:z,kind:3});
+                if(out) for(let j=i;j<=N;j++) out[j]=bar;
+                const d=mtm-prev; A_sd+=d; A_sd2+=d*d; prev=mtm;
+                break;
+            }
+            if(pos!==0){
+                const conv=Math.abs(z)<=Z_OUT, hit=(pos>0? z>=p.zstop : z<=-p.zstop);
+                if(conv||hit||i===N){
+                    const tp=pos*(gE-g)+pos*p.carry*(Tt[i]-tE)-hc;
+                    real+=tp; tr++; if(tp>0) win++; if(hit) stp++;
+                    pos=0; mtm=real;
+                    if(marks) marks.push({i:i,z:z,kind:hit?2:1});
+                }
+            }
+            if(pos===0 && i<N && Math.abs(z)>=p.zin && Math.abs(z)<p.zstop){
+                pos = z>0 ? 1 : -1; gE=g; tE=Tt[i]; real-=hc; mtm=real;
+                if(marks) marks.push({i:i,z:z,kind:0});
+            }
+            if(out) out[i]=mtm;
+            const d=mtm-prev; A_sd+=d; A_sd2+=d*d; prev=mtm;
+        }
+        R_pnl=mtm; R_tr=tr; R_win=win; R_stop=stp; R_wipe=wipe;
+    }
+    function runAll(p,M,L,rets){
+        A_sd=0;A_sd2=0;
+        let sum=0,sum2=0,ns=0,nw=0,ntr=0,nwin=0;
+        for(let m=0;m<M;m++){
+            tradePath(m,p,L,null,null);
+            const R=L*R_pnl;
+            if(rets) rets[m]=R;
+            sum+=R; sum2+=R*R; ntr+=R_tr; nwin+=R_win;
+            if(R_stop>0) ns++; if(R_wipe) nw++;
+        }
+        const nd=M*ST, mu=A_sd/nd, sd=Math.sqrt(Math.max(1e-18,A_sd2/nd-mu*mu));
+        const mean=sum/M;
+        return {mean:mean, sd:Math.sqrt(Math.max(0,sum2/M-mean*mean)),
+                pStop:ns/M, pWipe:nw/M, trades:ntr/M, win:ntr?nwin/ntr:0,
+                sharpe:mu/sd*Math.sqrt(252)};
+    }
+    /* ================= canvas plumbing ================= */
+    function ctxOf(cv){
+        const dpr=window.devicePixelRatio||1;
+        const w=cv.clientWidth||600,h=cv.clientHeight||260;
+        if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){
+            cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);}
+        const ctx=cv.getContext('2d');
+        ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+        return {ctx,w,h};
+    }
+    function niceTicks(lo,hi,n){
+        const sp=(hi-lo)||1,raw=sp/n;
+        const mag=Math.pow(10,Math.floor(Math.log10(raw))),q=raw/mag;
+        const step=(q<1.5?1:q<3?2:q<7?5:10)*mag,out=[];
+        for(let v=Math.ceil(lo/step)*step;v<=hi+step*1e-9;v+=step) out.push(v);
+        return {ticks:out,step};
+    }
+    function fmt(v,step){
+        const d=Math.max(0,Math.min(6,-Math.floor(Math.log10(step))));
+        return v.toFixed(isFinite(d)?d:2);
+    }
+    const FONT='11px ui-monospace, Menlo, Consolas, monospace';
+    function span(arrs,extra){
+        let lo=Infinity,hi=-Infinity;
+        arrs.forEach(a=>{const n=a.n===undefined?a.y.length-1:a.n;
+            for(let i=0;i<=n;i++){if(a.y[i]<lo)lo=a.y[i];if(a.y[i]>hi)hi=a.y[i];}});
+        (extra||[]).forEach(v=>{if(v<lo)lo=v;if(v>hi)hi=v;});
+        if(!isFinite(lo)){lo=0;hi=1;}
+        const pad=(hi-lo)*0.12||0.5;
+        return {lo:lo-pad,hi:hi+pad};
+    }
+    function drawXY(cv,cfg){
+        const {ctx,w,h}=ctxOf(cv);
+        const x=cfg.x,dual=!!(cfg.series2&&cfg.series2.length);
+        const P={l:54,r:dual?52:16,t:cfg.legend?26:12,b:28};
+        const pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const A=span(cfg.series.concat(cfg.ghosts||[]),
+                     (cfg.hlines||[]).map(l=>l.y).concat(cfg.hard||[]));
+        const X=v=>P.l+(v/T)*pw, Y=v=>P.t+(1-(v-A.lo)/(A.hi-A.lo))*ph;
+        let B=null,Y2=null;
+        if(dual){ B=span(cfg.series2,[0]); Y2=v=>P.t+(1-(v-B.lo)/(B.hi-B.lo))*ph; }
+        ctx.font=FONT; ctx.textBaseline='middle';
+        (cfg.bands||[]).forEach(bd=>{
+            const y0=Y(Math.max(bd.y1,bd.y0)),y1=Y(Math.min(bd.y1,bd.y0));
+            ctx.fillStyle=bd.fill;
+            ctx.fillRect(P.l,Math.max(P.t,y0),pw,Math.min(P.t+ph,y1)-Math.max(P.t,y0));
+        });
+        const yt=niceTicks(A.lo,A.hi,4);
+        ctx.strokeStyle=C.grid; ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(fmt(v,yt.step),P.l-8,yy);
+        });
+        if(dual){
+            const rt=niceTicks(B.lo,B.hi,4);
+            ctx.fillStyle='#286ca3';ctx.textAlign='left';
+            rt.ticks.forEach(v=>ctx.fillText(fmt(v,rt.step),w-P.r+8,Y2(v)));
+        }
+        const xt=niceTicks(0,T,5);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=-1e-9&&v<=T+1e-9)ctx.fillText(fmt(v,xt.step),X(v),h-P.b+8);});
+        ctx.textBaseline='middle';
+        (cfg.ghosts||[]).forEach(g=>{
+            ctx.beginPath();ctx.strokeStyle=C.ghost;ctx.lineWidth=1;
+            for(let i=0;i<=N;i++){const px=X(x[i]),py=Y(g.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+            ctx.stroke();
+        });
+        if(dual) cfg.series2.forEach(s=>{
+            ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.w||1.2;
+            for(let i=0;i<=N;i++){const px=X(x[i]),py=Y2(s.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+            ctx.stroke();
+        });
+        (cfg.hlines||[]).forEach(l=>{
+            if(l.y<A.lo||l.y>A.hi) return;
+            const yy=Math.round(Y(l.y))+.5;
+            ctx.save();ctx.setLineDash(l.dash||[4,4]);ctx.strokeStyle=l.color;ctx.lineWidth=1;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();ctx.restore();
+            if(l.label){ctx.fillStyle=l.color;ctx.textAlign='left';ctx.fillText(l.label,P.l+6,yy-9);}
+        });
+        cfg.series.forEach(s=>{
+            const n=s.n===undefined?s.y.length-1:s.n;
+            ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.w||1.6;
+            for(let i=0;i<=n;i++){const px=X(x[i]),py=Y(s.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+            ctx.stroke();
+        });
+        (cfg.markers||[]).forEach(mk=>{
+            if(mk.y<A.lo||mk.y>A.hi) return;
+            ctx.fillStyle=mk.color;
+            ctx.beginPath();ctx.arc(X(mk.x),Y(mk.y),mk.r||3.4,0,Math.PI*2);ctx.fill();
+        });
+        if(cfg.legend){
+            ctx.textAlign='left';let lx=P.l;
+            cfg.legend.forEach(e=>{
+                ctx.fillStyle=e.color;ctx.fillRect(lx,10,13,2.5);
+                ctx.fillStyle=C.axis;ctx.fillText(e.name,lx+18,11);
+                lx+=32+ctx.measureText(e.name).width;
+            });
+        }
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText(cfg.xlabel||'t (years)',w-P.r,h-3);
+    }
+    function drawHist(cv,vals){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:54,r:16,t:14,b:28},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        let lo=Infinity,hi=-Infinity;
+        for(let i=0;i<vals.length;i++){if(vals[i]<lo)lo=vals[i];if(vals[i]>hi)hi=vals[i];}
+        if(hi-lo<1e-9){lo-=1;hi+=1;}
+        const nb=64,bw=(hi-lo)/nb,counts=new Int32Array(nb);
+        for(let i=0;i<vals.length;i++){
+            let k=Math.floor((vals[i]-lo)/bw);if(k>=nb)k=nb-1;if(k<0)k=0;counts[k]++;}
+        const sorted=Array.from(counts).sort((a,b)=>b-a);
+        const top=sorted[0],second=sorted[1]||0;
+        let yMax=top,clipped=false;
+        if(top>4*Math.max(second,1)){yMax=Math.max(second*1.6,top*0.08);clipped=true;}
+        const X=v=>P.l+((v-lo)/(hi-lo))*pw, Y=c=>P.t+(1-Math.min(c,yMax)/yMax)*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(0,yMax,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(String(Math.round(v)),P.l-8,yy);
+        });
+        const bwPx=pw/nb;
+        for(let k=0;k<nb;k++){
+            if(!counts[k])continue;
+            const c0=lo+k*bw,y0=Y(counts[k]);
+            ctx.fillStyle=(c0+bw/2)<0?'rgba(154,38,38,.8)':'rgba(47,92,47,.8)';
+            ctx.fillRect(X(c0)+.5,y0,Math.max(bwPx-1,1),P.t+ph-y0);
+            if(clipped&&counts[k]>yMax){
+                ctx.fillStyle=C.ink;ctx.textAlign='center';ctx.textBaseline='bottom';
+                ctx.fillText(String(counts[k]),X(c0)+bwPx/2,P.t-1);ctx.textBaseline='middle';}
+        }
+        const zx=X(0);
+        if(zx>=P.l&&zx<=w-P.r){
+            ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(17,17,17,.45)';
+            ctx.beginPath();ctx.moveTo(zx,P.t);ctx.lineTo(zx,P.t+ph);ctx.stroke();ctx.restore();}
+        const xt=niceTicks(lo,hi,6);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=lo&&v<=hi)ctx.fillText(fmt(v,xt.step),X(v),h-P.b+8);});
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('return on equity, 1y (%)',w-P.r,h-3);
+    }
+    function drawSweep(cv,sw,cur){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:50,r:54,t:14,b:28},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const x0=sw.x[0],x1=sw.x[sw.x.length-1];
+        let rlo=Infinity,rhi=-Infinity;
+        for(let i=0;i<sw.er.length;i++){if(sw.er[i]<rlo)rlo=sw.er[i];if(sw.er[i]>rhi)rhi=sw.er[i];}
+        if(rhi-rlo<1e-9){rlo-=1;rhi+=1;}
+        const rp=(rhi-rlo)*0.12;rlo-=rp;rhi+=rp;
+        const X=v=>P.l+((v-x0)/(x1-x0))*pw;
+        const YL=v=>P.t+(1-v/100)*ph, YR=v=>P.t+(1-(v-rlo)/(rhi-rlo))*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        for(let g=0;g<=4;g++){
+            const v=g*25,yy=Math.round(YL(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.bad;ctx.textAlign='right';ctx.fillText(v+'%',P.l-8,yy);
+        }
+        const rt=niceTicks(rlo,rhi,4);
+        ctx.fillStyle=C.crv;ctx.textAlign='left';
+        rt.ticks.forEach(v=>ctx.fillText(fmt(v,rt.step)+'%',w-P.r+8,YR(v)));
+        if(cur>=x0&&cur<=x1){
+            ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(17,17,17,.4)';
+            ctx.beginPath();ctx.moveTo(X(cur),P.t);ctx.lineTo(X(cur),P.t+ph);ctx.stroke();ctx.restore();}
+        if(rlo<0&&rhi>0){
+            ctx.save();ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(31,78,121,.4)';
+            ctx.beginPath();ctx.moveTo(P.l,YR(0));ctx.lineTo(w-P.r,YR(0));ctx.stroke();ctx.restore();}
+        ctx.beginPath();ctx.strokeStyle=C.bad;ctx.lineWidth=1.8;
+        sw.x.forEach((v,i)=>{const px=X(v),py=YL(sw.pw[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
+        ctx.stroke();
+        ctx.beginPath();ctx.strokeStyle=C.crv;ctx.lineWidth=1.8;
+        sw.x.forEach((v,i)=>{const px=X(v),py=YR(sw.er[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
+        ctx.stroke();
+        if(sw.optX!=null){ctx.fillStyle=C.crv;
+            ctx.beginPath();ctx.arc(X(sw.optX),YR(sw.optR),4,0,Math.PI*2);ctx.fill();}
+        const xt=niceTicks(x0,x1,6);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=x0&&v<=x1)ctx.fillText(String(Math.round(v)),X(v),h-P.b+8);});
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('leverage L \u00d7',w-P.r,h-3);
+    }
+    /* bar chart: dispersion by hedge level, log scale, mean overlaid */
+    const HLAB=['n=0  outright','n=1  DV01','n=2  butterfly','n=3  +curvature'];
+    function drawBars(cv,rows,cur){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:104,r:58,t:16,b:30},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        let hi=1e-9,lo=Infinity;
+        rows.forEach(r=>{hi=Math.max(hi,r.sd);lo=Math.min(lo,Math.max(r.sd,1e-3));});
+        const l10=v=>Math.log10(Math.max(v,lo*0.5));
+        const a=l10(lo*0.5),b=l10(hi*1.6);
+        const X=v=>P.l+((l10(v)-a)/(b-a))*pw;
+        const bh=ph/rows.length;
+        ctx.font=FONT;
+        for(let e=Math.ceil(a);e<=b;e++){
+            const px=Math.round(X(Math.pow(10,e)))+.5;
+            ctx.strokeStyle=C.grid;ctx.beginPath();
+            ctx.moveTo(px,P.t);ctx.lineTo(px,P.t+ph);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+            ctx.fillText(Math.pow(10,e)+'%',px,P.t+ph+7);
+        }
+        rows.forEach((r,i)=>{
+            const y0=P.t+i*bh+bh*0.22,hh=bh*0.42;
+            ctx.fillStyle=(i===cur)?'rgba(122,48,48,.80)':'rgba(122,48,48,.34)';
+            ctx.fillRect(P.l,y0,Math.max(X(r.sd)-P.l,1),hh);
+            ctx.fillStyle=(i===cur)?C.ink:C.dim||'#55534c';
+            ctx.textAlign='right';ctx.textBaseline='middle';
+            ctx.font=(i===cur?'bold ':'')+FONT;
+            ctx.fillText(HLAB[i],P.l-10,y0+hh/2);
+            ctx.font=FONT;
+            /* mean marker on its own linear mini-scale inside the row */
+            const ir=r.sd>1e-9?r.mean/r.sd:0;
+            ctx.fillStyle=r.mean>0?C.good:C.bad;
+            ctx.beginPath();ctx.arc(X(Math.max(Math.abs(r.mean),lo*0.5)),y0+hh+bh*0.20,3.6,0,Math.PI*2);
+            ctx.fill();
+            ctx.textAlign='left';ctx.fillStyle=C.axis;
+            ctx.fillText('E[R] '+r.mean.toFixed(1)+'%   IR '+ir.toFixed(2)+
+                         '   wipe '+(100*r.pWipe).toFixed(1)+'%',
+                         X(Math.max(Math.abs(r.mean),lo*0.5))+8,y0+hh+bh*0.20);
+        });
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('\u03c3(R), log scale',w-P.r,h-3);
+    }
+    /* ================= hero: a breathing yield curve ================= */
+    const HN=420, HF=[new Float64Array(HN),new Float64Array(HN),new Float64Array(HN)];
+    const HU=[]; for(let i=0;i<NM;i++) HU.push(new Float64Array(HN));
+    (function(){
+        const rng=mulberry32(13579), sf=[40,32,26], df=1-0.6/252, du=1-8/252;
+        let F=[0,0,0], U=[0,0,0,0];
+        for(let t=0;t<HN;t++){
+            for(let k=0;k<3;k++){F[k]=df*F[k]+sf[k]*Math.sqrt(1/252)*randn(rng);HF[k][t]=F[k];}
+            for(let i=0;i<NM;i++){U[i]=du*U[i]+22*Math.sqrt(1/252)*randn(rng);HU[i][t]=U[i];}
+        }
+        /* wrap smoothly: blend the tail into the head */
+        const B=60;
+        for(let t=0;t<B;t++){
+            const wgt=t/B;
+            for(let k=0;k<3;k++) HF[k][HN-B+t]=HF[k][HN-B+t]*(1-wgt)+HF[k][t]*wgt;
+            for(let i=0;i<NM;i++) HU[i][HN-B+t]=HU[i][HN-B+t]*(1-wgt)+HU[i][t]*wgt;
+        }
+    })();
+        /* time inset — the animation runs along THIS axis, not the maturity axis */
+        function drawTimeInset(ctx,x,y,w,h,t){
+        ctx.save();
+        ctx.fillStyle='rgba(255,255,255,.45)';
+        ctx.fillRect(x,y,w,h);
+        let lo=Infinity,hi=-Infinity;
+        for(let i=0;i<HN;i++){const v=HF[0][i];if(v<lo)lo=v;if(v>hi)hi=v;}
+        const pad=(hi-lo)*0.15||1; lo-=pad; hi+=pad;
+        const X=i=>x+(i/(HN-1))*w, Y=v=>y+(1-(v-lo)/(hi-lo))*h;
+        ctx.beginPath();ctx.strokeStyle='rgba(17,17,17,.28)';ctx.lineWidth=1;
+        for(let i=0;i<HN;i++){const px=X(i),py=Y(HF[0][i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+        ctx.stroke();
+        ctx.beginPath();ctx.strokeStyle=C.crv;ctx.lineWidth=1.5;
+        for(let i=0;i<=t;i++){const px=X(i),py=Y(HF[0][i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+        ctx.stroke();
+        ctx.save();ctx.setLineDash([2,3]);ctx.strokeStyle='rgba(17,17,17,.25)';
+        ctx.beginPath();ctx.moveTo(X(t),y);ctx.lineTo(X(t),y+h);ctx.stroke();ctx.restore();
+        ctx.fillStyle=C.crv;
+        ctx.beginPath();ctx.arc(X(t),Y(HF[0][t]),2.6,0,Math.PI*2);ctx.fill();
+        ctx.font='10px ui-monospace, Menlo, Consolas, monospace';
+        ctx.fillStyle='#55534c';ctx.textAlign='left';ctx.textBaseline='bottom';
+        ctx.fillText('level factor \u00b7 calendar time \u2192',x,y-3);
+        ctx.restore();
+    }
+    const YBAR=[280,330,345,370];   /* indicative base curve, bp */
+    function baseAt(tau){const l=nsL(tau);return 250+90*l[1]+60*l[2];}
+    /* fixed y-window: computed once over every frame of the loop, then snapped to a
+       round tick step, so neither the range nor the gridlines move while it animates */
+    let HERO_LO=0, HERO_HI=1;
+    (function heroBounds(){
+        const taus=MATS.slice();                       /* 0..NM-1 are the bond maturities */
+        for(let tau=0.25;tau<=30.001;tau+=0.75) taus.push(tau);
+        const LT=taus.map(nsL), BT=taus.map(baseAt);
+        let lo=Infinity,hi=-Infinity;
+        for(let t=0;t<HN;t++){
+            const f0=HF[0][t],f1=HF[1][t],f2=HF[2][t];
+            for(let j=0;j<taus.length;j++){
+                const l=LT[j], v=BT[j]+l[0]*f0+l[1]*f1+l[2]*f2;
+                if(v<lo)lo=v; if(v>hi)hi=v;
+                if(j<NM){ const b=v+HU[j][t]; if(b<lo)lo=b; if(b>hi)hi=b; }
+            }
+        }
+        const pad=(hi-lo)*0.10||10; lo-=pad; hi+=pad;
+        const st=niceTicks(lo,hi,4).step;               /* snap outward to whole ticks */
+        HERO_LO=Math.floor(lo/st)*st; HERO_HI=Math.ceil(hi/st)*st;
+    })();
+    
+    const heroResEl=document.getElementById('heroRes'),
+          heroMatEl=document.getElementById('heroMat'),
+          heroDayEl=document.getElementById('heroDay');
+function drawHero(prog){
+        const cv=document.getElementById('cvHero'); if(!cv) return;
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:46,r:14,t:14,b:30},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const t=Math.min(HN-1,Math.floor(prog*HN));
+        const F=[HF[0][t],HF[1][t],HF[2][t]];
+        const yc=tau=>{const l=nsL(tau);return baseAt(tau)+l[0]*F[0]+l[1]*F[1]+l[2]*F[2];};
+        const lo=HERO_LO, hi=HERO_HI;
+        const X=tau=>P.l+(Math.sqrt(tau/30))*pw;      /* sqrt scale: the short end matters */
+        const Y=v=>P.t+(1-(v-lo)/(hi-lo))*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(lo,hi,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText((v/100).toFixed(2)+'%',P.l-8,yy);
+        });
+        ctx.beginPath();ctx.strokeStyle=C.crv;ctx.lineWidth=1.8;
+        let first=true;
+        for(let tau=0.25;tau<=30.001;tau+=0.25){
+            const px=X(tau),py=Y(yc(tau));
+            first?(ctx.moveTo(px,py),first=false):ctx.lineTo(px,py);
+        }
+        ctx.stroke();
+        let bigi=0,big=0;
+        MATS.forEach((m,i)=>{
+            const u=HU[i][t]; if(Math.abs(u)>Math.abs(big)){big=u;bigi=i;}
+            const py=Y(yc(m)+u),pf=Y(yc(m));
+            ctx.strokeStyle=u>0?'rgba(122,48,48,.55)':'rgba(40,108,163,.55)';
+            ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(X(m),pf);ctx.lineTo(X(m),py);ctx.stroke();
+            ctx.fillStyle=u>0?'#7a3030':'#286ca3';
+            ctx.beginPath();ctx.arc(X(m),py,4,0,Math.PI*2);ctx.fill();
+        });
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        MATS.forEach(m=>ctx.fillText(m+'y',X(m),h-P.b+8));
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('maturity \u03c4, years (\u221a scale) \u2014 not time',w-P.r,h-3);
+        drawTimeInset(ctx,P.l+10,P.t+16,Math.min(150,pw*0.34),34,t);
+        if(heroDayEl) heroDayEl.textContent=t;
+        if(heroResEl) heroResEl.textContent=big.toFixed(1);
+        if(heroMatEl) heroMatEl.textContent=MATS[bigi];
+    }
+    const reduceMotion=window.matchMedia&&
+                       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const HERO_MS=26000; let heroT0=null;
+    function heroLoop(ts){
+        if(heroT0===null) heroT0=ts;
+        drawHero(((ts-heroT0)%HERO_MS)/HERO_MS);
+        requestAnimationFrame(heroLoop);
+    }
+    if(reduceMotion) drawHero(0.3); else requestAnimationFrame(heroLoop);
+    /* ================= wiring ================= */
+    const ids=['in_n','in_eps','in_ku','in_su','in_s1','in_s2','in_s3',
+               'in_zin','in_zstop','in_carry','in_cost','in_L'];
+    const el=id=>document.getElementById(id);
+    const NGHOST=16;
+    const recV=new Float64Array(ST), recZ=new Float64Array(ST), tmpV=new Float64Array(ST);
+    const ghostV=[]; for(let k=0;k<NGHOST;k++) ghostV.push(new Float64Array(ST));
+    const rets=new Float64Array(M_MAX), sortBuf=new Float64Array(M_MAX);
+    let SHK=null, MC_N=M_MAX, timed=false, pending=false, pendingFull=false;
+    let pathSig='', barCache=null, barSig='', sweepCache=null, sweepSig='';
+    const LGRID=[]; for(let L=1;L<=40;L+=1.5) LGRID.push(+L.toFixed(1));
+    function params(){
+        const zin=+el('in_zin').value;
+        return {n:+el('in_n').value, eps:+el('in_eps').value, ku:+el('in_ku').value,
+                su:+el('in_su').value, s1:+el('in_s1').value, s2:+el('in_s2').value,
+                s3:+el('in_s3').value, zin:zin,
+                zstop:Math.max(+el('in_zstop').value,zin+0.25),
+                carry:+el('in_carry').value, cost:+el('in_cost').value, L:+el('in_L').value};
+    }
+    function syncLabels(p){
+        el('lbl_n').textContent=p.n;
+        el('lbl_eps').textContent=(100*p.eps).toFixed(0)+'%';
+        el('lbl_ku').textContent=p.ku.toFixed(1);
+        el('lbl_su').textContent=p.su.toFixed(0);
+        el('lbl_s1').textContent=p.s1.toFixed(0);
+        el('lbl_s2').textContent=p.s2.toFixed(0);
+        el('lbl_s3').textContent=p.s3.toFixed(0);
+        el('lbl_zin').textContent=p.zin.toFixed(2);
+        el('lbl_zstop').textContent=p.zstop.toFixed(2);
+        el('lbl_carry').textContent=p.carry.toFixed(0);
+        el('lbl_cost').textContent=p.cost.toFixed(2);
+        el('lbl_L').textContent=p.L+'\u00d7';
+        const wgt=Array.from(p.q).map((v,i)=>MATS[i]+'y '+v.toFixed(2)).join(' \u00b7 ');
+        el('yc_hl').innerHTML=
+            'residual half-life <b>'+p.hlDays.toFixed(0)+'</b> days &middot; '+
+            '\u03c3<sub>eq</sub> = <b>'+p.equ.toFixed(1)+' bp</b> &middot; '+
+            'hedged-spread s.d. <b>'+p.sdG.toFixed(1)+' bp</b> &middot; '+
+            'equity buffer <b>'+(100/p.L).toFixed(1)+' bp</b> &middot; '+
+            'DV01 weights: '+wgt;
+    }
+    const pctS=x=>(100*x).toFixed(1)+'%';
+    function render(full){
+        const t0=performance.now();
+        const p=buildTables(params());
+        syncLabels(p);
+        const M=full?M_MAX:MC_N;
+        const psig=[p.n,p.eps,p.ku,p.su,p.s1,p.s2,p.s3,SHK.seed,M].join('|');
+        if(psig!==pathSig){ buildPaths(p,SHK,M,true); pathSig=psig; sweepSig=''; }
+        /* ---- highlighted path ---- */
+        const marks=[];
+        tradePath(0,p,p.L,recV,marks);
+        for(let i=0;i<=N;i++){ recZ[i]=SIG[i]/p.equ; recV[i]=p.L*recV[i]; }
+        const mk=marks.map(m=>({x:Tt[m.i],y:m.z,
+            color:m.kind===0?C.pnl:m.kind===1?C.good:m.kind===2?C.warn:C.bad,
+            r:m.kind===0?3.2:3.8}));
+        drawXY(el('cvPath'),{x:Tt,
+            series:[{y:recZ,color:C.res,w:1.5}],
+            series2:[{y:RAW,color:C.raw,w:1.2}],
+            hard:[p.zin,-p.zin],
+            bands:[{y0:-Z_OUT,y1:Z_OUT,fill:'rgba(47,92,47,.10)'}],
+            hlines:[{y:p.zin,color:'rgba(40,108,163,.75)',dash:[5,4],label:'entry'},
+                    {y:-p.zin,color:'rgba(40,108,163,.75)',dash:[5,4]},
+                    {y:p.zstop,color:'rgba(214,168,47,.85)',dash:[3,3],label:'stop'},
+                    {y:-p.zstop,color:'rgba(214,168,47,.85)',dash:[3,3]}],
+            markers:mk,
+            legend:[{name:'residual z (left)',color:C.res},
+                    {name:'raw 7y yield, bp (right)',color:C.raw}]});
+        const ghosts=[];
+        for(let k=1;k<=NGHOST;k++){
+            tradePath(k,p,p.L,tmpV,null);
+            for(let i=0;i<=N;i++) ghostV[k-1][i]=p.L*tmpV[i];
+            ghosts.push({y:ghostV[k-1]});
+        }
+        drawXY(el('cvPnl'),{x:Tt,ghosts:ghosts,
+            series:[{y:recV,color:C.pnl,w:2}],
+            hlines:[{y:0,color:'rgba(17,17,17,.35)',dash:[2,3]},
+                    {y:-100,color:C.bad,dash:[4,4],label:'wipeout \u2212100%'}],
+            xlabel:'t (years) \u2014 P&L in % of equity'});
+        /* ---- Monte Carlo ---- */
+        const agg=runAll(p,M,p.L,rets);
+        const view=rets.subarray(0,M);
+        drawHist(el('cvHist'),view);
+        const srt=sortBuf.subarray(0,M); srt.set(view); srt.sort();
+        const q=f=>srt[Math.min(M-1,Math.max(0,Math.floor(f*M)))];
+        const se=100*Math.sqrt(agg.pWipe*(1-agg.pWipe)/M);
+        el('st_tr').textContent=agg.trades.toFixed(1);
+        el('st_win').textContent=pctS(agg.win);
+        el('st_stop').textContent=pctS(agg.pStop);
+        el('st_wipe').innerHTML=pctS(agg.pWipe)+' <span class="se">\u00b1'+se.toFixed(1)+'</span>';
+        el('st_mean').textContent=agg.mean.toFixed(1)+'%';
+        el('st_med').textContent=q(0.5).toFixed(1)+'%';
+        el('st_var').textContent=q(0.05).toFixed(1)+'%';
+        el('st_sr').textContent=agg.sharpe.toFixed(2);
+        /* ---- hedge-level bars: rebuild paths per n, then restore ---- */
+        const bsig=[p.eps,p.ku,p.su,p.s1,p.s2,p.s3,p.zin,p.zstop,p.carry,p.cost,p.L,SHK.seed].join('|');
+        if(bsig!==barSig||!barCache){
+            const MB=Math.min(M,800), rows=[];
+            for(let n=0;n<=3;n++){
+                const pn=buildTables(Object.assign({},p,{n:n}));
+                buildPaths(pn,SHK,MB,false);
+                const a=runAll(pn,MB,p.L,null);
+                rows.push({sd:a.sd,mean:a.mean,pWipe:a.pWipe});
+            }
+            barCache=rows; barSig=bsig;
+            buildPaths(p,SHK,M,true);          /* restore the working buffers */
+        }
+        drawBars(el('cvHedge'),barCache,p.n);
+        const r0=barCache[0],r3=barCache[3];
+        el('hedgeNote').innerHTML='variance reduction n=0\u21923: <b>'+
+            (r3.sd>1e-9?(r0.sd/r3.sd).toFixed(0):'\u221e')+'\u00d7</b>';
+        /* ---- leverage sweep ---- */
+        const ssig=[psig,p.zin,p.zstop,p.carry,p.cost].join('|');
+        if(ssig!==sweepSig||!sweepCache){
+            const MS=Math.min(M,800);
+            const pw=new Float64Array(LGRID.length), er=new Float64Array(LGRID.length);
+            for(let j=0;j<LGRID.length;j++){
+                const a=runAll(p,MS,LGRID[j],null);
+                pw[j]=100*a.pWipe; er[j]=a.mean;
+            }
+            let bi=0; for(let j=1;j<er.length;j++) if(er[j]>er[bi]) bi=j;
+            sweepCache={x:LGRID,pw:pw,er:er,optX:LGRID[bi],optR:er[bi]};
+            sweepSig=ssig;
+        }
+        drawSweep(el('cvSweep'),sweepCache,p.L);
+        el('sweepOpt').innerHTML='peak E[R] at L \u2248 <b>'+sweepCache.optX+
+            '\u00d7</b> ('+sweepCache.optR.toFixed(1)+'%)';
+        const ms=performance.now()-t0;
+        if(!timed){timed=true; if(ms>40) MC_N=500;}
+        el('ycPerf').textContent=M+' paths \u00b7 '+ms.toFixed(0)+' ms';
+    }
+    function schedule(full){
+        pendingFull=pendingFull||full;
+        if(pending) return;
+        pending=true;
+        requestAnimationFrame(()=>{const f=pendingFull;pending=false;pendingFull=false;render(f);});
+    }
+    ids.forEach(id=>{
+        el(id).addEventListener('input',()=>schedule(false));
+        el(id).addEventListener('change',()=>schedule(true));
+    });
+    el('btnDraws').addEventListener('click',()=>{
+        const s=(Math.random()*2147483647)>>>0;
+        el('in_seed').value=s;
+        SHK=makeShocks(s,M_MAX); pathSig='';barSig='';sweepSig='';
+        schedule(true);
+    });
+    el('in_seed').addEventListener('change',()=>{
+        SHK=makeShocks((+el('in_seed').value)>>>0,M_MAX); pathSig='';barSig='';sweepSig='';
+        schedule(true);
+    });
+    let rzT=null;
+    window.addEventListener('resize',()=>{
+        clearTimeout(rzT);
+        rzT=setTimeout(()=>{if(reduceMotion)drawHero(0.3);schedule(true);},120);
+    });
+    SHK=makeShocks((+el('in_seed').value)>>>0,M_MAX);
+    render(true);
+    })();
+    </script>
+    <br>
+    <h4 id="REFERENCES"><i>References</i></h4>
+    [1] Litterman, R. &amp; Scheinkman, J. (1991). <i>Common factors affecting bond returns</i>.
+        Journal of Fixed Income, 1(1), 54&ndash;61.
+    <br>
+    [2] Nelson, C.R. &amp; Siegel, A.F. (1987). <i>Parsimonious modeling of yield curves</i>.
+        Journal of Business, 60(4), 473&ndash;489.
+    <br>
+    [3] Svensson, L.E.O. (1994). <i>Estimating and interpreting forward interest rates:
+        Sweden 1992&ndash;1994</i>. NBER Working Paper 4871.
+    <br>
+    [4] Fisher, M., Nychka, D. &amp; Zervos, D. (1995). <i>Fitting the term structure of interest
+        rates with smoothing splines</i>. Federal Reserve Board FEDS 95-1.
+    <br>
+    [5] Waggoner, D. (1997). <i>Spline methods for extracting interest rate curves from coupon bond
+        prices</i>. Federal Reserve Bank of Atlanta Working Paper 97-10.
+    <br>
+    [6] Gürkaynak, R.S., Sack, B. &amp; Wright, J.H. (2007). <i>The U.S. Treasury yield curve:
+        1961 to the present</i>. Journal of Monetary Economics, 54(8), 2291&ndash;2304.
+    <br>
+    [7] Duarte, J., Longstaff, F.A. &amp; Yu, F. (2007). <i>Risk and return in fixed-income
+        arbitrage: nickels in front of a steamroller?</i> Review of Financial Studies, 20(3),
+        769&ndash;811.
+    <br>
+    [8] Krishnamurthy, A. (2002). <i>The bond/old-bond spread</i>. Journal of Financial Economics,
+        66(2&ndash;3), 463&ndash;506.
+    <br>
+    [9] Diebold, F.X. &amp; Li, C. (2006). <i>Forecasting the term structure of government bond
+        yields</i>. Journal of Econometrics, 130(2), 337&ndash;364.
+    <br>
+    [10] Duffie, D. (1996). <i>Special repo rates</i>. Journal of Finance, 51(2), 493&ndash;526.
+    <br><br>
+    <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+<!-- End page content -->
+</div>
+<script src="../../js/OpenCloseSidebar.js"></script>
+<script src="../../js/OpenCloseCollapsible.js"></script>
+</body>
+</html>

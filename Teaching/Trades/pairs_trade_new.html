@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pairs Trading &amp; Cointegration — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+    <script type="application/javascript">
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+            /* Oribi Analytics */
+            (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+            /* Google Tag Manager */
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NLJ2P23');
+        }
+    </script>
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+    <style>
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+        /* ================= pairs-trading page, all scoped with pt- ================= */
+        .pt-wrap{--pt-line:#c9c4b6;--pt-dim:#55534c;--pt-ink:#111111;--pt-acc:#7a3030;
+                 --pt-a:#000000;--pt-b:#286ca3;--pt-sp:rgb(179 179 179 / 0.38);
+                 --pt-pnl:#5b3d84;--pt-bad:#e61616;--pt-good:#2f5c2f;--pt-warn:#d6a82f;}
+        .pt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .pt-wrap h3{margin-bottom:2px;}
+        /* numbered definition / theorem blocks */
+        .pt-def{margin:20px 0;text-align:left;}
+        .pt-def-lab{font-weight:600;font-size:15px;color:var(--pt-ink);margin-bottom:4px;}
+        .pt-def-lab .n{color:var(--pt-acc);}
+        .pt-def-body{border-left:2px solid var(--pt-acc);padding:2px 0 2px 18px;
+                     overflow-x:auto;overflow-y:hidden;}
+        .pt-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                    color:var(--pt-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
+        /* two-column cards — transparent, grouped by border only */
+        .pt-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--pt-line);
+                 margin:20px 0;background:none;}
+        @media(max-width:640px){.pt-legs{grid-template-columns:1fr;}}
+        .pt-leg-card{padding:16px 18px;text-align:left;}
+        .pt-leg-card + .pt-leg-card{border-left:1px solid var(--pt-line);}
+        @media(max-width:640px){.pt-leg-card + .pt-leg-card{border-left:none;
+                 border-top:1px solid var(--pt-line);}}
+        .pt-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
+        .pt-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
+        .pt-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                 color:var(--pt-dim);margin-top:10px;padding-top:9px;
+                 border-top:1px dashed var(--pt-line);line-height:1.6;}
+        /* simulator — transparent shell so the charts sit on the page */
+        .pt-sim{background:none;border:1px solid var(--pt-line);padding:16px;margin:14px 0;
+                text-align:left;}
+        .pt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:10px 22px;}
+        .pt-ctl label{display:block;font-size:13px;color:#222;}
+        .pt-ctl .pt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--pt-acc);}
+        .pt-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .pt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .pt-hint{font-size:12px;color:var(--pt-dim);line-height:1.45;}
+        .pt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
+        .pt-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--pt-line);background:rgba(255,255,255,.5);}
+        .pt-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+                  border:1px solid var(--pt-line);margin-top:16px;}
+        @media(min-width:560px){.pt-stats{grid-template-columns:repeat(4,1fr);}}
+        .pt-stat{padding:10px 12px;border-left:1px solid var(--pt-line);
+                 border-top:1px solid var(--pt-line);}
+        .pt-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--pt-dim);margin-bottom:5px;}
+        .pt-stat .v{font-size:18px;font-weight:600;color:var(--pt-ink);}
+        .pt-stat .v.bad{color:var(--pt-bad);}
+        .pt-stat .v.good{color:var(--pt-good);}
+        .pt-stat .v.warn{color:var(--pt-warn);}
+        .pt-stat .se{font-size:11px;color:var(--pt-dim);font-weight:400;}
+        /* figures: fully transparent, no frame */
+        .pt-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .pt-fig canvas{width:100%;display:block;background:none;}
+        #cvHero{height:240px;}
+        #cvCoint{height:330px;}
+        #cvPath{height:340px;}
+        #cvPnl,#cvHist,#cvSweep{height:300px;}
+        @media(max-width:600px){
+            #cvHero{height:190px;}
+            #cvCoint{height:400px;}
+            #cvPath{height:280px;}
+            #cvPnl,#cvHist,#cvSweep{height:230px;}
+        }
+        .pt-cap{font-size:11.5px;color:var(--pt-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--pt-line);margin-top:6px;display:flex;
+                justify-content:space-between;gap:10px;}
+        .pt-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
+                 color:var(--pt-dim);margin:6px 2px 0;}
+        .pt-leg2 span{display:inline-flex;align-items:center;gap:5px;}
+        .pt-sw{width:14px;height:2px;display:inline-block;}
+        .pt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .pt-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--pt-line);padding:9px 13px;margin:12px 0;
+                 text-align:left;line-height:1.55;}
+        .pt-risk{list-style:none;padding:0;margin:18px 0 0;}
+        .pt-risk li{padding-left:16px;border-left:2px solid var(--pt-acc);margin-bottom:18px;}
+        .pt-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+               color:var(--pt-acc);display:block;margin-bottom:3px;}
+        .pt-risk p{margin:0;font-size:15px;}
+        .pt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
+        .pt-tbl th,.pt-tbl td{border:1px solid var(--pt-line);padding:7px 10px;text-align:left;}
+        .pt-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
+        .pt-tbl code{background:none;padding:0;}
+    </style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script src="../../js/Navbar.js"></script>
+<script src="../../js/pre_content.js"></script>
+<div class="w3-content w3-justify pt-wrap" style="max-width:800px">
+    <h1 style="text-align:left;"><b>Pairs Trading</b></h1>
+    <p class="pt-lede">
+        Two assets that <i>move</i> together are not the same thing as two assets that <i>stay</i>
+        together. The first is correlation, and it is nearly useless on its own. The second is
+        cointegration, and it is the only version of the story that has a trade in it.
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvHero" width="800" height="240" role="img"
+                aria-label="Two cointegrated price series with the shaded gap between them oscillating around zero"></canvas>
+        <div class="pt-cap">
+            <span>t = 0 &rarr; one year</span>
+            <span>gap now <b id="heroGap">0.0%</b> &middot; <b id="heroDays">0</b> days elapsed</span>
+        </div>
+    </div>
+    <div class="pt-leg2">
+        <span><i class="pt-sw" style="background:#000000"></i>asset A</span>
+        <span><i class="pt-sw" style="background:#286ca3"></i>asset B</span>
+        <span><i class="pt-sw" style="background:rgb(179 179 179);height:8px"></i>spread \(y_t-\beta x_t\)</span>
+    </div>
+
+    <!-- ============================ §1 ============================ -->
+    <h3><b>The relative-value idea</b></h3>
+    <p>
+        A directional trade needs a view on where a price is going. A <b>relative-value</b> trade needs
+        only a view on where a <i>difference</i> is going, and difference is a much smaller thing to
+        have an opinion about. Buy one asset, short a matched amount of a second, and what remains is
+        a single number: the spread.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 1</span> &mdash; Spread and hedge ratio</div>
+        <div class="pt-def-body">
+            \begin{equation} s_t = y_t - \alpha - \beta\,x_t, \qquad x_t=\log P^A_t,\;\; y_t=\log P^B_t . \end{equation}
+        </div>
+        <div class="pt-def-cap">\(\beta\) = hedge ratio &middot; work in logs so \(\beta\) is a ratio of
+            exposures, not of currency amounts</div>
+    </div>
+    <p>
+        The whole edifice rests on one assumption: that \(s_t\) is a <b>stationary</b> object, something
+        with a mean it keeps coming back to. If that is true, then a large \(|s_t|\) is information, and
+        the trade writes itself: sell the rich leg, buy the cheap leg, wait. If it is false, a large
+        \(|s_t|\) is just a large number, and waiting is not a strategy.
+    </p>
+    <p>
+        Everything below is about how to tell those two situations apart, and about the ways the test
+        can lie to you.
+    </p>
+
+    <!-- ============================ §2 ============================ -->
+    <h3><b>Why correlation is the wrong tool</b></h3>
+    <p>
+        Correlation is computed on <i>returns</i>, over short horizons, after differencing away exactly
+        the thing a pairs trader cares about &mdash; the level. Take two independent random walks and
+        correlate their increments at \(\rho\). The spread \(s_t=y_t-x_t\) is then itself a random walk:
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Proposition 2</span> &mdash; Correlated is not converging</div>
+        <div class="pt-def-body">
+            \begin{equation}
+                \operatorname{Var}(s_t)=\big(\sigma_x^2+\sigma_y^2-2\rho\,\sigma_x\sigma_y\big)\,t
+                \;\xrightarrow[t\to\infty]{}\;\infty .
+            \end{equation}
+        </div>
+        <div class="pt-def-cap">the variance rate vanishes only in the degenerate case
+            \(\rho=1,\ \sigma_x=\sigma_y\)</div>
+    </div>
+    <p>
+        High correlation shrinks the constant; it does not change the \(t\). With \(\rho=0.95\) and
+        \(\sigma=25\%\), the gap still has a standard deviation of about \(8\%\) after one year and
+        \(25\%\) after nine &mdash; and no force whatsoever pulling it back. A trader who shorted that
+        spread at \(2\sigma\) is not early, they are simply wrong, and their position size was chosen by
+        a statistic that never made the claim they thought it made.
+    </p>
+    <div class="pt-legs">
+        <div class="pt-leg-card">
+            <div class="pt-leg-t">Correlation &mdash; a statement about returns</div>
+            <p>Short-horizon, scale-free, computed after differencing. Unstable across regimes, and
+               entirely silent about the level of the gap. Two assets can be \(0.99\) correlated and
+               drift arbitrarily far apart.</p>
+            <div class="pt-flow">\(\operatorname{Var}(s_t)\propto t\) &middot; no anchor &middot; no half-life</div>
+        </div>
+        <div class="pt-leg-card">
+            <div class="pt-leg-t">Cointegration &mdash; a statement about levels</div>
+            <p>Long-horizon. Asserts that a specific linear combination is <i>bounded in probability</i>:
+               it has a finite unconditional variance and an error-correction mechanism that restores it.</p>
+            <div class="pt-flow">\(\operatorname{Var}(s_t)\to\sigma_s^2/2\kappa\) &middot; anchored
+                &middot; half-life \(\ln 2/\kappa\)</div>
+        </div>
+    </div>
+    <p>
+        And the converse also fails, which is the part people find surprising: a genuinely cointegrated
+        pair can have quite modest return correlation, because a fast, noisy, mean-reverting spread
+        adds idiosyncratic variance to the daily changes while leaving the long-run relationship
+        intact. Correlation and cointegration are close to <i>independent</i> properties.
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvCoint" width="800" height="330" role="img"
+                aria-label="Left panel: two highly correlated random walks whose gap diverges. Right panel: a cointegrated pair with lower return correlation whose gap mean-reverts"></canvas>
+        <div class="pt-cap">
+            <span>left: \(\rho(\Delta x,\Delta y)=\) <b id="cA">&mdash;</b>, gap range
+                  <b id="cAr">&mdash;</b> &mdash; <i>not</i> cointegrated</span>
+            <span>right: \(\rho=\) <b id="cB">&mdash;</b>, gap range <b id="cBr">&mdash;</b> &mdash; cointegrated</span>
+        </div>
+    </div>
+    <div class="pt-note">
+        <b>Spurious regression.</b> Regress one random walk on an unrelated one and you will typically
+        get a large \(t\)-statistic and a flattering \(R^2\); Granger and Newbold (1974) showed the
+        rejection rate of &ldquo;no relationship&rdquo; approaches one as the sample grows. The usual
+        \(t\)-tables assume stationary residuals, which is precisely what is in question. So an
+        impressive-looking regression of two price levels is evidence of nothing until the residual has
+        been tested for a unit root.
+    </div>
+
+    <!-- ============================ §3 ============================ -->
+    <h3><b>Cointegration</b></h3>
+    <p>
+        The formal apparatus is Engle and Granger's. Start with the order of integration.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 3</span> &mdash; Integration of order \(d\)</div>
+        <div class="pt-def-body">
+            A series \(x_t\) is \(I(d)\) if \((1-L)^d x_t\) is stationary while \((1-L)^{d-1}x_t\) is not.
+            Log prices are typically \(I(1)\); log returns are \(I(0)\).
+        </div>
+    </div>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 4</span> &mdash; Cointegration</div>
+        <div class="pt-def-body">
+            The vector \(\mathbf{z}_t=(x_t,y_t)'\) of \(I(1)\) series is <b>cointegrated</b> if there
+            exists \(\boldsymbol{\beta}\neq\mathbf 0\) with
+            \begin{equation} \boldsymbol{\beta}'\mathbf z_t \sim I(0). \end{equation}
+            \(\boldsymbol{\beta}\) is the <i>cointegrating vector</i>; it is identified only up to scale,
+            so one normalises \(\boldsymbol{\beta}=(-\beta,1)'\).
+        </div>
+    </div>
+    <p>
+        The economic content is that the two series share a <b>common stochastic trend</b>. Each wanders
+        without bound, but they wander <i>together</i>, and the particular combination
+        \(y_t-\beta x_t\) cancels the trend exactly. Not approximately &mdash; exactly. This is a knife-edge
+        property, which is why it needs a reason to hold: the same cash flows in two listings, a
+        commodity and its refined product, an ETF and its basket, two points on the same curve, two
+        firms with the same input costs and the same customers.
+    </p>
+    <p>
+        The reason this is tradable, rather than merely true, is the Granger representation theorem.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Theorem 5</span> &mdash; Granger representation</div>
+        <div class="pt-def-body">
+            If \(\mathbf z_t\) is cointegrated, it admits a vector error-correction representation
+            \begin{equation}
+                \Delta \mathbf z_t=\underbrace{\boldsymbol\alpha\,\big(\boldsymbol\beta'\mathbf z_{t-1}\big)}_{\text{error correction}}
+                +\sum_{i=1}^{p}\boldsymbol\Gamma_i\,\Delta\mathbf z_{t-i}+\boldsymbol\varepsilon_t ,
+            \end{equation}
+            with \(\boldsymbol\alpha\neq\mathbf 0\), and conversely.
+        </div>
+        <div class="pt-def-cap">\(\boldsymbol\alpha\) = loadings, the speed at which each leg absorbs the
+            disequilibrium</div>
+    </div>
+    <p>
+        Read the first term slowly: <b>yesterday's spread predicts today's returns</b>, with a
+        coefficient that is not zero by construction. Cointegration is therefore not a statistical
+        curiosity but an explicit statement of return predictability, and it says something extra that
+        a pure spread model does not &mdash; the loadings tell you <i>which leg does the adjusting</i>.
+        If \(\alpha_x\approx0\), asset A is the price leader and B is the one that comes back; that is
+        useful for choosing which side to size up, and for guessing what happens when the relationship
+        stops working.
+    </p>
+
+    <!-- ============================ §4 ============================ -->
+    <h3><b>Estimating and testing</b></h3>
+    <p>
+        Two standard routes. The <b>Engle&ndash;Granger</b> two-step is a regression on levels followed
+        by a unit-root test on the residual; the <b>Johansen</b> procedure estimates the whole VECM by
+        maximum likelihood and tests the rank of \(\boldsymbol{\alpha\beta}'\), which is what you need
+        as soon as there are more than two assets.
+    </p>
+    <table class="pt-tbl">
+        <tr><th>Step</th><th>What you compute</th><th>What can go wrong</th></tr>
+        <tr><td><b>1. Hedge ratio</b></td><td>OLS of \(y_t\) on \(x_t\) in levels</td>
+            <td>Superconsistent, but badly biased in small samples; the answer differs depending on
+                which series you put on the left.</td></tr>
+        <tr><td><b>2. Residual test</b></td><td>ADF on \(\hat s_t\)</td>
+            <td>Because \(\beta\) was <i>estimated</i>, Dickey&ndash;Fuller critical values are too
+                loose; use Phillips&ndash;Ouliaris.</td></tr>
+        <tr><td><b>3. Dynamics</b></td><td>\(\kappa\) from \(\Delta \hat s_t=-\kappa\,\hat s_{t-1}\Delta t+\epsilon_t\)</td>
+            <td>Half-life estimates are noisy and biased towards fast reversion in short samples.</td></tr>
+        <tr><td><b>4. Rank</b></td><td>Johansen trace / max-eigenvalue</td>
+            <td>Sensitive to lag length and to the deterministic-trend specification.</td></tr>
+    </table>
+<pre><code class="language-python">import numpy as np, statsmodels.api as sm
+from statsmodels.tsa.stattools import coint
+
+x, y = np.log(px_a), np.log(px_b)
+
+# Engle-Granger step 1: cointegrating vector by OLS on LEVELS
+res          = sm.OLS(y, sm.add_constant(x)).fit()
+alpha, beta  = res.params
+spread       = y - alpha - beta * x
+
+# step 2: unit-root test on the residual.  coint() applies the Phillips-Ouliaris
+# critical values, which account for beta having been estimated -- adfuller() does not.
+tstat, pval, crit = coint(y, x, trend='c')
+
+# speed of mean reversion  ->  half-life
+ds     = np.diff(spread)
+kappa  = -sm.OLS(ds, sm.add_constant(spread[:-1])).fit().params[1] * 252
+half_life = np.log(2) / kappa            # in years
+
+# sanity: is the relationship stable?  re-estimate on rolling windows and look at beta.
+</code></pre>
+    <div class="pt-note">
+        <b>The multiple-testing problem is the real problem.</b> A universe of 500 stocks contains
+        \(\binom{500}{2}=124{,}750\) pairs. Testing all of them at the 5% level produces roughly
+        6,200 &ldquo;cointegrated&rdquo; pairs under the null that none of them are. Any search
+        procedure that ranks pairs by \(p\)-value is a machine for manufacturing false positives, and
+        the false positives are exactly the pairs whose spread happened to look most stationary
+        in-sample &mdash; which is to say, the ones that will look most attractive and behave worst.
+        Economic rationale first, statistics second; then out-of-sample, on a period the search never saw.
+    </div>
+
+    <!-- ============================ §5 ============================ -->
+    <h3><b>From a stationary spread to a trade</b></h3>
+    <p>
+        Model the spread as Ornstein&ndash;Uhlenbeck. Two numbers then summarise everything a trader
+        needs: how far it typically strays, and how long it takes to come back.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 6</span> &mdash; Equilibrium scale and half-life</div>
+        <div class="pt-def-body">
+            \begin{equation}
+                ds_t=-\kappa\,s_t\,dt+\sigma_s\,dZ_t,\qquad
+                \sigma_{\rm eq}=\frac{\sigma_s}{\sqrt{2\kappa}},\qquad
+                t_{1/2}=\frac{\ln 2}{\kappa}.
+            \end{equation}
+        </div>
+        <div class="pt-def-cap">\(\sigma_{\rm eq}\) = unconditional s.d. of the spread &middot;
+            \(t_{1/2}\) = time for a deviation to decay by half</div>
+    </div>
+    <p>
+        The half-life is the parameter that decides whether the pair is worth trading at all. A spread
+        with \(t_{1/2}\) of three days is a market-making problem dominated by transaction costs; one
+        with \(t_{1/2}\) of two years is a capital-allocation problem you will not survive. Somewhere
+        between a week and a couple of months is where the strategy lives.
+    </p>
+    <div class="pt-def">
+        <div class="pt-def-lab"><span class="n">Definition 7</span> &mdash; The rule</div>
+        <div class="pt-def-body">
+            With \(z_t=\tilde s_t/\sigma_{\rm eq}\) and position \(q_t\in\{-1,0,+1\}\) in the spread,
+            \begin{align}
+                \text{enter } q=-1 &\;\text{ when } z_t\ge z_{\rm in}, \qquad
+                \text{enter } q=+1 \;\text{ when } z_t\le -z_{\rm in},\\
+                \text{exit} &\;\text{ when } |z_t|\le z_{\rm out} \;\text{ (converged)}\\
+                \text{or} &\;\text{ when } |z_t|\ge z_{\rm stop} \;\text{ (stop)} .
+            \end{align}
+        </div>
+    </div>
+    <p>
+        The stop is the uncomfortable part. Under the model the spread <i>always</i> comes back, so a
+        stop-loss can only destroy value; in reality the model is an assumption that expires without
+        notice, and the stop is the only thing standing between you and an unbounded loss on a
+        relationship that has quietly stopped existing. Choosing \(z_{\rm stop}\) is choosing how much
+        you believe your own econometrics.
+    </p>
+
+    <!-- ============================ §6 ============================ -->
+    <h3><b>A small stochastic model</b></h3>
+    <p>
+        One common trend, one stationary spread, and two ways for the trade to be wrong about the world.
+    </p>
+    \begin{align}
+        dc_t &= \left(\mu-\tfrac12\sigma_c^2\right)dt+\sigma_c\,dW_t, \\
+        x_t &= c_t, \qquad y_t=\alpha+\beta c_t+s_t, \\
+        ds_t &= -\kappa\,s_t\,dt+\sigma_s\,dZ_t,\qquad s_0\sim\mathcal N\!\left(0,\tfrac{\sigma_s^2}{2\kappa}\right),
+    \end{align}
+    <p>
+        so the pair is cointegrated with vector \((-\beta,1)'\) by construction. Now trade it with an
+        <i>estimated</i> hedge ratio \(\hat\beta=\beta+\delta\). The spread you actually hold is
+    </p>
+    \begin{equation}
+        \tilde s_t \;=\; y_t-\hat\alpha-\hat\beta\,x_t \;=\; s_t-\delta\,c_t ,
+    \end{equation}
+    <p>
+        which is \(I(1)\) for any \(\delta\neq0\): the hedge error re-injects the common stochastic
+        trend, and the traded spread inherits a random walk of variance \(\delta^2\sigma_c^2 t\) on top
+        of the mean-reverting part. <b>A 5% error in the hedge ratio does not make the trade 5% worse;
+        it makes it a different trade.</b> This is the single most common way a correct cointegration
+        analysis turns into a losing book, and the slider \(\delta\) below is worth more attention than
+        any of the others.
+    </p>
+    <p>The second failure is the relationship itself ending. Model it as a Poisson event:</p>
+    \begin{equation}
+        \mathbb P\big(\text{break in }[t,t+dt]\big)=1-e^{-h\,dt}\approx h\,dt,
+        \qquad \kappa \to 0 \;\text{ thereafter} .
+    \end{equation}
+    <p>
+        After a break the spread is a driftless random walk. Note what this does and does not do: it
+        does not create a loss by fiat &mdash; a random walk is a martingale, so an open position has
+        expected P&amp;L of zero from that point. What it destroys is the <i>edge</i>, while leaving the
+        variance, the costs and the stop-loss fully intact. Broken cointegration does not lose money
+        dramatically; it turns a strategy into a coin flip that pays commission.
+    </p>
+    <p>Discretised on a daily grid, with round-trip cost \(c\) split half on entry and half on exit:</p>
+    \begin{equation}
+        s_{i+1}=(1-\kappa\Delta t)\,s_i+\sigma_s\sqrt{\Delta t}\,z_i,\qquad
+        \Pi=\sum_i q_i\,(\tilde s_{i+1}-\tilde s_i)\;-\;c\cdot\#\{\text{round trips}\},\qquad R=L\,\Pi .
+    \end{equation}
+    <p>
+        \(L\) is the notional of each leg per unit of equity, so \(R\) is a return on capital. Note that
+        \(L\) rescales P&amp;L but cannot change the Sharpe ratio, which is why leverage is reported
+        separately from the risk statistics below.
+    </p>
+
+    <div class="pt-sim" id="ptSim">
+        <div class="pt-grid">
+            <div class="pt-ctl"><label for="in_kappa">Reversion \(\kappa\)<span class="pt-val" id="lbl_kappa">8.0</span>
+                <input type="range" id="in_kappa" min="0.5" max="30" step="0.5" value="8"></label></div>
+            <div class="pt-ctl"><label for="in_sb">Spread vol \(\sigma_s\)<span class="pt-val" id="lbl_sb">0.12</span>
+                <input type="range" id="in_sb" min="0.02" max="0.40" step="0.01" value="0.12"></label></div>
+            <div class="pt-ctl"><label for="in_sc">Trend vol \(\sigma_c\)<span class="pt-val" id="lbl_sc">0.22</span>
+                <input type="range" id="in_sc" min="0.05" max="0.60" step="0.01" value="0.22"></label></div>
+            <div class="pt-ctl"><label for="in_delta">Hedge error \(\delta\)<span class="pt-val" id="lbl_delta">0.00</span>
+                <input type="range" id="in_delta" min="-0.30" max="0.30" step="0.01" value="0"></label></div>
+            <div class="pt-ctl"><label for="in_zin">Entry \(z_{\rm in}\)<span class="pt-val" id="lbl_zin">2.00</span>
+                <input type="range" id="in_zin" min="0.25" max="4" step="0.05" value="2"></label></div>
+            <div class="pt-ctl"><label for="in_zout">Exit \(z_{\rm out}\)<span class="pt-val" id="lbl_zout">0.25</span>
+                <input type="range" id="in_zout" min="0" max="1.5" step="0.05" value="0.25"></label></div>
+            <div class="pt-ctl"><label for="in_zstop">Stop \(z_{\rm stop}\)<span class="pt-val" id="lbl_zstop">4.00</span>
+                <input type="range" id="in_zstop" min="1" max="8" step="0.25" value="4"></label></div>
+            <div class="pt-ctl"><label for="in_h">Break hazard \(h\) /yr<span class="pt-val" id="lbl_h">0.50</span>
+                <input type="range" id="in_h" min="0" max="3" step="0.05" value="0.5"></label></div>
+            <div class="pt-ctl"><label for="in_cost">Round-trip cost (bp)<span class="pt-val" id="lbl_cost">20</span>
+                <input type="range" id="in_cost" min="0" max="100" step="5" value="20"></label></div>
+            <div class="pt-ctl"><label for="in_L">Leverage \(L\)<span class="pt-val" id="lbl_L">3.0&times;</span>
+                <input type="range" id="in_L" min="1" max="10" step="0.5" value="3"></label></div>
+        </div>
+        <div class="pt-bar">
+            <button class="w3-button w3-dark-grey w3-round" id="btnDraws">&#8635; New draws</button>
+            <span class="pt-seed">seed <input type="number" id="in_seed" value="20240613" step="1"></span>
+            <span class="pt-hint" id="ptPerf"></span>
+        </div>
+        <p class="pt-hint" id="pt_hl" style="margin:2px 0 0;"></p>
+        <p class="pt-hint" style="margin:6px 0 0;">
+            The shocks are held fixed, so a slider <i>transforms the same realisation</i> rather than
+            redrawing it. \(\sigma_s\) rescales the spread, \(\kappa\) deforms it, \(\delta\) and
+            \(\sigma_c\) bend an \(I(1)\) component into it, \(h\) switches off the reversion partway
+            through &mdash; while \(z_{\rm in},z_{\rm out},z_{\rm stop},c\) and \(L\) leave every path
+            untouched and only change what is done with it. <b>New draws</b> resamples.
+        </p>
+        <div class="pt-stats">
+            <div class="pt-stat"><div class="k">Round trips / yr</div><div class="v" id="st_tr">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Win rate</div><div class="v good" id="st_win">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">P(stopped out)</div><div class="v bad" id="st_stop">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">P(coint. break)</div><div class="v warn" id="st_brk">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Mean R</div><div class="v" id="st_mean">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Median R</div><div class="v" id="st_med">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">5% VaR</div><div class="v bad" id="st_var">&mdash;</div></div>
+            <div class="pt-stat"><div class="k">Sharpe</div><div class="v" id="st_sr">&mdash;</div></div>
+        </div>
+        <div class="pt-fig">
+            <canvas id="cvPath" width="800" height="340" role="img"
+                    aria-label="The two asset prices on the left axis with the traded spread z-score and its entry, exit and stop bands on the right axis"></canvas>
+            <div class="pt-cap">
+                <span>prices (left axis) &middot; traded spread \(z\)-score with bands (right axis)</span>
+            </div>
+        </div>
+        <div class="pt-leg2">
+            <span><i class="pt-sw" style="background:#000000"></i>asset A</span>
+            <span><i class="pt-sw" style="background:#286ca3"></i>asset B</span>
+            <span><i class="pt-sw" style="background:#7a3030"></i>\(z_t\)</span>
+            <span><i class="pt-dot" style="background:#5b3d84"></i>entry</span>
+            <span><i class="pt-dot" style="background:#2f5c2f"></i>converged exit</span>
+            <span><i class="pt-dot" style="background:#e61616"></i>stopped out</span>
+        </div>
+        <div class="pt-fig">
+            <canvas id="cvPnl" width="800" height="300" role="img"
+                    aria-label="Cumulative profit and loss of the highlighted path with other draws in the background"></canvas>
+            <div class="pt-cap"><span>Cumulative P&amp;L, % of equity &mdash; highlighted path and 18 other draws</span></div>
+        </div>
+    </div>
+
+    <!-- ============================ §7 ============================ -->
+    <h3><b>The distribution of outcomes</b></h3>
+    <p>
+        Two thousand paths on the same shock buffer. The characteristic shape is the mirror image of
+        the basis trade: a dense cluster of small, repeatable gains from spreads that converged, and a
+        left tail made of the pairs where the relationship stopped holding &mdash; either because it
+        broke, or because it was never quite there to begin with (\(\delta\neq0\)).
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvHist" width="800" height="300" role="img"
+                aria-label="Histogram of annual returns on equity across simulated paths"></canvas>
+        <div class="pt-cap"><span>Distribution of \(R=L\,\Pi\) over one year (% on equity)</span></div>
+    </div>
+    <div class="pt-note">
+        <b>This model is far too kind.</b> The trader here knows \(\kappa\), \(\sigma_s\) and
+        \(\sigma_{\rm eq}\) exactly, the spread is exactly Gaussian and exactly OU, there is no borrow
+        cost, no short recall, no gap risk, no crowding and no dividend or corporate-action mess. Set
+        \(\delta=0,h=0\) and the simulated Sharpe is embarrassing to print. Realised Sharpe ratios for
+        cash-equity stat-arb after costs are conventionally reported in the low single digits, and the
+        gap between the two numbers <i>is</i> the subject: it is all parameter uncertainty and
+        structural instability, which is what \(\delta\) and \(h\) are crude stand-ins for.
+    </div>
+
+    <!-- ============================ §8 ============================ -->
+    <h3><b>How far do you let it stretch?</b></h3>
+    <p>
+        Since the trading rule never touches the simulated paths, the entry threshold can be swept
+        exactly: the same 2,000 spread paths are simply re-read under each candidate \(z_{\rm in}\).
+    </p>
+    <div class="pt-fig">
+        <canvas id="cvSweep" width="800" height="300" role="img"
+                aria-label="Probability of being stopped out and expected return as functions of the entry threshold"></canvas>
+        <div class="pt-cap">
+            <span>Stop-out probability and expected return vs entry threshold</span>
+            <span id="sweepOpt"></span>
+        </div>
+    </div>
+    <div class="pt-leg2">
+        <span><i class="pt-sw" style="background:#e61616"></i>P(stopped out at least once), left axis</span>
+        <span><i class="pt-sw" style="background:#000000"></i>E[R], right axis</span>
+        <span><i class="pt-sw" style="background:rgba(17,17,17,.4)"></i>current \(z_{\rm in}\)</span>
+    </div>
+    <p>
+        There is a tension in both directions. Enter too eagerly and you pay the round-trip cost
+        constantly for a handful of basis points of expected convergence, and you spend most of the
+        year holding positions whose edge does not cover their variance. Wait too long and the
+        opportunities never arrive &mdash; and, worse, the deviations that <i>are</i> large enough to
+        clear a high bar are disproportionately the ones generated by a broken relationship rather
+        than by noise. Raising \(h\), \(c\) or \(|\delta|\) pushes the optimum around; the useful
+        exercise is to watch <i>which way</i> it moves and convince yourself why.
+    </p>
+    <div class="pt-note">
+        NOTE: as on any expected-value criterion, the peak is risk-neutral. It ignores that the tail
+        outcomes here are correlated across every pair in a real book &mdash; when stat-arb spreads
+        stop reverting, they tend to stop reverting simultaneously. The optimum for a single pair is
+        an upper bound for a portfolio of them, not a target.
+    </div>
+
+    <!-- ============================ §9 ============================ -->
+    <h3><b>When the relationship stops existing</b></h3>
+    <ul class="pt-risk">
+        <li>
+            <span class="pt-yr">1980s</span>
+            <p>The technique is generally credited to the quantitative group run by Nunzio Tartaglia at
+               Morgan Stanley, with Gerry Bamberger often named as the originator. The original
+               version was close to pure distance-matching on price series; the econometrics arrived
+               later, and mostly served to explain why the naive version worked when it did.</p>
+        </li>
+        <li>
+            <span class="pt-yr">1907&ndash;2005</span>
+            <p>Royal Dutch and Shell were the textbook cointegrated pair: two listings on a fixed
+               60/40 split of the same cash flows, an essentially mechanical parity. Froot and Dabora
+               documented deviations from that parity of tens of percent, persisting for years and
+               tracking the relative performance of the markets in which each line traded. The
+               relationship was real, the arbitrage was real, and it was still capable of running
+               against a levered position for longer than the position could be financed &mdash; LTCM
+               among others found this out in 1998.</p>
+        </li>
+        <li>
+            <span class="pt-yr">Aug 2007</span>
+            <p>The &ldquo;quant quake&rdquo;. Over a few days in early August, market-neutral equity
+               strategies suffered severe, highly correlated losses followed by a sharp rebound, with
+               no corresponding move in the index. Khandani and Lo attribute it to the rapid unwind of
+               a large multi-strategy book forcing deleveraging across everyone holding similar
+               spreads. No cointegrating relationship broke: <b>the positions were crowded</b>, and
+               crowding is a risk factor that appears nowhere in an ADF test.</p>
+        </li>
+        <li>
+            <span class="pt-yr">Any time</span>
+            <p>The mundane ways a pair dies: a merger, a spin-off, a change of index membership, a
+               shift in capital structure, a new competitor, a regulatory change in one jurisdiction
+               only. Each is a structural break, none is forecastable from the price history, and all
+               of them look identical to a large \(z\)-score right up until they don't.</p>
+        </li>
+    </ul>
+    <p>
+        The discipline is therefore the reverse of what the mathematics suggests. Cointegration is what
+        makes the trade possible, but it is an <i>assumption with a shelf life</i>, and the operational
+        job is not finding it &mdash; a search will find far more of it than exists &mdash; but deciding
+        in advance how you will behave when it is no longer true.
+    </p>
+
+    <script type="application/javascript">
+    (function(){
+    'use strict';
+    /* ================= palette ================= */
+    const C = {
+        ink:'#111111', label:'#111111', axis:'#333333',
+        grid:'rgba(0,0,0,.13)',
+        a:'#000000', b:'#286ca3', sp:'#7a3030',
+        spFill:'rgb(179 179 179 / 0.38)',
+        pnl:'#5b3d84', bad:'#e61616', good:'#2f5c2f', warn:'#d6a82f',
+        ghost:'rgba(17,17,17,.20)'
+    };
+    /* ================= model constants ================= */
+    const T = 1.0, N = 252, dt = T/N, ST = N + 1, SQDT = Math.sqrt(dt);
+    const P0 = 100, MU = 0.05, M_MAX = 2000;
+    const Tt = new Float64Array(ST);
+    for (let i = 0; i <= N; i++) Tt[i] = i*dt;
+    /* ================= RNG ================= */
+    function mulberry32(a){
+        return function(){
+            a |= 0; a = a + 0x6D2B79F5 | 0;
+            let t = Math.imul(a ^ a >>> 15, 1 | a);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+    function randn(rng){
+        let u = 0, v = 0;
+        while (u === 0) u = rng();
+        while (v === 0) v = rng();
+        return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+    }
+    /* ================= shock buffer (common random numbers) ================= */
+    function makeShocks(seed, M){
+        const half = M >> 1, rng = mulberry32(seed >>> 0);
+        const W  = new Float32Array(M*ST);   /* cumulative common-trend Brownian */
+        const ZE = new Float32Array(M*N);    /* spread innovations              */
+        const U  = new Float32Array(M*N);    /* break-hazard uniforms           */
+        const Z0 = new Float32Array(M);      /* stationary initial spread draw  */
+        for (let m = 0; m < half; m++){
+            const ow = m*ST, oz = m*N;
+            let w = 0;
+            Z0[m] = randn(rng);
+            for (let i = 0; i < N; i++){
+                w += SQDT*randn(rng); W[ow+i+1] = w;
+                ZE[oz+i] = randn(rng);
+                U[oz+i]  = rng();
+            }
+        }
+        for (let m = half; m < M; m++){          /* antithetic partners */
+            const ow = m*ST, pw = (m-half)*ST, oz = m*N, pz = (m-half)*N;
+            Z0[m] = -Z0[m-half];
+            for (let i = 0; i < N; i++){
+                W[ow+i+1] = -W[pw+i+1];
+                ZE[oz+i]  = -ZE[pz+i];
+                U[oz+i]   = 1 - U[pz+i];
+            }
+        }
+        return {W, ZE, U, Z0, G: new Float32Array(M*ST), D: new Float64Array(ST),
+                kappa: NaN, seed: seed >>> 0, M};
+    }
+    /* OU basis: s_i = s0*D[i] + sigma_s*G[i]  — linear in sigma_s, so the slider rescales */
+    function buildOU(shk, kappa){
+        if (shk.kappa === kappa) return;
+        const dec = 1 - kappa*dt, D = shk.D, G = shk.G, ZE = shk.ZE, M = shk.M;
+        D[0] = 1;
+        for (let i = 0; i < N; i++) D[i+1] = D[i]*dec;
+        for (let m = 0; m < M; m++){
+            const og = m*ST, oz = m*N;
+            let g = 0;
+            for (let i = 0; i < N; i++){ g = g*dec + SQDT*ZE[oz+i]; G[og+i+1] = g; }
+        }
+        shk.kappa = kappa;
+    }
+    /* ================= path storage ================= */
+    const SPR = new Float32Array(M_MAX*ST);   /* traded spread s~ = s - delta*c   */
+    const BRK = new Int16Array(M_MAX);        /* index of cointegration break, -1 */
+    function buildTables(p){
+        const dX = new Float64Array(ST);
+        for (let i = 0; i <= N; i++) dX[i] = (MU - 0.5*p.sc*p.sc)*Tt[i];
+        p.dX     = dX;
+        p.seq    = p.sb/Math.sqrt(2*p.kappa);
+        p.pBrk   = 1 - Math.exp(-p.h*dt);
+        p.hlDays = Math.log(2)/p.kappa*252;
+        return p;
+    }
+    /* no RNG inside: the shock buffer is the only source of randomness */
+    function buildPaths(p, shk, M){
+        const W = shk.W, ZE = shk.ZE, U = shk.U, G = shk.G, D = shk.D, Z0 = shk.Z0;
+        for (let m = 0; m < M; m++){
+            const ow = m*ST, oz = m*N, s0 = p.seq*Z0[m];
+            let s = s0, broke = false, bi = -1;
+            for (let i = 0; i <= N; i++){
+                if (i > 0){
+                    if (!broke && U[oz+i-1] < p.pBrk){ broke = true; bi = i; }
+                    /* break  =>  kappa collapses to zero and the spread becomes I(1) */
+                    if (broke) s = s + p.sb*SQDT*ZE[oz+i-1];
+                    else       s = s0*D[i] + p.sb*G[ow+i];
+                }
+                SPR[ow+i] = s - p.delta*(p.dX[i] + p.sc*W[ow+i]);
+            }
+            BRK[m] = bi;
+        }
+    }
+    /* ================= trading rule: pure post-processing of SPR ================= */
+    let R_pnl = 0, R_tr = 0, R_win = 0, R_stop = 0, R_sd = 0, R_sd2 = 0;
+    function tradePath(m, p, zin, zout, zstop, out, marks){
+        const os = m*ST, seq = p.seq, hc = 0.5*p.cost;
+        let pos = 0, entry = 0, pnl = 0, tr = 0, win = 0, stp = 0, prev = 0;
+        for (let i = 0; i <= N; i++){
+            const sv = SPR[os+i], z = sv/seq;
+            if (pos !== 0){
+                const conv = Math.abs(z) <= zout;
+                const hit  = pos < 0 ? (z >= zstop) : (z <= -zstop);
+                if (conv || hit || i === N){
+                    const tp = pos*(sv - entry) - hc;
+                    pnl += tp; tr++; if (tp > 0) win++; if (hit) stp++;
+                    if (marks) marks.push({i:i, z:z, kind: hit ? 2 : 1});
+                    pos = 0;
+                }
+            }
+            if (pos === 0 && i < N && Math.abs(z) >= zin && Math.abs(z) < zstop){
+                pos = z > 0 ? -1 : 1; entry = sv; pnl -= hc;
+                if (marks) marks.push({i:i, z:z, kind:0});
+            }
+            const mtm = pnl + (pos !== 0 ? pos*(sv - entry) : 0);
+            if (out) out[i] = mtm;
+            const d = mtm - prev; prev = mtm;
+            R_sd += d; R_sd2 += d*d;
+        }
+        R_pnl = prev; R_tr = tr; R_win = win; R_stop = stp;
+    }
+    function runAll(p, M, zin, zout, zstop, rets){
+        R_sd = 0; R_sd2 = 0;
+        let sum = 0, nstop = 0, ntr = 0, nwin = 0, nbrk = 0;
+        for (let m = 0; m < M; m++){
+            tradePath(m, p, zin, zout, zstop, null, null);
+            const R = 100*p.L*R_pnl;
+            if (rets) rets[m] = R;
+            sum += R; ntr += R_tr; nwin += R_win;
+            if (R_stop > 0) nstop++;
+            if (BRK[m] >= 0) nbrk++;
+        }
+        const nd = M*ST, mu = R_sd/nd;
+        const sd = Math.sqrt(Math.max(1e-18, R_sd2/nd - mu*mu));
+        return {mean:sum/M, pStop:nstop/M, trades:ntr/M, pBrk:nbrk/M,
+                win: ntr ? nwin/ntr : 0, sharpe: mu/sd*Math.sqrt(252)};
+    }
+    /* ================= canvas plumbing ================= */
+    function ctxOf(cv){
+        const dpr = window.devicePixelRatio || 1;
+        const w = cv.clientWidth || 600, h = cv.clientHeight || 260;
+        if (cv.width !== Math.round(w*dpr) || cv.height !== Math.round(h*dpr)){
+            cv.width = Math.round(w*dpr); cv.height = Math.round(h*dpr);
+        }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);          /* stays transparent: no fill */
+        return {ctx, w, h};
+    }
+    function niceTicks(lo, hi, n){
+        const spanv = (hi - lo) || 1, raw = spanv/n;
+        const mag = Math.pow(10, Math.floor(Math.log10(raw))), q = raw/mag;
+        const step = (q < 1.5 ? 1 : q < 3 ? 2 : q < 7 ? 5 : 10)*mag;
+        const out = [];
+        for (let v = Math.ceil(lo/step)*step; v <= hi + step*1e-9; v += step) out.push(v);
+        return {ticks: out, step};
+    }
+    function fmt(v, step){
+        const d = Math.max(0, Math.min(6, -Math.floor(Math.log10(step))));
+        return v.toFixed(isFinite(d) ? d : 2);
+    }
+    const FONT = '11px ui-monospace, Menlo, Consolas, monospace';
+    function span(arrs, extra){
+        let lo = Infinity, hi = -Infinity;
+        arrs.forEach(a => { const n = a.n === undefined ? a.y.length - 1 : a.n;
+            for (let i = 0; i <= n; i++){ if (a.y[i] < lo) lo = a.y[i]; if (a.y[i] > hi) hi = a.y[i]; } });
+        (extra || []).forEach(v => { if (v < lo) lo = v; if (v > hi) hi = v; });
+        if (!isFinite(lo)){ lo = 0; hi = 1; }
+        const pad = (hi - lo)*0.12 || 0.5;
+        return {lo: lo - pad, hi: hi + pad};
+    }
+    /* dual-axis time-series chart; series -> left, series2 -> right */
+    function drawXY(cv, cfg){
+        const {ctx, w, h} = ctxOf(cv);
+        const x = cfg.x, dual = !!(cfg.series2 && cfg.series2.length);
+        const P = {l: 54, r: dual ? 50 : 16, t: cfg.legend ? 26 : 12, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        const A = span(cfg.series.concat(cfg.ghosts || []), (cfg.hlines || []).map(l => l.y));
+        const X = v => P.l + (v/T)*pw;
+        const Y = v => P.t + (1 - (v - A.lo)/(A.hi - A.lo))*ph;
+        let B = null, Y2 = null;
+        if (dual){
+            const e2 = (cfg.hard2 || []).slice();
+            if (cfg.zero2) e2.push(0);
+            B  = span(cfg.series2, e2);
+            Y2 = v => P.t + (1 - (v - B.lo)/(B.hi - B.lo))*ph;
+        }
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        /* right-axis shaded bands, drawn first */
+        if (dual) (cfg.bands2 || []).forEach(bd => {
+            const y0 = Y2(Math.max(bd.y1, bd.y0)), y1 = Y2(Math.min(bd.y1, bd.y0));
+            ctx.fillStyle = bd.fill;
+            ctx.fillRect(P.l, Math.max(P.t, y0), pw, Math.min(P.t + ph, y1) - Math.max(P.t, y0));
+        });
+        /* horizontal grid + left tick labels */
+        const yt = niceTicks(A.lo, A.hi, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        yt.ticks.forEach(v => {
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(fmt(v, yt.step), P.l - 8, yy);
+        });
+        if (dual){
+            const rt = niceTicks(B.lo, B.hi, 4);
+            ctx.fillStyle = C.sp; ctx.textAlign = 'left';
+            rt.ticks.forEach(v => ctx.fillText(fmt(v, rt.step), w - P.r + 8, Y2(v)));
+        }
+        /* x tick labels */
+        const xt = niceTicks(0, T, 5);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => { if (v >= -1e-9 && v <= T + 1e-9)
+            ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
+        ctx.textBaseline = 'middle';
+        /* ghosts (left axis) */
+        (cfg.ghosts || []).forEach(g => {
+            const end = g.n === undefined ? N : g.n;
+            ctx.beginPath(); ctx.strokeStyle = C.ghost; ctx.lineWidth = 1;
+            for (let i = 0; i <= end; i++){ const px = X(x[i]), py = Y(g.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        /* reference lines */
+        (cfg.hlines || []).forEach(l => {
+            const yy = Math.round(Y(l.y)) + .5;
+            ctx.save(); ctx.setLineDash(l.dash || [4, 4]);
+            ctx.strokeStyle = l.color; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.restore();
+            if (l.label){ ctx.fillStyle = l.color; ctx.textAlign = 'left';
+                ctx.fillText(l.label, P.l + 6, yy - 9); }
+        });
+        if (dual) (cfg.hlines2 || []).forEach(l => {
+            if (l.y < B.lo || l.y > B.hi) return;      /* clip: never spill outside the frame */
+            const yy = Math.round(Y2(l.y)) + .5;
+            ctx.save(); ctx.setLineDash(l.dash || [4, 4]);
+            ctx.strokeStyle = l.color; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.restore();
+            if (l.label){ ctx.fillStyle = l.color; ctx.textAlign = 'right';
+                ctx.fillText(l.label, w - P.r - 4, yy - 8); }
+        });
+        /* right-axis series first, so the price lines sit on top */
+        if (dual) cfg.series2.forEach(s => {
+            const n = s.n === undefined ? N : s.n;
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.3;
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y2(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        cfg.series.forEach(s => {
+            const n = s.n === undefined ? s.y.length - 1 : s.n;
+            ctx.beginPath(); ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 1.6;
+            for (let i = 0; i <= n; i++){ const px = X(x[i]), py = Y(s.y[i]);
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+        });
+        (cfg.markers || []).forEach(mk => {
+            ctx.fillStyle = mk.color;
+            ctx.beginPath(); ctx.arc(X(mk.x), Y(mk.y), mk.r || 3.4, 0, Math.PI*2); ctx.fill();
+        });
+        if (dual) (cfg.markers2 || []).forEach(mk => {
+            if (mk.y < B.lo || mk.y > B.hi) return;
+            ctx.fillStyle = mk.color;
+            ctx.beginPath(); ctx.arc(X(mk.x), Y2(mk.y), mk.r || 3.4, 0, Math.PI*2); ctx.fill();
+        });
+        if (cfg.legend){
+            ctx.textAlign = 'left'; let lx = P.l;
+            cfg.legend.forEach(e => {
+                ctx.fillStyle = e.color; ctx.fillRect(lx, 10, 13, 2.5);
+                ctx.fillStyle = C.axis; ctx.fillText(e.name, lx + 18, 11);
+                lx += 32 + ctx.measureText(e.name).width;
+            });
+        }
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText(cfg.xlabel || 't (years)', w - P.r, h - 3);
+    }
+    function drawHist(cv, vals){
+        const {ctx, w, h} = ctxOf(cv);
+        const P = {l: 54, r: 16, t: 14, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        let lo = Infinity, hi = -Infinity;
+        for (let i = 0; i < vals.length; i++){
+            if (vals[i] < lo) lo = vals[i]; if (vals[i] > hi) hi = vals[i]; }
+        if (hi - lo < 1e-9){ lo -= 1; hi += 1; }
+        const nb = 64, bw = (hi - lo)/nb, counts = new Int32Array(nb);
+        for (let i = 0; i < vals.length; i++){
+            let k = Math.floor((vals[i] - lo)/bw); if (k >= nb) k = nb - 1; if (k < 0) k = 0;
+            counts[k]++;
+        }
+        const sorted = Array.from(counts).sort((a, b) => b - a);
+        const top = sorted[0], second = sorted[1] || 0;
+        let yMax = top, clipped = false;
+        if (top > 4*Math.max(second, 1)){ yMax = Math.max(second*1.6, top*0.08); clipped = true; }
+        const X = v => P.l + ((v - lo)/(hi - lo))*pw;
+        const Y = c => P.t + (1 - Math.min(c, yMax)/yMax)*ph;
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        const yt = niceTicks(0, yMax, 4);
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        yt.ticks.forEach(v => {
+            const yy = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.label; ctx.textAlign = 'right';
+            ctx.fillText(String(Math.round(v)), P.l - 8, yy);
+        });
+        const bwPx = pw/nb;
+        for (let k = 0; k < nb; k++){
+            if (!counts[k]) continue;
+            const c0 = lo + k*bw, y0 = Y(counts[k]);
+            ctx.fillStyle = (c0 + bw/2) < 0 ? 'rgba(154,38,38,.8)' : 'rgba(47,92,47,.8)';
+            ctx.fillRect(X(c0) + .5, y0, Math.max(bwPx - 1, 1), P.t + ph - y0);
+            if (clipped && counts[k] > yMax){
+                ctx.fillStyle = C.ink; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                ctx.fillText(String(counts[k]), X(c0) + bwPx/2, P.t - 1);
+                ctx.textBaseline = 'middle';
+            }
+        }
+        const zx = X(0);
+        if (zx >= P.l && zx <= w - P.r){
+            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.45)';
+            ctx.beginPath(); ctx.moveTo(zx, P.t); ctx.lineTo(zx, P.t + ph); ctx.stroke();
+            ctx.restore();
+        }
+        const xt = niceTicks(lo, hi, 6);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => { if (v >= lo && v <= hi) ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('return on equity, 1y (%)', w - P.r, h - 3);
+    }
+    function drawSweep(cv, sw, cur){
+        const {ctx, w, h} = ctxOf(cv);
+        const P = {l: 50, r: 54, t: 14, b: 28};
+        const pw = w - P.l - P.r, ph = h - P.t - P.b;
+        const x0 = sw.x[0], x1 = sw.x[sw.x.length-1];
+        let rlo = Infinity, rhi = -Infinity;
+        for (let i = 0; i < sw.er.length; i++){
+            if (sw.er[i] < rlo) rlo = sw.er[i]; if (sw.er[i] > rhi) rhi = sw.er[i]; }
+        if (rhi - rlo < 1e-9){ rlo -= 1; rhi += 1; }
+        const rpad = (rhi - rlo)*0.12; rlo -= rpad; rhi += rpad;
+        const X  = v => P.l + ((v - x0)/(x1 - x0))*pw;
+        const YL = v => P.t + (1 - v/100)*ph;
+        const YR = v => P.t + (1 - (v - rlo)/(rhi - rlo))*ph;
+        ctx.font = FONT; ctx.textBaseline = 'middle';
+        ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+        for (let g = 0; g <= 4; g++){
+            const v = g*25, yy = Math.round(YL(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(P.l, yy); ctx.lineTo(w - P.r, yy); ctx.stroke();
+            ctx.fillStyle = C.bad; ctx.textAlign = 'right';
+            ctx.fillText(v + '%', P.l - 8, yy);
+        }
+        const rt = niceTicks(rlo, rhi, 4);
+        ctx.fillStyle = C.a; ctx.textAlign = 'left';
+        rt.ticks.forEach(v => ctx.fillText(fmt(v, rt.step) + '%', w - P.r + 8, YR(v)));
+        if (cur >= x0 && cur <= x1){
+            ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.4)';
+            ctx.beginPath(); ctx.moveTo(X(cur), P.t); ctx.lineTo(X(cur), P.t + ph); ctx.stroke();
+            ctx.restore();
+        }
+        if (rlo < 0 && rhi > 0){
+            ctx.save(); ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(31,78,121,.4)';
+            ctx.beginPath(); ctx.moveTo(P.l, YR(0)); ctx.lineTo(w - P.r, YR(0)); ctx.stroke();
+            ctx.restore();
+        }
+        ctx.beginPath(); ctx.strokeStyle = C.bad; ctx.lineWidth = 1.8;
+        sw.x.forEach((v, i) => { const px = X(v), py = YL(sw.ps[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+        ctx.stroke();
+        ctx.beginPath(); ctx.strokeStyle = C.a; ctx.lineWidth = 1.8;
+        sw.x.forEach((v, i) => { const px = X(v), py = YR(sw.er[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+        ctx.stroke();
+        if (sw.optX != null){
+            ctx.fillStyle = C.a;
+            ctx.beginPath(); ctx.arc(X(sw.optX), YR(sw.optR), 4, 0, Math.PI*2); ctx.fill();
+        }
+        const xt = niceTicks(x0, x1, 6);
+        ctx.fillStyle = C.label; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        xt.ticks.forEach(v => { if (v >= x0 && v <= x1)
+            ctx.fillText(fmt(v, xt.step), X(v), h - P.b + 8); });
+        ctx.fillStyle = C.axis; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('entry threshold z\u2091\u2099 (\u03c3 units)', w - P.r, h - 3);
+    }
+    /* ================= §2 figure: correlated vs cointegrated ================= */
+    const CN = 252;
+    const PA = {x:new Float64Array(CN+1), y:new Float64Array(CN+1)};
+    const PB = {x:new Float64Array(CN+1), y:new Float64Array(CN+1)};
+    let corrA = 0, corrB = 0, rngA = 0, rngB = 0;
+    (function genPanels(){
+        const rng = mulberry32(20250107);
+        const sd = 0.22/Math.sqrt(252), rho = 0.94;
+        const dxA = [], dyA = [], dxB = [], dyB = [];
+        for (let i = 1; i <= CN; i++){
+            const e1 = randn(rng), e2 = randn(rng);
+            const d1 = sd*e1, d2 = sd*(rho*e1 + Math.sqrt(1-rho*rho)*e2);
+            PA.x[i] = PA.x[i-1] + d1; PA.y[i] = PA.y[i-1] + d2;
+            dxA.push(d1); dyA.push(d2);
+        }
+        const kap = 10, dec = 1 - kap/252, ss = 0.30/Math.sqrt(252);
+        let s = (0.30/Math.sqrt(2*kap))*randn(rng);
+        for (let i = 1; i <= CN; i++){
+            const e1 = randn(rng), e2 = randn(rng);
+            const dc = sd*e1, sPrev = s;
+            s = dec*s + ss*e2;
+            PB.x[i] = PB.x[i-1] + dc;
+            PB.y[i] = PB.x[i] + s;
+            dxB.push(dc); dyB.push(dc + (s - sPrev));
+        }
+        function corr(u, v){
+            const n = u.length; let mu = 0, mv = 0;
+            for (let i = 0; i < n; i++){ mu += u[i]; mv += v[i]; }
+            mu /= n; mv /= n;
+            let a = 0, b = 0, c = 0;
+            for (let i = 0; i < n; i++){ const du = u[i]-mu, dv = v[i]-mv;
+                a += du*dv; b += du*du; c += dv*dv; }
+            return a/Math.sqrt(b*c);
+        }
+        function rangeOf(p){
+            let lo = Infinity, hi = -Infinity;
+            for (let i = 0; i <= CN; i++){ const g = p.y[i]-p.x[i];
+                if (g < lo) lo = g; if (g > hi) hi = g; }
+            return 100*(hi - lo);
+        }
+        corrA = corr(dxA, dyA); corrB = corr(dxB, dyB);
+        rngA  = rangeOf(PA);    rngB  = rangeOf(PB);
+    })();
+    function drawCoint(cv){
+        const {ctx, w, h} = ctxOf(cv);
+        const stacked = w < 520;
+        const cells = stacked
+            ? [{x:0, y:0, w:w, h:h/2}, {x:0, y:h/2, w:w, h:h/2}]
+            : [{x:0, y:0, w:w/2, h:h}, {x:w/2, y:0, w:w/2, h:h}];
+        const data = [{p:PA, t:'correlated, NOT cointegrated'},
+                      {p:PB, t:'cointegrated'}];
+        ctx.font = FONT;
+        cells.forEach((cell, k) => {
+            const p = data[k].p;
+            const L = 34, R = 10, Tp = 20, Bm = 8, midGap = 12;
+            const pw = cell.w - L - R;
+            const hTop = (cell.h - Tp - Bm - midGap)*0.62;
+            const hBot = (cell.h - Tp - Bm - midGap)*0.38;
+            let lo = Infinity, hi = -Infinity, glo = Infinity, ghi = -Infinity;
+            for (let i = 0; i <= CN; i++){
+                const a = 100*Math.exp(p.x[i]), b = 100*Math.exp(p.y[i]), g = 100*(p.y[i]-p.x[i]);
+                lo = Math.min(lo, a, b); hi = Math.max(hi, a, b);
+                glo = Math.min(glo, g);  ghi = Math.max(ghi, g);
+            }
+            const pad = (hi-lo)*0.1 || 1; lo -= pad; hi += pad;
+            const gp  = Math.max((ghi-glo)*0.15, 0.5); glo -= gp; ghi += gp;
+            if (glo > 0) glo = -gp; if (ghi < 0) ghi = gp;
+            const X  = i => cell.x + L + (i/CN)*pw;
+            const Y1 = v => cell.y + Tp + (1 - (v-lo)/(hi-lo))*hTop;
+            const Y2 = v => cell.y + Tp + hTop + midGap + (1 - (v-glo)/(ghi-glo))*hBot;
+            ctx.fillStyle = C.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.fillText(data[k].t, cell.x + L, cell.y + 4);
+            /* price panel */
+            ctx.textBaseline = 'middle';
+            const yt = niceTicks(lo, hi, 3);
+            ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+            yt.ticks.forEach(v => {
+                const yy = Math.round(Y1(v)) + .5;
+                ctx.beginPath(); ctx.moveTo(cell.x+L, yy); ctx.lineTo(cell.x+cell.w-R, yy); ctx.stroke();
+                ctx.fillStyle = C.label; ctx.textAlign = 'right';
+                ctx.fillText(fmt(v, yt.step), cell.x + L - 6, yy);
+            });
+            [['x', C.a], ['y', C.b]].forEach(([key, col]) => {
+                ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+                for (let i = 0; i <= CN; i++){
+                    const px = X(i), py = Y1(100*Math.exp(p[key][i]));
+                    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+                }
+                ctx.stroke();
+            });
+            /* gap panel */
+            ctx.save(); ctx.setLineDash([2, 3]); ctx.strokeStyle = 'rgba(17,17,17,.45)';
+            const zy = Math.round(Y2(0)) + .5;
+            ctx.beginPath(); ctx.moveTo(cell.x+L, zy); ctx.lineTo(cell.x+cell.w-R, zy); ctx.stroke();
+            ctx.restore();
+            ctx.beginPath(); ctx.moveTo(X(0), Y2(0));
+            for (let i = 0; i <= CN; i++) ctx.lineTo(X(i), Y2(100*(p.y[i]-p.x[i])));
+            ctx.lineTo(X(CN), Y2(0)); ctx.closePath();
+            ctx.fillStyle = C.spFill; ctx.fill();
+            ctx.beginPath(); ctx.strokeStyle = C.sp; ctx.lineWidth = 1.3;
+            for (let i = 0; i <= CN; i++){ const px = X(i), py = Y2(100*(p.y[i]-p.x[i]));
+                i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+            ctx.stroke();
+            const gt = niceTicks(glo, ghi, 2);
+            ctx.fillStyle = C.sp; ctx.textAlign = 'right';
+            gt.ticks.forEach(v => ctx.fillText(fmt(v, gt.step), cell.x + L - 6, Y2(v)));
+        });
+    }
+    /* ================= hero animation ================= */
+    const HERO_MS = 12000;
+    const heroShk = makeShocks(4242424, 2);
+    const heroP = buildTables({kappa:6, sb:0.13, sc:0.20, delta:0, h:0,
+                               cost:0, L:1, zin:2, zout:.25, zstop:4});
+    buildOU(heroShk, heroP.kappa);
+    const heroA = new Float64Array(ST), heroB = new Float64Array(ST), heroS = new Float64Array(ST);
+    (function(){
+        const W = heroShk.W, G = heroShk.G, D = heroShk.D;
+        const s0 = heroP.seq*heroShk.Z0[0];
+        for (let i = 0; i <= N; i++){
+            const X = heroP.dX[i] + heroP.sc*W[i];
+            const s = s0*D[i] + heroP.sb*G[i];
+            heroS[i] = s;
+            heroA[i] = P0*Math.exp(X);
+            heroB[i] = P0*Math.exp(X + s);
+        }
+    })();
+    const heroDaysEl = document.getElementById('heroDays');
+    const heroGapEl  = document.getElementById('heroGap');
+    function drawHero(prog){
+        const cv = document.getElementById('cvHero');
+        if (!cv) return;
+        const {ctx, w, h} = ctxOf(cv);
+        const pl = 10, pr = 10, pt = 14, pb = 10;
+        const pw = w - pl - pr, ph = h - pt - pb;
+        let lo = Infinity, hi = -Infinity;
+        for (let i = 0; i <= N; i++){
+            lo = Math.min(lo, heroA[i], heroB[i]);
+            hi = Math.max(hi, heroA[i], heroB[i]);
+        }
+        const pad = (hi - lo)*0.12 || 1; lo -= pad; hi += pad;
+        const X = i => pl + (i/N)*pw;
+        const Y = v => pt + (1 - (v - lo)/(hi - lo))*ph;
+        const upto = Math.max(1, Math.round(prog*N));
+        ctx.beginPath();
+        for (let i = 0; i <= upto; i++) ctx.lineTo(X(i), Y(heroB[i]));
+        for (let i = upto; i >= 0; i--) ctx.lineTo(X(i), Y(heroA[i]));
+        ctx.closePath(); ctx.fillStyle = C.spFill; ctx.fill();
+        ctx.lineWidth = 1.6; ctx.strokeStyle = C.a;
+        ctx.beginPath();
+        for (let i = 0; i <= upto; i++){ const px = X(i), py = Y(heroA[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+        ctx.stroke();
+        ctx.strokeStyle = C.b;
+        ctx.beginPath();
+        for (let i = 0; i <= upto; i++){ const px = X(i), py = Y(heroB[i]);
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+        ctx.stroke();
+        ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = 'rgba(17,17,17,.22)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(X(upto), pt); ctx.lineTo(X(upto), pt + ph); ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = C.a;
+        ctx.beginPath(); ctx.arc(X(upto), Y(heroA[upto]), 2.8, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = C.b;
+        ctx.beginPath(); ctx.arc(X(upto), Y(heroB[upto]), 2.8, 0, Math.PI*2); ctx.fill();
+        if (heroDaysEl) heroDaysEl.textContent = upto;
+        if (heroGapEl)  heroGapEl.textContent  = (100*heroS[upto]).toFixed(1) + '%';
+    }
+    const reduceMotion = window.matchMedia &&
+                         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let heroT0 = null;
+    function heroLoop(ts){
+        if (heroT0 === null) heroT0 = ts;
+        drawHero(((ts - heroT0) % HERO_MS) / HERO_MS);
+        requestAnimationFrame(heroLoop);
+    }
+    if (reduceMotion) drawHero(1); else requestAnimationFrame(heroLoop);
+    /* ================= wiring ================= */
+    const ids = ['in_kappa','in_sb','in_sc','in_delta','in_zin','in_zout',
+                 'in_zstop','in_h','in_cost','in_L'];
+    const el = id => document.getElementById(id);
+    const NGHOST = 18;
+    const recV = new Float64Array(ST), dispV = new Float64Array(ST);
+    const recA = new Float64Array(ST), recB = new Float64Array(ST), recZ = new Float64Array(ST);
+    const ghostV = []; for (let k = 0; k < NGHOST; k++) ghostV.push(new Float64Array(ST));
+    const tmpV = new Float64Array(ST);
+    const rets = new Float64Array(M_MAX), sortBuf = new Float64Array(M_MAX);
+    let SHK = null, MC_N = M_MAX, timed = false, pending = false, pendingFull = false;
+    let pathSig = '', sweepCache = null, sweepSig = '';
+    const ZGRID = []; for (let z = 0.25; z <= 4.001; z += 0.25) ZGRID.push(+z.toFixed(2));
+    function params(){
+        const zin = +el('in_zin').value;
+        return {kappa:+el('in_kappa').value, sb:+el('in_sb').value, sc:+el('in_sc').value,
+                delta:+el('in_delta').value, zin: zin,
+                zout: Math.min(+el('in_zout').value, zin - 0.05),
+                zstop: Math.max(+el('in_zstop').value, zin + 0.25),
+                h:+el('in_h').value, cost:(+el('in_cost').value)/10000, L:+el('in_L').value};
+    }
+    function syncLabels(p){
+        el('lbl_kappa').textContent = p.kappa.toFixed(1);
+        el('lbl_sb').textContent    = p.sb.toFixed(2);
+        el('lbl_sc').textContent    = p.sc.toFixed(2);
+        el('lbl_delta').textContent = p.delta.toFixed(2);
+        el('lbl_zin').textContent   = p.zin.toFixed(2);
+        el('lbl_zout').textContent  = p.zout.toFixed(2);
+        el('lbl_zstop').textContent = p.zstop.toFixed(2);
+        el('lbl_h').textContent     = p.h.toFixed(2);
+        el('lbl_cost').textContent  = (10000*p.cost).toFixed(0);
+        el('lbl_L').textContent     = p.L.toFixed(1) + '\u00d7';
+        el('pt_hl').innerHTML =
+            'half-life <b>' + p.hlDays.toFixed(0) + '</b> trading days &middot; ' +
+            'equilibrium spread s.d. \u03c3<sub>eq</sub> = <b>' + (100*p.seq).toFixed(1) + '%</b> ' +
+            '&middot; costs eat a move of <b>' + (p.cost/p.seq).toFixed(2) + '\u03c3</b> ' +
+            '&middot; hedge-error trend s.d. after 1y = <b>' +
+            (100*Math.abs(p.delta)*p.sc).toFixed(1) + '%</b>' +
+            (Math.abs(p.delta) > 1e-9 ? ' (an I(1) component in the traded spread)' : '');
+    }
+    function pct(x){ return (100*x).toFixed(1) + '%'; }
+    function render(full){
+        const t0 = performance.now();
+        const p = buildTables(params());
+        syncLabels(p);
+        buildOU(SHK, p.kappa);
+        const M = full ? M_MAX : MC_N;
+        /* only these determine the paths; the trading rule is pure post-processing */
+        const psig = [p.kappa,p.sb,p.sc,p.delta,p.h,SHK.seed,M].join('|');
+        if (psig !== pathSig){ buildPaths(p, SHK, M); pathSig = psig; sweepSig = ''; }
+        /* ---- highlighted path ---- */
+        const marks = [];
+        tradePath(0, p, p.zin, p.zout, p.zstop, recV, marks);
+        for (let i = 0; i <= N; i++){
+            const X = p.dX[i] + p.sc*SHK.W[i];
+            const s = SPR[i] + p.delta*X;
+            recA[i] = P0*Math.exp(X);
+            recB[i] = P0*Math.exp(X + s);
+            recZ[i] = SPR[i]/p.seq;
+            dispV[i] = 100*p.L*recV[i];
+        }
+        const mk2 = marks.map(m => ({x: Tt[m.i], y: m.z,
+            color: m.kind === 0 ? C.pnl : (m.kind === 1 ? C.good : C.bad),
+            r: m.kind === 0 ? 3.2 : 3.8}));
+        const hl2 = [
+            {y:  p.zin,   color:'rgba(40,108,163,.75)', dash:[5,4], label:'entry'},
+            {y: -p.zin,   color:'rgba(40,108,163,.75)', dash:[5,4]},
+            {y:  p.zstop, color:'rgba(230,22,22,.75)',  dash:[3,3], label:'stop'},
+            {y: -p.zstop, color:'rgba(230,22,22,.75)',  dash:[3,3]}
+        ];
+        drawXY(el('cvPath'), {x: Tt,
+            series:  [{y: recA, color: C.a}, {y: recB, color: C.b}],
+            series2: [{y: recZ, color: C.sp, w: 1.3}],
+            zero2: true, hard2: [p.zin, -p.zin],
+            bands2: [{y0: -p.zout, y1: p.zout, fill:'rgba(47,92,47,.10)'}],
+            hlines2: hl2, markers2: mk2,
+            legend: [{name:'A (left)', color:C.a}, {name:'B (left)', color:C.b},
+                     {name:'z-score (right)', color:C.sp}]});
+        const ghosts = [];
+        for (let k = 1; k <= NGHOST; k++){
+            tradePath(k, p, p.zin, p.zout, p.zstop, tmpV, null);
+            for (let i = 0; i <= N; i++) ghostV[k-1][i] = 100*p.L*tmpV[i];
+            ghosts.push({y: ghostV[k-1]});
+        }
+        drawXY(el('cvPnl'), {x: Tt, ghosts: ghosts,
+            series: [{y: dispV, color: C.pnl, w: 2}],
+            hlines: [{y: 0, color:'rgba(17,17,17,.35)', dash:[2,3]}],
+            xlabel: 't (years) — P&L in % of equity'});
+        /* ---- Monte Carlo ---- */
+        const agg = runAll(p, M, p.zin, p.zout, p.zstop, rets);
+        const view = rets.subarray(0, M);
+        drawHist(el('cvHist'), view);
+        const srt = sortBuf.subarray(0, M);
+        srt.set(view); srt.sort();
+        const q = f => srt[Math.min(M-1, Math.max(0, Math.floor(f*M)))];
+        const se = 100*Math.sqrt(agg.pStop*(1-agg.pStop)/M);
+        el('st_tr').textContent   = agg.trades.toFixed(1);
+        el('st_win').textContent  = pct(agg.win);
+        el('st_stop').innerHTML   = pct(agg.pStop) + ' <span class="se">\u00b1' + se.toFixed(1) + '</span>';
+        el('st_brk').textContent  = pct(agg.pBrk);
+        el('st_mean').textContent = agg.mean.toFixed(1) + '%';
+        el('st_med').textContent  = q(0.5).toFixed(1) + '%';
+        el('st_var').textContent  = q(0.05).toFixed(1) + '%';
+        el('st_sr').textContent   = agg.sharpe.toFixed(2);
+        /* ---- entry-threshold sweep: exact, same paths, no re-simulation ---- */
+        const ssig = [psig, p.zout, p.zstop, p.cost, p.L].join('|');
+        if (ssig !== sweepSig || !sweepCache){
+            const MS = Math.min(M, 1000);
+            const ps = new Float64Array(ZGRID.length), er = new Float64Array(ZGRID.length);
+            for (let j = 0; j < ZGRID.length; j++){
+                const z = ZGRID[j];
+                const a = runAll(p, MS, z, Math.min(p.zout, z - 0.05),
+                                 Math.max(p.zstop, z + 0.25), null);
+                ps[j] = 100*a.pStop; er[j] = a.mean;
+            }
+            let bi = 0; for (let j = 1; j < er.length; j++) if (er[j] > er[bi]) bi = j;
+            sweepCache = {x: ZGRID, ps, er, optX: ZGRID[bi], optR: er[bi]};
+            sweepSig = ssig;
+        }
+        drawSweep(el('cvSweep'), sweepCache, p.zin);
+        el('sweepOpt').innerHTML = 'peak E[R] at z \u2248 <b>' + sweepCache.optX.toFixed(2) +
+                                   '</b> (' + sweepCache.optR.toFixed(1) + '%)';
+        drawCoint(el('cvCoint'));
+        el('cA').textContent  = corrA.toFixed(2);
+        el('cB').textContent  = corrB.toFixed(2);
+        el('cAr').textContent = rngA.toFixed(1) + '%';
+        el('cBr').textContent = rngB.toFixed(1) + '%';
+        const ms = performance.now() - t0;
+        if (!timed){ timed = true; if (ms > 30) MC_N = 500; }
+        el('ptPerf').textContent = M + ' paths \u00b7 ' + ms.toFixed(0) + ' ms';
+    }
+    /* rAF-coalesced: sliders fire 'input' at pointer rate, we render once per frame.
+       'change' (pointer release) upgrades to the full 2000-path run. */
+    function schedule(full){
+        pendingFull = pendingFull || full;
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(() => {
+            const f = pendingFull; pending = false; pendingFull = false; render(f);
+        });
+    }
+    ids.forEach(id => {
+        el(id).addEventListener('input',  () => schedule(false));
+        el(id).addEventListener('change', () => schedule(true));
+    });
+    el('btnDraws').addEventListener('click', () => {
+        const s = (Math.random()*2147483647) >>> 0;
+        el('in_seed').value = s;
+        SHK = makeShocks(s, M_MAX); pathSig = ''; sweepSig = '';
+        schedule(true);
+    });
+    el('in_seed').addEventListener('change', () => {
+        SHK = makeShocks((+el('in_seed').value) >>> 0, M_MAX); pathSig = ''; sweepSig = '';
+        schedule(true);
+    });
+    let rzT = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(rzT);
+        rzT = setTimeout(() => { if (reduceMotion) drawHero(1); schedule(true); }, 120);
+    });
+    SHK = makeShocks((+el('in_seed').value) >>> 0, M_MAX);
+    render(true);
+    })();
+    </script>
+    <br>
+    <h4 id="REFERENCES"><i>References</i></h4>
+    [1] Granger, C.W.J. &amp; Newbold, P. (1974). <i>Spurious regressions in econometrics</i>.
+        Journal of Econometrics, 2(2), 111&ndash;120.
+    <br>
+    [2] Engle, R.F. &amp; Granger, C.W.J. (1987). <i>Co-integration and error correction:
+        representation, estimation, and testing</i>. Econometrica, 55(2), 251&ndash;276.
+    <br>
+    [3] Phillips, P.C.B. &amp; Ouliaris, S. (1990). <i>Asymptotic properties of residual based tests
+        for cointegration</i>. Econometrica, 58(1), 165&ndash;193.
+    <br>
+    [4] Johansen, S. (1991). <i>Estimation and hypothesis testing of cointegration vectors in
+        Gaussian vector autoregressive models</i>. Econometrica, 59(6), 1551&ndash;1580.
+    <br>
+    [5] Gatev, E., Goetzmann, W.N. &amp; Rouwenhorst, K.G. (2006). <i>Pairs trading: performance of a
+        relative-value arbitrage rule</i>. Review of Financial Studies, 19(3), 797&ndash;827.
+    <br>
+    [6] Elliott, R.J., van der Hoek, J. &amp; Malcolm, W.P. (2005). <i>Pairs trading</i>.
+        Quantitative Finance, 5(3), 271&ndash;276.
+    <br>
+    [7] Avellaneda, M. &amp; Lee, J.-H. (2010). <i>Statistical arbitrage in the US equities market</i>.
+        Quantitative Finance, 10(7), 761&ndash;782.
+    <br>
+    [8] Froot, K.A. &amp; Dabora, E.M. (1999). <i>How are stock prices affected by the location of
+        trade?</i> Journal of Financial Economics, 53(2), 189&ndash;216.
+    <br>
+    [9] Khandani, A.E. &amp; Lo, A.W. (2007). <i>What happened to the quants in August 2007?</i>
+        Journal of Investment Management, 5(4), 29&ndash;78.
+    <br>
+    [10] Vidyamurthy, G. (2004). <i>Pairs Trading: Quantitative Methods and Analysis</i>. Wiley.
+    <br><br>
+    <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+<!-- End page content -->
+</div>
+<script src="../../js/OpenCloseSidebar.js"></script>
+<script src="../../js/OpenCloseCollapsible.js"></script>
+</body>
+</html>
