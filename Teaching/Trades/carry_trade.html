@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Carry Trade — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+    <script type="application/javascript">
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+            /* Oribi Analytics */
+            (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+            /* Google Tag Manager */
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NLJ2P23');
+        }
+    </script>
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+    <style>
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+        /* ================= carry-trade page, all scoped with ct- ================= */
+        .ct-wrap{--ct-line:#c9c4b6;--ct-dim:#55534c;--ct-ink:#111111;--ct-acc:#7a3030;
+                 --ct-carry:#2f5c2f;--ct-spot:#286ca3;--ct-tot:#000000;
+                 --ct-pnl:#5b3d84;--ct-bad:#e61616;--ct-warn:#d6a82f;}
+        .ct-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .ct-wrap h3{margin-bottom:2px;}
+        .ct-def{margin:20px 0;text-align:left;}
+        .ct-def-lab{font-weight:600;font-size:15px;color:var(--ct-ink);margin-bottom:4px;}
+        .ct-def-lab .n{color:var(--ct-acc);}
+        .ct-def-body{border-left:2px solid var(--ct-acc);padding:2px 0 2px 18px;
+                     overflow-x:auto;overflow-y:hidden;}
+        .ct-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                    color:var(--ct-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
+        .ct-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ct-line);
+                 margin:20px 0;background:none;}
+        @media(max-width:640px){.ct-legs{grid-template-columns:1fr;}}
+        .ct-leg-card{padding:16px 18px;text-align:left;}
+        .ct-leg-card + .ct-leg-card{border-left:1px solid var(--ct-line);}
+        @media(max-width:640px){.ct-leg-card + .ct-leg-card{border-left:none;
+                 border-top:1px solid var(--ct-line);}}
+        .ct-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
+        .ct-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
+        .ct-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                 color:var(--ct-dim);margin-top:10px;padding-top:9px;
+                 border-top:1px dashed var(--ct-line);line-height:1.6;}
+        .ct-sim{background:none;border:1px solid var(--ct-line);padding:16px;margin:14px 0;
+                text-align:left;}
+        .ct-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:10px 22px;}
+        .ct-ctl label{display:block;font-size:13px;color:#222;}
+        .ct-ctl .ct-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ct-acc);}
+        .ct-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .ct-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .ct-hint{font-size:12px;color:var(--ct-dim);line-height:1.45;}
+        .ct-pre{color:var(--ct-acc);text-decoration:none;border-bottom:1px dotted var(--ct-acc);
+                cursor:pointer;}
+        .ct-pre:hover{color:var(--ct-ink);border-bottom-color:var(--ct-ink);}
+        .ct-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
+        .ct-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--ct-line);background:rgba(255,255,255,.5);}
+        .ct-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+                  border:1px solid var(--ct-line);margin-top:16px;}
+        @media(min-width:560px){.ct-stats{grid-template-columns:repeat(4,1fr);}}
+        .ct-stat{padding:10px 12px;border-left:1px solid var(--ct-line);
+                 border-top:1px solid var(--ct-line);}
+        .ct-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--ct-dim);margin-bottom:5px;}
+        .ct-stat .v{font-size:18px;font-weight:600;color:var(--ct-ink);}
+        .ct-stat .v.bad{color:var(--ct-bad);}
+        .ct-stat .v.good{color:var(--ct-carry);}
+        .ct-stat .v.warn{color:var(--ct-warn);}
+        .ct-stat .se{font-size:11px;color:var(--ct-dim);font-weight:400;}
+        .ct-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .ct-fig canvas{width:100%;display:block;background:none;}
+        #cvHero{height:250px;}
+        #cvFama{height:320px;}
+        #cvPath{height:320px;}
+        #cvPnl,#cvHist,#cvSweep,#cvDiv{height:300px;}
+        @media(max-width:600px){
+            #cvHero{height:200px;} #cvFama{height:280px;} #cvPath{height:260px;}
+            #cvPnl,#cvHist,#cvSweep,#cvDiv{height:240px;}
+        }
+        .ct-cap{font-size:11.5px;color:var(--ct-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--ct-line);margin-top:6px;display:flex;
+                justify-content:space-between;gap:10px;}
+        .ct-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
+                 color:var(--ct-dim);margin:6px 2px 0;}
+        .ct-leg2 span{display:inline-flex;align-items:center;gap:5px;}
+        .ct-sw{width:14px;height:2px;display:inline-block;}
+        .ct-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .ct-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--ct-line);padding:9px 13px;margin:12px 0;
+                 text-align:left;line-height:1.55;}
+        .ct-risk{list-style:none;padding:0;margin:18px 0 0;}
+        .ct-risk li{padding-left:16px;border-left:2px solid var(--ct-acc);margin-bottom:18px;}
+        .ct-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+               color:var(--ct-acc);display:block;margin-bottom:3px;}
+        .ct-risk p{margin:0;font-size:15px;}
+        .ct-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
+        .ct-tbl th,.ct-tbl td{border:1px solid var(--ct-line);padding:7px 10px;text-align:left;}
+        .ct-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
+        .ct-tbl code{background:none;padding:0;}
+    </style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script src="../../js/Navbar.js"></script>
+<script src="../../js/pre_content.js"></script>
+<div class="w3-content w3-justify ct-wrap" style="max-width:800px">
+    <h1 style="text-align:left;"><b>The Carry Trade</b></h1>
+    <p class="ct-lede">
+        Borrow where money is cheap, lend where it is dear, and pocket the difference. Theory says the
+        exchange rate should move exactly enough to take that difference back. It does not &mdash; which
+        leaves either a free lunch or a bill that arrives all at once.
+    </p>
+    <div class="ct-fig">
+        <canvas id="cvHero" width="800" height="250" role="img"
+                aria-label="Animated cumulative carry trade return: a steady accrual line rising smoothly while the total return climbs alongside it and then drops abruptly"></canvas>
+        <div class="ct-cap">
+            <span>across: <b>calendar time</b>, months elapsed &middot; up: cumulative return, % of notional</span>
+            <span>month <b id="heroMo">0</b> &middot; total <b id="heroTot">0.0%</b>
+                  &middot; accrued <b id="heroAcc">0.0%</b></span>
+        </div>
+    </div>
+    <div class="ct-leg2">
+        <span><i class="ct-sw" style="background:#2f5c2f"></i>interest accrual \(\delta t\)</span>
+        <span><i class="ct-sw" style="background:#000000"></i>total return</span>
+        <span><i class="ct-sw" style="background:rgb(179 179 179);height:8px"></i>currency P&amp;L</span>
+    </div>
+
+    <!-- ============================ §1 ============================ -->
+    <h3><b>The trade</b></h3>
+    <p>
+        Two currencies, two interest rates. Borrow the low-rate one, convert, deposit in the high-rate
+        one. Every day that passes you earn the difference; the only thing that can hurt you is the
+        exchange rate.
+    </p>
+    <div class="ct-def">
+        <div class="ct-def-lab"><span class="n">Definition 1</span> &mdash; Carry and excess return</div>
+        <div class="ct-def-body">
+            Let \(s_t\) be the log price of the <i>investment</i> currency in units of the
+            <i>funding</i> currency, and \(\delta = i_{\rm inv}-i_{\rm fund}>0\) the interest
+            differential. The excess return over \([t,t+dt]\) is
+            \begin{equation}
+                dr_t \;=\; \underbrace{\delta\,dt}_{\text{carry}} \;+\; \underbrace{ds_t}_{\text{currency}} .
+            \end{equation}
+        </div>
+        <div class="ct-def-cap">\(s\) up = investment currency appreciates = the carry trader gains</div>
+    </div>
+    <p>
+        The first term is known in advance and accrues smoothly. The second is unknown and moves a great
+        deal. A 4% differential is 1.6 basis points a day; the currency routinely moves fifty times
+        that before lunch. <b>The entire question is whether the second term has a mean of zero.</b>
+    </p>
+    <div class="ct-legs">
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">Funding leg &mdash; short the low-yielder</div>
+            <p>Borrow yen, francs, euros, or in the modern form simply sell them forward. You owe
+               \(i_{\rm fund}\) and you are short a currency that tends to be a safe haven.</p>
+            <div class="ct-flow">pay \(i_{\rm fund}\) &middot; short a currency that rallies in crises</div>
+        </div>
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">Investment leg &mdash; long the high-yielder</div>
+            <p>Hold real, peso, lira, rupiah. You earn \(i_{\rm inv}\), and you are long a currency
+               whose high rate is frequently compensation for something.</p>
+            <div class="ct-flow">earn \(i_{\rm inv}\) &middot; long a currency that gaps in crises</div>
+        </div>
+    </div>
+    <p>
+        In practice nobody moves cash. The trade is a forward or a non-deliverable forward, and the
+        differential shows up as forward points rather than as interest. That equivalence is not a
+        convention &mdash; it is enforced by arbitrage, and it is the first of our two parities.
+    </p>
+
+    <!-- ============================ §2 ============================ -->
+    <h3><b>Two parities, one of which is a theorem</b></h3>
+    <p>
+        These are constantly confused, and the difference between them is the whole subject.
+    </p>
+    <div class="ct-def">
+        <div class="ct-def-lab"><span class="n">Definition 2</span> &mdash; Covered interest parity (CIP)</div>
+        <div class="ct-def-body">
+            \begin{equation}
+                f_t - s_t \;=\; i_{\rm fund} - i_{\rm inv} \;=\; -\delta ,
+            \end{equation}
+            with \(f_t\) the log forward rate for the same horizon.
+        </div>
+        <div class="ct-def-cap">an arbitrage identity: violating it is a riskless money machine</div>
+    </div>
+    <div class="ct-def">
+        <div class="ct-def-lab"><span class="n">Definition 3</span> &mdash; Uncovered interest parity (UIP)</div>
+        <div class="ct-def-body">
+            \begin{equation}
+                \mathbb E_t[s_{t+1}-s_t] \;=\; -\delta
+                \qquad\Longleftrightarrow\qquad
+                \mathbb E_t[s_{t+1}] = f_t .
+            \end{equation}
+        </div>
+        <div class="ct-def-cap">a hypothesis about expectations: violating it is merely being wrong</div>
+    </div>
+    <p>
+        CIP is a statement about prices that exist simultaneously, and it is enforceable by anyone with
+        a balance sheet. UIP is a statement about the future, equivalent to saying the forward rate is
+        an unbiased forecast of the spot rate. It is <b>not</b> an arbitrage condition, it is a joint
+        hypothesis about rational expectations and risk-neutrality, and it fails comprehensively.
+    </p>
+    <div class="ct-def">
+        <div class="ct-def-lab"><span class="n">Definition 4</span> &mdash; The Fama regression</div>
+        <div class="ct-def-body">
+            \begin{equation}
+                s_{t+1}-s_t \;=\; \alpha \;-\; \varphi\,\delta_t \;+\; \varepsilon_{t+1} .
+            \end{equation}
+            UIP predicts \(\varphi = 1\): the high-yielder depreciates by exactly its yield advantage.
+        </div>
+        <div class="ct-def-cap">\(\varphi=0\): a random walk, and carry is earned in full &middot;
+            \(\varphi&lt;0\): the high-yielder <i>appreciates</i> on average</div>
+    </div>
+    <p>
+        Fama (1984) and a very large subsequent literature find \(\hat\varphi\) reliably below one and
+        frequently <b>negative</b>. High-interest-rate currencies do not fall as UIP requires; on
+        average, over long samples, they have tended to rise slightly. This is the
+        <b>forward premium puzzle</b>, and it means the carry trade earns not just the differential but
+        a little more.
+    </p>
+    <div class="ct-fig">
+        <canvas id="cvFama" width="800" height="320" role="img"
+                aria-label="Scatter of subsequent currency moves against the interest differential, with the UIP line, the full-sample fitted line, and a line fitted excluding crash observations"></canvas>
+        <div class="ct-cap">
+            <span><i>simulated</i> illustration &middot; each point one currency-quarter &middot; red = crash quarter</span>
+            <span>UIP slope +1 &middot; fitted <b id="famaFull">&mdash;</b>
+                  &middot; ex-crashes <b id="famaEx">&mdash;</b></span>
+        </div>
+    </div>
+    <p>
+        Note the two fitted lines. Dropping the handful of crash observations makes the puzzle look
+        dramatically <i>worse</i> &mdash; which is the first hint that the crashes are not a nuisance
+        in the data, they are the point of it.
+    </p>
+    <div class="ct-note">
+        <b>CIP is a theorem, but not a law of nature.</b> Since 2008 persistent cross-currency bases
+        have opened up: \(f_t-s_t-(i_{\rm fund}-i_{\rm inv})\neq 0\), sometimes by tens of basis points
+        and reliably widening at quarter-ends. Du, Tepper and Verdelhan (2018) document this in detail.
+        The arbitrage did not stop being an arbitrage; balance sheet became scarce and expensive, so
+        nobody sufficiently large found it worth doing. Keep the distinction in mind: CIP now fails for
+        <i>regulatory</i> reasons, UIP fails for <i>economic</i> ones.
+    </div>
+
+    <!-- ============================ §3 ============================ -->
+    <h3><b>The shape of the return</b></h3>
+    <p>
+        A positive average return with a well-behaved distribution would be a puzzle. What carry
+        actually delivers is a positive average return with a distribution that is anything but.
+    </p>
+    <table class="ct-tbl">
+        <tr><th>Property</th><th>What carry does</th><th>Why it matters</th></tr>
+        <tr><td><b>Mean</b></td><td>positive over long samples</td>
+            <td>The differential is earned, and then some.</td></tr>
+        <tr><td><b>Volatility</b></td><td>moderate day to day</td>
+            <td>Makes the Sharpe ratio look excellent &mdash; on unconditional data.</td></tr>
+        <tr><td><b>Skewness</b></td><td><b>strongly negative</b></td>
+            <td>Many small gains, occasional very large losses. The Sharpe ratio is the wrong statistic.</td></tr>
+        <tr><td><b>Kurtosis</b></td><td>high</td>
+            <td>Tail events far outside anything a Gaussian risk model would size.</td></tr>
+        <tr><td><b>Conditioning</b></td><td>crashes cluster with volatility and deleveraging</td>
+            <td>The bad days arrive together, across every pair at once.</td></tr>
+    </table>
+    <p>
+        The desk aphorism is that carry <i>goes up by the stairs and down by the elevator</i>. Brunnermeier,
+        Nagel and Pedersen (2008) made this precise: currencies with high interest differentials exhibit
+        significant negative skewness, and the crashes coincide with spikes in volatility and with
+        reductions in speculator positioning &mdash; a liquidity spiral in which losses force unwinds
+        which cause further losses.
+    </p>
+
+    <!-- ============================ §4 ============================ -->
+    <h3><b>Why does it pay?</b></h3>
+    <p>
+        Four families of explanation, not mutually exclusive, and the honest position is that the
+        profession has not settled the weights.
+    </p>
+    <div class="ct-legs">
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">1. Crash-risk premium</div>
+            <p>The return compensates for rare, large, correlated losses. Farhi and Gabaix (2016) build
+               this from rare disasters; high-yield currencies are those more exposed to a global
+               disaster, and are paid for it. Under this reading carry is not an anomaly at all.</p>
+        </div>
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">2. The peso problem</div>
+            <p>The sample simply does not contain the devaluation that everyone rationally feared. Named
+               for the Mexican peso's long forward discount before the 1976 float. Burnside et&nbsp;al.
+               (2011) argue peso events alone do not account for the returns.</p>
+        </div>
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">3. Priced risk factors</div>
+            <p>Lustig, Roussanov and Verdelhan (2011) show a slope factor prices the cross-section of
+               currency returns; Menkhoff et&nbsp;al. (2012) show carry loads negatively on innovations
+               to global FX volatility. Carry pays because it loses when volatility spikes.</p>
+        </div>
+        <div class="ct-leg-card">
+            <div class="ct-leg-t">4. Limits to arbitrage</div>
+            <p>The trade requires leverage, funding, and the ability to survive drawdowns. Capital is
+               slow and intermediaries are constrained, so the premium persists because the marginal
+               investor cannot hold enough of it.</p>
+        </div>
+    </div>
+    <p>
+        There is a clean empirical test buried in explanation 1. If the return is purely crash
+        compensation, then hedging the crash with out-of-the-money options should remove it. Jurek
+        (2014) constructs exactly these crash-neutral portfolios; the hedged returns are reduced but a
+        substantial part survives, which argues against crash risk being the whole story. The simulator
+        below lets you dial the parameters to whichever of these worlds you find plausible &mdash; and
+        prints how much of the carry the jump risk is eating.
+    </p>
+
+    <!-- ============================ §5 ============================ -->
+    <h3><b>A small stochastic model</b></h3>
+    <p>
+        \(N\) investment currencies against one funding currency, equally weighted, each with a common
+        factor, an idiosyncratic factor, and jumps that are partly shared:
+    </p>
+    \begin{align}
+        ds_i &= -\varphi\,\delta\,dt + \sigma_c\,dW_c + \sigma_x\,dW_i
+                 - \jmath\,(dN_c + dN_i),\\
+        dr_i &= \delta\,dt + ds_i , \qquad\qquad R = \tfrac1N\textstyle\sum_i r_i .
+    \end{align}
+    <p>
+        \(N_c\) is a common Poisson process with intensity \(h_c\) &mdash; when it fires, every
+        currency drops by \(\jmath\) at once &mdash; while each \(N_i\) is idiosyncratic with intensity
+        \(h_x\). Aggregating the portfolio,
+    </p>
+    \begin{equation}
+        dR = \delta(1-\varphi)\,dt \;+\; \sigma_c\,dW_c \;+\; \frac{\sigma_x}{\sqrt N}\,d\bar W
+             \;-\; \jmath\,dN_c \;-\; \frac{\jmath}{N}\,dK_t ,
+        \qquad K_t\sim\text{Bin}(N,h_x dt),
+    \end{equation}
+    <p>
+        which displays the central fact immediately: <b>the \(1/\sqrt N\) and \(1/N\) terms vanish with
+        diversification and the \(dN_c\) term does not</b>. The expected annual return and the
+        crash-risk share of it are
+    </p>
+    \begin{equation}
+        \mathbb E[R] = \delta(1-\varphi) - \jmath\,(h_c + h_x),
+        \qquad
+        \text{crash share} = \frac{\jmath\,(h_c+h_x)}{\delta(1-\varphi)} .
+    \end{equation}
+    <p>
+        When the crash share reaches one, the entire carry is a fair premium for jump risk and the
+        strategy has zero expected return: the puzzle is fully resolved by the peso story, and what
+        remains is a lottery sold at fair value. Watch that readout as you move the sliders.
+    </p>
+    <p>
+        Finally, leverage. Equity is \(1/L\) of notional and the position is wiped out the first time
+        cumulative \(R_t \le -1/L\). Since \(L\) moves only the barrier and never the path, the
+        per-path running minima are recorded once and the whole leverage sweep is exact.
+    </p>
+<pre><code class="language-python">import numpy as np, statsmodels.api as sm
+
+# --- the Fama regression, stated in the page's sign convention --------------
+# s = log price of the INVESTMENT currency in units of the FUNDING currency
+# delta = i_inv - i_fund > 0
+ds    = np.diff(np.log(spot))
+X     = sm.add_constant(-delta[:-1])          # note the minus: phi is the slope on -delta
+fit   = sm.OLS(ds, X).fit()
+phi   = fit.params[1]
+print(f"phi = {phi:+.2f}   (UIP predicts +1.00)")
+
+# --- the statistic that actually matters ------------------------------------
+r     = delta[:-1]/252 + ds                   # daily excess return of the carry trade
+from scipy.stats import skew
+print(f"Sharpe {r.mean()/r.std()*np.sqrt(252):.2f}   skew {skew(r):+.2f}")
+
+# A Sharpe ratio of 0.8 with a skew of -1.5 is not the same object as
+# a Sharpe ratio of 0.8 with a skew of 0, and no single number distinguishes them.
+</code></pre>
+
+    <div class="ct-sim" id="ctSim">
+        <div class="ct-grid">
+            <div class="ct-ctl"><label for="in_d">Differential \(\delta\)<span class="ct-val" id="lbl_d">5.0%</span>
+                <input type="range" id="in_d" min="0" max="0.12" step="0.005" value="0.05"></label></div>
+            <div class="ct-ctl"><label for="in_phi">Fama \(\varphi\)<span class="ct-val" id="lbl_phi">0.00</span>
+                <input type="range" id="in_phi" min="-1" max="1.5" step="0.05" value="0"></label></div>
+            <div class="ct-ctl"><label for="in_sc">Common FX vol \(\sigma_c\)<span class="ct-val" id="lbl_sc">7%</span>
+                <input type="range" id="in_sc" min="0" max="0.25" step="0.01" value="0.07"></label></div>
+            <div class="ct-ctl"><label for="in_sx">Idio FX vol \(\sigma_x\)<span class="ct-val" id="lbl_sx">8%</span>
+                <input type="range" id="in_sx" min="0" max="0.30" step="0.01" value="0.08"></label></div>
+            <div class="ct-ctl"><label for="in_j">Jump size \(\jmath\)<span class="ct-val" id="lbl_j">9%</span>
+                <input type="range" id="in_j" min="0" max="0.35" step="0.01" value="0.09"></label></div>
+            <div class="ct-ctl"><label for="in_hc">Common hazard \(h_c\)<span class="ct-val" id="lbl_hc">0.10</span>
+                <input type="range" id="in_hc" min="0" max="3" step="0.05" value="0.10"></label></div>
+            <div class="ct-ctl"><label for="in_hx">Idio hazard \(h_x\)<span class="ct-val" id="lbl_hx">0.10</span>
+                <input type="range" id="in_hx" min="0" max="3" step="0.05" value="0.10"></label></div>
+            <div class="ct-ctl"><label for="in_N">Currencies \(N\)<span class="ct-val" id="lbl_N">6</span>
+                <input type="range" id="in_N" min="1" max="20" step="1" value="6"></label></div>
+            <div class="ct-ctl"><label for="in_L">Leverage \(L\)<span class="ct-val" id="lbl_L">6&times;</span>
+                <input type="range" id="in_L" min="1" max="25" step="1" value="6"></label></div>
+        </div>
+        <div class="ct-bar">
+            <button class="w3-button w3-dark-grey w3-round" id="btnDraws">&#8635; New draws</button>
+            <span class="ct-seed">seed <input type="number" id="in_seed" value="20240613" step="1"></span>
+            <span class="ct-hint">calibration:
+                <a class="ct-pre" data-p="g10">G10</a> &middot;
+                <a class="ct-pre" data-p="em">EM</a> &middot;
+                <a class="ct-pre" data-p="peso">peso problem</a> &middot;
+                <a class="ct-pre" data-p="nojump">no jumps</a></span>
+            <span class="ct-hint" id="ctPerf"></span>
+        </div>
+        <p class="ct-hint" id="ct_hl" style="margin:2px 0 0;"></p>
+        <p class="ct-hint" style="margin:6px 0 0;">
+            Shocks are held fixed, so a slider transforms the same realisation rather than redrawing it.
+            \(\sigma_c,\sigma_x,\jmath\) rescale their own components, \(\delta\) and \(\varphi\) tilt
+            the drift, \(N\) shrinks the idiosyncratic terms, and \(L\) alone leaves the path untouched
+            and slides the barrier. <b>New draws</b> resamples.
+        </p>
+        <div class="ct-stats">
+            <div class="ct-stat"><div class="k">Mean R</div><div class="v" id="st_mean">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">Volatility</div><div class="v" id="st_vol">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">Sharpe</div><div class="v good" id="st_sr">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">Skewness</div><div class="v bad" id="st_sk">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">Median R</div><div class="v" id="st_med">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">5% CVaR</div><div class="v bad" id="st_cvar">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">Mean max DD</div><div class="v warn" id="st_dd">&mdash;</div></div>
+            <div class="ct-stat"><div class="k">P(wipeout)</div><div class="v bad" id="st_wipe">&mdash;</div></div>
+        </div>
+        <div class="ct-fig">
+            <canvas id="cvPath" width="800" height="320" role="img"
+                    aria-label="Cumulative return decomposed into smooth interest accrual, jagged currency profit and loss, and the total"></canvas>
+            <div class="ct-cap">
+                <span>across: <b>calendar time</b>, years &middot; cumulative return, % of notional</span>
+            </div>
+        </div>
+        <div class="ct-leg2">
+            <span><i class="ct-sw" style="background:#2f5c2f"></i>accrual \(\delta t\)</span>
+            <span><i class="ct-sw" style="background:#286ca3"></i>currency P&amp;L</span>
+            <span><i class="ct-sw" style="background:#000000"></i>total</span>
+            <span><i class="ct-dot" style="background:#e61616"></i>common crash</span>
+        </div>
+        <div class="ct-fig">
+            <canvas id="cvPnl" width="800" height="300" role="img"
+                    aria-label="Levered equity curves with the wipeout barrier"></canvas>
+            <div class="ct-cap"><span>Levered equity, % of equity, with the wipeout barrier at &minus;100%</span></div>
+        </div>
+    </div>
+
+    <!-- ============================ §6 ============================ -->
+    <h3><b>The distribution of outcomes</b></h3>
+    <div class="ct-fig">
+        <canvas id="cvHist" width="800" height="300" role="img"
+                aria-label="Histogram of annual levered returns showing a dense right cluster and a long left tail"></canvas>
+        <div class="ct-cap"><span>Distribution of \(R = L\cdot\Pi\) over one year (% on equity)</span></div>
+    </div>
+    <p>
+        The mode sits comfortably to the right of zero and the mean sits well to the left of the mode.
+        That gap is the entire risk of the strategy, and it is invisible in any statistic built from the
+        first two moments. Set \(h_c=h_x=0\) and the histogram becomes symmetric and the Sharpe ratio
+        becomes absurd &mdash; which is precisely the illusion a short sample of a jump process
+        produces.
+    </p>
+    <p>
+        The default parameters are calibrated to be defensible rather than flattering: a 5%
+        differential, roughly one systemic crash per decade, and \(\varphi=0\) &mdash; the conservative
+        random-walk case rather than the negative \(\varphi\) the data actually show. That yields about
+        3% a year unlevered at a Sharpe near 0.4, with a third of the gross carry consumed by jump
+        risk. Watch the <b>crash share</b> readout above the charts: when it passes 100% the
+        differential no longer covers the expected jump loss, expected return turns negative, and what
+        still looks like a healthy histogram is nothing but a positive median attached to a negative
+        mean. The <i>peso problem</i> preset puts you there deliberately.
+    </p>
+
+    <!-- ============================ §7 ============================ -->
+    <h3><b>Diversification cannot save you</b></h3>
+    <p>
+        The natural response to a skewed single-pair trade is to run twenty of them. Here is what that
+        buys, on the same draws, varying only \(N\).
+    </p>
+    <div class="ct-fig">
+        <canvas id="cvDiv" width="800" height="300" role="img"
+                aria-label="Volatility falling with the number of currencies towards a floor, while skewness becomes more negative"></canvas>
+        <div class="ct-cap">
+            <span>Volatility and skewness vs number of currencies</span>
+            <span id="divNote"></span>
+        </div>
+    </div>
+    <div class="ct-leg2">
+        <span><i class="ct-sw" style="background:#286ca3"></i>\(\sigma(R)\), left axis</span>
+        <span><i class="ct-sw" style="background:rgba(40,108,163,.45)"></i>undiversifiable floor</span>
+        <span><i class="ct-sw" style="background:#e61616"></i>skewness, right axis</span>
+        <span><i class="ct-sw" style="background:rgba(17,17,17,.4)"></i>current \(N\)</span>
+    </div>
+    <p>
+        Volatility drops quickly and then stops, pinned by \(\sigma_c\) and the common jump. Skewness
+        does the opposite: it gets <b>worse</b>. Averaging strips out the idiosyncratic noise that was
+        partly masking the common crash, so what remains is a cleaner, more concentrated exposure to
+        the one thing you cannot diversify. The portfolio looks safer by every symmetric measure while
+        becoming a purer bet on the single event that kills it.
+    </p>
+    <div class="ct-note">
+        This is the mechanism behind the recurring observation that carry unwinds hit every pair
+        simultaneously. Diversification across currencies is diversification across the idiosyncratic
+        component only, and the idiosyncratic component was never the risk. Worse, a
+        volatility-targeted book <i>increases</i> leverage as \(N\) rises, precisely offsetting the
+        apparent risk reduction.
+    </div>
+
+    <!-- ============================ §8 ============================ -->
+    <h3><b>How much leverage?</b></h3>
+    <div class="ct-fig">
+        <canvas id="cvSweep" width="800" height="300" role="img"
+                aria-label="Wipeout probability and expected return as functions of leverage"></canvas>
+        <div class="ct-cap">
+            <span>Wipeout probability and expected return vs leverage</span>
+            <span id="sweepOpt"></span>
+        </div>
+    </div>
+    <div class="ct-leg2">
+        <span><i class="ct-sw" style="background:#e61616"></i>P(wipeout), left axis</span>
+        <span><i class="ct-sw" style="background:#000000"></i>E[R], right axis</span>
+        <span><i class="ct-sw" style="background:rgba(17,17,17,.4)"></i>current \(L\)</span>
+    </div>
+    <p>
+        The usual hump, with one carry-specific wrinkle: because the loss arrives as a jump rather than
+        as a diffusion, the barrier can be breached without ever being approached. A stop-loss offers
+        far less protection than it does in a mean-reverting trade &mdash; you do not get to exit at
+        your stop, you get to exit at whatever price exists after the gap. Retail FX brokers discovered
+        this collectively in January 2015.
+    </p>
+
+    <!-- ============================ §9 ============================ -->
+    <h3><b>When the elevator arrives</b></h3>
+    <ul class="ct-risk">
+        <li>
+            <span class="ct-yr">1992</span>
+            <p>The ERM crisis. Pegged and semi-pegged currencies offering visible interest premia are
+               the purest form of the trade: the carry is high precisely because the peg might break.
+               Sterling left the mechanism in September and the accumulated carry of years was returned
+               in days.</p>
+        </li>
+        <li>
+            <span class="ct-yr">Oct 1998</span>
+            <p>The yen appreciated violently against the dollar over a couple of days &mdash; figures
+               around 15% are widely cited &mdash; as LTCM-related deleveraging forced the unwinding of
+               yen-funded positions across the market. No macroeconomic news of comparable size
+               occurred. It was a positioning event.</p>
+        </li>
+        <li>
+            <span class="ct-yr">2008</span>
+            <p>The global crisis produced a textbook carry crash: funding currencies rallied hard, high
+               yielders collapsed, and the losses were near-perfectly correlated across pairs. This
+               episode is the empirical backbone of the global-volatility explanation.</p>
+        </li>
+        <li>
+            <span class="ct-yr">Jan 2015</span>
+            <p>The Swiss National Bank abandoned the EUR/CHF floor without warning. The franc
+               appreciated by roughly 30% intraday. Stops did not fill, several retail brokers became
+               insolvent, and one of the largest required emergency financing. The distribution of a
+               pegged currency is not merely fat-tailed, it is <i>bimodal</i>, and no volatility
+               estimate computed under the peg contained any information about the second mode.</p>
+        </li>
+        <li>
+            <span class="ct-yr">Aug 2024</span>
+            <p>A Bank of Japan rate rise and a weak US payrolls print combined to trigger a rapid unwind
+               of yen-funded positions. The yen surged, and on 5 August the Nikkei recorded its largest
+               single-day percentage fall since 1987. A reminder that the funding leg transmits stress
+               into every asset the trade was financing.</p>
+        </li>
+    </ul>
+    <p>
+        The pattern is consistent. The carry trade is not wrong &mdash; the differential is real, it
+        accrues daily, and over long samples it more than compensates. What it is, is a position whose
+        losses are <b>concentrated, correlated and immediate</b>, held by people whose capital is
+        leveraged, and therefore unwound at exactly the moment the unwinding is most expensive. The
+        elevator is not a flaw in the trade. It is the trade.
+    </p>
+
+    <!-- ============================ §10 ============================ -->
+    <h3><b>Carry is not just an FX trade</b></h3>
+    <p>
+        Koijen, Moskowitz, Pedersen and Vrugt (2018) generalise the definition: the carry of any asset
+        is its expected return assuming its price does not change. Under that definition the same
+        strategy exists everywhere.
+    </p>
+    <table class="ct-tbl">
+        <tr><th>Market</th><th>The carry is</th><th>The elevator is</th></tr>
+        <tr><td>FX</td><td>interest differential</td><td>currency crash</td></tr>
+        <tr><td>Bonds</td><td>yield plus roll-down</td><td>a rapid bear steepening</td></tr>
+        <tr><td>Commodities</td><td>backwardation of the futures curve</td><td>a supply shock flipping the curve</td></tr>
+        <tr><td>Equity index</td><td>dividend yield minus financing</td><td>a drawdown</td></tr>
+        <tr><td>Equity volatility</td><td>the variance risk premium</td><td>February 2018</td></tr>
+        <tr><td>Credit</td><td>spread minus expected default</td><td>a default cycle</td></tr>
+    </table>
+    <p>
+        They find carry strategies earn positive returns across all of these, with correlated
+        drawdowns in bad times. That last clause is the important one: the payoffs look independent
+        until they are not, and a portfolio built from six carry strategies across six markets is far
+        less diversified than its covariance matrix says. The lesson of §7 applies one level up.
+    </p>
+
+    <script type="application/javascript">
+    (function(){
+    'use strict';
+    const C={ink:'#111',label:'#111',axis:'#333',grid:'rgba(0,0,0,.13)',
+        carry:'#2f5c2f',spot:'#286ca3',tot:'#000000',pnl:'#5b3d84',
+        bad:'#e61616',warn:'#d6a82f',ghost:'rgba(17,17,17,.18)',fill:'rgb(179 179 179 / 0.38)'};
+    /* ================= model constants ================= */
+    const T=1.0,N=252,dt=T/N,ST=N+1,SQDT=Math.sqrt(dt),M_MAX=2000,MAXREC=48;
+    const Tt=new Float64Array(ST); for(let i=0;i<=N;i++) Tt[i]=i*dt;
+    /* ================= RNG ================= */
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+        let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+        return ((t^t>>>14)>>>0)/4294967296;};}
+    function randn(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();
+        return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+    /* ================= shock buffer (common random numbers) ================= */
+    function makeShocks(seed,M){
+        const half=M>>1,rng=mulberry32(seed>>>0);
+        const WC=new Float32Array(M*ST),WB=new Float32Array(M*ST);
+        const UC=new Float32Array(M*N),UI=new Float32Array(M*N);
+        for(let m=0;m<half;m++){
+            const ow=m*ST,ou=m*N; let wc=0,wb=0;
+            for(let i=0;i<N;i++){
+                wc+=SQDT*randn(rng); WC[ow+i+1]=wc;
+                wb+=SQDT*randn(rng); WB[ow+i+1]=wb;
+                UC[ou+i]=rng(); UI[ou+i]=rng();
+            }
+        }
+        for(let m=half;m<M;m++){
+            const ow=m*ST,pw=(m-half)*ST,ou=m*N,pu=(m-half)*N;
+            for(let i=0;i<N;i++){
+                WC[ow+i+1]=-WC[pw+i+1]; WB[ow+i+1]=-WB[pw+i+1];
+                UC[ou+i]=1-UC[pu+i];    UI[ou+i]=1-UI[pu+i];
+            }
+        }
+        return {WC,WB,UC,UI,seed:seed>>>0,M};
+    }
+    /* Binomial(n,p) by inversion from one uniform: cheap for small p, and it
+       couples monotonically across n so the diversification sweep stays on common draws. */
+    function binomInv(u,n,p){
+        if(p<=0||n<=0) return 0;
+        if(p>=1) return n;
+        const r=p/(1-p);
+        let q=Math.pow(1-p,n),cum=q,k=0;
+        while(u>cum&&k<n){ q*=(n-k)/(k+1)*r; k++; cum+=q; }
+        return k;
+    }
+    /* ================= path storage + first-passage records ================= */
+    const CUM=new Float32Array(M_MAX*ST);      /* cumulative R_t, fraction of notional */
+    const RIDX=new Int16Array(M_MAX*MAXREC), RVAL=new Float32Array(M_MAX*MAXREC);
+    const RCNT=new Uint8Array(M_MAX), FIN=new Float32Array(M_MAX), MDD=new Float32Array(M_MAX);
+    const CRASH=new Int16Array(M_MAX);         /* index of first common crash, -1 */
+    function buildTables(p){
+        p.mu=p.d*(1-p.phi);
+        p.pc=1-Math.exp(-p.hc*dt);
+        p.px=1-Math.exp(-p.hx*dt);
+        p.er=p.mu-p.j*(p.hc+p.hx);
+        p.share=p.mu>1e-9?p.j*(p.hc+p.hx)/p.mu:Infinity;
+        p.floor=Math.sqrt(p.sc*p.sc+p.j*p.j*p.hc);   /* undiversifiable vol, incl. common jump */
+        return p;
+    }
+    function buildPaths(p,shk,M,keepRec){
+        const WC=shk.WC,WB=shk.WB,UC=shk.UC,UI=shk.UI;
+        const sxN=p.sx/Math.sqrt(p.N), jN=p.j/p.N;
+        for(let m=0;m<M;m++){
+            const ow=m*ST,ou=m*N,os=m*ST,base=m*MAXREC;
+            let jc=0,ji=0,runMin=Infinity,runMax=-Infinity,dd=0,nrec=0,ci=-1;
+            for(let i=0;i<=N;i++){
+                if(i>0){
+                    if(UC[ou+i-1]<p.pc){ jc+=p.j; if(ci<0) ci=i; }
+                    ji+=jN*binomInv(UI[ou+i-1],p.N,p.px);
+                }
+                const R=p.mu*Tt[i]+p.sc*WC[ow+i]+sxN*WB[ow+i]-jc-ji;
+                CUM[os+i]=R;
+                if(R>runMax) runMax=R;
+                if(runMax-R>dd) dd=runMax-R;
+                if(R<runMin){
+                    runMin=R;
+                    if(keepRec){
+                        if(nrec<MAXREC){RIDX[base+nrec]=i;RVAL[base+nrec]=R;nrec++;}
+                        else {RIDX[base+MAXREC-1]=i;RVAL[base+MAXREC-1]=R;}
+                    }
+                }
+            }
+            FIN[m]=CUM[os+N]; MDD[m]=dd; CRASH[m]=ci;
+            if(keepRec) RCNT[m]=nrec;
+        }
+    }
+    /* outcome for an arbitrary leverage, from records only: O(records) */
+    function outcomeAt(m,L){
+        const base=m*MAXREC,c=RCNT[m],b=-1/L;
+        for(let k=0;k<c;k++) if(RVAL[base+k]<b) return {R:-100,wipe:1};
+        return {R:100*L*FIN[m],wipe:0};
+    }
+    function stats(vals,n){
+        let s=0; for(let i=0;i<n;i++) s+=vals[i];
+        const mu=s/n; let v=0,t3=0;
+        for(let i=0;i<n;i++){const d=vals[i]-mu; v+=d*d; t3+=d*d*d;}
+        v/=n; const sd=Math.sqrt(Math.max(v,1e-18));
+        return {mean:mu,sd:sd,skew:t3/n/(sd*sd*sd)};
+    }
+    /* ================= canvas plumbing ================= */
+    function ctxOf(cv){
+        const dpr=window.devicePixelRatio||1;
+        const w=cv.clientWidth||600,h=cv.clientHeight||260;
+        if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){
+            cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+        const ctx=cv.getContext('2d');
+        ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+        return {ctx,w,h};
+    }
+    function niceTicks(lo,hi,n){
+        const sp=(hi-lo)||1,raw=sp/n;
+        const mag=Math.pow(10,Math.floor(Math.log10(raw))),q=raw/mag;
+        const step=(q<1.5?1:q<3?2:q<7?5:10)*mag,out=[];
+        for(let v=Math.ceil(lo/step)*step;v<=hi+step*1e-9;v+=step) out.push(v);
+        return {ticks:out,step};
+    }
+    function fmt(v,step){
+        const d=Math.max(0,Math.min(6,-Math.floor(Math.log10(step))));
+        return v.toFixed(isFinite(d)?d:2);
+    }
+    const FONT='11px ui-monospace, Menlo, Consolas, monospace';
+    function span(arrs,extra){
+        let lo=Infinity,hi=-Infinity;
+        arrs.forEach(a=>{const n=a.n===undefined?a.y.length-1:a.n;
+            for(let i=0;i<=n;i++){if(a.y[i]<lo)lo=a.y[i];if(a.y[i]>hi)hi=a.y[i];}});
+        (extra||[]).forEach(v=>{if(v<lo)lo=v;if(v>hi)hi=v;});
+        if(!isFinite(lo)){lo=0;hi=1;}
+        const pad=(hi-lo)*0.12||0.5;
+        return {lo:lo-pad,hi:hi+pad};
+    }
+    function drawXY(cv,cfg){
+        const {ctx,w,h}=ctxOf(cv);
+        const x=cfg.x,P={l:56,r:16,t:cfg.legend?26:12,b:30};
+        const pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const A=span(cfg.series.concat(cfg.ghosts||[]),(cfg.hlines||[]).map(l=>l.y));
+        const X=v=>P.l+(v/T)*pw, Y=v=>P.t+(1-(v-A.lo)/(A.hi-A.lo))*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(A.lo,A.hi,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(fmt(v,yt.step)+'%',P.l-8,yy);
+        });
+        const xt=niceTicks(0,T,5);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=-1e-9&&v<=T+1e-9)ctx.fillText(fmt(v,xt.step),X(v),h-P.b+8);});
+        ctx.textBaseline='middle';
+        (cfg.ghosts||[]).forEach(g=>{
+            ctx.beginPath();ctx.strokeStyle=C.ghost;ctx.lineWidth=1;
+            for(let i=0;i<=N;i++){const px=X(x[i]),py=Y(g.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+            ctx.stroke();
+        });
+        (cfg.hlines||[]).forEach(l=>{
+            if(l.y<A.lo||l.y>A.hi) return;
+            const yy=Math.round(Y(l.y))+.5;
+            ctx.save();ctx.setLineDash(l.dash||[4,4]);ctx.strokeStyle=l.color;ctx.lineWidth=1;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();ctx.restore();
+            if(l.label){ctx.fillStyle=l.color;ctx.textAlign='left';ctx.fillText(l.label,P.l+6,yy-9);}
+        });
+        cfg.series.forEach(s=>{
+            ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.w||1.6;
+            if(s.dash){ctx.save();ctx.setLineDash(s.dash);}
+            for(let i=0;i<=N;i++){const px=X(x[i]),py=Y(s.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+            ctx.stroke(); if(s.dash) ctx.restore();
+        });
+        (cfg.markers||[]).forEach(mk=>{
+            if(mk.y<A.lo||mk.y>A.hi) return;
+            ctx.fillStyle=mk.color;
+            ctx.beginPath();ctx.arc(X(mk.x),Y(mk.y),mk.r||4,0,Math.PI*2);ctx.fill();
+        });
+        if(cfg.legend){
+            ctx.textAlign='left';let lx=P.l;
+            cfg.legend.forEach(e=>{
+                ctx.fillStyle=e.color;ctx.fillRect(lx,10,13,2.5);
+                ctx.fillStyle=C.axis;ctx.fillText(e.name,lx+18,11);
+                lx+=32+ctx.measureText(e.name).width;
+            });
+        }
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText(cfg.xlabel||'calendar time (years)',w-P.r,h-3);
+    }
+    function drawHist(cv,vals,n){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:54,r:16,t:14,b:28},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        let lo=Infinity,hi=-Infinity;
+        for(let i=0;i<n;i++){if(vals[i]<lo)lo=vals[i];if(vals[i]>hi)hi=vals[i];}
+        if(hi-lo<1e-9){lo-=1;hi+=1;}
+        const nb=64,bw=(hi-lo)/nb,counts=new Int32Array(nb);
+        for(let i=0;i<n;i++){let k=Math.floor((vals[i]-lo)/bw);
+            if(k>=nb)k=nb-1;if(k<0)k=0;counts[k]++;}
+        const sorted=Array.from(counts).sort((a,b)=>b-a);
+        const top=sorted[0],second=sorted[1]||0;
+        let yMax=top,clipped=false;
+        if(top>4*Math.max(second,1)){yMax=Math.max(second*1.6,top*0.08);clipped=true;}
+        const X=v=>P.l+((v-lo)/(hi-lo))*pw,Y=c=>P.t+(1-Math.min(c,yMax)/yMax)*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(0,yMax,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(String(Math.round(v)),P.l-8,yy);
+        });
+        const bwPx=pw/nb;
+        for(let k=0;k<nb;k++){
+            if(!counts[k])continue;
+            const c0=lo+k*bw,y0=Y(counts[k]);
+            ctx.fillStyle=(c0+bw/2)<0?'rgba(154,38,38,.8)':'rgba(47,92,47,.8)';
+            ctx.fillRect(X(c0)+.5,y0,Math.max(bwPx-1,1),P.t+ph-y0);
+            if(clipped&&counts[k]>yMax){
+                ctx.fillStyle=C.ink;ctx.textAlign='center';ctx.textBaseline='bottom';
+                ctx.fillText(String(counts[k]),X(c0)+bwPx/2,P.t-1);ctx.textBaseline='middle';}
+        }
+        const zx=X(0);
+        if(zx>=P.l&&zx<=w-P.r){
+            ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(17,17,17,.45)';
+            ctx.beginPath();ctx.moveTo(zx,P.t);ctx.lineTo(zx,P.t+ph);ctx.stroke();ctx.restore();}
+        const xt=niceTicks(lo,hi,6);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=lo&&v<=hi)ctx.fillText(fmt(v,xt.step),X(v),h-P.b+8);});
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('return on equity, 1y (%)',w-P.r,h-3);
+    }
+    /* generic two-axis line chart over a numeric x grid */
+    function drawTwoAxis(cv,cfg){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:52,r:56,t:14,b:30},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const x0=cfg.x[0],x1=cfg.x[cfg.x.length-1];
+        let alo=Infinity,ahi=-Infinity,blo=Infinity,bhi=-Infinity;
+        cfg.left.forEach(a=>a.y.forEach(v=>{if(v<alo)alo=v;if(v>ahi)ahi=v;}));
+        cfg.right.forEach(a=>a.y.forEach(v=>{if(v<blo)blo=v;if(v>bhi)bhi=v;}));
+        if(cfg.leftZero) alo=Math.min(alo,0);
+        const ap=(ahi-alo)*0.12||1,bp=(bhi-blo)*0.12||1;
+        alo-=ap;ahi+=ap;blo-=bp;bhi+=bp;
+        const X=v=>P.l+((v-x0)/(x1-x0))*pw;
+        const YL=v=>P.t+(1-(v-alo)/(ahi-alo))*ph;
+        const YR=v=>P.t+(1-(v-blo)/(bhi-blo))*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const lt=niceTicks(alo,ahi,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        lt.ticks.forEach(v=>{
+            const yy=Math.round(YL(v))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=cfg.leftColor;ctx.textAlign='right';
+            ctx.fillText(fmt(v,lt.step)+(cfg.leftSuffix||''),P.l-8,yy);
+        });
+        const rt=niceTicks(blo,bhi,4);
+        ctx.fillStyle=cfg.rightColor;ctx.textAlign='left';
+        rt.ticks.forEach(v=>ctx.fillText(fmt(v,rt.step),w-P.r+8,YR(v)));
+        if(cfg.cur!=null&&cfg.cur>=x0&&cfg.cur<=x1){
+            ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(17,17,17,.4)';
+            ctx.beginPath();ctx.moveTo(X(cfg.cur),P.t);ctx.lineTo(X(cfg.cur),P.t+ph);
+            ctx.stroke();ctx.restore();}
+        if(blo<0&&bhi>0){
+            ctx.save();ctx.setLineDash([2,4]);ctx.strokeStyle='rgba(230,22,22,.35)';
+            ctx.beginPath();ctx.moveTo(P.l,YR(0));ctx.lineTo(w-P.r,YR(0));ctx.stroke();ctx.restore();}
+        cfg.left.forEach(s=>{
+            ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.w||1.8;
+            if(s.dash){ctx.save();ctx.setLineDash(s.dash);}
+            cfg.x.forEach((v,i)=>{const px=X(v),py=YL(s.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
+            ctx.stroke(); if(s.dash) ctx.restore();
+        });
+        cfg.right.forEach(s=>{
+            ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.w||1.8;
+            cfg.x.forEach((v,i)=>{const px=X(v),py=YR(s.y[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
+            ctx.stroke();
+        });
+        const xt=niceTicks(x0,x1,6);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{if(v>=x0&&v<=x1)ctx.fillText(String(Math.round(v)),X(v),h-P.b+8);});
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText(cfg.xlabel,w-P.r,h-3);
+    }
+    /* ================= §2 Fama scatter (static, simulated) ================= */
+    const FD=[];
+    let bFull=0,bEx=0;
+    (function(){
+        const rng=mulberry32(778899);
+        for(let k=0;k<260;k++){
+            const d=-0.01+0.10*rng();                  /* differential, -1% .. 9%           */
+            const crash=rng()<0.055+0.55*Math.max(0,d);/* crashes concentrate in high yielders */
+            let ds=-0.15*d+0.055*randn(rng);           /* true phi = 0.15 ex-crashes         */
+            if(crash) ds-=0.08+0.20*rng();
+            FD.push({d:d,ds:ds,crash:crash});
+        }
+        function slope(pts){
+            let n=0,sx=0,sy=0,sxx=0,sxy=0;
+            pts.forEach(p=>{const x=-p.d,y=p.ds;n++;sx+=x;sy+=y;sxx+=x*x;sxy+=x*y;});
+            return (n*sxy-sx*sy)/(n*sxx-sx*sx);
+        }
+        bFull=slope(FD); bEx=slope(FD.filter(p=>!p.crash));
+    })();
+    function drawFama(cv){
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:58,r:16,t:16,b:32},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const xlo=-0.02,xhi=0.10;
+        let ylo=Infinity,yhi=-Infinity;
+        FD.forEach(p=>{if(p.ds<ylo)ylo=p.ds;if(p.ds>yhi)yhi=p.ds;});
+        const yp=(yhi-ylo)*0.08; ylo-=yp; yhi+=yp;
+        const X=v=>P.l+((v-xlo)/(xhi-xlo))*pw, Y=v=>P.t+(1-(v-ylo)/(yhi-ylo))*ph;
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(100*ylo,100*yhi,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v/100))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(fmt(v,yt.step)+'%',P.l-8,yy);
+        });
+        const line=(b,col,dash,lab)=>{
+            ctx.save();if(dash)ctx.setLineDash(dash);
+            ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.beginPath();
+            ctx.moveTo(X(xlo),Y(-b*xlo));ctx.lineTo(X(xhi),Y(-b*xhi));ctx.stroke();ctx.restore();
+            ctx.fillStyle=col;ctx.textAlign='right';ctx.textBaseline='bottom';
+            ctx.fillText(lab,w-P.r-4,Y(-b*xhi)-4);ctx.textBaseline='middle';
+        };
+        FD.forEach(p=>{
+            ctx.fillStyle=p.crash?'rgba(230,22,22,.75)':'rgba(17,17,17,.34)';
+            ctx.beginPath();ctx.arc(X(p.d),Y(p.ds),p.crash?3.4:2.6,0,Math.PI*2);ctx.fill();
+        });
+        line(1,'rgba(47,92,47,.85)',[5,4],'UIP:  \u03c6 = +1');
+        line(bFull,'#111',null,'fitted:  \u03c6 = '+bFull.toFixed(2));
+        line(bEx,'rgba(40,108,163,.9)',[3,3],'ex-crashes:  \u03c6 = '+bEx.toFixed(2));
+        const xt=niceTicks(100*xlo,100*xhi,5);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>ctx.fillText(fmt(v,xt.step)+'%',X(v/100),h-P.b+8));
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('interest differential \u03b4  \u2192  subsequent \u0394s',w-P.r,h-3);
+    }
+    /* ================= hero: stairs up, elevator down ================= */
+    const HM=520, HACC=new Float64Array(HM), HTOT=new Float64Array(HM);
+    let HERO_LO=0,HERO_HI=1;
+    (function(){
+        const rng=mulberry32(31415926), mu=0.055, sg=0.085/Math.sqrt(252);
+        let x=0;
+        for(let t=0;t<HM;t++){
+            x+=sg*randn(rng);
+            if(t===Math.round(HM*0.63)) x-=0.115;      /* the elevator */
+            if(t===Math.round(HM*0.64)) x-=0.045;
+            if(t===Math.round(HM*0.86)) x-=0.055;
+            HACC[t]=mu*t/252;
+            HTOT[t]=HACC[t]+x;
+        }
+        /* fixed y-window over every frame, snapped to whole ticks: no axis jiggle */
+        let lo=Infinity,hi=-Infinity;
+        for(let t=0;t<HM;t++){
+            lo=Math.min(lo,HTOT[t],HACC[t],0); hi=Math.max(hi,HTOT[t],HACC[t],0);}
+        const pad=(hi-lo)*0.10||0.02; lo-=pad; hi+=pad;
+        const st=niceTicks(100*lo,100*hi,4).step/100;
+        HERO_LO=Math.floor(lo/st)*st; HERO_HI=Math.ceil(hi/st)*st;
+    })();
+    const heroMoEl=document.getElementById('heroMo'),
+          heroTotEl=document.getElementById('heroTot'),
+          heroAccEl=document.getElementById('heroAcc');
+    function drawHero(prog){
+        const cv=document.getElementById('cvHero'); if(!cv) return;
+        const {ctx,w,h}=ctxOf(cv);
+        const P={l:52,r:12,t:14,b:30},pw=w-P.l-P.r,ph=h-P.t-P.b;
+        const lo=HERO_LO,hi=HERO_HI;
+        const X=t=>P.l+(t/(HM-1))*pw, Y=v=>P.t+(1-(v-lo)/(hi-lo))*ph;
+        const up=Math.max(1,Math.round(prog*(HM-1)));
+        ctx.font=FONT;ctx.textBaseline='middle';
+        const yt=niceTicks(100*lo,100*hi,4);
+        ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+        yt.ticks.forEach(v=>{
+            const yy=Math.round(Y(v/100))+.5;
+            ctx.beginPath();ctx.moveTo(P.l,yy);ctx.lineTo(w-P.r,yy);ctx.stroke();
+            ctx.fillStyle=C.label;ctx.textAlign='right';
+            ctx.fillText(fmt(v,yt.step)+'%',P.l-8,yy);
+        });
+        ctx.beginPath();
+        for(let t=0;t<=up;t++) ctx.lineTo(X(t),Y(HTOT[t]));
+        for(let t=up;t>=0;t--) ctx.lineTo(X(t),Y(HACC[t]));
+        ctx.closePath();ctx.fillStyle=C.fill;ctx.fill();
+        ctx.lineWidth=1.6;ctx.strokeStyle=C.carry;
+        ctx.beginPath();
+        for(let t=0;t<=up;t++){const px=X(t),py=Y(HACC[t]);t?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+        ctx.stroke();
+        ctx.strokeStyle=C.tot;
+        ctx.beginPath();
+        for(let t=0;t<=up;t++){const px=X(t),py=Y(HTOT[t]);t?ctx.lineTo(px,py):ctx.moveTo(px,py);}
+        ctx.stroke();
+        ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(17,17,17,.22)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(X(up),P.t);ctx.lineTo(X(up),P.t+ph);ctx.stroke();ctx.restore();
+        ctx.fillStyle=C.tot;
+        ctx.beginPath();ctx.arc(X(up),Y(HTOT[up]),3,0,Math.PI*2);ctx.fill();
+        const xt=niceTicks(0,HM/21,6);
+        ctx.fillStyle=C.label;ctx.textAlign='center';ctx.textBaseline='top';
+        xt.ticks.forEach(v=>{const t=v*21; if(t>=0&&t<HM) ctx.fillText(String(Math.round(v)),X(t),h-P.b+8);});
+        ctx.fillStyle=C.axis;ctx.textAlign='right';ctx.textBaseline='bottom';
+        ctx.fillText('months elapsed',w-P.r,h-3);
+        if(heroMoEl)  heroMoEl.textContent=(up/21).toFixed(0);
+        if(heroTotEl) heroTotEl.textContent=(100*HTOT[up]).toFixed(1)+'%';
+        if(heroAccEl) heroAccEl.textContent=(100*HACC[up]).toFixed(1)+'%';
+    }
+    const reduceMotion=window.matchMedia&&
+                       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const HERO_MS=17000; let heroT0=null;
+    function heroLoop(ts){
+        if(heroT0===null) heroT0=ts;
+        drawHero(((ts-heroT0)%HERO_MS)/HERO_MS);
+        requestAnimationFrame(heroLoop);
+    }
+    if(reduceMotion) drawHero(1); else requestAnimationFrame(heroLoop);
+    /* ================= wiring ================= */
+    const ids=['in_d','in_phi','in_sc','in_sx','in_j','in_hc','in_hx','in_N','in_L'];
+    const el=id=>document.getElementById(id);
+    const NGHOST=16;
+    const accY=new Float64Array(ST),spotY=new Float64Array(ST),totY=new Float64Array(ST);
+    const mainV=new Float64Array(ST);
+    const ghostV=[]; for(let k=0;k<NGHOST;k++) ghostV.push(new Float64Array(ST));
+    const rets=new Float64Array(M_MAX),sortBuf=new Float64Array(M_MAX);
+    let SHK=null,MC_N=M_MAX,timed=false,pending=false,pendingFull=false;
+    let pathSig='',divCache=null,divSig='',sweepCache=null,sweepSig='';
+    const NGRID=[1,2,3,4,6,8,12,16,20];
+    const LGRID=[]; for(let L=1;L<=25;L+=1) LGRID.push(L);
+    /* calibration presets — plain parameter sets, applied to the sliders */
+    const PRESETS={
+        g10:   {d:0.03, phi: 0.00, sc:0.06, sx:0.07, j:0.07, hc:0.10, hx:0.10, N:6, L:6},
+        em:    {d:0.07, phi:-0.20, sc:0.09, sx:0.12, j:0.15, hc:0.15, hx:0.25, N:6, L:4},
+        peso:  {d:0.05, phi: 0.00, sc:0.07, sx:0.08, j:0.20, hc:0.25, hx:0.10, N:6, L:6},
+        nojump:{d:0.05, phi: 0.00, sc:0.07, sx:0.08, j:0.00, hc:0.10, hx:0.10, N:6, L:6}
+    };
+    const PKEY={d:'in_d',phi:'in_phi',sc:'in_sc',sx:'in_sx',j:'in_j',
+                hc:'in_hc',hx:'in_hx',N:'in_N',L:'in_L'};
+    function params(){
+        return {d:+el('in_d').value,phi:+el('in_phi').value,sc:+el('in_sc').value,
+                sx:+el('in_sx').value,j:+el('in_j').value,hc:+el('in_hc').value,
+                hx:+el('in_hx').value,N:+el('in_N').value,L:+el('in_L').value};
+    }
+    function syncLabels(p){
+        el('lbl_d').textContent=(100*p.d).toFixed(1)+'%';
+        el('lbl_phi').textContent=p.phi.toFixed(2);
+        el('lbl_sc').textContent=(100*p.sc).toFixed(0)+'%';
+        el('lbl_sx').textContent=(100*p.sx).toFixed(0)+'%';
+        el('lbl_j').textContent=(100*p.j).toFixed(0)+'%';
+        el('lbl_hc').textContent=p.hc.toFixed(2);
+        el('lbl_hx').textContent=p.hx.toFixed(2);
+        el('lbl_N').textContent=p.N;
+        el('lbl_L').textContent=p.L+'\u00d7';
+        const sh=isFinite(p.share)?(100*p.share).toFixed(0)+'%':'\u2014';
+        const verdict=!isFinite(p.share)?' \u2014 no carry to explain'
+            :p.share>=1?' \u2014 <b>the carry is entirely a crash premium: E[R] &lt; 0</b>'
+            :p.share>=0.6?' \u2014 mostly a crash premium'
+            :' \u2014 a genuine excess return remains';
+        el('ct_hl').innerHTML=
+            'gross carry \u03b4(1\u2212\u03c6) = <b>'+(100*p.mu).toFixed(2)+'%</b>/yr &middot; '+
+            'expected jump loss <b>'+(100*p.j*(p.hc+p.hx)).toFixed(2)+'%</b>/yr &middot; '+
+            'E[R] = <b>'+(100*p.er).toFixed(2)+'%</b> &middot; '+
+            'crash share <b>'+sh+'</b>'+verdict+' &middot; equity buffer <b>'+
+            (100/p.L).toFixed(1)+'%</b> of notional';
+    }
+    const pctS=x=>(100*x).toFixed(1)+'%';
+    function render(full){
+        const t0=performance.now();
+        const p=buildTables(params());
+        syncLabels(p);
+        const M=full?M_MAX:MC_N;
+        const psig=[p.d,p.phi,p.sc,p.sx,p.j,p.hc,p.hx,p.N,SHK.seed,M].join('|');
+        if(psig!==pathSig){ buildPaths(p,SHK,M,true); pathSig=psig; sweepSig=''; }
+        /* ---- decomposition of path 0 ---- */
+        for(let i=0;i<=N;i++){
+            accY[i]=100*p.d*Tt[i];
+            totY[i]=100*CUM[i];
+            spotY[i]=totY[i]-accY[i];
+        }
+        const mk=[];
+        if(CRASH[0]>=0) mk.push({x:Tt[CRASH[0]],y:totY[CRASH[0]],color:C.bad,r:4.5});
+        drawXY(el('cvPath'),{x:Tt,
+            series:[{y:accY,color:C.carry,w:1.6,dash:[5,4]},
+                    {y:spotY,color:C.spot,w:1.3},
+                    {y:totY,color:C.tot,w:2}],
+            hlines:[{y:0,color:'rgba(17,17,17,.35)',dash:[2,3]}],
+            markers:mk,
+            legend:[{name:'accrual',color:C.carry},{name:'currency',color:C.spot},
+                    {name:'total',color:C.tot}]});
+        /* ---- levered equity curves ---- */
+        const bar=-100;
+        let done=false;
+        for(let i=0;i<=N;i++){
+            const v=100*p.L*CUM[i];
+            if(!done&&v<=bar) done=true;
+            mainV[i]=done?bar:v;
+        }
+        const ghosts=[];
+        for(let k=1;k<=NGHOST;k++){
+            const os=k*ST; let d2=false;
+            for(let i=0;i<=N;i++){
+                const v=100*p.L*CUM[os+i];
+                if(!d2&&v<=bar) d2=true;
+                ghostV[k-1][i]=d2?bar:v;
+            }
+            ghosts.push({y:ghostV[k-1]});
+        }
+        drawXY(el('cvPnl'),{x:Tt,ghosts:ghosts,
+            series:[{y:mainV,color:C.pnl,w:2}],
+            hlines:[{y:0,color:'rgba(17,17,17,.35)',dash:[2,3]},
+                    {y:-100,color:C.bad,dash:[4,4],label:'wipeout \u2212100%'}],
+            xlabel:'calendar time (years) \u2014 % of equity'});
+        /* ---- Monte Carlo at the current L ---- */
+        let nw=0,ddsum=0;
+        for(let m=0;m<M;m++){
+            const o=outcomeAt(m,p.L);
+            rets[m]=o.R; nw+=o.wipe; ddsum+=100*p.L*MDD[m];
+        }
+        const s=stats(rets,M);
+        drawHist(el('cvHist'),rets,M);
+        const srt=sortBuf.subarray(0,M); srt.set(rets.subarray(0,M)); srt.sort();
+        const q=f=>srt[Math.min(M-1,Math.max(0,Math.floor(f*M)))];
+        let cv5=0; const nc=Math.max(1,Math.floor(0.05*M));
+        for(let i=0;i<nc;i++) cv5+=srt[i]; cv5/=nc;
+        const se=100*Math.sqrt((nw/M)*(1-nw/M)/M);
+        el('st_mean').textContent=s.mean.toFixed(1)+'%';
+        el('st_vol').textContent=s.sd.toFixed(1)+'%';
+        el('st_sr').textContent=(s.sd>1e-9?s.mean/s.sd:0).toFixed(2);
+        el('st_sk').textContent=s.skew.toFixed(2);
+        el('st_med').textContent=q(0.5).toFixed(1)+'%';
+        el('st_cvar').textContent=cv5.toFixed(1)+'%';
+        el('st_dd').textContent=(ddsum/M).toFixed(1)+'%';
+        el('st_wipe').innerHTML=pctS(nw/M)+' <span class="se">\u00b1'+se.toFixed(1)+'</span>';
+        /* ---- diversification sweep: rebuild per N, then restore ---- */
+        const dsig=[p.d,p.phi,p.sc,p.sx,p.j,p.hc,p.hx,p.L,SHK.seed].join('|');
+        if(dsig!==divSig||!divCache){
+            const MD=Math.min(M,900),vol=[],skw=[],flo=[];
+            const buf=new Float64Array(MD);
+            NGRID.forEach(n=>{
+                const pn=buildTables(Object.assign({},p,{N:n}));
+                buildPaths(pn,SHK,MD,true);
+                for(let m=0;m<MD;m++) buf[m]=outcomeAt(m,p.L).R;
+                const st2=stats(buf,MD);
+                vol.push(st2.sd); skw.push(st2.skew); flo.push(100*p.L*p.floor);
+            });
+            divCache={x:NGRID,vol:vol,skew:skw,floor:flo};
+            divSig=dsig;
+            buildPaths(p,SHK,M,true);            /* restore the working buffers */
+        }
+        drawTwoAxis(el('cvDiv'),{x:divCache.x,
+            left:[{y:divCache.vol,color:C.spot},
+                  {y:divCache.floor,color:'rgba(40,108,163,.45)',w:1.4,dash:[4,4]}],
+            right:[{y:divCache.skew,color:C.bad}],
+            leftColor:C.spot,rightColor:C.bad,leftSuffix:'%',cur:p.N,
+            xlabel:'number of currencies N'});
+        el('divNote').innerHTML='\u03c3 falls '+
+            (divCache.vol[divCache.vol.length-1]>1e-9
+                ?(divCache.vol[0]/divCache.vol[divCache.vol.length-1]).toFixed(1):'\u2014')+
+            '\u00d7 &middot; skew '+divCache.skew[0].toFixed(2)+' \u2192 <b>'+
+            divCache.skew[divCache.skew.length-1].toFixed(2)+'</b>';
+        /* ---- leverage sweep: exact, from records ---- */
+        if(sweepSig!==psig||!sweepCache){
+            const MS=Math.min(M,1200);
+            const pwv=new Float64Array(LGRID.length),er=new Float64Array(LGRID.length);
+            for(let k=0;k<LGRID.length;k++){
+                let sm=0,nwp=0;
+                for(let m=0;m<MS;m++){const o=outcomeAt(m,LGRID[k]);sm+=o.R;nwp+=o.wipe;}
+                pwv[k]=100*nwp/MS; er[k]=sm/MS;
+            }
+            let bi=0; for(let k=1;k<er.length;k++) if(er[k]>er[bi]) bi=k;
+            sweepCache={x:LGRID,pw:pwv,er:er,optX:LGRID[bi],optR:er[bi]};
+            sweepSig=psig;
+        }
+        drawTwoAxis(el('cvSweep'),{x:sweepCache.x,
+            left:[{y:Array.from(sweepCache.pw),color:C.bad}],
+            right:[{y:Array.from(sweepCache.er),color:C.tot}],
+            leftColor:C.bad,rightColor:C.tot,leftSuffix:'%',leftZero:true,cur:p.L,
+            xlabel:'leverage L \u00d7'});
+        el('sweepOpt').innerHTML='peak E[R] at L \u2248 <b>'+sweepCache.optX+
+            '\u00d7</b> ('+sweepCache.optR.toFixed(1)+'%)';
+        drawFama(el('cvFama'));
+        el('famaFull').textContent='\u03c6 = '+bFull.toFixed(2);
+        el('famaEx').textContent='\u03c6 = '+bEx.toFixed(2);
+        const ms=performance.now()-t0;
+        if(!timed){timed=true; if(ms>40) MC_N=600;}
+        el('ctPerf').textContent=M+' paths \u00b7 '+ms.toFixed(0)+' ms';
+    }
+    function schedule(full){
+        pendingFull=pendingFull||full;
+        if(pending) return;
+        pending=true;
+        requestAnimationFrame(()=>{const f=pendingFull;pending=false;pendingFull=false;render(f);});
+    }
+    ids.forEach(id=>{
+        el(id).addEventListener('input',()=>schedule(false));
+        el(id).addEventListener('change',()=>schedule(true));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.ct-pre'),a=>{
+        a.addEventListener('click',ev=>{
+            ev.preventDefault();
+            const P=PRESETS[a.getAttribute('data-p')];
+            if(!P) return;
+            Object.keys(P).forEach(k=>{ el(PKEY[k]).value=P[k]; });
+            schedule(true);
+        });
+    });
+    el('btnDraws').addEventListener('click',()=>{
+        const sd=(Math.random()*2147483647)>>>0;
+        el('in_seed').value=sd;
+        SHK=makeShocks(sd,M_MAX); pathSig='';divSig='';sweepSig='';
+        schedule(true);
+    });
+    el('in_seed').addEventListener('change',()=>{
+        SHK=makeShocks((+el('in_seed').value)>>>0,M_MAX); pathSig='';divSig='';sweepSig='';
+        schedule(true);
+    });
+    let rzT=null;
+    window.addEventListener('resize',()=>{
+        clearTimeout(rzT);
+        rzT=setTimeout(()=>{if(reduceMotion)drawHero(1);schedule(true);},120);
+    });
+    SHK=makeShocks((+el('in_seed').value)>>>0,M_MAX);
+    render(true);
+    })();
+    </script>
+    <br>
+    <h4 id="REFERENCES"><i>References</i></h4>
+    [1] Fama, E.F. (1984). <i>Forward and spot exchange rates</i>. Journal of Monetary Economics,
+        14(3), 319&ndash;338.
+    <br>
+    [2] Brunnermeier, M.K., Nagel, S. &amp; Pedersen, L.H. (2008). <i>Carry trades and currency
+        crashes</i>. NBER Macroeconomics Annual, 23, 313&ndash;347.
+    <br>
+    [3] Lustig, H., Roussanov, N. &amp; Verdelhan, A. (2011). <i>Common risk factors in currency
+        markets</i>. Review of Financial Studies, 24(11), 3731&ndash;3777.
+    <br>
+    [4] Menkhoff, L., Sarno, L., Schmeling, M. &amp; Schrimpf, A. (2012). <i>Carry trades and global
+        foreign exchange volatility</i>. Journal of Finance, 67(2), 681&ndash;718.
+    <br>
+    [5] Burnside, C., Eichenbaum, M., Kleshchelski, I. &amp; Rebelo, S. (2011). <i>Do peso problems
+        explain the returns to the carry trade?</i> Review of Financial Studies, 24(3), 853&ndash;891.
+    <br>
+    [6] Farhi, E. &amp; Gabaix, X. (2016). <i>Rare disasters and exchange rates</i>. Quarterly Journal
+        of Economics, 131(1), 1&ndash;52.
+    <br>
+    [7] Jurek, J.W. (2014). <i>Crash-neutral currency carry trades</i>. Journal of Financial
+        Economics, 113(3), 325&ndash;347.
+    <br>
+    [8] Du, W., Tepper, A. &amp; Verdelhan, A. (2018). <i>Deviations from covered interest rate
+        parity</i>. Journal of Finance, 73(3), 915&ndash;957.
+    <br>
+    [9] Koijen, R.S.J., Moskowitz, T.J., Pedersen, L.H. &amp; Vrugt, E.B. (2018). <i>Carry</i>.
+        Journal of Financial Economics, 127(2), 197&ndash;225.
+    <br>
+    [10] Engel, C. (2014). <i>Exchange rates and interest parity</i>. In: Handbook of International
+        Economics, Vol. 4, 453&ndash;522.
+    <br><br>
+    <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+<!-- End page content -->
+</div>
+<script src="../../js/OpenCloseSidebar.js"></script>
+<script src="../../js/OpenCloseCollapsible.js"></script>
+</body>
+</html>
