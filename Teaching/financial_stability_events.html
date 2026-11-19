@@ -105,7 +105,7 @@
         .fs-det h6{font-size:12px;text-transform:uppercase;letter-spacing:.05em;
                    color:var(--fs-dim);margin:12px 0 2px;font-weight:600;}
         .fs-det p{margin:0 0 4px;}
-        .fs-det ul{margin:2px 0 4px;padding-left:18px;}
+        .fs-det ul, .fs-det ol{margin:2px 0 4px;padding-left:18px;}
         .fs-det li{margin-bottom:3px;}
         .fs-todo{color:var(--fs-dim);font-style:italic;}
 
@@ -125,7 +125,7 @@
         .fs-kv td.num{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;}
 
         /* ---- mini-timeline of stages inside details ---- */
-        .fs-steps{list-style:none;margin:4px 0 6px;padding:0;}
+        .fs-steps{list-style:none;margin:4px 0 6px;padding:0 !important;}
         .fs-steps li{display:grid;grid-template-columns:92px 1fr;gap:10px;
                      padding:5px 0;border-bottom:1px dashed var(--fs-line);margin:0;}
         .fs-steps li:last-child{border-bottom:none;}
@@ -133,6 +133,17 @@
                      color:var(--fs-acc);padding-top:2px;}
         .fs-steps b{display:block;}
         @media(max-width:520px){.fs-steps li{grid-template-columns:1fr;gap:0;}}
+
+        /* ---- feedback-loop list and formula box ---- */
+        .fs-loop{counter-reset:loop;list-style:none;padding:0 !important;margin:4px 0 6px;}
+        .fs-loop li{counter-increment:loop;position:relative;padding-left:26px;margin-bottom:3px;}
+        .fs-loop li::before{content:counter(loop);position:absolute;left:0;top:2px;width:17px;
+                            height:17px;border-radius:50%;border:1px solid var(--fs-acc);
+                            color:var(--fs-acc);font-size:11px;text-align:center;line-height:16px;}
+        .fs-loop li:last-child::after{content:"↻ back to 1";margin-left:6px;font-size:11.5px;
+                                      color:var(--fs-dim);font-style:italic;}
+        .fs-eq{border-left:2px solid var(--fs-acc);padding:2px 0 2px 14px;margin:6px 0;
+               overflow-x:auto;overflow-y:hidden;}
     </style>
 </head>
 
@@ -239,6 +250,10 @@
                 <div class="fs-part" id="ev-YYYY-MM-part">Part title<a class="fs-anchor" href="#ev-YYYY-MM-part">#</a></div>
 
                 <h6>Mechanism</h6><p>…</p>
+                (optional feedback loop: last item automatically shows "↻ back to 1")
+                <ol class="fs-loop"><li>…</li><li>…</li></ol>
+                (optional formula)
+                <div class="fs-eq">$$ … $$</div>
                 <h6>Timeline</h6>   (optional)
                 <ol class="fs-steps">
                     <li><span class="d">DD Mon YYYY</span><div><b>Stage</b>Description.</div></li>
@@ -529,7 +544,7 @@
                                 leverage and to dealers' limited capacity to intermediate.</li>
                             <li><b>Market discipline on policy.</b> The speed of the reversal shows
                                 bond markets acting as a constraint on economic policy, echoing the
-                                UK gilt crisis of 2022.</li>
+                                <a href="#ev-2022-09-uk-ldi">UK gilt crisis of 2022</a>.</li>
                             <li><b>Lasting effects.</b> Prices recovered quickly. Questions about
                                 dollar volatility and the stability of trade relations remained.</li>
                         </ul>
@@ -788,6 +803,209 @@
                 </details>
             </article>
 
+            <!-- ============================ Sep–Oct 2022 · UK gilt / LDI crisis -->
+            <article class="fs-event" id="ev-2022-09-uk-ldi" data-tags="sov mkt nbfi pol">
+                <span class="fs-date">Sep – Oct 2022</span>
+                <h4 class="fs-title">UK "mini-budget", the gilt market crisis and leveraged LDI funds<a class="fs-anchor" href="#ev-2022-09-uk-ldi">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-sov">Sovereign</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-nbfi">Non-bank</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    On 23&nbsp;September 2022 the UK government announced a "mini-budget" with about
+                    £45bn of unfunded tax cuts, at a time of high inflation and rising interest
+                    rates. Gilts sold off at a speed not seen in modern times: 30-year yields rose
+                    by more than 160bp in a matter of days, and sterling fell to a record low. The
+                    fiscal shock was then amplified by <b>leveraged liability-driven investment
+                    (LDI) funds</b> used by defined-benefit pension schemes. Rising yields triggered
+                    collateral calls that the funds could meet only by selling long-dated gilts,
+                    which pushed yields higher still in a self-reinforcing spiral. On
+                    28&nbsp;September the Bank of England stepped in as market-maker of last resort
+                    with temporary, targeted purchases of long-dated gilts. Combined with the
+                    reversal of the fiscal package, this restored order by mid-October. The episode
+                    became a reference case for leverage and liquidity risk in non-banks.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Trigger: the "mini-budget"</h6>
+                        <p>
+                            The newly appointed Chancellor, Kwasi Kwarteng, announced the package on
+                            23&nbsp;September. It came without an independent forecast from the
+                            Office for Budget Responsibility, while the Bank of England was raising
+                            rates to fight double-digit inflation. Investors doubted the government's
+                            commitment to fiscal discipline and expected heavy additional borrowing.
+                            Gilts and sterling sold off together, a pattern more typical of emerging
+                            markets than of a major advanced economy.
+                        </p>
+
+                        <h6>The vulnerability: leveraged LDI</h6>
+                        <p>
+                            UK defined-benefit (DB) pension schemes promise payments linked to
+                            long-term interest rates and inflation. To hedge their liabilities, many
+                            use LDI strategies, held through <b>pooled funds</b> shared by many
+                            smaller schemes or through <b>segregated mandates</b> for larger ones.
+                        </p>
+                        <ul>
+                            <li><b>Leverage.</b> Instead of buying gilts outright with cash, LDI
+                                funds use gilt repo and interest-rate swaps to gain more exposure to
+                                long-dated gilts than their capital alone would allow. This leaves
+                                the rest of the scheme's assets free to invest in higher-return
+                                assets such as equities.</li>
+                            <li><b>Collateral.</b> These positions require collateral. When yields
+                                rise, the value of the gilts and swaps falls, and counterparties
+                                (mostly banks) make <b>margin and collateral calls</b> that must be
+                                met in cash or high-quality assets within days.</li>
+                            <li><b>Buffers.</b> Before the crisis, LDI funds typically held buffers
+                                sized for yield rises of around <b>100–150bp</b>. That is ample by
+                                historical standards, but far less than the moves of late
+                                September.</li>
+                        </ul>
+                        <p>
+                            The schemes themselves were not insolvent. Higher yields reduce the value
+                            of pension liabilities, and most schemes' funding positions
+                            <i>improved</i>. The problem was liquidity: the cash needed to keep the
+                            hedges in place had to be found immediately.
+                        </p>
+                        <p>A simple approximation shows why the buffers were exhausted so quickly. For an
+                            LDI fund with leverage \(L\) (gilt exposure ÷ fund NAV) holding assets of
+                            modified duration \(D\), a parallel yield rise \(\Delta y\) changes NAV by
+                            roughly</p>
+                        <div class="fs-eq">
+                            $$ \frac{\Delta \mathrm{NAV}}{\mathrm{NAV}} \;\approx\; -\,L \cdot D \cdot \Delta y . $$
+                        </div>
+                        <p>
+                            With \(L = 3\), \(D = 20\) and \(\Delta y = 1\%\), the fund loses about
+                            60% of its NAV. A move of 1.5% would wipe it out completely unless new
+                            cash arrives.
+                        </p>
+
+                        <h6>The fire-sale spiral</h6>
+                        <p>
+                            Pooled funds in particular could not raise cash from hundreds of
+                            client schemes fast enough. Many had to sell the assets they held, mainly
+                            long-dated and index-linked gilts, into a falling market:
+                        </p>
+                        <ol class="fs-loop">
+                            <li>Yields rise and the value of LDI positions falls.</li>
+                            <li>Counterparties call for more collateral.</li>
+                            <li>Funds sell long-dated gilts to raise cash.</li>
+                            <li>Forced sales overwhelm dealers' capacity, and yields rise
+                                further.</li>
+                        </ol>
+                        <p>
+                            The forced selling is estimated to have accounted for a large part of
+                            the fall in long-dated gilt prices, possibly around half at the peak.
+                            <span class="fs-todo">(to source)</span> Without intervention, a large
+                            share of LDI funds would have lost their hedges, and the long end of the
+                            gilt market risked ceasing to function.
+                        </p>
+
+                        <h6>Timeline</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">23 Sep 2022</span><div><b>Mini-budget</b>About
+                                £45bn of unfunded tax cuts are announced. Gilts and sterling sell off
+                                sharply.</div></li>
+                            <li><span class="d">26 Sep</span><div><b>Spiral begins</b>Sterling
+                                falls to a record low of about $1.035 in Asian trading. The gilt
+                                sell-off accelerates as LDI funds meet collateral calls by selling
+                                gilts.</div></li>
+                            <li><span class="d">28 Sep</span><div><b>BoE intervention</b>Citing a
+                                material risk to UK financial stability, the Bank announces temporary
+                                purchases of long-dated conventional gilts of up to £5bn a day for 13
+                                working days (up to £65bn in total). It also postpones the start of
+                                active QT gilt sales.</div></li>
+                            <li><span class="d">3 Oct</span><div><b>First U-turn</b>The government
+                                drops the abolition of the 45p top income tax rate.</div></li>
+                            <li><span class="d">10–11 Oct</span><div><b>Support widened</b>The Bank
+                                extends purchases to index-linked gilts and launches the Temporary
+                                Expanded Collateral Repo Facility (TECRF), which lets banks lend on to
+                                LDI funds against a wider range of collateral.</div></li>
+                            <li><span class="d">14 Oct</span><div><b>BoE exit</b>Purchases end as
+                                planned, after about £19.3bn in total. The same day, Kwarteng is
+                                dismissed and Jeremy Hunt becomes Chancellor.</div></li>
+                            <li><span class="d">17–20 Oct</span><div><b>Fiscal reversal</b>Hunt
+                                reverses almost all remaining measures. Prime Minister Liz Truss
+                                resigns on 20&nbsp;October.</div></li>
+                        </ol>
+
+                        <h6>Policy response</h6>
+                        <ul>
+                            <li><b>Market-maker of last resort.</b> The purchases were explicitly a
+                                <i>financial-stability</i> operation, separate from monetary policy.
+                                They were time-limited, targeted at the dysfunctional segment, and
+                                designed to buy time for LDI funds to rebuild resilience, not to
+                                lower yields permanently. The Bank sold the gilts back by January
+                                2023 at a profit.</li>
+                            <li><b>Fiscal correction.</b> Restoring confidence ultimately depended
+                                on reversing the package and on a new Chancellor with a credible
+                                fiscal plan.</li>
+                            <li><b>Higher resilience standards.</b> The Bank of England's Financial
+                                Policy Committee and The Pensions Regulator (2023) set a minimum
+                                steady-state resilience of about <b>250bp</b> of yield rise. The
+                                Central Bank of Ireland and Luxembourg's CSSF, where most pooled LDI
+                                funds are domiciled, later formalised a <b>300bp</b> requirement for
+                                sterling LDI funds. In practice most funds now hold buffers of about
+                                300–400bp.</li>
+                            <li><b>New central-bank facility.</b> The episode led the Bank of
+                                England to design a standing repo facility through which eligible
+                                non-banks, including LDI funds, pension schemes and insurers, can
+                                borrow against gilts in stress: the Contingent NBFI Repo Facility.
+                                <span class="fs-todo">(verify dates)</span></li>
+                        </ul>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Hedging can create liquidity risk.</b> Strategies that reduce
+                                long-term (solvency) risk can create acute short-term liquidity
+                                needs. The same mechanics later appeared in energy-derivative
+                                margins.</li>
+                            <li><b>Stress outside the banking system.</b> The amplifier was
+                                leverage in non-banks that sat largely outside macroprudential
+                                oversight. It was spread across funds domiciled in Ireland and
+                                Luxembourg and supervised on a fund-by-fund basis, so no one saw the
+                                combined fire-sale risk.</li>
+                            <li><b>Stress scenarios were too mild.</b> Buffers calibrated on
+                                historical yield moves were overtaken by a move that broke past
+                                records. The calibration did not allow for the fact that the funds'
+                                own forced sales would push yields higher.</li>
+                            <li><b>A template for intervention.</b> The operation established the
+                                principle of temporary, targeted, financial-stability purchases
+                                that are kept separate from monetary policy, and that can run even
+                                while the central bank is tightening.</li>
+                            <li><b>Bond markets discipline fiscal policy.</b> Even a reserve-currency
+                                advanced economy can face a sharp loss of investor confidence when
+                                fiscal credibility is in doubt. Compare the
+                                <a href="#ev-2025-04-liberation-day">April 2025 Treasury sell-off</a>.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Unfunded tax cuts announced</td><td class="num">≈ £45bn</td><td>23 Sep 2022</td></tr>
+                            <tr><td>30-year gilt yield rise</td><td class="num">&gt; 160bp in days</td><td>23–28 Sep 2022</td></tr>
+                            <tr><td>Sterling, record low</td><td class="num">≈ $1.035</td><td>26 Sep 2022</td></tr>
+                            <tr><td>Typical pre-crisis LDI buffer</td><td class="num">≈ 100–150bp</td><td>pre-Sep 2022</td></tr>
+                            <tr><td>BoE purchase capacity</td><td class="num">£5bn/day, up to £65bn</td><td>28 Sep – 14 Oct 2022</td></tr>
+                            <tr><td>BoE purchases actually made</td><td class="num">≈ £19.3bn</td><td>28 Sep – 14 Oct 2022</td></tr>
+                            <tr><td>Minimum steady-state resilience (FPC / TPR)</td><td class="num">≈ 250bp</td><td>2023</td></tr>
+                            <tr><td>Required buffer for sterling LDI funds (Ireland / Luxembourg)</td><td class="num">300bp</td><td>2024</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://www.bankofengland.co.uk/news/2022/september/bank-of-england-announces-gilt-market-operation">Bank of England: gilt market operation, 28 Sep 2022</a></li>
+                            <li><a href="https://www.bankofengland.co.uk/financial-stability-report/2022/december-2022">Bank of England: Financial Stability Report, December 2022</a></li>
+                            <li><a href="#">Bank of England: Deputy Governor Cunliffe's letter to the Treasury Committee, Oct 2022</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Central Bank of Ireland: macroprudential measures for GBP LDI funds</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
         </div>
     </section>
 
@@ -828,6 +1046,8 @@
     [6] International Monetary Fund, <a href="https://www.imf.org/en/Publications/GFSR">Global Financial Stability Report</a>.
     <br>
     [7] Basel Committee on Banking Supervision (2023), <a href="https://www.bis.org/bcbs/publ/d555.htm"><i>Report on the 2023 banking turmoil</i></a>.
+    <br>
+    [8] Bank of England, <a href="https://www.bankofengland.co.uk/financial-stability">Financial Stability Reports and FPC records</a>.
     <br><br>
 
     <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
@@ -890,6 +1110,6 @@
 </script>
 
 <script src="../../js/OpenCloseSidebar.js"></script>
-<script src="../../js/OpenCloseCollapsible.js"></script>
+<script src="../../js/OpenCloseSidebar.js" defer></script>
 </body>
 </html>
