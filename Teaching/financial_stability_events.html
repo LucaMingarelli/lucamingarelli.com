@@ -1443,7 +1443,9 @@
                                 faced large outflows. Funds sold their most liquid holdings, mainly
                                 Treasuries, to meet redemptions, rather than less liquid corporate
                                 bonds. Prime institutional money market funds suffered a run.</li>
-                            <li><b>Basis-trade unwind.</b> In 2019–20 hedge funds had built large,
+                            <li><b>Basis-trade unwind.</b> In 2019–20 hedge funds had built large
+                                (a build-up already visible in the
+                                <a href="#ev-2019-09-repo-spike">September 2019 repo spike</a>),
                                 highly leveraged positions buying cash Treasuries with repo funding
                                 and selling futures against them
                                 (<a href="../BasisTrade/BasisTrade.html">see the basis-trade page</a>).
@@ -1545,7 +1547,9 @@
                             <li><b>Reform agenda.</b> The episode prompted work on Treasury market
                                 structure: the SEC's 2023 mandate for central clearing of Treasury cash
                                 and repo trades, a review of the leverage ratio, and the Fed's standing
-                                repo facilities (domestic SRF and FIMA, made permanent in July 2021). It
+                                repo facilities (domestic SRF and FIMA, made permanent in July 2021,
+                                building on the lessons of the
+                                <a href="#ev-2019-09-repo-spike">2019 repo spike</a>). It
                                 also led to the SEC's 2023 money market fund reform and the FSB's work on
                                 open-ended fund liquidity and margin practices.</li>
                             <li><b>Not resolved.</b> The same vulnerabilities, leveraged
@@ -1585,7 +1589,188 @@
 
     <section class="fs-decade" id="d2010">
         <h3>2010s <a class="fs-top" href="#fs-top">↑ top</a></h3>
-        <div class="fs-timeline"></div>
+        <div class="fs-timeline">
+
+            <!-- ============================ Sep 2019 · US repo rate spike -->
+            <article class="fs-event" id="ev-2019-09-repo-spike" data-tags="mkt bank pol">
+                <span class="fs-date">Sep 2019</span>
+                <h4 class="fs-title">The US repo rate spike<a class="fs-anchor" href="#ev-2019-09-repo-spike">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-bank">Banking</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    On 16–17 September 2019, overnight rates for borrowing cash against US
+                    Treasuries jumped from about 2% to as high as 10% intraday, and the effective
+                    federal funds rate rose above the Fed's target range. This was not a credit or
+                    solvency crisis like 2008, but a failure of market <i>plumbing</i>. Two routine
+                    cash drains, corporate tax payments and the settlement of new Treasury debt,
+                    hit a system with far fewer spare reserves than the Fed had assumed. After
+                    years of balance-sheet reduction, reserves had fallen to about $1.4tn. They
+                    were concentrated in a few large banks, which preferred to hold them to meet
+                    liquidity rules and internal requirements rather than lend them, even at very
+                    high rates. The New York Fed carried out its first repo operations since 2008,
+                    then expanded them and began buying Treasury bills to rebuild reserves. The
+                    episode showed how thin the cushion of liquidity in the core dollar funding
+                    market had become, six months before the
+                    <a href="#ev-2020-03-dash-for-cash">March 2020 dash for cash</a>.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Triggers and structural causes</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">Trigger</span><div><b>Cash out, collateral in</b>On
+                                16&nbsp;September, corporate tax payments moved roughly $35bn from bank
+                                and money-fund accounts into the Treasury General Account (TGA) at the
+                                Fed. On the same day, about $54bn of newly auctioned Treasuries settled.
+                                Dealers had to pay for them and then finance them in repo. Demand for
+                                cash rose just as its supply fell.</div></li>
+                            <li><span class="d">Underlying</span><div><b>Reserves no longer
+                                ample</b>Tax dates and settlements happen regularly without incident.
+                                In 2019 they broke the market because the buffer of reserves had
+                                shrunk and was unevenly distributed.</div></li>
+                        </ol>
+                        <p>
+                            In a simplified central-bank balance sheet, reserves are what remains
+                            after the Treasury's account and currency are subtracted from the Fed's
+                            assets:
+                        </p>
+                        <div class="fs-eq">
+                            $$ \text{Reserves} \;=\; \text{Fed securities \& loans} \;-\; \text{Currency} \;-\; \text{TGA} \;-\; \text{other liabilities}. $$
+                        </div>
+                        <p>
+                            Quantitative tightening (shrinking the Fed's securities) and a rising TGA
+                            both drain reserves one for one, even if no bank chooses to hold less.
+                        </p>
+
+                        <h6>Structural causes in detail</h6>
+                        <ul>
+                            <li><b>Quantitative tightening.</b> QE from 2008 to 2014 raised reserves
+                                to a peak of about $2.8tn. Balance-sheet runoff from October 2017 to
+                                August 2019, together with a larger TGA, brought them down to about
+                                $1.4tn. The Fed believed this was still "ample". September showed it
+                                was close to the minimum the system needed.</li>
+                            <li><b>Reserves were not truly "excess".</b> Most reserves sat with a few
+                                of the largest banks. The liquidity coverage ratio treats reserves and
+                                Treasuries equally as high-quality liquid assets. In practice, banks
+                                preferred reserves because they can be used immediately for intraday
+                                payments, for resolution-planning liquidity requirements and to satisfy
+                                supervisors. Treasuries have to be sold or repoed first. The banks'
+                                internal minimum level of reserves was therefore much higher than the
+                                Fed had estimated.</li>
+                            <li><b>Balance-sheet frictions.</b> Money market funds, the main cash
+                                lenders, mostly lend through the Fed's reverse repo facility or to
+                                large dealers, not directly to hedge funds or smaller dealers. Large
+                                banks face balance-sheet costs (leverage ratio, G-SIB surcharges
+                                calculated largely on year-end values) that limit how much they are
+                                willing to intermediate, especially near reporting dates.</li>
+                        </ul>
+
+                        <h6>The role of hedge funds</h6>
+                        <p>
+                            Relative-value hedge funds had been growing their Treasury cash–futures
+                            basis trades, buying cash Treasuries financed overnight in repo and selling
+                            futures against them
+                            (<a href="../BasisTrade/BasisTrade.html">see the basis-trade page</a>).
+                            According to BIS analysis, their rising demand for repo financing was one
+                            of the pressures on rates in 2019. A sharp rise in repo rates squeezes the
+                            already thin margins of this trade. There is, however, little evidence of
+                            large-scale forced liquidation of Treasuries in September 2019; the major
+                            unwind came in <a href="#ev-2020-03-dash-for-cash">March 2020</a>. The
+                            Fed's intervention within a day kept financing costs from staying high
+                            long enough to force such sales.
+                        </p>
+
+                        <h6>Spillovers</h6>
+                        <ul>
+                            <li><b>SOFR.</b> The Secured Overnight Financing Rate, the new
+                                benchmark replacing LIBOR, is computed from overnight Treasury repo
+                                trades. It printed 5.25% on 17&nbsp;September, more than double its
+                                usual level. Few contracts referenced SOFR at the time, but the spike
+                                raised questions about its volatility as a benchmark and supported the
+                                later use of averaged and term SOFR rates.</li>
+                            <li><b>Fed funds.</b> The effective federal funds rate printed 2.30% on
+                                17&nbsp;September, above the 2.00–2.25% target range, a loss of control
+                                over the policy rate.</li>
+                            <li><b>Other short-term markets.</b> Higher repo rates briefly drew money
+                                funds away from commercial paper and CDs, and dealers' funding costs
+                                for bond inventories rose. The effects were modest and short-lived.</li>
+                            <li><b>International.</b> Foreign bank branches in the US, which often
+                                borrow in repo to hold reserves earning the IOER rate, had to adjust
+                                quickly. The cost of borrowing dollars through FX swaps rose somewhat,
+                                and concern about year-end dollar funding persisted until the Fed
+                                extended its operations.</li>
+                        </ul>
+
+                        <h6>Policy response</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">17 Sep 2019</span><div><b>First repo operation since
+                                2008</b>The New York Fed offers up to $75bn of overnight repo; about
+                                $53bn is taken up.</div></li>
+                            <li><span class="d">18 Sep</span><div><b>Technical
+                                adjustment</b>Alongside a 25bp cut in the policy rate, IOER is cut by
+                                30bp to pull the fed funds rate back into the range.</div></li>
+                            <li><span class="d">Sep – Dec</span><div><b>Operations
+                                expanded</b>Daily overnight operations continue and are complemented by
+                                term repos to cover quarter-end and year-end.</div></li>
+                            <li><span class="d">11 Oct</span><div><b>Reserve-management
+                                purchases</b>The Fed announces purchases of Treasury bills of about
+                                $60bn a month to rebuild reserves. It states that these are not QE
+                                because they do not target longer-term yields.</div></li>
+                            <li><span class="d">Jul 2021</span><div><b>Standing Repo
+                                Facility</b>The Fed creates a permanent domestic SRF, along with a
+                                standing FIMA repo facility for foreign central banks, as a ceiling on
+                                repo rates.</div></li>
+                        </ol>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>"Ample" reserves are hard to measure.</b> Banks' demand for
+                                reserves depends on regulation, supervision and internal risk
+                                management, and it was much higher than the Fed had assumed. This
+                                episode shaped the Fed's later decision to operate with a larger
+                                balance sheet and to slow and stop QT earlier in later cycles.</li>
+                            <li><b>Plumbing matters for monetary policy.</b> A technical shortage of
+                                cash briefly cost the Fed control of its policy rate. Monetary
+                                policy implementation and financial stability are closely linked.</li>
+                            <li><b>Regulation shapes market liquidity.</b> Rules that make banks
+                                safer individually can make them less willing to redistribute cash
+                                when it is scarce. This is the same balance-sheet constraint that
+                                limited dealers in 2020.</li>
+                            <li><b>Global dollar plumbing.</b> Because the dollar repo market funds
+                                banks and investors worldwide, a local shortage spreads quickly
+                                through FX swaps and foreign bank branches. This had already shown
+                                how fragile the plumbing was before the much larger stress of 2020.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Overnight repo rate, intraday high</td><td class="num">≈ 10%</td><td>17 Sep 2019</td></tr>
+                            <tr><td>SOFR</td><td class="num">5.25%</td><td>17 Sep 2019</td></tr>
+                            <tr><td>Effective fed funds rate (target 2.00–2.25%)</td><td class="num">2.30%</td><td>17 Sep 2019</td></tr>
+                            <tr><td>Corporate tax payments into the TGA</td><td class="num">≈ $35bn</td><td>16 Sep 2019</td></tr>
+                            <tr><td>Treasury coupon settlement</td><td class="num">≈ $54bn</td><td>16 Sep 2019</td></tr>
+                            <tr><td>Bank reserves, peak → Sep 2019</td><td class="num">≈ $2.8tn → $1.4tn</td><td>2014 → 2019</td></tr>
+                            <tr><td>Fed repo operation, offered / accepted</td><td class="num">$75bn / ≈ $53bn</td><td>17 Sep 2019</td></tr>
+                            <tr><td>Reserve-management T-bill purchases</td><td class="num">≈ $60bn/month</td><td>from Oct 2019</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://www.bis.org/publ/qtrpdf/r_qt1912v.htm">Avalos, Ehlers and Eren (2019): "September stress in dollar repo markets: passing or structural?", BIS Quarterly Review, December</a></li>
+                            <li><a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20191011a.htm">Federal Reserve: statement on reserve-management purchases, 11 Oct 2019</a></li>
+                            <li><a href="#">Federal Reserve Bank of New York: statements on repo operations, Sep 2019</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Anbil, Anderson and Senyuz (2020): "What happened in money markets in September 2019?", FEDS Notes</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+        </div>
     </section>
 
     <section class="fs-decade" id="d2000">
@@ -1626,6 +1811,8 @@
     [9] European Central Bank, <a href="https://www.ecb.europa.eu/pub/financial-stability/fsr/html/index.en.html">Financial Stability Review</a>.
         <br>
     [10] Financial Stability Board (2020), <a href="https://www.fsb.org/2020/11/holistic-review-of-the-march-market-turmoil/"><i>Holistic Review of the March Market Turmoil</i></a>.
+        <br>
+    [11] Avalos, F., Ehlers, T. and Eren, E. (2019), <a href="https://www.bis.org/publ/qtrpdf/r_qt1912v.htm">"September stress in dollar repo markets: passing or structural?"</a>, <i>BIS Quarterly Review</i>, December.
     
     <br><br>
 
