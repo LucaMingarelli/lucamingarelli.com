@@ -972,8 +972,10 @@
                                 combined fire-sale risk.</li>
                             <li><b>Stress scenarios were too mild.</b> Buffers calibrated on
                                 historical yield moves were overtaken by a move that broke past
-                                records. The calibration did not allow for the fact that the funds'
-                                own forced sales would push yields higher.</li>
+                                                                records. The calibration did not allow for the fact that the funds'
+                                own forced sales would push yields higher, the same self-reinforcing
+                                dynamic seen in the
+                                <a href="#ev-2018-02-volmageddon">2018 short-volatility unwind</a>.</li>
                             <li><b>A template for intervention.</b> The operation established the
                                 principle of temporary, targeted, financial-stability purchases
                                 that are kept separate from monetary policy, and that can run even
@@ -1922,9 +1924,11 @@
                                 funds, became recurring themes in central-bank financial-stability
                                 reports in 2019, ahead of the stress of
                                 <a href="#ev-2020-03-dash-for-cash">March 2020</a>.</li>
-                            <li><b>Thin markets amplify moves.</b> Holiday-season liquidity, momentum
+                                                        <li><b>Thin markets amplify moves.</b> Holiday-season liquidity, momentum
                                 and volatility-targeting strategies, and passive outflows helped make
-                                the December decline unusually abrupt.</li>
+                                the December decline unusually abrupt. The same volatility-sensitive
+                                strategies had amplified the
+                                <a href="#ev-2018-02-volmageddon">February 2018 volatility spike</a>.</li>
                         </ul>
 
                         <h6>Key figures</h6>
@@ -2125,6 +2129,222 @@
                 </details>
             </article>
 
+
+                        <!-- ============================ Feb 2018 · "Volmageddon" -->
+            <article class="fs-event" id="ev-2018-02-volmageddon" data-tags="mkt nbfi">
+                <span class="fs-date">Feb 2018</span>
+                <h4 class="fs-title">"Volmageddon": the short-volatility unwind<a class="fs-anchor" href="#ev-2018-02-volmageddon">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-nbfi">Non-bank</span>
+                </div>
+                <p class="fs-sum">
+                    After more than a year of unusually calm markets, a modest equity correction in
+                    early February 2018 produced an exceptionally large jump in volatility. On
+                    5&nbsp;February the S&amp;P&nbsp;500 fell about 4.1% and the VIX rose by about
+                    20 points, from 17.3 to 37.3. This was the largest one-day rise in the index's
+                    history in both points and percentage terms. The move was amplified by
+                    exchange-traded products (ETPs) that bet on low volatility, or offered leveraged
+                    exposure to it, through VIX futures. These products rebalance mechanically at
+                    the end of each day. When volatility rose, both inverse and leveraged products
+                    had to <i>buy</i> VIX futures in the last minutes of trading, pushing volatility
+                    higher still. The largest inverse product, Credit Suisse's XIV, lost about 96% of
+                    its value overnight and was terminated. Volatility-targeting and risk-parity
+                    funds then cut equity exposure as measured volatility rose, extending the
+                    sell-off. By 8&nbsp;February the S&amp;P&nbsp;500 was more than 10% below its
+                    January peak. No institution failed, and the losses fell on end investors. The
+                    episode is a clear early example of a pattern that recurs in later non-bank
+                    episodes: investment strategies can amplify the very market variable on which
+                    their exposures depend.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Background: the low-volatility regime</h6>
+                        <p>
+                            In 2017 the VIX averaged about 11, its lowest annual average on record, and
+                            closed below 10 on dozens of days. <span class="fs-todo">(to verify)</span>
+                            Steady global growth, low rates and central-bank asset purchases had kept
+                            realised volatility very low. Selling volatility had become a popular and
+                            profitable strategy. Short-volatility ETPs gained steadily because VIX
+                            futures usually trade above the spot VIX and drift down towards it as they
+                            approach expiry. Retail investors, hedge funds and some asset managers had
+                            built up exposure. A larger body of strategies was <i>implicitly</i> short
+                            volatility, because their equity exposure depended on volatility staying
+                            low: volatility-targeting funds, risk-parity portfolios, and some
+                            option-selling and trend-following (CTA) strategies.
+                        </p>
+
+                        <h6>Trigger</h6>
+                        <p>
+                            On 2&nbsp;February, US payroll data showed average hourly earnings up 2.9%
+                            on the year, the fastest pace since 2009. Investors began to fear that
+                            inflation and Fed tightening would arrive faster than expected. The 10-year
+                            Treasury yield rose to about 2.85%, a four-year high, and the
+                            S&amp;P&nbsp;500 fell about 2.1%. On the following Monday, 5&nbsp;February,
+                            selling accelerated in the afternoon. The Dow fell 1,175 points, then its
+                            largest one-day point decline on record, and about 4.6% in percentage
+                            terms.
+                        </p>
+
+                        <h6>Mechanism: why volatility products buy volatility</h6>
+                        <p>
+                            A daily-rebalanced ETP with leverage factor \(\beta\) promises \(\beta\)
+                            times the daily return \(r\) on a VIX futures index. Here \(\beta = -1\)
+                            for an inverse product and \(\beta = 2\) for a leveraged one. To keep its
+                            exposure equal to \(\beta \times \mathrm{NAV}\), it must trade futures at
+                            the close by roughly
+                        </p>
+                        <div class="fs-eq">
+                            $$ \Delta \text{Exposure} \;\approx\; \beta\,(\beta - 1)\cdot \mathrm{NAV}\cdot r . $$
+                        </div>
+                        <p>
+                            For both \(\beta = -1\) and \(\beta = 2\), the factor \(\beta(\beta-1)\)
+                            equals \(+2\). Inverse and leveraged products therefore both need to
+                            <b>buy</b> VIX futures when futures prices rise, and to buy more the
+                            larger the rise. Their rebalancing is <i>pro-cyclical</i> with respect to
+                            volatility. The trades were also predictable. They were concentrated in
+                            the short window around the 4:00–4:15pm close, in a futures market whose
+                            depth was small relative to the products' needs.
+                        </p>
+                        <ol class="fs-loop">
+                            <li>Equities fall and the VIX and VIX futures rise.</li>
+                            <li>Inverse and leveraged ETPs lose value and must buy VIX futures at the
+                                close to rebalance.</li>
+                            <li>Concentrated buying in a thin market drives VIX futures sharply
+                                higher.</li>
+                            <li>Higher measured volatility forces volatility-targeting and
+                                risk-parity funds to cut equity exposure, and dealers hedging short
+                                option positions sell futures. Equities fall further.</li>
+                        </ol>
+                        <p>
+                            On 5&nbsp;February the short-term VIX futures index rose by roughly 96%,
+                            much of it in the last hour of trading and after the equity close. Because
+                            the inverse products' rebalancing need was known in advance, other
+                            traders could position ahead of it, which deepened the move.
+                            <span class="fs-todo">(estimates of rebalancing volume, e.g. BIS QR March
+                            2018, to add)</span>
+                        </p>
+
+                        <h6>Timeline</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">26 Jan 2018</span><div><b>Market peak</b>The
+                                S&amp;P&nbsp;500 closes at a record of about 2,873, after a strong
+                                January rally.</div></li>
+                            <li><span class="d">2 Feb</span><div><b>Wage data</b>Strong
+                                earnings growth pushes Treasury yields higher. The S&amp;P&nbsp;500
+                                falls about 2.1% and the VIX rises to about 17.</div></li>
+                            <li><span class="d">5 Feb</span><div><b>Volatility spike</b>The
+                                S&amp;P&nbsp;500 falls about 4.1%. The VIX closes at 37.32, up about
+                                20 points (+116%), its largest one-day rise on record. After the close,
+                                the indicative value of XIV falls by more than 90%.</div></li>
+                            <li><span class="d">6 Feb</span><div><b>Termination</b>Credit
+                                Suisse announces an "acceleration event" and the early redemption of
+                                XIV, which had held about $1.5–2bn of assets in January
+                                <span class="fs-todo">(to verify)</span>. Nomura terminates a similar
+                                inverse VIX note listed in Tokyo. Intraday, the VIX briefly trades
+                                above 50.</div></li>
+                            <li><span class="d">8 Feb</span><div><b>Correction</b>The
+                                S&amp;P&nbsp;500 falls a further 3.8% and closes about 10% below its
+                                January peak, its fastest correction from a record high at the
+                                time.</div></li>
+                            <li><span class="d">late Feb</span><div><b>Stabilisation</b>Equities
+                                recover part of their losses. ProShares cuts the leverage of its main
+                                inverse product (SVXY) from −1× to −0.5× and of its leveraged product
+                                (UVXY) from 2× to 1.5×, effective 28&nbsp;February.</div></li>
+                        </ol>
+
+                        <h6>Spillovers and wider deleveraging</h6>
+                        <ul>
+                            <li><b>Systematic funds.</b> Volatility-targeting funds, risk-parity
+                                portfolios and CTAs scale their positions to recent volatility. As
+                                realised volatility jumped, they reduced equity exposure, adding
+                                selling pressure in the days after 5&nbsp;February.
+                                <span class="fs-todo">(estimates of systematic equity selling, to
+                                source)</span></li>
+                            <li><b>Global markets.</b> Equity markets in Asia and Europe fell
+                                sharply on 6&nbsp;February. The Nikkei&nbsp;225 dropped about 4.7%
+                                intraday. <span class="fs-todo">(to verify)</span></li>
+                            <li><b>Limited contagion.</b> Credit spreads widened only modestly,
+                                funding markets functioned normally, and Treasuries were not sold
+                                in a disorderly way. The stress stayed within equity and volatility
+                                markets.</li>
+                            <li><b>VIX settlement.</b> A whistleblower letter in February 2018
+                                alleged that the monthly VIX settlement process, which is based on
+                                S&amp;P&nbsp;500 option prices, could be manipulated. This raised
+                                questions about the integrity of the benchmark itself.
+                                <span class="fs-todo">(verify outcome)</span></li>
+                        </ul>
+
+                        <h6>Policy response</h6>
+                        <p>
+                            No central-bank or emergency action was needed. The response came from
+                            product issuers, which terminated products or reduced their leverage,
+                            and from securities regulators. The SEC and FINRA increased their scrutiny
+                            of complex and leveraged ETPs sold to retail investors.
+                            <span class="fs-todo">(To be completed: SEC/FINRA statements; relevance
+                            of the SEC's 2020 derivatives rule 18f-4 and its treatment of leveraged
+                            and inverse funds.)</span>
+                        </p>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Strategies that move their own risk factor.</b> The products'
+                                exposure was to volatility, and their rebalancing raised volatility.
+                                The same structure, with forced flows feeding back into the price that
+                                triggers them, recurs in the
+                                <a href="#ev-2022-09-uk-ldi">2022 LDI spiral</a> and in margin-driven
+                                deleveraging in
+                                <a href="#ev-2020-03-dash-for-cash">March 2020</a>.</li>
+                            <li><b>Predictable, crowded flows.</b> Mechanical rules that are public
+                                and concentrated in time invite front-running and turn a thin market
+                                into a trap. Market depth matters relative to the size of forced
+                                trades, not in absolute terms.</li>
+                            <li><b>Low volatility breeds fragility.</b> Long calm periods encourage
+                                leverage scaled to recent volatility. Measured risk falls, positions
+                                grow, and the eventual shock is larger. This is the "volatility
+                                paradox".</li>
+                            <li><b>Hidden short-volatility exposure.</b> The explicit short-volatility
+                                ETPs were small, a few billion dollars. Much larger pools of capital
+                                held the same exposure implicitly, through volatility targeting and
+                                risk parity, and this was hard for supervisors to measure.</li>
+                            <li><b>Losses without a systemic crisis.</b> The products failed as
+                                designed. Their prospectuses allowed termination, and investors bore
+                                the losses. Because no bank leverage or runnable funding was involved,
+                                the shock did not spread to the financial system. Later in the year,
+                                the <a href="#ev-2018-10-q4-selloff">late-2018 sell-off</a> showed how
+                                these strategies interact with a broader tightening of financial
+                                conditions.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>VIX, 2017 average <span class="fs-todo">(to verify)</span></td><td class="num">≈ 11</td><td>2017</td></tr>
+                            <tr><td>S&amp;P 500, daily change</td><td class="num">≈ −4.1%</td><td>5 Feb 2018</td></tr>
+                            <tr><td>Dow Jones, daily change</td><td class="num">−1,175 pts (≈ −4.6%)</td><td>5 Feb 2018</td></tr>
+                            <tr><td>VIX, close</td><td class="num">17.31 → 37.32 (+20 pts, +116%)</td><td>2 → 5 Feb 2018</td></tr>
+                            <tr><td>Short-term VIX futures index, daily change <span class="fs-todo">(to verify)</span></td><td class="num">≈ +96%</td><td>5 Feb 2018</td></tr>
+                            <tr><td>XIV, loss in indicative value</td><td class="num">≈ −96%</td><td>5–6 Feb 2018</td></tr>
+                            <tr><td>XIV assets before the crash <span class="fs-todo">(to verify)</span></td><td class="num">≈ $1.5–2bn</td><td>Jan 2018</td></tr>
+                            <tr><td>S&amp;P 500, peak-to-trough (closing)</td><td class="num">≈ −10.2%</td><td>26 Jan – 8 Feb 2018</td></tr>
+                            <tr><td>SVXY / UVXY leverage, before → after</td><td class="num">−1× → −0.5× / 2× → 1.5×</td><td>28 Feb 2018</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="#">BIS Quarterly Review, March 2018: "Volatility is back" (box on VIX ETPs)</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Credit Suisse: notice of acceleration event, VelocityShares Daily Inverse VIX Short-Term ETN (XIV), 6 Feb 2018</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">ProShares: announcement on changes to SVXY and UVXY, Feb 2018</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">IMF: Global Financial Stability Report, April 2018 (volatility-sensitive strategies)</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Market data: S&amp;P 500, VIX, VIX futures</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+
         </div>
     </section>
 
@@ -2168,7 +2388,8 @@
     [10] Financial Stability Board (2020), <a href="https://www.fsb.org/2020/11/holistic-review-of-the-march-market-turmoil/"><i>Holistic Review of the March Market Turmoil</i></a>.
         <br>
     [11] Avalos, F., Ehlers, T., and Eren, E. (2019), <a href="https://www.bis.org/publ/qtrpdf/r_qt1912v.htm">"September stress in dollar repo markets: passing or structural?"</a>, <i>BIS Quarterly Review</i>, December.
-
+        <br>
+    [12] Bank for International Settlements (2018), <a href="https://www.bis.org/publ/qtrpdf/r_qt1803.htm"><i>BIS Quarterly Review</i>, March 2018</a> ("Volatility is back"). <span class="fs-todo">(verify link)</span>
     <br><br>
 
     <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
