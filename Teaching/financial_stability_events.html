@@ -1,1 +1,180 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Basis Trade — Luca Mingarelli</title>
+    <link rel="icon" href="../../Icons/stork.png" type="image/png">
+
+    <script type="application/javascript">
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+            /* Oribi Analytics */
+            (function(b,o,n,g,s,r,c){if(b[s])return;b[s]={};b[s].scriptToken="XzgzMjUyODI5Ng";b[s].callsQueue=[];b[s].api=function(){b[s].callsQueue.push(arguments);};r=o.createElement(n);c=o.getElementsByTagName(n)[0];r.async=1;r.src=g;r.id=s+n;c.parentNode.insertBefore(r,c);})(window,document,"script","https://cdn.oribi.io/XzgzMjUyODI5Ng/oribi.js","ORIBI");
+            /* Google Tag Manager */
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NLJ2P23');
+        }
+    </script>
+
+    <script>window.MathJax = {tex: {tags: 'ams'}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <link rel="stylesheet" href="../../PRISM/prism.css">
+    <script defer src="../../PRISM/prism.js"></script>
+
+    <link rel="stylesheet" href="../../css/w3.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/responsiveiframe.css">
+    <script src="../../js/style_preamble.js"></script>
+
+    <style>
+        .collapsible {background-color:#777;color:white;cursor:pointer;padding:2px;width:100%;
+            border:none;text-align:left;outline:none;font-size:15px;border-radius:2px;}
+        .collapsible:hover {background-color:#555;}
+        .content {display:none;overflow:hidden;background-color:#DCDCDC;}
+
+        /* ================= basis-trade page, all scoped with bt- ================= */
+        .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc:#7a3030;
+                 --bt-spot:#000000;--bt-fut: #286ca3;--bt-basis: rgb(179 179 179 / 0.38);
+                 --bt-pnl:#5b3d84;--bt-bad: #e61616;--bt-good: rgb(117 116 116);--bt-fund: #e3a241;}
+
+        .bt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .bt-secno{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+                  color:var(--bt-dim);margin:0 0 2px;letter-spacing:.05em;}
+        .bt-wrap h3{margin-bottom:2px;}
+
+        /* numbered definition / proposition blocks */
+        .bt-def{margin:20px 0;text-align:left;}
+        .bt-def-lab{font-weight:600;font-size:15px;color:var(--bt-ink);margin-bottom:4px;}
+        .bt-def-lab .n{color:var(--bt-acc);}
+        .bt-def-body{border-left:2px solid var(--bt-acc);padding:2px 0 2px 18px;
+                     overflow-x:auto;overflow-y:hidden;}
+        .bt-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                    color:var(--bt-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
+
+        /* two-column cards — transparent, grouped by border only */
+        .bt-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bt-line);
+                 margin:20px 0;background:none;}
+        @media(max-width:640px){.bt-legs{grid-template-columns:1fr;}}
+        .bt-leg-card{padding:16px 18px;text-align:left;}
+        .bt-leg-card + .bt-leg-card{border-left:1px solid var(--bt-line);}
+        @media(max-width:640px){.bt-leg-card + .bt-leg-card{border-left:none;
+                 border-top:1px solid var(--bt-line);}}
+        .bt-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
+        .bt-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
+        .bt-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+                 color:var(--bt-dim);margin-top:10px;padding-top:9px;
+                 border-top:1px dashed var(--bt-line);line-height:1.6;}
+
+        /* simulator — transparent shell so the charts sit on the page */
+        .bt-sim{background:none;border:1px solid var(--bt-line);padding:16px;margin:14px 0;
+                text-align:left;}
+        .bt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;}
+        .bt-ctl label{display:block;font-size:13px;color:#222;}
+        .bt-ctl .bt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--bt-acc);}
+        .bt-ctl input[type=range]{width:100%;margin:4px 0 0;}
+        .bt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
+        .bt-hint{font-size:12px;color:var(--bt-dim);line-height:1.45;}
+        .bt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
+        .bt-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
+                       border:1px solid var(--bt-line);background:rgba(255,255,255,.5);}
+        .bt-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+                  border:1px solid var(--bt-line);margin-top:16px;}
+        @media(min-width:560px){.bt-stats{grid-template-columns:repeat(4,1fr);}}
+        .bt-stat{padding:10px 12px;border-left:1px solid var(--bt-line);
+                 border-top:1px solid var(--bt-line);}
+        .bt-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+                    color:var(--bt-dim);margin-bottom:5px;}
+        .bt-stat .v{font-size:18px;font-weight:600;color:var(--bt-ink);}
+        .bt-stat .v.bad{color:var(--bt-bad);}
+        .bt-stat .v.good{color:var(--bt-good);}
+        .bt-stat .v.fund{color:var(--bt-fund);}
+        .bt-stat .se{font-size:11px;color:var(--bt-dim);font-weight:400;}
+
+        /* figures: fully transparent, no frame — canvases blend into the page */
+        .bt-fig{border:none;background:none;margin-top:16px;padding:0;}
+        .bt-fig canvas{width:100%;display:block;background:none;}
+        /* explicit CSS heights: without these the canvas intrinsic ratio takes over
+           and each chart renders as tall as the column is wide */
+        #cvHero{height:240px;}
+        #cvPath{height:340px;}
+        #cvPnl,#cvHist,#cvSweep{height:300px;}
+        @media(max-width:600px){
+            #cvHero{height:190px;}
+            #cvPath{height:270px;}
+            #cvPnl,#cvHist,#cvSweep{height:230px;}
+        }
+        .bt-cap{font-size:11.5px;color:var(--bt-dim);padding:6px 2px 2px;
+                border-top:1px solid var(--bt-line);margin-top:6px;display:flex;
+                justify-content:space-between;gap:10px;}
+        .bt-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
+                 color:var(--bt-dim);margin:6px 2px 0;}
+        .bt-leg2 span{display:inline-flex;align-items:center;gap:5px;}
+        .bt-sw{width:14px;height:2px;display:inline-block;}
+        .bt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+        .bt-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--bt-line);padding:9px 13px;margin:12px 0;
+                 text-align:left;line-height:1.55;}
+
+        /* historical episodes */
+        .bt-risk{list-style:none;padding:0;margin:18px 0 0;}
+        .bt-risk li{padding-left:16px;border-left:2px solid var(--bt-acc);margin-bottom:18px;}
+        .bt-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+               color:var(--bt-acc);display:block;margin-bottom:3px;}
+        .bt-risk p{margin:0;font-size:15px;}
+
+        .bt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
+        .bt-tbl th,.bt-tbl td{border:1px solid var(--bt-line);padding:7px 10px;text-align:left;}
+        .bt-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
+        .bt-tbl code{background:none;padding:0;}
+    </style>
+</head>
+
+<body class="w3-light-grey w3-content" style="max-width:2600px">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NLJ2P23"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script src="../../js/Navbar.js"></script>
+<script src="../../js/pre_content.js"></script>
+
+<div class="w3-content w3-justify bt-wrap" style="max-width:800px">
+
+    <h1 style="text-align:left;"><b>A chronology of financial stability crises, market disruptions, and policy responses
+</b></h1>
+    <p class="bt-lede">
+        Two prices for the same asset must agree by delivery day. When they don't, the gap between
+        them, know as the <i>basis</i>, is either free money or a very patient way to lose it.
+<!--        Here is the arithmetic, and the risk hiding inside it.-->
+    </p>
+
+
+
+    <br>
+    <h4 id="REFERENCES"><i>References</i></h4>
+    [1] <a href="https://www.cmegroup.com/education/courses/introduction-to-treasuries/understanding-treasury-futures-basis.html">CME Group — Understanding the Treasury futures basis</a>
+    <br>
+    [2] <a href="https://www.bis.org/publ/qtrpdf/r_qt2003v.htm">BIS Quarterly Review — Leverage and margin spirals in fixed income markets (March 2020)</a>
+    <br>
+    [3] <a href="https://www.financialresearch.gov/">Office of Financial Research — notes on hedge-fund Treasury basis exposure</a>
+    <br>
+    [4] <a href="https://www.federalreserve.gov/econres/feds/">Federal Reserve FEDS Notes — Treasury market functioning, March 2020</a>
+    <br>
+    [5] <a href="https://www.fsb.org/">Financial Stability Board — leverage in non-bank financial intermediation</a>
+    <br><br>
+
+    <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
+    <hr class="w3-opacity">
+</div>
+</div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+<!-- End page content -->
+</div>
+<script src="../../js/OpenCloseSidebar.js"></script>
+<script src="../../js/OpenCloseCollapsible.js"></script>
+</body>
+</html>
