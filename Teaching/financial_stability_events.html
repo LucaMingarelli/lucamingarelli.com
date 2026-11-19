@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Basis Trade — Luca Mingarelli</title>
+    <title>Financial Stability Chronology — Luca Mingarelli</title>
     <link rel="icon" href="../../Icons/stork.png" type="image/png">
 
     <script type="application/javascript">
@@ -24,9 +22,6 @@
     <script>window.MathJax = {tex: {tags: 'ams'}};</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
-    <link rel="stylesheet" href="../../PRISM/prism.css">
-    <script defer src="../../PRISM/prism.js"></script>
-
     <link rel="stylesheet" href="../../css/w3.css">
     <link rel="stylesheet" href="../../css/font.css">
     <link rel="stylesheet" href="../../css/responsiveiframe.css">
@@ -38,100 +33,106 @@
         .collapsible:hover {background-color:#555;}
         .content {display:none;overflow:hidden;background-color:#DCDCDC;}
 
-        /* ================= basis-trade page, all scoped with bt- ================= */
-        .bt-wrap{--bt-line:#c9c4b6;--bt-dim:#55534c;--bt-ink:#111111;--bt-acc:#7a3030;
-                 --bt-spot:#000000;--bt-fut: #286ca3;--bt-basis: rgb(179 179 179 / 0.38);
-                 --bt-pnl:#5b3d84;--bt-bad: #e61616;--bt-good: rgb(117 116 116);--bt-fund: #e3a241;}
+        /* ============ financial-stability chronology, all scoped with fs- ============ */
+        .fs-wrap{--fs-line:#c9c4b6;--fs-dim:#55534c;--fs-ink:#111;--fs-acc:#7a3030;
+                 --fs-sticky-top:0px; /* raise if a fixed navbar overlaps the sticky bar */
+                 /* category colours */
+                 --c-bank:#7a3030;--c-mkt:#286ca3;--c-sov:#3f7a3a;--c-nbfi:#e3a241;--c-pol:#5b3d84;
+                 --c-geo:#1f7f7a;}
 
-        .bt-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
-        .bt-secno{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-                  color:var(--bt-dim);margin:0 0 2px;letter-spacing:.05em;}
-        .bt-wrap h3{margin-bottom:2px;}
-
-        /* numbered definition / proposition blocks */
-        .bt-def{margin:20px 0;text-align:left;}
-        .bt-def-lab{font-weight:600;font-size:15px;color:var(--bt-ink);margin-bottom:4px;}
-        .bt-def-lab .n{color:var(--bt-acc);}
-        .bt-def-body{border-left:2px solid var(--bt-acc);padding:2px 0 2px 18px;
-                     overflow-x:auto;overflow-y:hidden;}
-        .bt-def-cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
-                    color:var(--bt-dim);padding-left:18px;margin-top:4px;line-height:1.5;}
-
-        /* two-column cards — transparent, grouped by border only */
-        .bt-legs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bt-line);
-                 margin:20px 0;background:none;}
-        @media(max-width:640px){.bt-legs{grid-template-columns:1fr;}}
-        .bt-leg-card{padding:16px 18px;text-align:left;}
-        .bt-leg-card + .bt-leg-card{border-left:1px solid var(--bt-line);}
-        @media(max-width:640px){.bt-leg-card + .bt-leg-card{border-left:none;
-                 border-top:1px solid var(--bt-line);}}
-        .bt-leg-t{font-weight:600;font-style:italic;font-size:15px;margin-bottom:6px;}
-        .bt-leg-card p{margin:0;font-size:14.5px;color:#3b3a35;}
-        .bt-flow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
-                 color:var(--bt-dim);margin-top:10px;padding-top:9px;
-                 border-top:1px dashed var(--bt-line);line-height:1.6;}
-
-        /* simulator — transparent shell so the charts sit on the page */
-        .bt-sim{background:none;border:1px solid var(--bt-line);padding:16px;margin:14px 0;
-                text-align:left;}
-        .bt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;}
-        .bt-ctl label{display:block;font-size:13px;color:#222;}
-        .bt-ctl .bt-val{float:right;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--bt-acc);}
-        .bt-ctl input[type=range]{width:100%;margin:4px 0 0;}
-        .bt-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0 4px;}
-        .bt-hint{font-size:12px;color:var(--bt-dim);line-height:1.45;}
-        .bt-seed{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#333;}
-        .bt-seed input{width:104px;font-family:inherit;font-size:12px;padding:3px 5px;
-                       border:1px solid var(--bt-line);background:rgba(255,255,255,.5);}
-        .bt-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
-                  border:1px solid var(--bt-line);margin-top:16px;}
-        @media(min-width:560px){.bt-stats{grid-template-columns:repeat(4,1fr);}}
-        .bt-stat{padding:10px 12px;border-left:1px solid var(--bt-line);
-                 border-top:1px solid var(--bt-line);}
-        .bt-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;
-                    color:var(--bt-dim);margin-bottom:5px;}
-        .bt-stat .v{font-size:18px;font-weight:600;color:var(--bt-ink);}
-        .bt-stat .v.bad{color:var(--bt-bad);}
-        .bt-stat .v.good{color:var(--bt-good);}
-        .bt-stat .v.fund{color:var(--bt-fund);}
-        .bt-stat .se{font-size:11px;color:var(--bt-dim);font-weight:400;}
-
-        /* figures: fully transparent, no frame — canvases blend into the page */
-        .bt-fig{border:none;background:none;margin-top:16px;padding:0;}
-        .bt-fig canvas{width:100%;display:block;background:none;}
-        /* explicit CSS heights: without these the canvas intrinsic ratio takes over
-           and each chart renders as tall as the column is wide */
-        #cvHero{height:240px;}
-        #cvPath{height:340px;}
-        #cvPnl,#cvHist,#cvSweep{height:300px;}
-        @media(max-width:600px){
-            #cvHero{height:190px;}
-            #cvPath{height:270px;}
-            #cvPnl,#cvHist,#cvSweep{height:230px;}
-        }
-        .bt-cap{font-size:11.5px;color:var(--bt-dim);padding:6px 2px 2px;
-                border-top:1px solid var(--bt-line);margin-top:6px;display:flex;
-                justify-content:space-between;gap:10px;}
-        .bt-leg2{display:flex;gap:15px;flex-wrap:wrap;font-size:11.5px;
-                 color:var(--bt-dim);margin:6px 2px 0;}
-        .bt-leg2 span{display:inline-flex;align-items:center;gap:5px;}
-        .bt-sw{width:14px;height:2px;display:inline-block;}
-        .bt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-        .bt-note{font-size:12.5px;color:#3b3a35;background:rgba(255,255,255,.45);
-                 border-left:3px solid var(--bt-line);padding:9px 13px;margin:12px 0;
+        .fs-lede{font-size:17px;color:#3b3a35;line-height:1.6;}
+        .fs-wrap h3{margin-bottom:4px;}
+        .fs-wrap p, .fs-wrap li{line-height:1.6;}
+        .fs-intro ul{padding-left:20px;margin:8px 0 14px;}
+        .fs-intro li{margin-bottom:6px;}
+        .fs-note{font-size:13px;color:#3b3a35;background:rgba(255,255,255,.45);
+                 border-left:3px solid var(--fs-line);padding:9px 13px;margin:14px 0;
                  text-align:left;line-height:1.55;}
 
-        /* historical episodes */
-        .bt-risk{list-style:none;padding:0;margin:18px 0 0;}
-        .bt-risk li{padding-left:16px;border-left:2px solid var(--bt-acc);margin-bottom:18px;}
-        .bt-yr{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-               color:var(--bt-acc);display:block;margin-bottom:3px;}
-        .bt-risk p{margin:0;font-size:15px;}
+        /* ---- sticky navigation ---- */
+        .fs-nav{position:sticky;top:var(--fs-sticky-top);z-index:5;
+                background:rgba(241,241,241,.96);backdrop-filter:blur(3px);
+                border-top:1px solid var(--fs-line);border-bottom:1px solid var(--fs-line);
+                padding:8px 4px;margin:24px 0 8px;text-align:left;}
+        .fs-nav-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;}
+        .fs-nav-row + .fs-nav-row{margin-top:6px;}
+        .fs-nav-lab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;
+                    color:var(--fs-dim);text-transform:uppercase;letter-spacing:.05em;min-width:60px;}
+        .fs-nav a{font-size:13px;text-decoration:none;color:var(--fs-acc);}
+        .fs-nav a:hover{text-decoration:underline;}
+        .fs-count{margin-left:auto;font-family:ui-monospace,Menlo,Consolas,monospace;
+                  font-size:11.5px;color:var(--fs-dim);}
 
-        .bt-tbl{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;background:none;}
-        .bt-tbl th,.bt-tbl td{border:1px solid var(--bt-line);padding:7px 10px;text-align:left;}
-        .bt-tbl th{background:rgba(255,255,255,.45);font-weight:600;}
-        .bt-tbl code{background:none;padding:0;}
+        /* ---- tags / filter chips ---- */
+        .fs-tag, .fs-chip{display:inline-block;font-size:11px;line-height:1;padding:4px 8px;
+                border-radius:10px;border:1px solid currentColor;background:none;
+                font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.02em;}
+        .fs-chip{cursor:pointer;opacity:.55;transition:opacity .15s;}
+        .fs-chip:hover{opacity:.85;}
+        .fs-chip[aria-pressed="true"]{opacity:1;font-weight:700;background:rgba(255,255,255,.7);}
+        .fs-chip.reset{color:var(--fs-dim);opacity:1;}
+        .t-bank{color:var(--c-bank);} .t-mkt{color:var(--c-mkt);} .t-sov{color:var(--c-sov);}
+        .t-nbfi{color:#b37612;} .t-pol{color:var(--c-pol);} .t-geo{color:var(--c-geo);}
+
+        /* ---- decades & timeline ---- */
+        .fs-decade{margin-top:30px;scroll-margin-top:110px;}
+        .fs-decade > h3{font-weight:700;border-bottom:1px solid var(--fs-line);padding-bottom:4px;
+                        display:flex;justify-content:space-between;align-items:baseline;}
+        .fs-top{font-size:12px;font-weight:400;text-decoration:none;color:var(--fs-dim);}
+        .fs-empty{font-size:13px;color:var(--fs-dim);font-style:italic;margin:10px 0;}
+
+        .fs-timeline{position:relative;margin:14px 0 0;padding-left:22px;}
+        .fs-timeline::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;
+                             width:2px;background:var(--fs-line);}
+        .fs-event{position:relative;margin-bottom:22px;text-align:left;scroll-margin-top:110px;}
+        .fs-event::before{content:"";position:absolute;left:-22px;top:5px;width:12px;height:12px;
+                          border-radius:50%;background:#f1f1f1;border:2px solid var(--fs-acc);}
+        .fs-event:target{background:rgba(255,255,255,.6);outline:1px dashed var(--fs-acc);
+                         outline-offset:4px;}
+        .fs-date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+                 color:var(--fs-acc);display:block;margin-bottom:2px;}
+        .fs-title{font-size:17px;font-weight:600;margin:0 0 4px;color:var(--fs-ink);}
+        .fs-title a.fs-anchor{opacity:0;text-decoration:none;color:var(--fs-dim);font-weight:400;
+                              margin-left:6px;font-size:13px;}
+        .fs-event:hover .fs-anchor{opacity:1;}
+        .fs-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+        .fs-sum{margin:0;font-size:15px;}
+
+        .fs-event details{margin-top:6px;}
+        .fs-event summary{cursor:pointer;font-size:13px;color:var(--fs-dim);}
+        .fs-event summary:hover{color:var(--fs-ink);}
+        .fs-det{border-left:2px solid var(--fs-line);padding:4px 0 4px 14px;margin-top:6px;font-size:14.5px;}
+        .fs-det h6{font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+                   color:var(--fs-dim);margin:12px 0 2px;font-weight:600;}
+        .fs-det p{margin:0 0 4px;}
+        .fs-det ul{margin:2px 0 4px;padding-left:18px;}
+        .fs-det li{margin-bottom:3px;}
+        .fs-todo{color:var(--fs-dim);font-style:italic;}
+
+        /* ---- part sub-heading inside details (multi-part entries) ---- */
+        .fs-part{font-size:15px;font-weight:700;color:var(--fs-acc);margin:18px 0 2px;
+                 padding-top:8px;border-top:1px solid var(--fs-line);scroll-margin-top:110px;}
+        .fs-part:first-child{border-top:none;padding-top:0;margin-top:4px;}
+        .fs-part a.fs-anchor{text-decoration:none;color:var(--fs-dim);font-weight:400;
+                             font-size:12px;margin-left:6px;}
+
+        /* ---- key-figures table inside details ---- */
+        .fs-kv{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0 6px;}
+        .fs-kv th,.fs-kv td{border-bottom:1px solid var(--fs-line);padding:4px 8px;text-align:left;
+                            vertical-align:top;}
+        .fs-kv th{font-weight:600;color:var(--fs-dim);font-size:11.5px;text-transform:uppercase;
+                  letter-spacing:.04em;}
+        .fs-kv td.num{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;}
+
+        /* ---- mini-timeline of stages inside details ---- */
+        .fs-steps{list-style:none;margin:4px 0 6px;padding:0;}
+        .fs-steps li{display:grid;grid-template-columns:92px 1fr;gap:10px;
+                     padding:5px 0;border-bottom:1px dashed var(--fs-line);margin:0;}
+        .fs-steps li:last-child{border-bottom:none;}
+        .fs-steps .d{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+                     color:var(--fs-acc);padding-top:2px;}
+        .fs-steps b{display:block;}
+        @media(max-width:520px){.fs-steps li{grid-template-columns:1fr;gap:0;}}
     </style>
 </head>
 
@@ -142,29 +143,691 @@
 <script src="../../js/Navbar.js"></script>
 <script src="../../js/pre_content.js"></script>
 
-<div class="w3-content w3-justify bt-wrap" style="max-width:800px">
+<div class="w3-content w3-justify fs-wrap" style="max-width:800px" id="fs-top">
 
-    <h1 style="text-align:left;"><b>A chronology of financial stability crises, market disruptions, and policy responses
-</b></h1>
-    <p class="bt-lede">
-        Two prices for the same asset must agree by delivery day. When they don't, the gap between
-        them, know as the <i>basis</i>, is either free money or a very patient way to lose it.
-<!--        Here is the arithmetic, and the risk hiding inside it.-->
-    </p>
+    <h1 style="text-align:left;"><b>A chronology of financial stability crises, market disruptions, and policy responses</b></h1>
 
+    <!-- ===================================================== INTRODUCTION -->
+    <section class="fs-intro">
+        <p class="fs-lede">
+            A financial system is <i>stable</i> when it can keep providing its core services
+            (credit, payments, liquidity, risk transfer) through shocks, rather than amplifying them.
+            Crises are the moments when this fails. A loss that should have stayed local turns into
+            fire sales, runs and a sudden withdrawal of funding, and the damage spills over to the
+            real economy.
+        </p>
 
+        <h3>Recurring vulnerabilities</h3>
+        <p>The settings change, but crises tend to share a small number of mechanisms:</p>
+        <ul>
+            <li><b>Leverage.</b> Thin equity buffers turn modest price moves into solvency
+                problems. Margin calls and haircuts then force deleveraging into falling markets.</li>
+            <li><b>Liquidity and maturity mismatch.</b> Institutions that fund long-term or illiquid
+                assets with short-term, runnable liabilities (deposits, repo, commercial paper, fund
+                shares) are exposed to self-fulfilling runs.</li>
+            <li><b>Interconnectedness and common exposures.</b> Counterparty chains and crowded
+                trades spread distress through contagion and correlated selling.</li>
+            <li><b>The sovereign–bank nexus.</b> Banks hold government debt and governments stand
+                behind banks, so weakness on either side feeds the other.</li>
+            <li><b>Structural shifts.</b> Intermediation migrates to non-banks: money funds,
+                investment funds, hedge funds, pension schemes and stablecoins. Liquidity risk moves
+                with it, often outside the regulatory perimeter.</li>
+        </ul>
+
+        <h3>The policy toolkit</h3>
+        <p>
+            Responses have evolved with each episode. Central banks act as
+            <b>lender of last resort</b> to solvent but illiquid banks and, increasingly, as
+            <b>market-maker of last resort</b> to core markets such as sovereign bonds, repo and
+            dollar funding via swap lines. Supervisors rely on <b>microprudential</b> rules
+            (capital, liquidity, stress tests) and, since 2008, on <b>macroprudential</b> tools aimed
+            at the system as a whole (countercyclical buffers, borrower-based measures, surcharges
+            for systemic institutions). <b>Resolution regimes</b> and bail-in aim to let large banks
+            fail without taxpayer bailouts. Many of the entries below record when and why each of
+            these tools was first used.
+        </p>
+
+        <div class="fs-note">
+            <b>How to read this page.</b> Events are in <b>reverse chronological order</b>, with the
+            most recent first, and grouped by decade. Use the bar below to jump to a decade or to
+            filter by category. Each entry has a short summary. Click <i>Details</i> for the
+            mechanism, the policy response and the lessons drawn. Hover over a title and click
+            <b>#</b> to get a direct link to that event.
+        </div>
+    </section>
+
+    <!-- ===================================================== NAVIGATION -->
+    <nav class="fs-nav" aria-label="Chronology navigation">
+        <div class="fs-nav-row">
+            <span class="fs-nav-lab">Jump to</span>
+            <a href="#d2020">2020s</a>
+            <a href="#d2010">2010s</a>
+            <a href="#d2000">2000s</a>
+            <a href="#d1990">1990s</a>
+            <a href="#d1980">1980s &amp; earlier</a>
+            <span class="fs-count" id="fs-count"></span>
+        </div>
+        <div class="fs-nav-row">
+            <span class="fs-nav-lab">Filter</span>
+            <button class="fs-chip t-bank" data-filter="bank" aria-pressed="false">Banking</button>
+            <button class="fs-chip t-mkt"  data-filter="mkt"  aria-pressed="false">Markets</button>
+            <button class="fs-chip t-sov"  data-filter="sov"  aria-pressed="false">Sovereign</button>
+            <button class="fs-chip t-nbfi" data-filter="nbfi" aria-pressed="false">Non-bank</button>
+            <button class="fs-chip t-pol"  data-filter="pol"  aria-pressed="false">Policy / Regulation</button>
+            <button class="fs-chip t-geo"  data-filter="geo"  aria-pressed="false">Geopolitics / Trade &amp; Energy</button>
+            <button class="fs-chip reset" id="fs-reset">show all</button>
+        </div>
+    </nav>
+
+    <!-- ===================================================== CHRONOLOGY -->
+    <!--
+    ENTRY TEMPLATE: copy inside the relevant decade's .fs-timeline, newest at the top.
+    data-tags: any of  bank mkt sov nbfi pol geo  (space-separated)
+
+    <article class="fs-event" id="ev-YYYY-MM-slug" data-tags="bank pol">
+        <span class="fs-date">Mon YYYY</span>
+        <h4 class="fs-title">Event title<a class="fs-anchor" href="#ev-YYYY-MM-slug">#</a></h4>
+        <div class="fs-tags">
+            <span class="fs-tag t-bank">Banking</span>
+            <span class="fs-tag t-pol">Policy</span>
+        </div>
+        <p class="fs-sum">One-paragraph summary.</p>
+        <details>
+            <summary>Details</summary>
+            <div class="fs-det">
+                (optional, for multi-part entries)
+                <div class="fs-part" id="ev-YYYY-MM-part">Part title<a class="fs-anchor" href="#ev-YYYY-MM-part">#</a></div>
+
+                <h6>Mechanism</h6><p>…</p>
+                <h6>Timeline</h6>   (optional)
+                <ol class="fs-steps">
+                    <li><span class="d">DD Mon YYYY</span><div><b>Stage</b>Description.</div></li>
+                </ol>
+                <h6>Policy response</h6><p>…</p>
+                <h6>Lessons</h6><p>…</p>
+                <h6>Key figures</h6>   (optional)
+                <table class="fs-kv">
+                    <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                    <tr><td>…</td><td class="num">…</td><td>…</td></tr>
+                </table>
+                <h6>Sources</h6><ul><li><a href="#">…</a></li></ul>
+            </div>
+        </details>
+    </article>
+    -->
+
+    <section class="fs-decade" id="d2020">
+        <h3>2020s <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline">
+
+            <!-- ============================ Mar–Jul 2026 · Middle-East conflict -->
+            <article class="fs-event" id="ev-2026-03-middle-east-conflict" data-tags="geo mkt">
+                <span class="fs-date">Mar – Jul 2026</span>
+                <h4 class="fs-title">Escalating Middle-East conflict and the closure of the Strait of Hormuz<a class="fs-anchor" href="#ev-2026-03-middle-east-conflict">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-geo">Geopolitics / Trade &amp; Energy</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                </div>
+                <p class="fs-sum">
+                    In March 2026, U.S. and Israeli strikes on Iranian targets escalated into open war.
+                    Iran closed the Strait of Hormuz from 4&nbsp;March. The Strait carries roughly a
+                    fifth of global oil supply and a large share of world LNG trade, and the
+                    International Energy Agency called the shock the <i>"greatest global energy security
+                    challenge in history"</i>. Brent crude briefly traded above $120 and European gas
+                    prices nearly doubled. Equities and sovereign bonds sold off together as inflation
+                    fears overrode the usual safe-haven role of government debt. The shock proved
+                    temporary. As tensions eased into the summer, risk premia unwound: Brent was back
+                    near $72 by early July, and the S&amp;P&nbsp;500 had recovered more than 17% from
+                    its March low.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Trigger and energy shock</h6>
+                        <p>
+                            The closure of the Strait of Hormuz on 4&nbsp;March was the epicentre of
+                            the disruption. QatarEnergy declared force majeure on its exports. Output
+                            from Saudi Arabia, Iraq, Kuwait and the UAE was stranded, deepening the
+                            global supply squeeze. Brent rose above $120 intraday in the initial panic
+                            and reached a peak close of $118.35 on 31&nbsp;March. Tanker freight rates
+                            spiked as vessels dropped anchor or rerouted away from the conflict zone.
+                        </p>
+
+                        <h6>Market transmission</h6>
+                        <ul>
+                            <li><b>Equities.</b> Global stock markets sold off as the conflict
+                                escalated. The S&amp;P&nbsp;500 fell throughout March and bottomed at
+                                6,316.91 on 30&nbsp;March.</li>
+                            <li><b>Tech as a relative safe haven.</b> Large U.S. technology firms,
+                                which are less sensitive to energy costs, held up well and limited
+                                losses in the broader U.S. index.</li>
+                            <li><b>Sovereign bonds.</b> U.S. Treasuries and other sovereign bonds
+                                sold off. Markets priced out expected rate cuts and began to price
+                                possible further hikes to counter stagflation.</li>
+                        </ul>
+
+                        <h6>Real-economy spillovers</h6>
+                        <ul>
+                            <li><b>Gulf states (GCC).</b> GCC states import the large majority of
+                                their food, much of it through the Strait, and the blockade caused an
+                                acute grocery-supply emergency. Retailers airlifted staples, adding
+                                surcharges of 40–120%. Iranian strikes on desalination plants in
+                                Kuwait and Qatar raised fears of a drinking-water crisis.</li>
+                            <li><b>Europe.</b> The halt in Qatari LNG came after a winter that had
+                                left gas storage historically low. Dutch TTF prices nearly doubled,
+                                exceeding €60/MWh by mid-March. Chemical and steel producers in the EU
+                                and UK imposed surcharges of around 30%, reviving fears of lasting
+                                deindustrialisation.</li>
+                            <li><b>Asia.</b> Import-dependent economies such as Vietnam, the
+                                Philippines and Bangladesh faced fuel shortages and panic buying,
+                                leading to states of emergency and transport strikes.</li>
+                        </ul>
+
+                        <h6>Policy response</h6>
+                        <p>
+                            Central banks shifted to a defensive, inflation-focused stance and pushed
+                            back expected easing.
+                            <span class="fs-todo">(To be completed: specific central-bank, fiscal and
+                            IEA stock-release measures.)</span>
+                        </p>
+
+                        <h6>Recovery</h6>
+                        <p>
+                            As in earlier oil shocks, the most extreme price moves were short-lived.
+                            By 1&nbsp;July, Brent had fallen to $71.57, fully reversing the war-driven
+                            spike. The S&amp;P&nbsp;500 rose 17.3% from its March low to close at
+                            7,411.98 on 24&nbsp;July.
+                        </p>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Stocks and bonds fell together.</b> As in 2022, a supply-driven
+                                inflation shock turned the stock–bond correlation positive. This
+                                weakened the diversification that balanced and risk-parity portfolios
+                                rely on.</li>
+                            <li><b>Commodity-derivative margins.</b> Sharp moves in energy prices
+                                tend to raise initial and variation margin for producers, utilities
+                                and commodity traders. This is the liquidity channel that strained
+                                European energy firms in 2022.</li>
+                            <li><b>Rate repricing.</b> A sudden shift in the expected policy path
+                                affects interest-rate-sensitive balance sheets. Leveraged holders of
+                                duration are the most exposed.</li>
+                            <li><b>Temporary shock.</b> The fast reversal fits the pattern of
+                                geopolitical supply shocks: severe price effects, but limited lasting
+                                damage to the financial system when the disruption is short.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Brent crude, intraday high</td><td class="num">&gt; $120/bbl</td><td>early Mar 2026</td></tr>
+                            <tr><td>Brent crude, peak close</td><td class="num">$118.35/bbl</td><td>31 Mar 2026</td></tr>
+                            <tr><td>Tanker freight index, peak</td><td class="num">3,737</td><td>Mar 2026</td></tr>
+                            <tr><td>Dutch TTF gas</td><td class="num">&gt; €60/MWh</td><td>mid-Mar 2026</td></tr>
+                            <tr><td>S&amp;P 500, trough</td><td class="num">6,316.91</td><td>30 Mar 2026</td></tr>
+                            <tr><td>Brent crude, post-crisis</td><td class="num">$71.57/bbl</td><td>1 Jul 2026</td></tr>
+                            <tr><td>S&amp;P 500, recovery (+17.3%)</td><td class="num">7,411.98</td><td>24 Jul 2026</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="#">International Energy Agency: statement on the Strait of Hormuz closure</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Market data: Brent, TTF, S&amp;P 500</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+            <!-- ============================ Apr–Jun 2025 · "Liberation Day" tariffs -->
+            <article class="fs-event" id="ev-2025-04-liberation-day" data-tags="geo mkt sov">
+                <span class="fs-date">Apr – Jun 2025</span>
+                <h4 class="fs-title">"Liberation Day" tariffs and the April 2025 market crash<a class="fs-anchor" href="#ev-2025-04-liberation-day">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-geo">Geopolitics / Trade &amp; Energy</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-sov">Sovereign</span>
+                </div>
+                <p class="fs-sum">
+                    On 2&nbsp;April 2025 the U.S. administration announced sweeping "reciprocal"
+                    tariffs that went far beyond what markets expected: a 10% baseline on nearly all
+                    imports, plus much higher country-specific rates, including 34% on China, 20% on
+                    the EU and 24% on Japan. U.S. equities lost about $6.6&nbsp;trillion in two
+                    sessions, the largest two-day loss on record, and the sell-off spread worldwide.
+                    The episode was unusual for a risk-off shock. Instead of rallying, U.S. Treasuries
+                    sold off and the dollar weakened, which raised questions about the safe-haven
+                    status of U.S. assets. Leveraged bond positions came under strain. On
+                    9&nbsp;April the administration announced a 90-day pause on most of the new
+                    tariffs, setting off one of the largest one-day rallies in history. By late June,
+                    the S&amp;P&nbsp;500 and Nasdaq were at new record highs.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Trigger</h6>
+                        <p>
+                            The administration dubbed 2&nbsp;April "Liberation Day". The tariffs aimed
+                            to penalise the countries with the largest bilateral trade surpluses with
+                            the U.S. and to bring manufacturing back home. The package included:
+                        </p>
+                        <ul>
+                            <li>a flat <b>10% baseline tariff</b> on nearly all imports;</li>
+                            <li><b>34%</b> on China, which escalated through tit-for-tat retaliation
+                                to a combined U.S. rate of 145% by mid-April, against Chinese
+                                retaliation of 125%;</li>
+                            <li><b>20%</b> on the European Union and <b>24%</b> on Japan.</li>
+                        </ul>
+                        <p>
+                            The measures were abrupt and hit close allies and export-dependent
+                            economies. Investors quickly priced the risk of retaliation and a
+                            prolonged global trade war.
+                        </p>
+
+                        <h6>Timeline</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">2 Apr 2025</span><div><b>Announcement</b>The
+                                "Liberation Day" tariffs are unveiled after the U.S. market close,
+                                and a global equity sell-off follows.</div></li>
+                            <li><span class="d">3–4 Apr</span><div><b>Two-day wipeout</b>U.S.
+                                equities lose about $6.6tn. The Nasdaq enters bear-market territory
+                                and the VIX closes at 45.31 on 4&nbsp;April, its highest since
+                                2020.</div></li>
+                            <li><span class="d">5 Apr</span><div><b>Baseline tariff in
+                                force</b>The 10% minimum tariff takes effect.</div></li>
+                            <li><span class="d">7–8 Apr</span><div><b>Global contagion</b>Asian
+                                and European markets fall sharply. U.S. Treasuries begin a steep
+                                sell-off.</div></li>
+                            <li><span class="d">9 Apr</span><div><b>The pause</b>The higher
+                                country-specific tariffs take effect and are suspended for 90 days on
+                                the same day, except for China. The S&amp;P&nbsp;500 gains about
+                                9.5%, its largest one-day rise since 2008, and the Nasdaq about
+                                12%.</div></li>
+                            <li><span class="d">May 2025</span><div><b>De-escalation</b>The U.S.
+                                and China agree a temporary tariff truce, and other trade
+                                negotiations begin.</div></li>
+                            <li><span class="d">late Jun 2025</span><div><b>Full recovery</b>The
+                                S&amp;P&nbsp;500 and Nasdaq close at all-time highs.</div></li>
+                        </ol>
+
+                        <h6>U.S. equity market</h6>
+                        <ul>
+                            <li><b>Record two-day loss.</b> About $6.6tn of market value was erased
+                                within 48 hours of the announcement. Cumulative losses since
+                                Inauguration Day reached around $11tn.
+                                <span class="fs-todo">(figure to source)</span></li>
+                            <li><b>Big Tech.</b> The "Magnificent 7" (Apple, Microsoft, Amazon,
+                                Nvidia and others) lost about $1.8tn combined over two sessions. Many
+                                of them depend on global supply chains, especially in Asia.</li>
+                            <li><b>Volatility.</b> The VIX closed at 45.31 on 4&nbsp;April, its
+                                highest close since the COVID-19 shock of 2020.</li>
+                        </ul>
+
+                        <h6>Global contagion and commodities</h6>
+                        <ul>
+                            <li><b>Asia.</b> Japan's Nikkei&nbsp;225 fell almost 8% on 7&nbsp;April,
+                                triggering circuit breakers in futures trading. South Korea's KOSPI
+                                fell more than 5%.</li>
+                            <li><b>Europe.</b> The STOXX&nbsp;600 fell more than 8% in a single
+                                week, its worst week since 2020. The FTSE&nbsp;100 dropped almost 5%
+                                in a day, its largest daily fall since the March 2020 "dash for
+                                cash".</li>
+                            <li><b>Commodities.</b> On expectations of a global slowdown, crude oil
+                                fell more than 7%, and WTI briefly traded below $60 per barrel for
+                                the first time since 2021.</li>
+                        </ul>
+
+                        <h6>Treasury market and leverage</h6>
+                        <p>
+                            This part of the episode mattered most for financial stability. In a
+                            typical global sell-off, investors buy U.S. Treasuries. In the week of
+                            7–11&nbsp;April, Treasury yields instead rose sharply, especially at
+                            long maturities, while equities were also falling. Market commentary and
+                            official reports pointed to forced deleveraging of crowded leveraged
+                            positions, particularly <b>swap-spread trades</b> and, possibly, the
+                            Treasury cash–futures <b>basis trade</b>
+                            (<a href="../BasisTrade/BasisTrade.html">see the basis-trade page</a>).
+                            They also noted reduced dealer capacity to absorb sales. The bond-market
+                            stress was widely cited as one reason for the 9&nbsp;April pause.
+                            <span class="fs-todo">(To be completed: size of the yield moves and
+                            relevant official assessments, e.g. Fed / IMF GFSR.)</span>
+                        </p>
+
+                        <h6>The dollar anomaly</h6>
+                        <p>
+                            The dollar weakened alongside rising Treasury yields, an unusual
+                            combination in a risk-off episode. This reflected concern about
+                            unpredictable, weaponised trade policy and about the long-run
+                            safe-haven and reserve status of U.S. assets. The dollar fell about 6.5%
+                            against the euro in the weeks after the announcement. The yen and Swiss
+                            franc appreciated as alternative safe havens. Gold set successive
+                            records, above $3,100/oz in early April and higher still later in the
+                            month.
+                        </p>
+
+                        <h6>Policy response</h6>
+                        <p>
+                            The main response came from trade policy itself: the 90-day pause on
+                            9&nbsp;April, followed by further walk-backs and negotiations. Central
+                            banks did not need to intervene in markets. Market functioning remained
+                            orderly despite the volatility.
+                            <span class="fs-todo">(Check and complete: any central-bank statements
+                            or liquidity measures.)</span>
+                        </p>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Policy uncertainty as a systemic shock.</b> The trigger was a
+                                policy announcement, not a financial-sector failure. Its abrupt scale
+                                still produced moves comparable to classic financial crises.</li>
+                            <li><b>The safe-haven assumption was tested.</b> Treasuries and the
+                                dollar fell together with equities. That challenges a central
+                                assumption in global risk management and collateral
+                                frameworks.</li>
+                            <li><b>Leverage in the core bond market.</b> As in March 2020, stress
+                                in the Treasury market drew attention to hedge-fund relative-value
+                                leverage and to dealers' limited capacity to intermediate.</li>
+                            <li><b>Market discipline on policy.</b> The speed of the reversal shows
+                                bond markets acting as a constraint on economic policy, echoing the
+                                UK gilt crisis of 2022.</li>
+                            <li><b>Lasting effects.</b> Prices recovered quickly. Questions about
+                                dollar volatility and the stability of trade relations remained.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>U.S. equity value lost, two sessions</td><td class="num">≈ $6.6tn</td><td>3–4 Apr 2025</td></tr>
+                            <tr><td>Magnificent 7 value lost, two sessions</td><td class="num">≈ $1.8tn</td><td>3–4 Apr 2025</td></tr>
+                            <tr><td>VIX, close</td><td class="num">45.31</td><td>4 Apr 2025</td></tr>
+                            <tr><td>Nikkei 225, daily change</td><td class="num">≈ −8%</td><td>7 Apr 2025</td></tr>
+                            <tr><td>KOSPI, daily change</td><td class="num">&lt; −5%</td><td>7 Apr 2025</td></tr>
+                            <tr><td>STOXX 600, weekly change</td><td class="num">≈ −8.4%</td><td>early Apr 2025</td></tr>
+                            <tr><td>FTSE 100, daily change</td><td class="num">≈ −5%</td><td>7 Apr 2025</td></tr>
+                            <tr><td>WTI crude, low</td><td class="num">&lt; $60/bbl</td><td>early Apr 2025</td></tr>
+                            <tr><td>USD vs EUR, change</td><td class="num">≈ −6.5%</td><td>Apr 2025</td></tr>
+                            <tr><td>S&amp;P 500, one-day gain on tariff pause</td><td class="num">≈ +9.5%</td><td>9 Apr 2025</td></tr>
+                            <tr><td>Tariff increase priced in before announcement <span class="fs-todo">(to source)</span></td><td class="num">≈ 8.6%</td><td>pre-2 Apr 2025</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://en.wikipedia.org/wiki/2025_stock_market_crash">Wikipedia: 2025 stock market crash</a></li>
+                            <li><a href="#">Stanford GSB: analysis of the dollar and Treasury sell-off</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">White House: "Liberation Day" reciprocal tariff fact sheet, 2 Apr 2025</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">Market data: S&amp;P 500, VIX, Treasuries, FX, gold</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+            <!-- ============================ Mar–May 2023 · US regional banks & Credit Suisse -->
+            <article class="fs-event" id="ev-2023-03-banking-turmoil" data-tags="bank pol">
+                <span class="fs-date">Mar – May 2023</span>
+                <h4 class="fs-title">US regional bank failures and the collapse of Credit Suisse<a class="fs-anchor" href="#ev-2023-03-banking-turmoil">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-bank">Banking</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    The fastest-moving banking crisis since 2008. Mid-sized US banks had invested a
+                    surge of pandemic-era deposits in long-dated Treasuries and mortgage-backed
+                    securities. When the Federal Reserve raised rates in 2022–23, these portfolios
+                    suffered large unrealised losses. In March 2023, Silicon Valley Bank's mostly
+                    uninsured, tech-sector depositors ran, withdrawing $42bn in a single day, and the
+                    bank failed within 48 hours. Signature Bank followed, and First Republic was
+                    seized and sold to JPMorgan Chase on 1&nbsp;May. US authorities guaranteed all
+                    deposits at the failed banks and created the Bank Term Funding Program, which
+                    lent against bonds at par. The loss of confidence then spread to Europe's
+                    weakest global bank. On 19&nbsp;March, Swiss authorities arranged a weekend
+                    takeover of Credit Suisse by UBS for CHF&nbsp;3bn. They backed the deal with
+                    extraordinary liquidity support and wrote off CHF&nbsp;16bn of AT1 bonds while
+                    shareholders received some value, a decision that shook global bank capital
+                    markets.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <!-- ------------------------------------------------ Part 1: US -->
+                        <div class="fs-part" id="ev-2023-03-svb">1 · The US regional banking crisis<a class="fs-anchor" href="#ev-2023-03-svb">#</a></div>
+
+                        <h6>Setup: deposit surge and duration risk</h6>
+                        <p>
+                            Fiscal stimulus, ultra-low rates and a tech funding boom produced a
+                            flood of deposits into regional banks during the pandemic. SVB's deposits
+                            roughly tripled, from about $62bn at end-2019 to about $189bn at
+                            end-2021. Loan demand did not keep pace, so banks invested the cash in
+                            long-dated US Treasuries and agency MBS. These assets carried little
+                            credit risk but a great deal of <b>interest-rate (duration) risk</b>.
+                        </p>
+                        <p>
+                            When the Fed raised rates sharply from March 2022, bond prices fell and
+                            the portfolios showed large unrealised losses. Securities classified as
+                            <i>held to maturity</i> did not have to be marked to market in
+                            regulatory capital. The losses were harmless only as long as the bank
+                            never had to sell. A run would force sales and turn the paper losses into
+                            real ones.
+                        </p>
+
+                        <h6>The failure of Silicon Valley Bank</h6>
+                        <p>
+                            SVB's funding was unusually fragile. Its depositors were start-ups and
+                            venture-capital firms, a concentrated and closely networked client base,
+                            and over 90% of deposits exceeded the $250,000 FDIC insurance limit. As
+                            start-ups burned through cash, deposits had been flowing out since 2022.
+                        </p>
+                        <ol class="fs-steps">
+                            <li><span class="d">8 Mar 2023</span><div><b>Loss crystallised</b>SVB
+                                announces it has sold about $21bn of securities at a loss of about
+                                $1.8bn and plans a $2.25bn capital raise. Crypto-focused Silvergate
+                                Bank announces its wind-down on the same day.</div></li>
+                            <li><span class="d">9 Mar</span><div><b>Digital run</b>Coordinated
+                                through venture-capital networks and social media, depositors
+                                withdraw about $42bn in one day, roughly a quarter of deposits.
+                                Requests for a further ~$100bn are queued for the next
+                                morning.</div></li>
+                            <li><span class="d">10 Mar</span><div><b>Closure</b>The California
+                                regulator closes SVB and appoints the FDIC as receiver. With about
+                                $209bn in assets, it was then the second-largest bank failure in US
+                                history.</div></li>
+                            <li><span class="d">12 Mar</span><div><b>Systemic-risk
+                                exception</b>Signature Bank (about $110bn in assets, heavily exposed
+                                to crypto-related deposits) is closed. The Treasury, Fed and FDIC
+                                invoke the systemic-risk exception to protect <i>all</i> depositors
+                                of both banks, and the Fed launches the BTFP.</div></li>
+                            <li><span class="d">16 Mar</span><div><b>Private support</b>Eleven
+                                large banks place $30bn of uninsured deposits at First
+                                Republic.</div></li>
+                            <li><span class="d">1 May 2023</span><div><b>First Republic
+                                fails</b>First Republic has lost more than $100bn of deposits in the
+                                first quarter. It is seized by the FDIC and sold to JPMorgan Chase.
+                                With about $229bn in assets, it overtakes SVB as the second-largest
+                                US bank failure.</div></li>
+                        </ol>
+
+                        <h6>Policy response</h6>
+                        <ul>
+                            <li><b>Blanket deposit guarantee.</b> All deposits at SVB and Signature
+                                were protected, so uninsured depositors lost nothing. Shareholders
+                                and unsecured creditors were not protected. The cost fell on the
+                                Deposit Insurance Fund, recovered through a special assessment on
+                                large banks.</li>
+                            <li><b>Bank Term Funding Program (BTFP).</b> The facility offered loans
+                                of up to one year against Treasuries and agency securities valued
+                                <b>at par</b> rather than market value. This removed the need for
+                                fire sales and effectively neutralised the unrealised losses for
+                                liquidity purposes. New lending under the BTFP stopped in March
+                                2024.</li>
+                            <li><b>Discount window.</b> Borrowing reached a record of about $153bn
+                                in the week of 15&nbsp;March, exceeding the 2008 peak.</li>
+                            <li><b>Supervisory review.</b> The Fed's own review (the "Barr report",
+                                April 2023) acknowledged supervisory failures. It also pointed to
+                                the 2019 "tailoring" that had eased requirements for banks of SVB's
+                                size, including exemption from the liquidity coverage ratio and the
+                                option to exclude unrealised losses on securities from regulatory
+                                capital.</li>
+                        </ul>
+
+                        <!-- ------------------------------------------------ Part 2: CS -->
+                        <div class="fs-part" id="ev-2023-03-credit-suisse">2 · The demise of Credit Suisse<a class="fs-anchor" href="#ev-2023-03-credit-suisse">#</a></div>
+
+                        <h6>Background: a long loss of confidence</h6>
+                        <p>
+                            The US failures were driven by interest-rate risk and fragile funding.
+                            Credit Suisse's fall was different. It was the culmination of years of
+                            scandals, risk-management failures and repeated losses, most notably the
+                            Archegos and Greensill episodes of 2021. A wave of client withdrawals in
+                            October 2022 left the bank highly exposed to any new shock. Net asset
+                            outflows totalled about CHF&nbsp;171bn between Q4 2022 and Q1 2023.
+                        </p>
+
+                        <h6>The final blow</h6>
+                        <p>
+                            The US turmoil quickly crossed the Atlantic and targeted the weakest
+                            global bank in Europe. On 15&nbsp;March, Credit Suisse's largest
+                            shareholder, the Saudi National Bank, ruled out providing more capital,
+                            and the share price and bond prices collapsed. Late on 15&nbsp;March,
+                            Credit Suisse announced it would borrow up to CHF&nbsp;50bn from the Swiss
+                            National Bank. This failed to halt the outflows or the slide in its
+                            shares.
+                        </p>
+
+                        <h6>The weekend rescue</h6>
+                        <p>
+                            Swiss authorities (the Federal Council, the SNB and FINMA) feared that the
+                            disorderly failure of a global systemically important bank (G-SIB) would
+                            spread worldwide. They chose an emergency merger over the bank's
+                            resolution plan. On Sunday 19&nbsp;March 2023, UBS agreed to acquire
+                            Credit Suisse in an all-stock deal worth about CHF&nbsp;3bn (about
+                            $3.2bn). Shareholders did not get a vote, as the deal relied on emergency
+                            law. To secure it, the state provided:
+                        </p>
+                        <ul>
+                            <li>up to <b>CHF&nbsp;100bn</b> of liquidity assistance from the SNB;</li>
+                            <li>a further <b>CHF&nbsp;100bn public liquidity backstop</b>, an SNB
+                                loan carrying a federal default guarantee;</li>
+                            <li>a <b>CHF&nbsp;9bn federal loss guarantee</b> on a designated
+                                portfolio of hard-to-value assets, covering losses after UBS had
+                                absorbed the first CHF&nbsp;5bn. UBS ended this agreement in August
+                                2023 without using it.</li>
+                        </ul>
+
+                        <h6>The AT1 write-down</h6>
+                        <p>
+                            The most contested part of the rescue was FINMA's order to write down
+                            Credit Suisse's Additional Tier&nbsp;1 (AT1) bonds, about
+                            CHF&nbsp;16bn, to zero. AT1s are contingent-convertible instruments
+                            designed to absorb losses while a bank is still operating. Their
+                            prospectuses did allow a full write-down on a "viability event" or when
+                            extraordinary government support is provided. However, the usual creditor
+                            hierarchy puts AT1 holders ahead of shareholders, and here the
+                            shareholders still received about CHF&nbsp;3bn in UBS shares while AT1
+                            holders lost everything.
+                        </p>
+                        <p>
+                            The decision caused a sharp sell-off in AT1 bonds worldwide. On
+                            20&nbsp;March, the ECB, the Single Resolution Board and the EBA issued a
+                            joint statement, and the Bank of England a separate one, both confirming
+                            that in their jurisdictions equity would absorb losses before AT1.
+                            Bondholders brought numerous legal challenges. In 2025 the Swiss Federal
+                            Administrative Court was reported to have found that the write-down
+                            lacked a sufficient legal basis, a ruling FINMA has appealed.
+                            <span class="fs-todo">(verify status)</span>
+                        </p>
+
+                        <!-- ------------------------------------------------ Lessons -->
+                        <div class="fs-part">Financial-stability reading</div>
+                        <ul>
+                            <li><b>Runs are faster in the digital age.</b> Mobile banking and social
+                                media compressed a bank run from weeks to hours. This challenges
+                                liquidity rules calibrated on 30-day outflow assumptions.</li>
+                            <li><b>Uninsured deposits behave like wholesale funding.</b> A
+                                concentrated, networked base of uninsured deposits is highly
+                                runnable. The blanket guarantee reopened the debate on the scope of
+                                deposit insurance.</li>
+                            <li><b>Interest-rate risk on the banking book.</b> Held-to-maturity
+                                accounting can hide economic insolvency until liquidity needs force
+                                sales. Liquidity and solvency risk are tightly linked.</li>
+                            <li><b>"Mid-sized" banks can be systemic.</b> Authorities treated banks
+                                that were not designated as systemic as if they were, which raised
+                                questions about the 2019 tailoring rules.</li>
+                            <li><b>Resolution frameworks were tested.</b> The first failure of a
+                                G-SIB since the post-2008 reforms was handled by a state-backed
+                                merger rather than bail-in resolution. This raised doubts about
+                                whether the framework could be used in practice and led to reviews in
+                                Switzerland and by the Basel Committee and FSB (2023).</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>SVB deposits, end-2019 → end-2021</td><td class="num">≈ $62bn → $189bn</td><td>2019–21</td></tr>
+                            <tr><td>SVB securities sale, realised loss</td><td class="num">≈ $1.8bn on $21bn</td><td>8 Mar 2023</td></tr>
+                            <tr><td>SVB withdrawals in one day</td><td class="num">≈ $42bn</td><td>9 Mar 2023</td></tr>
+                            <tr><td>Total assets: SVB / Signature / First Republic</td><td class="num">≈ $209bn / $110bn / $229bn</td><td>at failure</td></tr>
+                            <tr><td>Fed discount-window borrowing, peak</td><td class="num">≈ $153bn</td><td>week of 15 Mar 2023</td></tr>
+                            <tr><td>First Republic deposit outflows</td><td class="num">&gt; $100bn</td><td>Q1 2023</td></tr>
+                            <tr><td>Credit Suisse net asset outflows</td><td class="num">≈ CHF 171bn</td><td>Q4 2022 – Q1 2023</td></tr>
+                            <tr><td>SNB liquidity line announced</td><td class="num">CHF 50bn</td><td>15–16 Mar 2023</td></tr>
+                            <tr><td>UBS purchase price</td><td class="num">CHF 3bn</td><td>19 Mar 2023</td></tr>
+                            <tr><td>Liquidity support (ELA + public backstop)</td><td class="num">up to CHF 200bn</td><td>19 Mar 2023</td></tr>
+                            <tr><td>Federal loss guarantee</td><td class="num">CHF 9bn (after CHF 5bn first loss)</td><td>19 Mar 2023</td></tr>
+                            <tr><td>AT1 bonds written off</td><td class="num">≈ CHF 16bn</td><td>19 Mar 2023</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://www.federalreserve.gov/publications/files/svb-review-20230428.pdf">Federal Reserve (2023): Review of the Federal Reserve's Supervision and Regulation of Silicon Valley Bank</a></li>
+                            <li><a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20230312a.htm">Federal Reserve, Treasury and FDIC: joint statement, 12 Mar 2023</a></li>
+                            <li><a href="https://www.bis.org/bcbs/publ/d555.htm">Basel Committee (2023): Report on the 2023 banking turmoil</a></li>
+                            <li><a href="#">FINMA: report on the Credit Suisse crisis and AT1 write-down</a> <span class="fs-todo">(link to add)</span></li>
+                            <li><a href="#">ECB/SRB/EBA joint statement on AT1, 20 Mar 2023</a> <span class="fs-todo">(link to add)</span></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="fs-decade" id="d2010">
+        <h3>2010s <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline"></div>
+    </section>
+
+    <section class="fs-decade" id="d2000">
+        <h3>2000s <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline"></div>
+    </section>
+
+    <section class="fs-decade" id="d1990">
+        <h3>1990s <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline"></div>
+    </section>
+
+    <section class="fs-decade" id="d1980">
+        <h3>1980s &amp; earlier <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline"></div>
+    </section>
+
+    <p class="fs-empty" id="fs-none" style="display:none;">No events match the selected filters.</p>
 
     <br>
     <h4 id="REFERENCES"><i>References</i></h4>
-    [1] <a href="https://www.cmegroup.com/education/courses/introduction-to-treasuries/understanding-treasury-futures-basis.html">CME Group — Understanding the Treasury futures basis</a>
+    [1] Laeven, L. and Valencia, F. (2018), <a href="https://www.imf.org/en/Publications/WP/Issues/2018/09/14/Systemic-Banking-Crises-Revisited-46232"><i>Systemic Banking Crises Revisited</i></a>, IMF Working Paper 18/206.
     <br>
-    [2] <a href="https://www.bis.org/publ/qtrpdf/r_qt2003v.htm">BIS Quarterly Review — Leverage and margin spirals in fixed income markets (March 2020)</a>
+    [2] Bank for International Settlements, <a href="https://www.bis.org">Annual Economic Reports and Quarterly Reviews</a>.
     <br>
-    [3] <a href="https://www.financialresearch.gov/">Office of Financial Research — notes on hedge-fund Treasury basis exposure</a>
+    [3] Financial Stability Board, <a href="https://www.fsb.org">reports on non-bank financial intermediation</a>.
     <br>
-    [4] <a href="https://www.federalreserve.gov/econres/feds/">Federal Reserve FEDS Notes — Treasury market functioning, March 2020</a>
+    [4] European Systemic Risk Board, <a href="https://www.esrb.europa.eu">publications</a>.
     <br>
-    [5] <a href="https://www.fsb.org/">Financial Stability Board — leverage in non-bank financial intermediation</a>
+    [5] International Energy Agency, <a href="https://www.iea.org">Oil Market Reports and energy security publications</a>.
+    <br>
+    [6] International Monetary Fund, <a href="https://www.imf.org/en/Publications/GFSR">Global Financial Stability Report</a>.
+    <br>
+    [7] Basel Committee on Banking Supervision (2023), <a href="https://www.bis.org/bcbs/publ/d555.htm"><i>Report on the 2023 banking turmoil</i></a>.
     <br><br>
 
     <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
@@ -174,6 +837,58 @@
 <script type="text/javascript" src="../../js/footer.js"></script>
 <!-- End page content -->
 </div>
+
+<script>
+/* ---- category filter: an event is shown if it carries ANY selected tag ---- */
+(function(){
+    const chips  = [...document.querySelectorAll('.fs-chip[data-filter]')];
+    const events = [...document.querySelectorAll('.fs-event')];
+    const decs   = [...document.querySelectorAll('.fs-decade')];
+    const count  = document.getElementById('fs-count');
+    const none   = document.getElementById('fs-none');
+
+    function apply(){
+        const active = chips.filter(c => c.getAttribute('aria-pressed') === 'true')
+                            .map(c => c.dataset.filter);
+        let shown = 0;
+        events.forEach(ev => {
+            const tags = (ev.dataset.tags || '').split(/\s+/);
+            const ok = !active.length || active.some(t => tags.includes(t));
+            ev.style.display = ok ? '' : 'none';
+            if (ok) shown++;
+        });
+        decs.forEach(d => {
+            const vis = [...d.querySelectorAll('.fs-event')].some(e => e.style.display !== 'none');
+            d.style.display = vis ? '' : 'none';
+        });
+        count.textContent = shown + ' / ' + events.length + ' events';
+        none.style.display = (events.length && !shown) ? '' : 'none';
+    }
+    chips.forEach(c => c.addEventListener('click', () => {
+        c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        apply();
+    }));
+    document.getElementById('fs-reset').addEventListener('click', () => {
+        chips.forEach(c => c.setAttribute('aria-pressed', 'false')); apply();
+    });
+
+    /* open the Details panel when arriving via a direct #ev-… link,
+       including links to a part inside an entry (e.g. #ev-2023-03-svb) */
+    function openFromHash(){
+        if (!location.hash.startsWith('#ev-')) return;
+        const target = document.getElementById(location.hash.slice(1));
+        if (!target) return;
+        const ev = target.closest('.fs-event');
+        const det = ev && ev.querySelector('details');
+        if (det) det.open = true;
+        target.scrollIntoView();
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+    apply();
+})();
+</script>
+
 <script src="../../js/OpenCloseSidebar.js"></script>
 <script src="../../js/OpenCloseCollapsible.js"></script>
 </body>
