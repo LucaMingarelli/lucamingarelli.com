@@ -109,6 +109,7 @@
         .fs-det ul, .fs-det ol{margin:2px 0 4px;padding-left:18px;}
         .fs-det li{margin-bottom:3px;}
         .fs-todo{color:var(--fs-dim);font-style:italic;}
+        .fs-error { color:#b00020; font-style:normal; }
 
         /* ---- part sub-heading inside details (multi-part entries) ---- */
         .fs-part{font-size:15px;font-weight:700;color:var(--fs-acc);margin:18px 0 2px;
@@ -7318,7 +7319,101 @@
           </details>
         </article>
 
+        <!-- 19 Oct 1987: Black Monday -->
+        <article class="fs-event" id="ev-1987-10-black-monday" data-tags="mkt pol">
+          <span class="fs-date">19 Oct 1987</span>
+          <h4 class="fs-title">Black Monday &mdash; the global equity crash<a class="fs-anchor" href="#ev-1987-10-black-monday">#</a></h4>
+          <div class="fs-tags">
+            <span class="fs-tag t-mkt">Markets</span>
+            <span class="fs-tag t-pol">Policy &amp; Regulation</span>
+          </div>
+          <p class="fs-sum">
+            On Monday 19&nbsp;October 1987, equity markets around the world crashed in a single session. The Dow Jones Industrial Average fell 508 points, or 22.6%, its largest one-day percentage decline on record, and losses spread across major markets in Europe, Asia and Latin America. The crash was amplified by &ldquo;portfolio insurance&rdquo; strategies that mechanically sold stock-index futures as prices fell, by index arbitrage between the cash and futures markets, and by structural weaknesses in clearing, settlement and market coordination. Unlike the 1929 crash, however, the Federal Reserve responded immediately and decisively, providing liquidity to the banking system and encouraging banks to keep lending to brokers and dealers. The market stabilised within days, and the Dow recovered 57% of its loss within two sessions. Black Monday demonstrated that an extreme market crash need not become a Depression-scale banking collapse when the central bank acts as lender of last resort&mdash;a lesson that would shape the Fed&rsquo;s response to later crises.
+          </p>
+          <details>
+            <summary>Details</summary>
+            <div class="fs-det">
+              <h6>Background &mdash; a stretched market and new hedging strategies</h6>
+              <p>
+                By late 1987, US equity markets had risen sharply, driven by strong earnings, low inflation, and a wave of international investment. At the same time, a new product&mdash;&ldquo;portfolio insurance&rdquo;&mdash;had become popular with pension funds and institutional investors, promising downside protection without the cost of buying actual put options.
+              </p>
+              <ul>
+                <li><b>Portfolio insurance.</b> The strategy used a dynamic hedging rule: as stocks fell, sell more stock-index futures; as stocks rose, buy them back. In effect, it replicated a put option synthetically, but the rule was pro-cyclical&mdash;selling more as prices fell.</li>
+                <li><b>Index arbitrage.</b> Traders exploited price differences between the cash (stock) market and the futures market, buying one and selling the other. When prices moved sharply, this arbitrage amplified the move rather than dampening it.</li>
+                <li><b>Market segmentation.</b> Stock, options, and futures markets were regulated separately (by the SEC and CFTC), with different clearing and settlement timelines, creating the potential for negative trading account balances and forced liquidations.</li>
+                <li><b>Preceding volatility.</b> On Friday 16 October (triple-witching day, with simultaneous expiration of stock options, index futures, and index options), the market fell 108 points, and volatility spiked, setting the stage for Monday&rsquo;s crash.</li>
+              </ul>
 
+              <h6>Mechanism &mdash; mechanical selling and a feedback loop</h6>
+              <p>
+                The crash was amplified by a feedback loop in which mechanical selling rules turned a modest decline into a rout:
+              </p>
+              <ol class="fs-loop">
+                <li>Stocks begin to fall, triggering portfolio-insurance rules that require selling stock-index futures.</li>
+                <li>Heavy selling in futures pushes futures prices below cash prices, triggering index arbitrage that sells stocks in the cash market.</li>
+                <li>Cash-market selling pushes stock prices lower still, triggering further portfolio-insurance selling.</li>
+                <li>Market makers, overwhelmed by the volume, widen spreads or step aside, reducing liquidity and accelerating the decline.</li>
+                <li>The loop continues until the market closes, with the Dow down 22.6%.</li>
+              </ol>
+              <p>
+                The Brady Commission later estimated that portfolio insurers accounted for roughly 40% of non-market-maker futures sales on 19 October, and that the top ten sellers accounted for 50% of non-market-maker volume&mdash;evidence of how concentrated and mechanical the selling had become.
+              </p>
+
+              <h6>Timeline</h6>
+              <ol class="fs-steps">
+                <li><span class="d">1982&ndash;87</span><div><b>Bull market and portfolio insurance</b>US equities rise sharply, and portfolio insurance becomes popular with institutional investors. The Dow rises from roughly 800 in 1982 to over 2,700 by August 1987.</div></li>
+                <li><span class="d">Oct 1987</span><div><b>Pre-crash weakness</b>Concerns about interest rates, the dollar, and the trade deficit build. On Friday 16 October, the Dow falls 108 points on triple-witching day.</div></li>
+                <li><span class="d">Mon 19 Oct, open</span><div><b>Crash begins</b>Heavy selling in Asia and Europe overnight spills into US markets. Portfolio insurers begin selling futures aggressively in the first half-hour.</div></li>
+                <li><span class="d">Mon 19 Oct, close</span><div><b>Black Monday</b>The Dow falls 508 points (22.6%), its largest one-day percentage decline on record. Global markets fall in sympathy; worldwide losses are estimated at $1.71 trillion.</div></li>
+                <li><span class="d">Tue 20 Oct, 08:41</span><div><b>Fed statement</b>Chairman Alan Greenspan issues a one-sentence statement affirming the Fed&rsquo;s readiness to serve as a source of liquidity to support the economic and financial system.</div></li>
+                <li><span class="d">Tue 20 Oct</span><div><b>Liquidity injection</b>The Fed conducts open-market operations that push the federal funds rate down to around 7% (from over 7.5% on Monday), and encourages banks to continue lending to brokers and dealers.</div></li>
+                <li><span class="d">Tue&ndash;Wed 20&ndash;21 Oct</span><div><b>Recovery</b>The Dow recovers 57% of its loss within two sessions, and markets stabilise. No major bank or broker fails.</div></li>
+                <li><span class="d">Jan 1988</span><div><b>Brady Report</b>The Presidential Task Force on Market Mechanisms (Brady Commission) publishes its report, identifying portfolio insurance, market segmentation, inadequate information sharing, and the absence of circuit breakers as key contributors.</div></li>
+                <li><span class="d">Oct 1988</span><div><b>Circuit breakers introduced</b>US exchanges implement circuit breakers (trading halts) in response to the Brady Commission&rsquo;s recommendations, a reform that remains in place today.</div></li>
+              </ol>
+
+              <h6>Policy response</h6>
+              <ul>
+                <li><b>Immediate liquidity pledge.</b> The Federal Reserve&rsquo;s statement on 20 October was unprecedented in its speed and clarity, signalling that the central bank would act as lender of last resort to the financial system&mdash;a template for later crises.</li>
+                <li><b>Open-market operations.</b> The Fed injected roughly $17bn into the banking system on 20 October (more than 25% of bank reserve balances), pushing the federal funds rate down and easing credit conditions.</li>
+                <li><b>Encouraging bank lending.</b> The Fed worked behind the scenes to ensure that banks continued to lend to brokers and dealers, preventing a funding freeze that could have turned the market crash into a broader credit crisis.</li>
+                <li><b>Monetary easing.</b> The Fed cut the federal funds target by 50bp in the weeks following the crash, supporting the recovery.</li>
+                <li><b>Market reforms.</b> The Brady Commission&rsquo;s recommendations led to the introduction of circuit breakers (trading halts), better coordination between stock and futures markets, and closer scrutiny of portfolio-insurance strategies.</li>
+              </ul>
+
+              <h6>Financial-stability reading</h6>
+              <ul>
+                <li><b>Central-bank liquidity can prevent a crash from becoming a crisis.</b> Unlike 1929, the Fed acted immediately and decisively, providing liquidity before the market could spiral into a broader banking collapse&mdash;a lesson that would shape the Fed&rsquo;s response to later crises (e.g. <a href="#ev-2020-03-dash-for-cash">March 2020</a>).</li>
+                <li><b>Mechanical rules can amplify, not dampen, volatility.</b> Portfolio insurance was designed to protect individual investors, but when used by many investors simultaneously, it created a feedback loop that amplified the very move it was meant to hedge&mdash;a pattern that reappears in later episodes (e.g. <a href="#ev-2018-02-volmageddon">Volmageddon 2018</a>, <a href="#ev-2022-09-uk-ldi">LDI 2022</a>).</li>
+                <li><b>Market structure matters.</b> The separation of stock, options, and futures markets, with different clearing and settlement timelines, created vulnerabilities that allowed the crash to spread across markets&mdash;a lesson that informed later reforms on cross-market coordination.</li>
+                <li><b>Circuit breakers can buy time.</b> The introduction of trading halts after 1987 gave markets a &ldquo;time-out&rdquo; to pause, evaluate, and inhibit panic&mdash;a tool that has since become standard in major exchanges worldwide.</li>
+                <li><b>An extreme crash need not become a Depression.</b> Black Monday showed that a severe market dislocation can be contained if the central bank acts as lender of last resort and if the underlying banking system is sound&mdash;a contrast with 1929, when the Fed failed to act and the money supply contracted sharply.</li>
+              </ul>
+
+              <h6>Key figures</h6>
+              <table class="fs-kv">
+                <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                <tr><td>Dow Jones, one-day fall</td><td class="num">-508 pts (-22.6%)</td><td>19 Oct 1987</td></tr>
+                <tr><td>Global equity losses</td><td class="num">~$1.71tn</td><td>19 Oct 1987</td></tr>
+                <tr><td>Portfolio insurers&rsquo; share of non-market-maker futures sales</td><td class="num">~40%</td><td>19 Oct 1987</td></tr>
+                <tr><td>Top 10 sellers&rsquo; share of non-market-maker futures volume</td><td class="num">50%</td><td>19 Oct 1987</td></tr>
+                <tr><td>Fed liquidity injected, 20 Oct</td><td class="num">~$17bn</td><td>20 Oct 1987</td></tr>
+                <tr><td>Fed funds rate, Mon &rarr; Tue</td><td class="num">&gt;7.5% &rarr; ~7%</td><td>19&ndash;20 Oct 1987</td></tr>
+                <tr><td>Dow recovery within two sessions</td><td class="num">57% of loss</td><td>20&ndash;21 Oct 1987</td></tr>
+                <tr><td>Circuit breakers introduced</td><td class="num">Oct 1988</td><td>1988</td></tr>
+              </table>
+
+              <h6>Sources</h6>
+              <ul>
+                <li><a href="https://www.federalreservehistory.org/essays/stock-market-crash-of-1987">Federal Reserve History, Stock Market Crash of 1987</a></li>
+                <li><a href="https://www.federalreserve.gov/pubs/feds/2007/200713/">Federal Reserve Board (2007), A Brief History of the 1987 Stock Market Crash with a Discussion of the October 1987 Market Break</a></li>
+                <li><a href="https://sechistorical.org/digital-archive/the-october-1987-market-break-report-by-sec-division-of-market-regulation/">US Securities and Exchange Commission (1988), The October 1987 Market Break: Report by SEC Division of Market Regulation, February 1988</a></li>
+                <li><a href="https://www.gao.gov/assets/ggd-88-38.pdf">US Government Accountability Office (1988), Financial Markets: Preliminary Observations on the October 1987 Crash, GAO/GGD-88-38, January 1988</a></li>
+                <li><a href="https://www.nyse.com/article/circuit-breakers-are-doing-their-job-but-dont-close-the-markets">New York Stock Exchange, Circuit Breakers Are Doing Their Job, but Don&rsquo;t Close the Markets</a></li>
+              </ul>
+            </div>
+          </details>
+        </article>
 
 
 
@@ -7328,9 +7423,215 @@
 
 
     <section class="fs-decade" id="d1980">
-        <h3>1980s &amp; earlier <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <h3>1900 to 1980s <a class="fs-top" href="#fs-top">↑ top</a></h3>
+        <div class="fs-timeline">
+        <!-- 1976: Sterling crisis -->
+        <article class="fs-event" id="ev-1976-sterling-crisis" data-tags="sov pol geo">
+          <span class="fs-date">1976</span>
+          <h4 class="fs-title">The sterling crisis and IMF assistance<a class="fs-anchor" href="#ev-1976-sterling-crisis">#</a></h4>
+          <div class="fs-tags">
+            <span class="fs-tag t-sov">Sovereign</span>
+            <span class="fs-tag t-pol">Policy &amp; Regulation</span>
+            <span class="fs-tag t-geo">Geopolitics, Trade &amp; Energy</span>
+          </div>
+          <p class="fs-sum">
+            In 1976, the United Kingdom faced a severe currency and macroeconomic-confidence crisis that culminated in a request for assistance from the International Monetary Fund. Sterling, which had been floated in 1972, came under sustained pressure from a widening current-account deficit, high inflation, and doubts about the Labour government&rsquo;s ability to control public spending. The Bank of England attempted to defend the pound by selling foreign reserves, but the intervention proved insufficient, and by September 1976 sterling had fallen to a record low. On 29&nbsp;September, Chancellor Denis Healey announced that the UK would apply to the IMF for a standby credit of $3.9&nbsp;billion&mdash;the largest ever requested at the time. The IMF&rsquo;s conditionality required significant cuts to public expenditure and tighter monetary policy, which the Labour government found politically difficult to accept. A Letter of Intent was signed on 15&nbsp;December 1976, committing the government to &pound;2.5&nbsp;billion in spending cuts over two years in exchange for the loan. The episode was a currency and macroeconomic-confidence crisis, distinct from the earlier secondary banking crisis of 1973&ndash;75, and it marked a rare instance of a major advanced economy seeking IMF assistance.
+          </p>
+          <details>
+            <summary>Details</summary>
+            <div class="fs-det">
+              <h6>Background &mdash; a weakening pound and a widening deficit</h6>
+              <p>
+                Sterling had been floated in June 1972, and the pound had been under intermittent pressure ever since. By 1976, the UK faced a combination of structural and cyclical weaknesses that eroded confidence in the currency:
+              </p>
+              <ul>
+                <li><b>Current-account deficit.</b> The UK ran a persistent current-account deficit, financed by borrowing in international capital markets, which made the pound vulnerable to shifts in investor sentiment.</li>
+                <li><b>High inflation.</b> Inflation remained high (around 15&ndash;20% in 1975&ndash;76), eroding competitiveness and making it harder to maintain the pound&rsquo;s value.</li>
+                <li><b>Public-spending pressures.</b> The Labour government faced pressure to maintain or increase public spending, while the Public Sector Borrowing Requirement (PSBR) was rising, adding to concerns about fiscal sustainability.</li>
+                <li><b>Political uncertainty.</b> The Labour government&rsquo;s narrow majority and internal divisions over economic policy added to investor concerns about the government&rsquo;s ability to implement necessary adjustments.</li>
+                <li><b>Oil-price shock.</b> The 1973 oil crisis had raised import costs and widened the trade deficit, adding to the pressure on sterling.</li>
+              </ul>
+
+              <h6>Mechanism &mdash; reserve depletion and a loss of confidence</h6>
+              <p>
+                The crisis unfolded as a classic currency crisis, in which the Bank of England&rsquo;s attempts to defend the pound depleted reserves and eroded confidence further:
+              </p>
+              <ol class="fs-loop">
+                <li>Sterling comes under pressure from a widening current-account deficit and doubts about fiscal sustainability.</li>
+                <li>The Bank of England sells foreign reserves to defend the pound, but the intervention is insufficient to reverse the trend.</li>
+                <li>Reserves fall, and investors doubt the Bank&rsquo;s ability to continue defending the currency.</li>
+                <li>Sterling falls further, triggering more selling and more reserve depletion&mdash;a self-reinforcing spiral.</li>
+                <li>The government, unable to replenish reserves from private markets, turns to the IMF for assistance.</li>
+                <li>IMF conditionality requires fiscal and monetary tightening, which the government must accept to secure the loan.</li>
+              </ol>
+              <p>
+                By the peak of the crisis, on 1&nbsp;November 1976, the Bank had lost $5.54&nbsp;billion in reserves defending sterling&mdash;more than the $3.9&nbsp;billion it was seeking from the IMF.
+              </p>
+
+              <h6>Timeline</h6>
+              <ol class="fs-steps">
+                <li><span class="d">Jun 1972</span><div><b>Sterling floated</b>The UK abandons the fixed exchange rate and allows the pound to float, ending the Bretton Woods-era peg.</div></li>
+                <li><span class="d">1973&ndash;75</span><div><b>Oil shock and inflation</b>The 1973 oil crisis raises import costs and widens the trade deficit. Inflation rises to 15&ndash;20%, eroding competitiveness.</div></li>
+                <li><span class="d">Mar 1976</span><div><b>Pressure builds</b>The pound begins to slide as the current-account deficit widens and doubts about fiscal sustainability grow. The government&rsquo;s public-expenditure white paper is defeated in the House of Commons.</div></li>
+                <li><span class="d">Jun 1976</span><div><b>Bank of England intervenes</b>The Bank sells foreign reserves to defend the pound, and secures a six-month stand-by credit of up to $5.3&nbsp;billion from other industrial-country central banks.</div></li>
+                <li><span class="d">Sep 1976</span><div><b>Sterling hits record low</b>The pound falls to a record low against the dollar. On 28&nbsp;September, Prime Minister James Callaghan warns the Labour Party conference of the need for restraint.</div></li>
+                <li><span class="d">29 Sep 1976</span><div><b>IMF application announced</b>Chancellor Denis Healey announces that the UK will apply to the IMF for a standby credit of $3.9&nbsp;billion, the largest ever requested.</div></li>
+                <li><span class="d">Oct&ndash;Dec 1976</span><div><b>Negotiations</b>IMF negotiators arrive in London. The Fund demands significant cuts to public expenditure and tighter monetary policy as conditions for the loan. The Labour cabinet initially resists, putting the loan in jeopardy.</div></li>
+                <li><span class="d">15 Dec 1976</span><div><b>Letter of Intent signed</b>The government signs a Letter of Intent committing to &pound;2.5&nbsp;billion in spending cuts over two years (&pound;1&nbsp;billion in 1977/78 and &pound;1.5&nbsp;billion in 1978/79) in exchange for the $3.9&nbsp;billion loan.</div></li>
+                <li><span class="d">1977&ndash;79</span><div><b>Stabilisation and repayment</b>The UK implements the spending cuts and monetary tightening. Sterling stabilises and begins to recover. Only half the loan is drawn, and it is fully repaid by 4&nbsp;May 1979.</div></li>
+              </ol>
+
+              <h6>Policy response</h6>
+              <ul>
+                <li><b>Reserve depletion.</b> The Bank of England sold foreign reserves to defend the pound, but the intervention proved insufficient to reverse the trend, and reserves fell sharply.</li>
+                <li><b>Central-bank credit line.</b> In June 1976, the Bank secured a six-month stand-by credit of up to $5.3&nbsp;billion from other industrial-country central banks, buying time but not resolving the underlying problem.</li>
+                <li><b>IMF standby credit.</b> The UK applied for and received a $3.9&nbsp;billion standby credit from the IMF, the largest ever requested at the time, to replenish reserves and restore confidence.</li>
+                <li><b>IMF conditionality.</b> The loan came with conditions requiring significant cuts to public expenditure (&pound;2.5&nbsp;billion over two years) and tighter monetary policy, which the Labour government found politically difficult to accept.</li>
+                <li><b>Monetary tightening.</b> The government raised interest rates and slowed money growth, helping to bring inflation down from 15&ndash;20% to 8.3% by 1978.</li>
+                <li><b>Partial drawdown and repayment.</b> Only half the loan was actually drawn, and it was fully repaid by 4&nbsp;May 1979, the day after the general election.</li>
+              </ul>
+
+              <h6>Financial-stability reading</h6>
+              <ul>
+                <li><b>Reserve depletion can trigger a currency crisis.</b> When a central bank&rsquo;s attempts to defend a currency deplete reserves faster than they can be replenished, investors lose confidence and the currency falls further&mdash;a self-reinforcing spiral that can only be broken by external financing or a policy reversal.</li>
+                <li><b>IMF conditionality can be politically costly.</b> The requirement to cut public spending in exchange for IMF assistance proved politically difficult for the Labour government, highlighting the tension between external financing and domestic political constraints.</li>
+                <li><b>A currency crisis is distinct from a banking crisis.</b> Unlike the 1973&ndash;75 secondary banking crisis, which was a domestic banking-sector problem, the 1976 sterling crisis was a sovereign currency and macroeconomic-confidence crisis&mdash;a distinction that matters for the appropriate policy response.</li>
+                <li><b>Advanced economies can face IMF assistance.</b> The UK&rsquo;s request for IMF assistance in 1976 was unusual for a major advanced economy, and it highlighted that even developed countries can face balance-of-payments crises when confidence in their currency and fiscal policy erodes.</li>
+                <li><b>Oil-price shocks can trigger currency crises.</b> The 1973 oil crisis raised import costs and widened the trade deficit, contributing to the pressure on sterling&mdash;a reminder that external shocks can have lasting effects on currency stability.</li>
+                <li><b>Monetary tightening can restore confidence.</b> The combination of fiscal cuts and monetary tightening helped to bring inflation down and restore confidence in sterling, allowing the pound to recover by 1980.</li>
+              </ul>
+
+              <h6>Key figures</h6>
+              <table class="fs-kv">
+                <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                <tr><td>IMF standby credit requested</td><td class="num">$3.9bn</td><td>29 Sep 1976</td></tr>
+                <tr><td>Bank of England reserve losses defending sterling</td><td class="num">$5.54bn</td><td>1 Nov 1976</td></tr>
+                <tr><td>Central-bank credit line secured</td><td class="num">up to $5.3bn</td><td>Jun 1976</td></tr>
+                <tr><td>Public-spending cuts committed</td><td class="num">&pound;2.5bn over 2 years</td><td>15 Dec 1976</td></tr>
+                <tr><td>Inflation, 1975&ndash;76</td><td class="num">15&ndash;20%</td><td>1975&ndash;76</td></tr>
+                <tr><td>Inflation, 1978</td><td class="num">8.3%</td><td>1978</td></tr>
+                <tr><td>Loan drawn</td><td class="num">~50% of $3.9bn</td><td>1977&ndash;79</td></tr>
+                <tr><td>Loan fully repaid</td><td class="num">4 May 1979</td><td>1979</td></tr>
+              </table>
+
+              <h6>Sources</h6>
+              <ul>
+                <li><a href="https://www.imf.org/external/np/fin/tad/extarr2.aspx?memberKey1=1010&date1key=2025-04-30">International Monetary Fund, History of Lending Commitments: United Kingdom</a></li>
+                <li><a href="https://www.elibrary.imf.org/display/book/9781451922684/ch024.xml">International Monetary Fund (1996), Stand-By Arrangements with an Industrial Member: the United Kingdom in 1976, IMF Staff Papers</a></li>
+                <li><a href="https://history.state.gov/historicaldocuments/frus1969-76ve15p2/d246">US Department of State, Office of the Historian, Memorandum From Secretary of the Treasury Simon to President Ford, 1976</a></li>
+                <li><a href="https://hansard.parliament.uk/Commons/1976-11-11/debates/6361ad32-964e-4203-8859-6e60d789a867/InternationalMonetaryFund(LoanApplication)">UK Parliament, Hansard, International Monetary Fund (Loan Application), 11 Nov 1976</a></li>
+                <li><a href="https://www.chathamhouse.org/publications/the-world-today/2016-12/britains-big-bailout-december-15-1976">Chatham House (2016), Britain&rsquo;s Big Bailout, December 15, 1976, The World Today</a></li>
+                <li><a href="https://www.cambridge.org/core/books/an-exchange-rate-history-of-the-united-kingdom/1976-imf-crisis/2AFAE70373E89713B71635DD02E236C2">Cambridge University Press (2022), The 1976 IMF Crisis, in An Exchange Rate History of the United Kingdom</a></li>
+              </ul>
+            </div>
+          </details>
+        </article>
+        <!-- Jun 1974: Herstatt failure -->
+        <article class="fs-event" id="ev-1974-06-herstatt" data-tags="bank mkt pol">
+          <span class="fs-date">Jun 1974</span>
+          <h4 class="fs-title">The Herstatt failure and FX settlement risk<a class="fs-anchor" href="#ev-1974-06-herstatt">#</a></h4>
+          <div class="fs-tags">
+            <span class="fs-tag t-bank">Banking</span>
+            <span class="fs-tag t-mkt">Markets</span>
+            <span class="fs-tag t-pol">Policy &amp; Regulation</span>
+          </div>
+          <p class="fs-sum">
+            On 26&nbsp;June 1974, the German banking supervisor closed Bankhaus Herstatt, a Cologne-based bank that had suffered heavy losses from speculative foreign-exchange positions. Because the bank was closed in the middle of the German business day, before the opening of US markets, it had already received Deutsche marks from its counterparties via the German payment system but had not yet delivered the corresponding US dollars in New York. The New York correspondent bank then suspended all outgoing dollar payments from Herstatt&rsquo;s account, leaving counterparties exposed for the full value of the marks they had already paid&mdash;a loss of principal, not just a loss on a derivative position. The episode created what became known as &ldquo;Herstatt risk&rdquo; (or FX settlement risk), and it triggered a chain reaction: banks stopped outgoing payments until they were sure their countervalues had been received, the international payment system froze, and lending rates spiked as trust eroded. The US-based CHIPS clearing system had to close for 24 hours. The Herstatt failure became the defining example of FX principal settlement risk and the transmission of liquidity stress through payment chains, and it led directly to the creation of the Basel Committee on Banking Supervision and, decades later, to the establishment of CLS Bank for payment-versus-payment (PvP) settlement.
+          </p>
+          <details>
+            <summary>Details</summary>
+            <div class="fs-det">
+              <h6>Background &mdash; speculative FX trading and a mid-day closure</h6>
+              <p>
+                Bankhaus Herstatt was a medium-sized German bank active in foreign-exchange markets. In 1973 and early 1974, its FX dealers had taken large speculative positions, selling US dollars against Deutsche marks. When the market moved against them, the bank incurred heavy losses that eroded its capital.
+              </p>
+              <ul>
+                <li><b>Speculative FX positions.</b> Herstatt&rsquo;s dealers had sold a sizeable amount of US dollars against Deutsche marks, betting that the dollar would strengthen. When the dollar weakened instead, the bank faced large losses.</li>
+                <li><b>Over-trading beyond limits.</b> The German supervisory office (BAKred) had been tracking Herstatt&rsquo;s repeated exceeding of its money-market and FX trading limits since as early as 1972.</li>
+                <li><b>Two-leg settlement across time zones.</b> FX trades settled in two legs, in two jurisdictions, hours apart. The Deutsche-mark leg settled in Frankfurt during the German business day; the dollar leg settled in New York hours later, after the US markets opened.</li>
+                <li><b>Mid-day closure.</b> The German supervisor closed Herstatt at 15:30 CET on 26&nbsp;June, after the Deutsche-mark leg had settled but before the dollar leg had cleared in New York.</li>
+              </ul>
+
+              <h6>Mechanism &mdash; principal risk and a payment-chain freeze</h6>
+              <p>
+                The Herstatt failure illustrated the danger of settling the two legs of an FX trade at different times in different jurisdictions:
+              </p>
+              <ol class="fs-loop">
+                <li>Herstatt receives Deutsche marks from counterparties via the German payment system, settling the first leg of FX trades.</li>
+                <li>Herstatt is closed by the German supervisor before the corresponding US-dollar payments are made in New York.</li>
+                <li>The New York correspondent bank suspends all outgoing dollar payments from Herstatt&rsquo;s account.</li>
+                <li>Counterparties are left exposed for the full value of the marks they already paid&mdash;a loss of principal, not just a derivative loss.</li>
+                <li>Banks more generally stop outgoing payments until they are sure their countervalues have been received, freezing the international payment system.</li>
+                <li>Trust erodes, lending rates spike, and credit is curtailed&mdash;liquidity stress transmitted through payment chains.</li>
+              </ol>
+              <p>
+                The key insight is that the risk was not a credit risk on a derivative position but a principal risk on the full value of the trade&mdash;a much larger exposure, since the full notional amount was at stake, not just the net difference.
+              </p>
+
+              <h6>Timeline</h6>
+              <ol class="fs-steps">
+                <li><span class="d">1972&ndash;73</span><div><b>Over-trading begins</b>Herstatt&rsquo;s FX dealers begin taking large speculative positions, repeatedly exceeding internal limits on money-market and FX trading.</div></li>
+                <li><span class="d">Early 1974</span><div><b>Losses mount</b>The dollar weakens against the Deutsche mark, and Herstatt&rsquo;s speculative positions incur heavy losses that erode its capital.</div></li>
+                <li><span class="d">23&ndash;26 Jun 1974</span><div><b>Supervisory intervention</b>The German supervisory office (BAKred) holds intense discussions with Herstatt&rsquo;s management over the bank&rsquo;s deteriorating position.</div></li>
+                <li><span class="d">26 Jun 1974, 15:30 CET</span><div><b>Bank closed</b>The German supervisor closes Herstatt in the middle of the German business day, after the Deutsche-mark leg of FX trades has settled but before the dollar leg has cleared in New York.</div></li>
+                <li><span class="d">26 Jun 1974, after 15:30</span><div><b>Dollar payments suspended</b>The New York correspondent bank suspends all outgoing US-dollar payments from Herstatt&rsquo;s account, leaving counterparties exposed for the full value of the marks they already paid.</div></li>
+                <li><span class="d">26 Jun 1974, evening</span><div><b>Payment system freezes</b>Banks stop outgoing payments until they are sure their countervalues have been received. The international payment system grinds to a halt.</div></li>
+                <li><span class="d">26&ndash;27 Jun 1974</span><div><b>CHIPS closes</b>The US-based Clearing House Interbank Payments System (CHIPS) has to close for 24 hours, disrupting cross-border settlement for months afterward.</div></li>
+                <li><span class="d">1975</span><div><b>Basel Committee created</b>The G-10 central banks, meeting under the auspices of the Bank for International Settlements (BIS), create the Basel Committee on Banking Supervision to develop common standards for bank supervision, partly in response to the Herstatt failure.</div></li>
+                <li><span class="d">2002</span><div><b>CLS Bank launched</b>CLS Bank begins operating, providing payment-versus-payment (PvP) settlement for FX trades, eliminating Herstatt risk by ensuring both legs settle simultaneously.</div></li>
+              </ol>
+
+              <h6>Policy response</h6>
+              <ul>
+                <li><b>Immediate containment.</b> The German supervisor closed Herstatt mid-day, and the New York correspondent bank suspended dollar payments, preventing further losses but triggering the payment-chain freeze.</li>
+                <li><b>Payment-system disruption.</b> The US-based CHIPS clearing system had to close for 24 hours, and cross-border settlement efficiency was reduced for months afterward.</li>
+                <li><b>Creation of the Basel Committee.</b> In response to the cross-jurisdictional implications of the Herstatt failure, the G-10 central banks, Luxembourg, and Spain formed a standing committee under the auspices of the BIS&mdash;the Basel Committee on Banking Supervision&mdash;to develop common standards for bank supervision.</li>
+                <li><b>Recognition of settlement risk.</b> The episode led regulators and market participants to recognise FX settlement risk (later called &ldquo;Herstatt risk&rdquo;) as a distinct and significant risk that payment systems had not been designed to cope with adequately.</li>
+                <li><b>Long-run reform: CLS Bank.</b> Decades later, in 2002, CLS Bank began operating, providing payment-versus-payment (PvP) settlement for FX trades, which eliminates Herstatt risk by ensuring both legs settle simultaneously.</li>
+              </ul>
+
+              <h6>Financial-stability reading</h6>
+              <ul>
+                <li><b>Principal risk is larger than derivative risk.</b> In an FX trade, the full notional amount is at risk if one leg settles and the other does not&mdash;a much larger exposure than the net difference that would be at risk in a derivative position. This makes FX settlement risk particularly dangerous.</li>
+                <li><b>Time-zone differences create settlement risk.</b> When the two legs of a trade settle in different time zones and through different payment systems, there is a window during which one party has paid but not received&mdash;the defining feature of Herstatt risk.</li>
+                <li><b>A single bank failure can freeze the payment system.</b> Herstatt&rsquo;s failure caused banks to stop outgoing payments until they were sure their countervalues had been received, freezing the international payment system and transmitting liquidity stress through payment chains&mdash;a reminder that payment-system resilience matters as much as bank capital.</li>
+                <li><b>Trust is the foundation of payment systems.</b> When trust erodes, participants delay payments, which slows the system further and can create a self-reinforcing spiral&mdash;a dynamic that reappears in later payment-system disruptions (e.g. <a href="#ev-2001-09-9-11-disruption">9/11</a>).</li>
+                <li><b>PvP settlement eliminates Herstatt risk.</b> The long-run solution&mdash;payment-versus-payment (PvP) settlement, as provided by CLS Bank&mdash;ensures that both legs of an FX trade settle simultaneously, eliminating the window during which one party is exposed.</li>
+                <li><b>International coordination is needed for cross-border risks.</b> The Herstatt failure highlighted the need for international coordination on bank supervision and settlement-risk management, leading to the creation of the Basel Committee and, later, to the establishment of CLS Bank.</li>
+              </ul>
+
+              <h6>Key figures</h6>
+              <table class="fs-kv">
+                <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                <tr><td>Herstatt bank closed</td><td class="num">15:30 CET</td><td>26 Jun 1974</td></tr>
+                <tr><td>Counterparty exposure</td><td class="num">Full principal of FX trades</td><td>26 Jun 1974</td></tr>
+                <tr><td>CHIPS closure duration</td><td class="num">24 hours</td><td>26&ndash;27 Jun 1974</td></tr>
+                <tr><td>Basel Committee created</td><td class="num">1975</td><td>1975</td></tr>
+                <tr><td>CLS Bank launched</td><td class="num">2002</td><td>2002</td></tr>
+                <tr><td>PvP share of FX settlement, 2025</td><td class="num">36% ($5tn/day)</td><td>Apr 2025</td></tr>
+              </table>
+
+              <h6>Sources</h6>
+              <ul>
+                <li><a href="https://www.bis.org/publications/fx-settlement-risk-remains-significant">Bank for International Settlements (2019), FX Settlement Risk Remains Significant, December 2019</a></li>
+                <li><a href="https://www.bis.org/publications/qr-202606/uncovering-fx-settlement-risk-new-measures-2025-bis-triennial-survey">Bank for International Settlements (2026), Uncovering FX Settlement Risk: New Measures from the 2025 BIS Triennial Survey, BIS Quarterly Review, June 2026</a></li>
+                <li><a href="https://www.ecb.europa.eu/press/financial-stability-publications/fsr/focus/2007/pdf/ecb~ccda416def.fsrbox200712_19.pdf">European Central Bank (2007), More Than Thirty Years After the Herstatt Case, Foreign Exchange Settlement Risk Is Still an Issue, Financial Stability Review, December 2007</a></li>
+                <li><a href="https://www.tandfonline.com/doi/full/10.1080/00076791.2014.950956">Business History (2015), &ldquo;Trust Is Good, Control Is Better&rdquo;: The 1974 Herstatt Bank Failure, February 2015</a></li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+
+        </div>
+    </section>
+
+    <section class="fs-decade" id="d1980">
+        <h3>1800s &amp; earlier <a class="fs-top" href="#fs-top">↑ top</a></h3>
         <div class="fs-timeline"></div>
     </section>
+
+
 
     <p class="fs-empty" id="fs-none" style="display:none;">No events match the selected filters.</p>
 
@@ -7447,9 +7748,15 @@
         <br>[61] Bank for International Settlements (2002), <a href="https://www.bis.org/publications/qr/r-qt0212f.pdf"><i>Settlement Risk in Foreign Exchange Markets and CLS Bank</i></a>, <i>BIS Quarterly Review</i>, December 2002.
         <br>[62] US Securities and Exchange Commission (1990), <a href="http://3197d6d14b5f19f2f440-5e13d29c4c016cf96cbbfd197c579b45.r81.cf1.rackcdn.com/collection/papers/1990/1990_SEC_AR.pdf"><i>Annual Report 1990</i></a>.
         <br>[63] Federal Reserve Bank of Chicago (1997), <a href="https://fraser.stlouisfed.org/files/docs/historical/frbchi/workingpapers/frbchi_workingpaper_1997-25.pdf"><i>Requiem for a Market Maker: The Case of Drexel Burnham Lambert and Below-Investment-Grade Bonds</i></a>, Working Paper 1997-25.
-
-
-
+        <br>[64] Federal Reserve History, <a href="https://www.federalreservehistory.org/essays/stock-market-crash-of-1987"><i>Stock Market Crash of 1987</i></a>.
+        <br>[65] Federal Reserve Board (2007), <a href="https://www.federalreserve.gov/pubs/feds/2007/200713/"><i>A Brief History of the 1987 Stock Market Crash with a Discussion of the October 1987 Market Break</i></a>, FEDS Working Paper 2007-13.
+        <br>[66] US Securities and Exchange Commission (1988), <a href="https://sechistorical.org/digital-archive/the-october-1987-market-break-report-by-sec-division-of-market-regulation/"><i>The October 1987 Market Break: Report by SEC Division of Market Regulation</i></a>, February 1988.
+        <br>[67] International Monetary Fund, <a href="https://www.imf.org/external/np/fin/tad/extarr2.aspx?memberKey1=1010&date1key=2025-04-30"><i>History of Lending Commitments: United Kingdom</i></a>.
+        <br>[68] International Monetary Fund (1996), <a href="https://www.elibrary.imf.org/display/book/9781451922684/ch024.xml"><i>Stand-By Arrangements with an Industrial Member: the United Kingdom in 1976</i></a>, IMF Staff Papers.
+        <br>[69] UK Parliament, Hansard, <a href="https://hansard.parliament.uk/Commons/1976-11-11/debates/6361ad32-964e-4203-8859-6e60d789a867/InternationalMonetaryFund(LoanApplication)"><i>International Monetary Fund (Loan Application)</i></a>, 11 Nov 1976.
+        <br>[70] Bank for International Settlements (2019), <a href="https://www.bis.org/publications/fx-settlement-risk-remains-significant"><i>FX Settlement Risk Remains Significant</i></a>, December 2019.
+        <br>[71] Bank for International Settlements (2026), <a href="https://www.bis.org/publications/qr-202606/uncovering-fx-settlement-risk-new-measures-2025-bis-triennial-survey"><i>Uncovering FX Settlement Risk: New Measures from the 2025 BIS Triennial Survey</i></a>, <i>BIS Quarterly Review</i>, June 2026.
+        <br>[72] European Central Bank (2007), <a href="https://www.ecb.europa.eu/press/financial-stability-publications/fsr/focus/2007/pdf/ecb~ccda416def.fsrbox200712_19.pdf"><i>More Than Thirty Years After the Herstatt Case, Foreign Exchange Settlement Risk Is Still an Issue</i></a>, <i>Financial Stability Review</i>, December 2007.
 
     <br><br>
 </section>
