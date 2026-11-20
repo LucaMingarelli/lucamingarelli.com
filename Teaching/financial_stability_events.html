@@ -5727,15 +5727,929 @@
         </div>
     </section>
 
-    <section class="fs-decade" id="d2000">
-        <h3>2000s <a class="fs-top" href="#fs-top">↑ top</a></h3>
-        <div class="fs-timeline"></div>
-    </section>
 
     <section class="fs-decade" id="d1990">
         <h3>1990s <a class="fs-top" href="#fs-top">↑ top</a></h3>
-        <div class="fs-timeline"></div>
+        <div class="fs-timeline">
+
+            <!-- ============================ Aug–Oct 1998 · LTCM near-collapse -->
+            <article class="fs-event" id="ev-1998-09-ltcm" data-tags="nbfi mkt bank pol">
+                <span class="fs-date">Aug – Oct 1998</span>
+                <h4 class="fs-title">The near-collapse of Long-Term Capital Management<a class="fs-anchor" href="#ev-1998-09-ltcm">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-nbfi">Non-bank</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-bank">Banking</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    Long-Term Capital Management (LTCM) was a hedge fund founded in 1994 by former
+                    Salomon Brothers bond trader John Meriwether. Its partners included Myron Scholes
+                    and Robert Merton, who won the Nobel Prize in economics in 1997. The fund
+                    specialised in <i>relative-value</i> trades. It bet that small price differences
+                    between closely related securities, such as newly issued and older Treasuries,
+                    swap and government yields, or bonds of different euro-area countries, would
+                    narrow. Each trade earned little, so LTCM used very high leverage. At the start of
+                    1998 it held a balance sheet of about $125bn on capital of under $5bn, plus
+                    derivatives with a notional value of more than $1tn. On 17&nbsp;August 1998 Russia
+                    devalued the ruble and defaulted on its domestic debt. Investors worldwide
+                    rushed into the safest and most liquid assets, and the spreads LTCM had bet on
+                    narrowing widened instead, across many markets at the same time. The fund lost
+                    almost half its capital in August. Its counterparties knew its positions were
+                    too large to sell without moving prices, and many held similar trades. As
+                    losses mounted in September, markets braced for a fire sale. On
+                    23&nbsp;September the Federal Reserve Bank of New York brought LTCM's main
+                    creditors together. Fourteen banks and dealers agreed to inject $3.6bn in
+                    exchange for 90% of the fund, and to unwind its positions gradually. No public
+                    money was used. The Fed then cut rates three times between late September and
+                    November. The fund was wound down by early 2000, and the consortium recovered
+                    its money. The episode was an early lesson in hidden leverage outside the
+                    banking system, crowded trades, and the way liquidity can disappear in markets
+                    thought to be safe.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Background: convergence trades on high leverage</h6>
+                        <p>
+                            LTCM began trading in February 1994 with about $1.25bn of capital.
+                            <span class="fs-todo">(to verify)</span> It returned roughly 40% after
+                            fees in 1995 and 1996, and about 17% in 1997. At the end of 1997 it
+                            returned about $2.7bn to outside investors, which raised its leverage
+                            without reducing its positions. <span class="fs-todo">(to verify)</span>
+                            Its main strategies were:
+                        </p>
+                        <ul>
+                            <li><b>On-the-run / off-the-run Treasuries.</b> LTCM bought older, less
+                                liquid Treasuries and sold the most recently issued, more liquid ones
+                                of similar maturity. It bet that the small premium for liquidity
+                                would shrink.</li>
+                            <li><b>Swap spreads.</b> These were bets on the spread between swap
+                                rates and government bond yields in the US, the UK and elsewhere.</li>
+                            <li><b>European convergence.</b> These were bets that yields on Italian
+                                and other European government bonds would converge towards German
+                                yields ahead of monetary union in 1999.</li>
+                            <li><b>Equity volatility.</b> LTCM sold long-dated options on equity
+                                indices, betting that implied volatility was too high. Market
+                                participants nicknamed it the "central bank of volatility".</li>
+                            <li><b>Other trades.</b> These included merger arbitrage, mortgage
+                                securities, and some emerging-market positions, including Russian
+                                debt.</li>
+                        </ul>
+                        <p>
+                            Each trade was hedged against changes in the general level of interest
+                            rates or equity prices. All of them shared one hidden exposure: they
+                            made money when investors were willing to hold less liquid and riskier
+                            assets, and lost money in a flight to quality. Banks financed the
+                            positions with repo at very low haircuts, often close to zero, and wrote
+                            derivatives with LTCM without requiring initial margin. LTCM's reputation
+                            and returns let it negotiate terms few other clients received.
+                        </p>
+
+                        <h6>Mechanism: leverage, correlation and liquidity</h6>
+                        <p>
+                            For a fund with leverage \(L\) (positions ÷ capital), holding spread
+                            positions with spread duration \(D\), a widening of spreads \(\Delta s\)
+                            changes capital by roughly
+                        </p>
+                        <div class="fs-eq">
+                            $$ \frac{\Delta K}{K} \;\approx\; -\,L \cdot D \cdot \Delta s . $$
+                        </div>
+                        <p>
+                            With \(L = 25\), \(D = 5\) and a widening of 20bp, the fund loses about a
+                            quarter of its capital. Each spread moved only modestly by historical
+                            standards. LTCM's risk models assumed that its many trades were largely
+                            independent and diversified. In a flight to quality, they all moved
+                            against it at once. The fund could not simply cut its positions, because:
+                        </p>
+                        <ol class="fs-loop">
+                            <li>Spreads widen and LTCM's capital falls, raising its leverage.</li>
+                            <li>Counterparties demand more collateral. Other funds and dealer desks
+                                holding similar trades cut their own positions.</li>
+                            <li>Selling by others widens spreads further. LTCM's positions are too
+                                large to sell without moving prices against itself.</li>
+                            <li>Dealers who know its positions trade ahead of an expected forced
+                                sale, and liquidity in those markets disappears.</li>
+                        </ol>
+                        <p>
+                            LTCM's trades were likely to converge <i>eventually</i>. The problem was
+                            that it might not survive long enough to see this. As the saying
+                            attributed to Keynes goes, markets can remain irrational longer than an
+                            investor can remain solvent.
+                        </p>
+
+                        <h6>Timeline</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">May – Jul 1998</span><div><b>Early
+                                losses</b>Spreads begin to widen. Salomon Smith Barney closes its US
+                                bond-arbitrage desk, which held many of the same trades. LTCM loses
+                                money in May and June.</div></li>
+                            <li><span class="d">17 Aug 1998</span><div><b>Russian
+                                default</b>Russia devalues the ruble, defaults on its domestic
+                                government debt (GKOs) and declares a moratorium on some foreign
+                                payments. Investors rush into the most liquid government bonds.</div></li>
+                            <li><span class="d">21 Aug</span><div><b>Worst
+                                day</b>LTCM loses about $550m in a single day, as swap spreads and
+                                equity volatility rise together. <span class="fs-todo">(to
+                                verify)</span></div></li>
+                            <li><span class="d">2 Sep</span><div><b>Letter to
+                                investors</b>Meriwether discloses that the fund lost about 44% in
+                                August and about half its capital in 1998, and asks for new
+                                capital. None is forthcoming, and the letter becomes public.
+                                <span class="fs-todo">(to verify)</span></div></li>
+                            <li><span class="d">Sep</span><div><b>Losses
+                                accelerate</b>Counterparties tighten terms and trade against the
+                                fund's known positions. Capital falls to well under $1bn by
+                                22&nbsp;September, against a balance sheet still above $100bn.
+                                <span class="fs-todo">(to verify)</span></div></li>
+                            <li><span class="d">23 Sep</span><div><b>Offer and
+                                consortium</b>A bid from Warren Buffett's Berkshire Hathaway, AIG and
+                                Goldman Sachs to buy the fund for about $250m and recapitalise it
+                                with $3.75bn expires that morning. Later that day, at a meeting
+                                convened at the New York Fed, fourteen banks and dealers agree to
+                                invest $3.625bn for a 90% stake. Bear Stearns, LTCM's clearing
+                                broker, declines to take part.</div></li>
+                            <li><span class="d">29 Sep</span><div><b>First rate
+                                cut</b>The Fed cuts the fed funds target by 25bp, to 5.25%.</div></li>
+                            <li><span class="d">1 Oct</span><div><b>Testimony</b>Greenspan
+                                defends the New York Fed's role before Congress.</div></li>
+                            <li><span class="d">early – mid Oct</span><div><b>Peak
+                                stress</b>Liquidity in off-the-run Treasuries and other markets
+                                deteriorates further. The dollar falls sharply against the yen on
+                                7–8&nbsp;October as yen carry trades unwind.</div></li>
+                            <li><span class="d">15 Oct</span><div><b>Inter-meeting
+                                cut</b>The Fed cuts by a further 25bp between meetings. Markets
+                                rally.</div></li>
+                            <li><span class="d">17 Nov</span><div><b>Third
+                                cut</b>The fed funds target falls to 4.75%.</div></li>
+                            <li><span class="d">early 2000</span><div><b>Wind-down</b>The
+                                consortium completes the unwinding of LTCM's positions and recovers
+                                its investment. <span class="fs-todo">(to verify)</span></div></li>
+                        </ol>
+
+                        <h6>Why the Fed intervened</h6>
+                        <p>
+                            LTCM was not a bank, and the Fed had no supervisory responsibility for
+                            it. The concern was not the fund itself but its counterparties and the
+                            markets in which it traded. A default would have let each counterparty
+                            close out its contracts and sell collateral at the same time, in markets
+                            already short of liquidity. The losses would then have spread to every
+                            firm with similar positions, not only those that dealt with LTCM.
+                            Officials judged that the creditors as a group would lose more in a
+                            disorderly race to sell than in a coordinated unwind. The meeting at the
+                            New York Fed solved this <b>collective-action problem</b>. The Fed
+                            provided the venue and the pressure, but no money and no guarantees.
+                        </p>
+
+                        <h6>Spillovers</h6>
+                        <ul>
+                            <li><b>Flight to quality and liquidity.</b> The yield spread between
+                                off-the-run and on-the-run 30-year Treasuries widened several-fold.
+                                Swap spreads and credit spreads also widened sharply, and issuance of
+                                corporate bonds and commercial paper slowed in October.
+                                <span class="fs-todo">(spread levels to verify)</span></li>
+                            <li><b>Bank losses.</b> Banks and dealers lost money through their own
+                                trading desks, which held similar positions, as well as through
+                                exposures to LTCM. UBS, an investor in and counterparty to the fund,
+                                reported losses of about CHF&nbsp;950m.
+                                <span class="fs-todo">(to verify)</span></li>
+                            <li><b>Emerging markets.</b> The Russian default had already caused a
+                                sharp withdrawal from emerging markets. Brazil came under severe
+                                pressure, received an IMF-led package of about $41bn in November
+                                1998, and devalued in January 1999.</li>
+                            <li><b>Equity markets.</b> The S&amp;P&nbsp;500 fell about 19% from its
+                                July peak to early October. <span class="fs-todo">(to verify)</span></li>
+                        </ul>
+
+                        <h6>Policy response</h6>
+                        <ul>
+                            <li><b>A private rescue, facilitated by the Fed.</b> The creditors put in
+                                the money and took on the risk. Shareholders and partners were largely
+                                wiped out, but the fund was not liquidated.</li>
+                            <li><b>Monetary easing.</b> Three rate cuts, totalling 75bp, were aimed
+                                at the wider tightening of financial conditions rather than at LTCM
+                                itself.</li>
+                            <li><b>Reports on hedge-fund leverage.</b> The President's Working Group
+                                on Financial Markets (April 1999) concluded that the main issue was
+                                excessive leverage. It recommended better counterparty risk
+                                management by banks, more disclosure by hedge funds, and attention to
+                                leverage in capital rules. The Basel Committee (January 1999) issued
+                                guidance on banks' dealings with highly leveraged institutions. A
+                                private-sector group led by Gerald Corrigan, the Counterparty Risk
+                                Management Policy Group (June 1999), set out better practices for
+                                stress testing, collateral and exposure measurement. Direct
+                                regulation of hedge funds was not recommended.</li>
+                        </ul>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Non-bank leverage comes from banks.</b> LTCM was financed by the
+                                banking system through repo and derivatives on generous terms. As with
+                                <a href="#ev-2021-03-archegos">Archegos</a> more than twenty years
+                                later, each bank saw only its own exposure, not the whole.</li>
+                            <li><b>Correlations rise in a crisis.</b> Trades that looked
+                                diversified shared a common exposure to liquidity and risk appetite.
+                                Risk models based on calm periods understated losses in stress.</li>
+                            <li><b>Crowded trades and predatory selling.</b> When many firms hold
+                                the same positions and one is known to be in trouble, others sell
+                                first. Liquidity disappears just when it is needed.</li>
+                            <li><b>Collective action among creditors.</b> The New York Fed
+                                coordinated the creditors, which prevented a race to the exit. At
+                                Archegos there was no coordinator, and the
+                                <a href="#ev-2021-03-archegos">banks that sold first lost least</a>.</li>
+                            <li><b>Moral hazard.</b> Critics argued that the intervention and the
+                                rate cuts signalled that the Fed would protect markets in a crisis,
+                                the "Greenspan put". Some linked this to the risk-taking of the
+                                <a href="#ev-2000-03-dotcom-bust">late-1990s boom</a>.</li>
+                            <li><b>A template for later non-bank stress.</b> Leveraged
+                                relative-value trades in government bonds, financed in repo, were
+                                again at the centre of the
+                                <a href="#ev-2020-03-dash-for-cash">March 2020 dash for cash</a> and
+                                the <a href="#ev-2025-04-liberation-day">April 2025 Treasury
+                                sell-off</a>, through the basis trade
+                                (<a href="../BasisTrade/BasisTrade.html">see the basis-trade
+                                page</a>).</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Capital at launch <span class="fs-todo">(to verify)</span></td><td class="num">≈ $1.25bn</td><td>Feb 1994</td></tr>
+                            <tr><td>Capital returned to investors <span class="fs-todo">(to verify)</span></td><td class="num">≈ $2.7bn</td><td>end-1997</td></tr>
+                            <tr><td>Capital / balance sheet <span class="fs-todo">(to verify)</span></td><td class="num">≈ $4.7bn / $125bn (≈ 25×)</td><td>start of 1998</td></tr>
+                            <tr><td>Derivatives notional <span class="fs-todo">(to verify)</span></td><td class="num">&gt; $1tn</td><td>1998</td></tr>
+                            <tr><td>Loss in August <span class="fs-todo">(to verify)</span></td><td class="num">≈ −44%</td><td>Aug 1998</td></tr>
+                            <tr><td>Largest one-day loss <span class="fs-todo">(to verify)</span></td><td class="num">≈ $550m</td><td>21 Aug 1998</td></tr>
+                            <tr><td>Capital before rescue <span class="fs-todo">(to verify)</span></td><td class="num">&lt; $1bn</td><td>22 Sep 1998</td></tr>
+                            <tr><td>Consortium recapitalisation</td><td class="num">$3.625bn for 90% (14 firms)</td><td>23 Sep 1998</td></tr>
+                            <tr><td>Fed funds target</td><td class="num">5.5% → 4.75%</td><td>29 Sep – 17 Nov 1998</td></tr>
+                            <tr><td>Brazil IMF-led package</td><td class="num">≈ $41bn</td><td>Nov 1998</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://home.treasury.gov/system/files/236/Report-Hedge-Funds-Leverage-and-Lessons-of-Long-Term-Capital-Management.pdf">President's Working Group on Financial Markets (1999): Hedge Funds, Leverage, and the Lessons of Long-Term Capital Management</a></li>
+                            <li><a href="https://www.federalreserve.gov/boarddocs/testimony/1998/19981001.htm">Greenspan, A. (1998): testimony on private-sector refinancing of LTCM, 1 Oct 1998</a></li>
+                            <li><a href="https://www.bis.org/publ/bcbs45.htm">Basel Committee (1999): Banks' Interactions with Highly Leveraged Institutions</a></li>
+                            <li><a href="https://doi.org/10.1257/jep.13.2.189">Edwards, F. (1999): "Hedge Funds and the Collapse of Long-Term Capital Management", Journal of Economic Perspectives</a></li>
+                            <li><a href="https://www.bis.org/publ/cgfs12.htm">CGFS (1999): A Review of Financial Market Events in Autumn 1998</a></li>
+                            <li>Lowenstein, R. (2000): <i>When Genius Failed: The Rise and Fall of Long-Term Capital Management</i>, Random House</li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+
+
+            <!-- ============================ May–Sep 1998 · Russian default and ruble devaluation -->
+            <article class="fs-event" id="ev-1998-08-russia" data-tags="sov mkt bank pol">
+                <span class="fs-date">May – Sep 1998</span>
+                <h4 class="fs-title">The Russian crisis: ruble devaluation and domestic debt default<a class="fs-anchor" href="#ev-1998-08-russia">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-sov">Sovereign</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-bank">Banking</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    By 1998 Russia was financing large budget deficits with short-term ruble
+                    treasury bills (GKOs), and it was defending a crawling exchange-rate band.
+                    Foreign investors had bought heavily into the GKO market, attracted by very
+                    high yields and by the apparent safety of the ruble peg. Many hedged their
+                    currency risk with forward contracts written by Russian banks. The Asian
+                    crisis of 1997 and a collapse in oil prices cut Russia's export revenue and
+                    drove investors out of emerging markets. GKO yields rose above 50% and then
+                    above 100%, so that new debt could be sold only to repay old debt. An
+                    IMF-led package of about $22.6bn, agreed in July, bought only a few weeks. On
+                    17&nbsp;August 1998 the government and the central bank widened the
+                    exchange-rate band, which amounted to a devaluation. They also announced a
+                    forced restructuring of GKOs and a 90-day moratorium on private payments to
+                    foreign creditors, including on currency forwards. The ruble was floated on
+                    2&nbsp;September and lost about two-thirds of its value within a month.
+                    Several of Russia's largest banks became insolvent, and inflation rose to
+                    about 84% for the year. The shock went far beyond Russia's economic weight.
+                    Investors had assumed that a nuclear power with IMF backing was "too big to
+                    fail". The default overturned that assumption. Emerging-market spreads
+                    widened worldwide, and investors fled into the most liquid government bonds.
+                    That flight to quality led directly to the
+                    <a href="#ev-1998-09-ltcm">near-collapse of LTCM</a> and to Fed rate cuts in
+                    the autumn. The episode showed that a local sovereign default can trigger a
+                    global reassessment of credit and liquidity risk.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Background: stabilisation built on short-term debt</h6>
+                        <p>
+                            After the high inflation of the early 1990s, Russia stabilised its
+                            currency in 1995 with an exchange-rate corridor, later a crawling band
+                            around about 6 rubles per dollar. Inflation fell, and by 1997 the
+                            economy was growing slightly for the first time since the end of the
+                            Soviet Union. The public finances, however, remained weak. Tax
+                            collection was poor, federal deficits ran at around 5–7% of GDP
+                            <span class="fs-todo">(to verify)</span>, and the government covered
+                            them largely by issuing GKOs and longer ruble bonds (OFZs). Their
+                            maturities were mostly under a year.
+                        </p>
+                        <ul>
+                            <li><b>Foreign participation.</b> The GKO market was opened to
+                                non-residents in stages from 1996. By mid-1998 foreigners held
+                                around a third of outstanding GKO/OFZ debt, roughly $20bn.
+                                <span class="fs-todo">(to verify)</span></li>
+                            <li><b>Hedged carry trade.</b> Foreign investors earned high ruble
+                                yields and hedged the currency with ruble–dollar forwards, sold
+                                mainly by Russian banks. Those banks were therefore heavily short
+                                dollars.</li>
+                            <li><b>Bank exposures.</b> Russian banks also held large amounts of
+                                GKOs, had borrowed in dollars abroad, and in many cases belonged to
+                                politically connected industrial groups.</li>
+                            <li><b>External shocks.</b> The
+                                <span class="fs-todo">(Asian crisis entry, if added)</span> Asian
+                                crisis of 1997 drove investors away from emerging markets. Oil
+                                prices fell to about $11–12 a barrel by late 1998, cutting
+                                Russia's export and fiscal revenue.</li>
+                        </ul>
+
+                        <h6>Mechanism: a rollover trap and a defended peg</h6>
+                        <p>
+                            For a foreign investor, the dollar return on a ruble bill depends on
+                            the ruble yield \(i\) and the change in the exchange rate \(e\),
+                            measured in rubles per dollar:
+                        </p>
+                        <div class="fs-eq">
+                            $$ 1 + r^{\$} \;=\; \frac{1 + i}{\,e_{t+1}/e_t\,} . $$
+                        </div>
+                        <p>
+                            While the band held, a yield of 30–50% meant a very large dollar
+                            return. Rising yields signalled that markets expected a large
+                            devaluation, and they also made the debt itself harder to service.
+                            In mid-1998 GKO yields of over 100% <span class="fs-todo">(peak to
+                            verify)</span> were higher than any plausible growth in tax
+                            revenue. The government could keep paying only by issuing ever more
+                            debt.
+                        </p>
+                        <ol class="fs-loop">
+                            <li>Investors expect a devaluation and demand higher GKO yields.</li>
+                            <li>Higher yields raise the deficit, and rollover needs grow.</li>
+                            <li>The central bank sells reserves to defend the band, and the
+                                reserves fall.</li>
+                            <li>Falling reserves raise the expected probability that the band
+                                will break, and investors demand still higher yields.</li>
+                        </ol>
+                        <p>
+                            Devaluation and default were linked through bank balance sheets. A
+                            weaker ruble would cause large losses on the banks' forward contracts
+                            and foreign borrowing. A default on GKOs would wipe out their main
+                            liquid asset. The authorities ended up doing both at once.
+                        </p>
+
+                        <h6>Timeline</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">Oct – Nov 1997</span><div><b>Asian
+                                contagion</b>The Russian stock market falls from its October peak
+                                and the central bank spends reserves defending the ruble. It raises
+                                rates sharply.</div></li>
+                            <li><span class="d">23 Mar 1998</span><div><b>Political
+                                instability</b>President Boris Yeltsin dismisses the government of
+                                Viktor Chernomyrdin. Sergei Kiriyenko becomes prime minister in
+                                April.</div></li>
+                            <li><span class="d">May</span><div><b>GKO market
+                                strains</b>GKO auctions fail to raise enough money to cover
+                                maturing debt. On 27&nbsp;May the central bank raises its
+                                refinancing rate to 150%.</div></li>
+                            <li><span class="d">13–20 Jul</span><div><b>IMF-led
+                                package</b>The IMF, the World Bank and Japan agree support of about
+                                $22.6bn. A first IMF tranche of about $4.8bn is disbursed. A
+                                voluntary swap of GKOs into long-dated dollar Eurobonds attracts
+                                limited take-up. <span class="fs-todo">(amounts to
+                                verify)</span></div></li>
+                            <li><span class="d">13 Aug</span><div><b>Panic</b>A
+                                public call by financier George Soros for a devaluation adds to the
+                                pressure. Stock and bond prices collapse, and interbank lending
+                                stops.</div></li>
+                            <li><span class="d">17 Aug</span><div><b>Devaluation and
+                                default</b>The ruble band is widened from about 5.3–7.1 to 6.0–9.5
+                                per dollar. GKOs and OFZs maturing before the end of 1999 are to be
+                                converted into new securities. A 90-day moratorium suspends
+                                private payments on foreign loans, margin calls and currency
+                                forwards.</div></li>
+                            <li><span class="d">23 Aug</span><div><b>Government
+                                dismissed</b>Kiriyenko is dismissed. The Duma twice rejects
+                                Chernomyrdin's return as prime minister.</div></li>
+                            <li><span class="d">2 Sep</span><div><b>Float</b>The central
+                                bank abandons the band. The ruble falls past 20 per dollar within
+                                weeks. <span class="fs-todo">(intraday low to verify)</span></div></li>
+                            <li><span class="d">11 Sep</span><div><b>New
+                                government</b>Yevgeny Primakov is confirmed as prime minister.
+                                Viktor Gerashchenko returns as central bank governor.</div></li>
+                            <li><span class="d">late 1998 – 2000</span><div><b>Restructuring</b>GKO
+                                holders are offered heavily discounted new securities. Soviet-era
+                                debt owed to London Club banks goes into arrears and is restructured
+                                in 2000. Russia keeps paying its post-Soviet Eurobonds.</div></li>
+                        </ol>
+
+                        <h6>The banking system</h6>
+                        <p>
+                            Russian banks were hit from three directions at once: losses on GKOs,
+                            losses on dollar forwards and foreign loans, and runs by depositors.
+                            The interbank market and domestic payments froze for weeks in late
+                            August. Several of the largest private banks, including Inkombank,
+                            SBS-Agro, Menatep and Uneximbank, became insolvent or were wound
+                            down. Their assets were often moved to "bridge" banks controlled by
+                            the same owners. Households lost much of their savings in private
+                            banks and moved deposits to the state-owned Sberbank.
+                            <span class="fs-todo">(details to verify)</span>
+                        </p>
+                        <p>
+                            The moratorium on forward contracts meant that the currency hedges of
+                            foreign GKO holders were largely worthless. Western banks and funds
+                            that had relied on these hedges took losses on both the bonds and the
+                            hedges. Credit Suisse First Boston was reported to be among the
+                            largest losers.
+                            <span class="fs-todo">(losses to verify)</span>
+                        </p>
+
+                        <h6>Global transmission</h6>
+                        <ul>
+                            <li><b>"Too big to fail" reassessed.</b> Many investors had treated
+                                Russia as too important, politically and militarily, for the West to
+                                let it default. The refusal of further support after August
+                                changed how markets priced official backstops for every emerging
+                                market.</li>
+                            <li><b>Emerging-market spreads.</b> Spreads on emerging-market dollar
+                                bonds widened sharply across regions, including in countries with
+                                little exposure to Russia. Latin America was hit hard and Brazil
+                                came under severe pressure. <span class="fs-todo">(EMBI spread peak
+                                to verify)</span></li>
+                            <li><b>Flight to quality and liquidity.</b> Investors moved into
+                                on-the-run US Treasuries and German Bunds. Spreads between liquid
+                                and less liquid bonds, swap spreads and corporate credit spreads
+                                widened together. These were the spreads on which
+                                <a href="#ev-1998-09-ltcm">LTCM</a> and many bank trading desks had
+                                bet.</li>
+                            <li><b>Deleveraging.</b> Leveraged investors cut positions across
+                                markets to meet margin calls and reduce risk. In October 1998 the
+                                rapid unwinding of yen carry trades caused a sharp rise in the
+                                yen.</li>
+                        </ul>
+
+                        <h6>Policy response</h6>
+                        <ul>
+                            <li><b>The IMF.</b> The July package failed to restore confidence, and
+                                the Fund did not disburse further tranches after the August default.
+                                Critics argued that the July money had mainly allowed foreign
+                                investors to exit before the devaluation. The episode fed the debate
+                                on private-sector involvement in sovereign crises.</li>
+                            <li><b>Russia.</b> The authorities imposed capital and currency
+                                controls, required exporters to surrender part of their foreign
+                                earnings, and restructured the domestic debt. The central bank
+                                supported the banking system with liquidity. A weaker ruble and,
+                                from 1999, rising oil prices led to a strong recovery.</li>
+                            <li><b>Advanced economies.</b> The Federal Reserve cut rates three
+                                times between September and November 1998. Its main concern was the
+                                tightening of financial conditions in US markets rather than Russia
+                                itself.</li>
+                            <li><b>International architecture.</b> The crises of 1997–98 led to the
+                                creation of the Financial Stability Forum (1999), the forerunner of
+                                the FSB, and of the G20 finance ministers' meetings.</li>
+                        </ul>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Short-term debt and a peg are a fragile combination.</b> Very
+                                short maturities meant that the government had to refinance a large
+                                share of its debt every few months. Once markets doubted the peg,
+                                defending it and rolling over the debt became incompatible.</li>
+                            <li><b>Hedges are only as good as the counterparty.</b> Foreign
+                                investors had hedged their currency risk with forwards from banks
+                                that would be insolvent in exactly the scenario the hedge was meant
+                                to cover. This is a classic example of <i>wrong-way risk</i>.</li>
+                            <li><b>The sovereign–bank nexus.</b> Banks held the state's debt and
+                                had sold the currency protection, so default and devaluation hit
+                                them together. A similar dynamic appeared in
+                                <a href="#ev-2001-12-argentina-crisis">Argentina in
+                                2001–02</a>.</li>
+                            <li><b>Small economy, global shock.</b> Russia accounted for a small
+                                share of world output and markets, but its default changed how
+                                investors priced risk everywhere. Contagion ran through leveraged
+                                common holders and through beliefs about official support, not
+                                through direct exposures.</li>
+                            <li><b>Implicit guarantees and moral hazard.</b> Expected bail-outs
+                                encouraged lending. When the guarantee did not materialise, the
+                                repricing was abrupt.</li>
+                            <li><b>From emerging markets to core markets.</b> The flight to
+                                liquidity hit relative-value trades in the deepest markets in the
+                                world, the same channel at work in the
+                                <a href="#ev-2020-03-dash-for-cash">March 2020 dash for cash</a>.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Central bank refinancing rate</td><td class="num">150%</td><td>27 May 1998</td></tr>
+                            <tr><td>Foreign holdings of GKO/OFZ <span class="fs-todo">(to verify)</span></td><td class="num">≈ one-third (≈ $20bn)</td><td>mid-1998</td></tr>
+                            <tr><td>GKO yields, peak <span class="fs-todo">(to verify)</span></td><td class="num">&gt; 100%</td><td>Jul – Aug 1998</td></tr>
+                            <tr><td>IMF-led support package <span class="fs-todo">(to verify)</span></td><td class="num">≈ $22.6bn (first IMF tranche ≈ $4.8bn)</td><td>Jul 1998</td></tr>
+                            <tr><td>Ruble band, before → after</td><td class="num">≈ 5.3–7.1 → 6.0–9.5 / $</td><td>17 Aug 1998</td></tr>
+                            <tr><td>Moratorium on private external payments</td><td class="num">90 days</td><td>17 Aug 1998</td></tr>
+                            <tr><td>RUB/USD, before → after float <span class="fs-todo">(to verify)</span></td><td class="num">≈ 6.3 → &gt; 20</td><td>Aug → Sep 1998</td></tr>
+                            <tr><td>Russian equities (RTS), peak to trough <span class="fs-todo">(to verify)</span></td><td class="num">≈ −90%</td><td>Oct 1997 – Oct 1998</td></tr>
+                            <tr><td>Consumer price inflation <span class="fs-todo">(to verify)</span></td><td class="num">≈ 84%</td><td>1998</td></tr>
+                            <tr><td>Real GDP <span class="fs-todo">(to verify)</span></td><td class="num">≈ −5.3%</td><td>1998</td></tr>
+                            <tr><td>Brent crude, low <span class="fs-todo">(to verify)</span></td><td class="num">≈ $10–12/bbl</td><td>Dec 1998</td></tr>
+                            <tr><td>Fed funds target</td><td class="num">5.5% → 4.75%</td><td>29 Sep – 17 Nov 1998</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://www.brookings.edu/articles/an-analysis-of-russias-1998-meltdown-fundamentals-and-market-signals/">Kharas, H., Pinto, B. and Ulatov, S. (2001): "An Analysis of Russia's 1998 Meltdown: Fundamentals and Market Signals", Brookings Papers on Economic Activity</a></li>
+                            <li><a href="https://files.stlouisfed.org/files/htdocs/publications/review/02/11/ChiodoOwyang.pdf">Chiodo, A. and Owyang, M. (2002): "A Case Study of a Currency Crisis: The Russian Default of 1998", Federal Reserve Bank of St. Louis Review</a></li>
+                            <li><a href="https://www.bis.org/publ/cgfs12.htm">CGFS (1999): A Review of Financial Market Events in Autumn 1998</a></li>
+                            <li><a href="https://www.bis.org/publ/ar99e.htm">BIS: 69th Annual Report, June 1999</a></li>
+                            <li><a href="https://www.imf.org/external/np/sec/pr/1998/pr9831.htm">IMF: press releases on the Russian Federation programme, July 1998</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+            
+            <!-- ============================ Jul 1997 – 1998 · Asian financial crisis -->
+            <article class="fs-event" id="ev-1997-07-asian-crisis" data-tags="sov bank mkt pol">
+                <span class="fs-date">Jul 1997 – 1998</span>
+                <h4 class="fs-title">The Asian financial crisis<a class="fs-anchor" href="#ev-1997-07-asian-crisis">#</a></h4>
+                <div class="fs-tags">
+                    <span class="fs-tag t-sov">Sovereign</span>
+                    <span class="fs-tag t-bank">Banking</span>
+                    <span class="fs-tag t-mkt">Markets</span>
+                    <span class="fs-tag t-pol">Policy / Regulation</span>
+                </div>
+                <p class="fs-sum">
+                    In the decade before 1997, the fast-growing economies of East and Southeast
+                    Asia attracted large inflows of foreign capital. Much of it came as short-term
+                    bank loans in dollars and yen, lent to local banks, finance companies and
+                    corporations. Exchange rates were pegged or tightly managed against the dollar,
+                    so borrowers saw little currency risk. They used the money to finance long-term
+                    investment, property and equity holdings in local currency. When doubts grew
+                    about the strength of the peg and the quality of these investments, foreign
+                    lenders stopped rolling over their loans. On 2&nbsp;July 1997 Thailand, having
+                    spent almost all of its usable reserves, floated the baht. The pressure then
+                    spread to the Philippines, Malaysia and Indonesia, briefly to Hong Kong in
+                    October, and to South Korea in November. Net private capital flows to the five
+                    most affected economies swung from an inflow of about $93bn in 1996 to an
+                    outflow of about $12bn in 1997, a reversal of more than 10% of their combined
+                    GDP. Currencies collapsed: the rupiah lost more than 80% of its value at its
+                    worst, and the baht and the won about half. Because so much debt was in foreign
+                    currency, the devaluations bankrupted firms and banks across the region, and
+                    banking crises followed in Thailand, Indonesia, Korea and Malaysia. The IMF led
+                    rescue packages of about $17bn for Thailand, $40bn for Indonesia and $57bn for
+                    Korea. Their conditions, including high interest rates, fiscal tightening and
+                    sweeping structural reforms, were sharply criticised. Output fell by about 13%
+                    in Indonesia and 5–10% in Thailand, Malaysia and Korea in 1998, and in Indonesia
+                    the crisis brought down the Suharto government. The episode became the
+                    reference case for a <i>sudden stop</i>, a capital-account crisis driven by
+                    maturity and currency mismatches. It reshaped emerging markets' policy for the
+                    next two decades, above all through the accumulation of large foreign-exchange
+                    reserves.
+                </p>
+                <details>
+                    <summary>Details</summary>
+                    <div class="fs-det">
+
+                        <h6>Background: the "Asian miracle" and its financing</h6>
+                        <p>
+                            Thailand, Indonesia, Malaysia, Korea and the Philippines had grown
+                            rapidly for years, with high saving, low inflation and, in most cases,
+                            balanced or surplus budgets. These were not the classic causes of a
+                            currency crisis. The weaknesses lay in the private sector and in how its
+                            investment was financed:
+                        </p>
+                        <ul>
+                            <li><b>Short-term foreign borrowing.</b> Financial liberalisation in the
+                                early 1990s opened capital accounts. Thailand created the Bangkok
+                                International Banking Facility in 1993, which let banks borrow
+                                offshore in dollars and lend at home. By mid-1997, short-term debt
+                                owed to foreign banks exceeded foreign-exchange reserves in Korea,
+                                Indonesia and Thailand. <span class="fs-todo">(BIS ratios to
+                                verify)</span></li>
+                            <li><b>Pegs that hid currency risk.</b> The baht, rupiah, ringgit and
+                                peso were tied closely to the dollar. Borrowers took dollar loans at
+                                lower rates and did not hedge, expecting the peg to hold. The won was
+                                managed within a band.</li>
+                            <li><b>Weak supervision and implicit guarantees.</b> Fast-growing
+                                finance companies in Thailand, merchant banks in Korea and
+                                politically connected banks in Indonesia were lightly supervised.
+                                Lenders widely believed that governments would stand behind them.
+                                Much lending went into property, equities and, in Korea, highly
+                                leveraged industrial groups (<i>chaebol</i>).</li>
+                            <li><b>Eroding competitiveness.</b> The dollar strengthened against the
+                                yen from 1995, and China had devalued in 1994. Export growth slowed
+                                sharply in 1996 across the region, and current-account deficits
+                                widened. Thailand's reached about 8% of GDP.
+                                <span class="fs-todo">(to verify)</span></li>
+                        </ul>
+
+                        <h6>Mechanism: a sudden stop with double mismatches</h6>
+                        <p>
+                            Balance sheets across the region carried two mismatches at once. They
+                            had <b>maturity mismatch</b>, with short-term foreign loans funding
+                            long-term domestic assets. They also had <b>currency mismatch</b>, with
+                            dollar liabilities against local-currency assets and revenues. This made
+                            the economies vulnerable to a run by foreign creditors, much like a bank
+                            run on a whole country:
+                        </p>
+                        <ol class="fs-loop">
+                            <li>Doubts about the peg and about borrowers' solvency lead foreign banks
+                                to stop rolling over short-term loans.</li>
+                            <li>The central bank sells reserves to meet the demand for dollars
+                                and defend the peg, and raises interest rates.</li>
+                            <li>Reserves run out and the currency is floated. It overshoots as
+                                unhedged borrowers rush to buy dollars to cover their debts.</li>
+                            <li>The depreciation raises the local-currency value of foreign debt.
+                                Firms and banks become insolvent, which confirms creditors' fears and
+                                triggers further withdrawals.</li>
+                        </ol>
+                        <p>
+                            The balance-sheet effect is what turned a currency crisis into a
+                            solvency crisis. For a firm with local-currency assets \(A\),
+                            local-currency debt \(D\) and foreign-currency debt \(D^{\$}\) at an
+                            exchange rate of \(e\) units of local currency per dollar, net worth is
+                        </p>
+                        <div class="fs-eq">
+                            $$ NW \;=\; A \;-\; D \;-\; e \cdot D^{\$} . $$
+                        </div>
+                        <p>
+                            Consider a firm whose dollar debt is half of its assets and whose net
+                            worth is 20% of assets. A depreciation of 40% wipes out its net worth
+                            entirely, before any fall in sales or rise in interest rates. Across
+                            Indonesia, where the rupiah lost about four-fifths of its value, most of
+                            the corporate sector became technically insolvent. A key test of a
+                            country's exposure was its stock of short-term external debt compared
+                            with its liquid reserves:
+                        </p>
+                        <div class="fs-eq">
+                            $$ \text{Rollover gap} \;=\; \text{short-term external debt} \;-\; \text{usable FX reserves} . $$
+                        </div>
+                        <p>
+                            Where the gap was positive, a refusal by creditors to roll over could not
+                            be met from reserves. Every creditor then had a reason to withdraw before
+                            the others, whatever the long-run solvency of the country. The run could
+                            be self-fulfilling.
+                        </p>
+
+                        <!-- ------------------------------------------------ Part 1 -->
+                        <div class="fs-part" id="ev-1997-07-thailand">1 · Thailand and the regional contagion (1997)<a class="fs-anchor" href="#ev-1997-07-thailand">#</a></div>
+                        <ol class="fs-steps">
+                            <li><span class="d">Feb – May 1997</span><div><b>Speculative
+                                attacks</b>Property-linked finance companies run into trouble and
+                                the baht comes under repeated attack. The Bank of Thailand defends
+                                the peg largely in the forward market. It builds up about $23bn of
+                                forward dollar sales, which leaves its <i>usable</i> reserves close to
+                                exhausted while headline reserves still look ample.
+                                <span class="fs-todo">(to verify)</span></div></li>
+                            <li><span class="d">27 Jun</span><div><b>Finance companies
+                                suspended</b>Sixteen finance companies are suspended. A further 42
+                                follow on 5&nbsp;August.</div></li>
+                            <li><span class="d">2 Jul 1997</span><div><b>Baht
+                                floated</b>Thailand abandons the peg of about 25 baht per dollar. The
+                                baht falls about 15–20% on the day.</div></li>
+                            <li><span class="d">11 Jul – 14 Aug</span><div><b>Regional
+                                sweep</b>The Philippines lets the peso float on 11&nbsp;July and
+                                Malaysia stops defending the ringgit on 14&nbsp;July. Indonesia widens
+                                its band and then floats the rupiah on 14&nbsp;August.</div></li>
+                            <li><span class="d">20 Aug</span><div><b>Thai
+                                programme</b>The IMF approves a package of about $17.2bn for
+                                Thailand, including bilateral contributions led by Japan.</div></li>
+                            <li><span class="d">20–23 Oct</span><div><b>Hong
+                                Kong</b>The Hong Kong dollar's currency board comes under attack. The
+                                HKMA lets interbank rates soar, with overnight HIBOR briefly near
+                                300%, and the Hang Seng falls about 10% on 23&nbsp;October.
+                                <span class="fs-todo">(to verify)</span></div></li>
+                            <li><span class="d">27 Oct</span><div><b>Global
+                                echo</b>The Dow falls 554 points (about 7.2%), and US exchanges halt
+                                trading under circuit-breaker rules for the first time.</div></li>
+                            <li><span class="d">8 Dec</span><div><b>Closures</b>Thailand
+                                permanently closes 56 of the 58 suspended finance companies.</div></li>
+                        </ol>
+                        <p>
+                            Contagion did not require strong trade or financial links. Once Thailand
+                            fell, investors reassessed economies with similar features, such as pegs,
+                            short-term foreign debt and weak banks. International banks cut credit
+                            lines region-wide, and funds that had lost money in one market sold in
+                            others to meet redemptions. Japanese banks, the region's largest lenders,
+                            were under pressure at home. In November 1997 Sanyo Securities, Hokkaido
+                            Takushoku Bank and Yamaichi Securities failed, and Japanese banks cut
+                            lending to Asia further.
+                        </p>
+
+                        <!-- ------------------------------------------------ Part 2 -->
+                        <div class="fs-part" id="ev-1997-11-indonesia">2 · Indonesia: bank runs and political collapse (Nov 1997 – May 1998)<a class="fs-anchor" href="#ev-1997-11-indonesia">#</a></div>
+                        <p>
+                            Indonesia's fundamentals had looked stronger than Thailand's, but its
+                            corporate sector had borrowed heavily in dollars, often unhedged, and
+                            its banking system was weak and politically connected. The first IMF
+                            programme was announced on 31&nbsp;October 1997, with total financing
+                            of about $40bn including bilateral pledges. As part of it, 16 small banks
+                            were closed on 1&nbsp;November, without a guarantee for depositors. Rather than
+                            restoring confidence, the closures triggered runs on many other private
+                            banks, as depositors moved funds to state and foreign banks or into
+                            dollars and cash.
+                        </p>
+                        <ul>
+                            <li><b>Liquidity support.</b> Bank Indonesia lent heavily to banks
+                                facing runs (the BLBI facility). Much of this lending was never
+                                repaid, and some was diverted by bank owners.
+                                <span class="fs-todo">(amounts to verify)</span></li>
+                            <li><b>Currency collapse.</b> Doubts about the government's commitment
+                                to the programme, and about President Suharto's health and
+                                succession, drove the rupiah from about 2,400 per dollar in July 1997
+                                to around 15,000–17,000 in January and June 1998.
+                                <span class="fs-todo">(intraday lows to verify)</span></div></li>
+                            <li><b>Blanket guarantee.</b> In January 1998 the government guaranteed
+                                all bank liabilities and created the Indonesian Bank Restructuring
+                                Agency (IBRA), which took over or closed dozens of banks.</li>
+                            <li><b>Political crisis.</b> Fuel-price rises, riots and the shooting of
+                                student protesters led to Suharto's resignation on 21&nbsp;May 1998,
+                                after 31 years in power.</li>
+                        </ul>
+
+                        <!-- ------------------------------------------------ Part 3 -->
+                        <div class="fs-part" id="ev-1997-11-korea">3 · Korea: a liquidity run on an advanced economy (Nov 1997 – Jan 1998)<a class="fs-anchor" href="#ev-1997-11-korea">#</a></div>
+                        <p>
+                            Korea had joined the OECD in 1996. Its problem was the structure of its
+                            debt. Korean banks and merchant banks had borrowed short term abroad and
+                            lent long term to highly leveraged <i>chaebol</i>, several of which
+                            failed during 1997, including Hanbo Steel in January and Kia in July.
+                            Foreign banks stopped rolling over their loans, and the central bank had
+                            placed much of its reserves with Korean banks' overseas branches, which
+                            then could not repay them. Usable reserves fell to a very low level.
+                            <span class="fs-todo">(≈ $6–9bn at end-1997, to verify)</span>
+                        </p>
+                        <ol class="fs-steps">
+                            <li><span class="d">17–21 Nov 1997</span><div><b>Band
+                                abandoned</b>Korea stops defending the won and on 21&nbsp;November
+                                requests IMF assistance.</div></li>
+                            <li><span class="d">3 Dec</span><div><b>Programme</b>An
+                                international package of about $57bn is agreed, then the largest in
+                                IMF history, including about $21bn from the IMF itself.
+                                <span class="fs-todo">(split to verify)</span></div></li>
+                            <li><span class="d">mid – late Dec</span><div><b>Run
+                                continues</b>Foreign banks keep withdrawing credit lines faster than
+                                official money arrives. The won falls to about 1,960 per dollar,
+                                roughly half its value of mid-1997.
+                                <span class="fs-todo">(low to verify)</span></div></li>
+                            <li><span class="d">24 Dec</span><div><b>Creditor
+                                coordination</b>The G7 governments and the IMF bring forward
+                                disbursements, and creditor banks are asked to maintain their
+                                exposures to Korea.</div></li>
+                            <li><span class="d">28 Jan 1998</span><div><b>Debt
+                                exchange</b>Korean banks and foreign creditors agree to exchange about
+                                $22–24bn of short-term interbank debt for government-guaranteed loans
+                                of one to three years. <span class="fs-todo">(amount to
+                                verify)</span></div></li>
+                        </ol>
+                        <p>
+                            The turning point for Korea came from <b>bailing in</b> private
+                            creditors through an organised rollover, not from official money alone.
+                            The run stopped once each bank was assured that the others would not
+                            withdraw either. This was the same collective-action problem that the
+                            New York Fed solved for <a href="#ev-1998-09-ltcm">LTCM</a> nine months
+                            later.
+                        </p>
+
+                        <h6>Timeline: 1998, recession and aftershocks</h6>
+                        <ol class="fs-steps">
+                            <li><span class="d">H1 1998</span><div><b>Deep
+                                recession</b>Output collapses across the region. Non-performing loans
+                                rise towards a third or more of loans in Thailand and Indonesia.
+                                <span class="fs-todo">(to verify)</span></div></li>
+                            <li><span class="d">14–28 Aug</span><div><b>Hong Kong
+                                intervention</b>The HKMA buys about HK$118bn of local shares to defeat
+                                speculators who were selling both the currency and the stock
+                                market.</div></li>
+                            <li><span class="d">17 Aug</span><div><b>Russia</b>Russia's
+                                default and devaluation trigger a second, global wave of
+                                emerging-market stress and lead to the
+                                <a href="#ev-1998-09-ltcm">near-collapse of LTCM</a>.</div></li>
+                            <li><span class="d">1 Sep</span><div><b>Malaysian capital
+                                controls</b>Malaysia fixes the ringgit at 3.80 per dollar and
+                                restricts outflows of portfolio capital. Mahathir Mohamad rejects an
+                                IMF programme.</div></li>
+                            <li><span class="d">1999</span><div><b>Recovery</b>Korea and
+                                the Southeast Asian economies return to growth, helped by weak
+                                currencies and strong export demand. Bank and corporate restructuring
+                                continues for several years.</div></li>
+                        </ol>
+
+                        <h6>Policy response</h6>
+                        <ul>
+                            <li><b>IMF-led packages.</b> The programmes for Thailand, Indonesia and
+                                Korea combined large financing with tight monetary policy to stop
+                                depreciation, initial fiscal tightening, and wide-ranging structural
+                                conditions on banks, corporate governance and competition. In December
+                                1997 the IMF created the Supplemental Reserve Facility to lend larger
+                                amounts at short maturities to countries facing capital-account
+                                crises.</li>
+                            <li><b>The controversy.</b> Critics, including Joseph Stiglitz at the
+                                World Bank and Steven Radelet and Jeffrey Sachs, argued that the
+                                diagnosis was wrong. In their view, a creditor panic was treated like a
+                                fiscal crisis, high rates deepened corporate distress, bank closures
+                                without guarantees triggered runs, and the structural conditions
+                                reached far beyond the crisis. The fiscal targets were loosened during
+                                1998. The IMF's Independent Evaluation Office (2003) accepted several
+                                of these points, notably on Indonesia's bank closures and the initial
+                                fiscal stance.</li>
+                            <li><b>Bank resolution.</b> Governments set up asset-management
+                                companies and restructuring agencies, among them IBRA in Indonesia,
+                                KAMCO in Korea, Danaharta and Danamodal in Malaysia, and the Financial
+                                Sector Restructuring Authority in Thailand. They closed or merged
+                                insolvent institutions and recapitalised banks with public money. The
+                                fiscal cost of the banking crises was very large: roughly 55% of GDP in
+                                Indonesia, 40% in Thailand and 30% in Korea.
+                                <span class="fs-todo">(to verify, Laeven and Valencia
+                                database)</span></li>
+                            <li><b>Capital controls.</b> Malaysia's 1998 controls, unorthodox at
+                                the time, were followed by a recovery no worse than its neighbours'.
+                                The episode contributed to the IMF's later, more accepting view of
+                                capital-flow management measures (2012).</li>
+                            <li><b>New international architecture.</b> The crisis led to the
+                                Financial Stability Forum and the G20 finance ministers' meetings
+                                (both 1999), and to the Chiang Mai Initiative of regional swap lines
+                                (2000).</li>
+                        </ul>
+
+                        <h6>Financial-stability reading</h6>
+                        <ul>
+                            <li><b>Sudden stops can hit sound public finances.</b> Governments were
+                                mostly solvent. The fragility lay in private short-term foreign
+                                borrowing, which became a public problem when it could not be rolled
+                                over.</li>
+                            <li><b>Currency mismatch turns devaluation into insolvency.</b> The
+                                depreciation needed to restore competitiveness wiped out the net worth
+                                of firms and banks with dollar debts. The same mechanism destroyed
+                                <a href="#ev-2001-12-argentina-crisis">Argentina's banks in
+                                2002</a>.</li>
+                            <li><b>Countries can suffer bank runs.</b> When short-term foreign debt
+                                exceeds liquid reserves, a creditor run can be self-fulfilling. Usable
+                                reserves matter, not headline ones, as Thailand's forward book and
+                                Korea's deposits with its own banks showed.</li>
+                            <li><b>Pegs encourage unhedged borrowing.</b> A stable exchange rate
+                                that looks permanent suppresses perceived currency risk, as the
+                                <a href="#ev-2015-01-snb-floor">Swiss-franc floor</a> did for
+                                different borrowers.</li>
+                            <li><b>Bank closures without a backstop can start runs.</b>
+                                Indonesia's closures of November 1997 spread panic because depositors
+                                had no assurance about the remaining banks. Credible deposit
+                                protection is part of any resolution.</li>
+                            <li><b>Bailing in private creditors.</b> Korea's coordinated rollover
+                                showed that official money alone may not stop a creditor run, and
+                                fed the debate on private-sector involvement that returned in the
+                                <a href="#ev-2010-05-euro-area-crisis">Greek restructuring</a>.</li>
+                            <li><b>Self-insurance through reserves.</b> Asian and other emerging
+                                economies responded by building very large foreign-exchange reserves,
+                                floating their currencies and developing local-currency bond markets.
+                                Those buffers shaped how they weathered the
+                                <a href="#ev-2013-05-taper-tantrum">taper tantrum</a> and the
+                                <a href="#ev-2015-06-china-risk-off">2015 renminbi shock</a>.</li>
+                        </ul>
+
+                        <h6>Key figures</h6>
+                        <table class="fs-kv">
+                            <tr><th>Indicator</th><th>Value</th><th>Date</th></tr>
+                            <tr><td>Net private capital flows, five Asian economies <span class="fs-todo">(to verify, IIF)</span></td><td class="num">≈ +$93bn → −$12bn</td><td>1996 → 1997</td></tr>
+                            <tr><td>Thai current-account deficit <span class="fs-todo">(to verify)</span></td><td class="num">≈ 8% of GDP</td><td>1996</td></tr>
+                            <tr><td>Bank of Thailand forward dollar sales <span class="fs-todo">(to verify)</span></td><td class="num">≈ $23bn</td><td>mid-1997</td></tr>
+                            <tr><td>Baht, peg → low <span class="fs-todo">(to verify)</span></td><td class="num">≈ 25 → 56 / $</td><td>Jul 1997 → Jan 1998</td></tr>
+                            <tr><td>Rupiah, pre-crisis → low <span class="fs-todo">(to verify)</span></td><td class="num">≈ 2,400 → 16,000+ / $</td><td>Jul 1997 → 1998</td></tr>
+                            <tr><td>Won, pre-crisis → low <span class="fs-todo">(to verify)</span></td><td class="num">≈ 890 → 1,960 / $</td><td>mid → Dec 1997</td></tr>
+                            <tr><td>Thai finance companies suspended / closed</td><td class="num">58 / 56</td><td>Jun – Dec 1997</td></tr>
+                            <tr><td>Hong Kong overnight HIBOR, peak <span class="fs-todo">(to verify)</span></td><td class="num">≈ 300%</td><td>23 Oct 1997</td></tr>
+                            <tr><td>Dow Jones, daily change</td><td class="num">−554 pts (≈ −7.2%)</td><td>27 Oct 1997</td></tr>
+                            <tr><td>Official packages: Thailand / Indonesia / Korea <span class="fs-todo">(to verify)</span></td><td class="num">≈ $17bn / $40bn / $57bn</td><td>Aug – Dec 1997</td></tr>
+                            <tr><td>Korean short-term debt exchanged <span class="fs-todo">(to verify)</span></td><td class="num">≈ $22–24bn</td><td>28 Jan 1998</td></tr>
+                            <tr><td>Real GDP: Indonesia / Thailand / Malaysia / Korea <span class="fs-todo">(to verify)</span></td><td class="num">≈ −13% / −8% / −7% / −5%</td><td>1998</td></tr>
+                            <tr><td>HKMA equity purchases</td><td class="num">≈ HK$118bn</td><td>Aug 1998</td></tr>
+                            <tr><td>Ringgit fixed rate</td><td class="num">3.80 / $</td><td>1 Sep 1998</td></tr>
+                            <tr><td>Fiscal cost of bank crises: Indonesia / Thailand / Korea <span class="fs-todo">(to verify)</span></td><td class="num">≈ 55% / 40% / 30% of GDP</td><td>1997 – 2000s</td></tr>
+                        </table>
+
+                        <h6>Sources</h6>
+                        <ul>
+                            <li><a href="https://www.brookings.edu/articles/the-east-asian-financial-crisis-diagnosis-remedies-prospects/">Radelet, S. and Sachs, J. (1998): "The East Asian Financial Crisis: Diagnosis, Remedies, Prospects", Brookings Papers on Economic Activity</a></li>
+                            <li><a href="https://doi.org/10.1016/S0922-1425(99)00019-5">Corsetti, G., Pesenti, P. and Roubini, N. (1999): "What caused the Asian currency and financial crisis?", Japan and the World Economy</a></li>
+                            <li><a href="https://ieo.imf.org/en/evaluations/complete-evaluations/2003-the-imf-and-recent-capital-account-crises">IMF Independent Evaluation Office (2003): The IMF and Recent Capital Account Crises: Indonesia, Korea, Brazil</a></li>
+                            <li><a href="https://www.imf.org/external/pubs/ft/op/op178/">Lane, T. et al. (1999): IMF-Supported Programs in Indonesia, Korea, and Thailand: A Preliminary Assessment, IMF Occasional Paper 178</a></li>
+                            <li>Calvo, G. (1998): "Capital Flows and Capital-Market Crises: The Simple Economics of Sudden Stops", <i>Journal of Applied Economics</i>, 1(1)</li>
+                            <li><a href="https://www.bis.org/publ/arpdf/archive/ar1998_en.htm">BIS: 68th Annual Report, June 1998</a></li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+        </div>
     </section>
+
 
     <section class="fs-decade" id="d1980">
         <h3>1980s &amp; earlier <a class="fs-top" href="#fs-top">↑ top</a></h3>
@@ -5811,7 +6725,26 @@
     [31] Ofek, E. and Richardson, M. (2003), <a href="https://doi.org/10.1111/1540-6261.00560">"DotCom Mania: The Rise and Fall of Internet Stock Prices"</a>, <i>Journal of Finance</i>, 58(3), 1113–1137.
         <br>
     [32] Greenspan, A. (2002), <a href="https://www.federalreserve.gov/boarddocs/speeches/2002/20020830/">"Economic Volatility"</a>, remarks at the Federal Reserve Bank of Kansas City symposium, Jackson Hole, 30 August 2002.
+            <br>
+    [33] President's Working Group on Financial Markets (1999), <a href="https://home.treasury.gov/system/files/236/Report-Hedge-Funds-Leverage-and-Lessons-of-Long-Term-Capital-Management.pdf"><i>Hedge Funds, Leverage, and the Lessons of Long-Term Capital Management</i></a>.
+        <br>
+    [34] Committee on the Global Financial System (1999), <a href="https://www.bis.org/publ/cgfs12.htm"><i>A Review of Financial Market Events in Autumn 1998</i></a>, CGFS Papers No 12.
+        <br>
+    [35] Edwards, F. R. (1999), <a href="https://doi.org/10.1257/jep.13.2.189">"Hedge Funds and the Collapse of Long-Term Capital Management"</a>, <i>Journal of Economic Perspectives</i>, 13(2), 189–210.
+            <br>
+    [36] Kharas, H., Pinto, B. and Ulatov, S. (2001), <a href="https://www.brookings.edu/articles/an-analysis-of-russias-1998-meltdown-fundamentals-and-market-signals/">"An Analysis of Russia's 1998 Meltdown: Fundamentals and Market Signals"</a>, <i>Brookings Papers on Economic Activity</i>, 2001(1), 1–68.
+        <br>
+    [37] Chiodo, A. J. and Owyang, M. T. (2002), <a href="https://files.stlouisfed.org/files/htdocs/publications/review/02/11/ChiodoOwyang.pdf">"A Case Study of a Currency Crisis: The Russian Default of 1998"</a>, <i>Federal Reserve Bank of St. Louis Review</i>, 84(6), 7–17.
     
+        <br>
+    [38] Radelet, S. and Sachs, J. (1998), <a href="https://www.brookings.edu/articles/the-east-asian-financial-crisis-diagnosis-remedies-prospects/">"The East Asian Financial Crisis: Diagnosis, Remedies, Prospects"</a>, <i>Brookings Papers on Economic Activity</i>, 1998(1), 1–90.
+        <br>
+    [39] Corsetti, G., Pesenti, P. and Roubini, N. (1999), <a href="https://doi.org/10.1016/S0922-1425(99)00019-5">"What caused the Asian currency and financial crisis?"</a>, <i>Japan and the World Economy</i>, 11(3), 305–373.
+        <br>
+    [40] IMF Independent Evaluation Office (2003), <a href="https://ieo.imf.org/en/evaluations/complete-evaluations/2003-the-imf-and-recent-capital-account-crises"><i>The IMF and Recent Capital Account Crises: Indonesia, Korea, Brazil</i></a>.
+        <br>
+    [41] Calvo, G. A. (1998), "Capital Flows and Capital-Market Crises: The Simple Economics of Sudden Stops", <i>Journal of Applied Economics</i>, 1(1), 35–54.
+
     <br><br>
 
     <h5><a href="../../Teaching.html"><b><img src="../../Icons/back.png" width="20px"> Back to Teaching</b></a></h5>
